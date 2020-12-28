@@ -89,7 +89,7 @@ search:
   paths:
     - path: torrents.php
   inputs:
-    $raw: "{{range .Categories}}filter_cat[{{.}}]=1&{{end}}"
+    $raw: "{{ range .Categories }}filter_cat[{{.}}]=1&{{end}}"
     searchtext: ""
     title: "{{ .Keywords }}"
     order_by: time
@@ -120,8 +120,7 @@ search:
     details:
       selector: a[href^="/torrents.php?id="]
       attribute: href
-    banner:
-      optional: true
+    poster:
       selector: td:nth-child(2) > script
       filters:
         - name: regexp

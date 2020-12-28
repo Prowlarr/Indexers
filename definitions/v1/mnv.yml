@@ -14,12 +14,12 @@ caps:
     - {id: 1, cat: TV/Anime, desc: "Anime"}
     - {id: 2, cat: PC, desc: "Appz"}
     - {id: 13, cat: TV/Documentary, desc: "Doku"}
-    - {id: 3, cat: Books/Ebook, desc: "E-Books/Bücher"}
+    - {id: 3, cat: Books/EBook, desc: "E-Books/Bücher"}
     - {id: 27, cat: Console/NDS, desc: "Games/Nintendo"}
     - {id: 24, cat: PC/Games, desc: "Games/PC"}
     - {id: 25, cat: Console/PSP, desc: "Games/PlayStation"}
-    - {id: 28, cat: Console/Xbox, desc: "Games/XBOX"}
-    - {id: 22, cat: PC/Phone-Other, desc: "Handy/PDA"}
+    - {id: 28, cat: Console/XBox, desc: "Games/XBOX"}
+    - {id: 22, cat: PC/Mobile-Other, desc: "Handy/PDA"}
     - {id: 32, cat: TV/Anime, desc: "Hentai"}
     - {id: 4, cat: Audio/Audiobook, desc: "Hörspiel/Hörbuch"}
     - {id: 31, cat: Movies/BluRay, desc: "Movies/BluRay"}
@@ -31,7 +31,7 @@ caps:
     - {id: 19, cat: Audio/Video, desc: "Musik Videos"}
     - {id: 30, cat: Other, desc: "Sonstiges"}
     - {id: 21, cat: TV/Sport, desc: "Sport"}
-    - {id: 5, cat: Books/Magazines, desc: "Tageszeitung"}
+    - {id: 5, cat: Books/Mags, desc: "Tageszeitung"}
     - {id: 14, cat: TV, desc: "TV-Serien"}
     - {id: 29, cat: XXX, desc: "XXX"}
 
@@ -64,19 +64,19 @@ settings:
   - name: sort
     type: select
     label: Sort requested from site
-    default: "added"
+    default: added
     options:
-      "added": "created"
-      "seeds": "seeders"
-      "size": "size"
-      "name": "title"
+      added: created
+      seeds: seeders
+      size: size
+      name: title
   - name: type
     type: select
     label: Order requested from site
-    default: "desc"
+    default: desc
     options:
-      "desc": "desc"
-      "asc": "asc"
+      desc: desc
+      asc: asc
   - name: info_tpp
     type: info
     label: Results Per Page
@@ -98,7 +98,7 @@ search:
   # https://mnvv2.info/browse.php?showsearch=1&c13=1&c3=1&search=&blah=0&incldead=1&team=0&orderby=added&sort=desc&language=all
   path: browse.php
   inputs:
-    $raw: "{{range .Categories}}c{{.}}=1&{{end}}"
+    $raw: "{{ range .Categories }}c{{.}}=1&{{end}}"
     search: "{{ .Keywords }}"
     # 0 name, 1 descr, 2 both, 3 filelist
     blah: 0
@@ -130,7 +130,7 @@ search:
     download:
       selector: a[href^="download.php"]
       attribute: href
-    banner:
+    poster:
       selector: a[href^="details.php"]
       attribute: onMouseover
       filters:

@@ -12,7 +12,7 @@ caps:
   categorymappings:
     - {id: 14, cat: PC, desc: "-- Appz --"}
     - {id: 15, cat: Books/Comics, desc: "-- Comics --"}
-    - {id: 17, cat: Books/Ebook, desc: "-- E-books --"}
+    - {id: 17, cat: Books/EBook, desc: "-- E-books --"}
     - {id: 16, cat: PC/Games, desc: "-- Games --"}
     - {id: 19, cat: Audio, desc: "-- Music --"}
     - {id: 82, cat: Other, desc: "-- Other --"}
@@ -111,19 +111,19 @@ settings:
   - name: sort
     type: select
     label: Sort requested from site
-    default: "4"
+    default: 4
     options:
-      "4": "created"
-      "7": "seeders"
-      "5": "size"
-      "1": "title"
+      4: created
+      7: seeders
+      5: size
+      1: title
   - name: type
     type: select
     label: Order requested from site
-    default: "desc"
+    default: desc
     options:
-      "desc": "desc"
-      "asc": "asc"
+      desc: desc
+      asc: asc
 
 login:
   path: loginto.php
@@ -171,17 +171,12 @@ search:
     details:
       selector: a[onmouseover][href^="details.php?id="]
       attribute: href
-    banner:
+    poster:
       selector: a[onmouseover][href^="details.php?id="]
-      optional: true
       attribute: onmouseover
       filters:
         - name: regexp
           args: "src=\\\\'(.*?)\\\\'"
-    comments:
-      selector: td:nth-child(7) a
-      attribute: href
-      optional: true
     download:
       selector: a[href^="download.php"]
       attribute: href

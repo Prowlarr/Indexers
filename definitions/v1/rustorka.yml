@@ -667,28 +667,28 @@ caps:
     - {id: 1140, cat: Audio/Audiobook, desc: "Аудиоспектакли"}
     # Мобильные устройства
     # Mobile devices
-    - {id: 1173, cat: PC/Phone-Other, desc: "F.A.Q. по разделу / Прочее"}
-    - {id: 1166, cat: PC/Phone-Other, desc: "Windows Phone"}
-    - {id: 1176, cat: PC/Phone-Other, desc: " |- Игры"}
-    - {id: 1175, cat: PC/Phone-Other, desc: " |- Программы"}
-    - {id: 1174, cat: PC/Phone-Other, desc: " |- Прошивки"}
-    - {id: 1202, cat: PC/Phone-Other, desc: " |- Разное"}
-    - {id: 1167, cat: PC/Phone-Other, desc: "Android"}
-    - {id: 1179, cat: PC/Phone-Other, desc: " |- Игры"}
-    - {id: 1178, cat: PC/Phone-Other, desc: " |- Программы"}
-    - {id: 1177, cat: PC/Phone-Other, desc: " |- Прошивки"}
-    - {id: 1203, cat: PC/Phone-Other, desc: " |- Разное"}
-    - {id: 1168, cat: PC/Phone-Other, desc: "iOS"}
-    - {id: 1182, cat: PC/Phone-Other, desc: " |- Игры"}
-    - {id: 1181, cat: PC/Phone-Other, desc: " |- Программы"}
-    - {id: 1180, cat: PC/Phone-Other, desc: " |- Прошивки"}
-    - {id: 1205, cat: PC/Phone-Other, desc: " |- Разное"}
-    - {id: 1170, cat: PC/Phone-Other, desc: "Другие ОС"}
-    - {id: 1188, cat: PC/Phone-Other, desc: " |- Игры"}
-    - {id: 1187, cat: PC/Phone-Other, desc: " |- Программы"}
-    - {id: 1186, cat: PC/Phone-Other, desc: " |- Прошивки"}
-    - {id: 1206, cat: PC/Phone-Other, desc: " |- Разное"}
-    - {id: 1172, cat: PC/Phone-Other, desc: "Программы для PC"}
+    - {id: 1173, cat: PC/Mobile-Other, desc: "F.A.Q. по разделу / Прочее"}
+    - {id: 1166, cat: PC/Mobile-Other, desc: "Windows Phone"}
+    - {id: 1176, cat: PC/Mobile-Other, desc: " |- Игры"}
+    - {id: 1175, cat: PC/Mobile-Other, desc: " |- Программы"}
+    - {id: 1174, cat: PC/Mobile-Other, desc: " |- Прошивки"}
+    - {id: 1202, cat: PC/Mobile-Other, desc: " |- Разное"}
+    - {id: 1167, cat: PC/Mobile-Other, desc: "Android"}
+    - {id: 1179, cat: PC/Mobile-Other, desc: " |- Игры"}
+    - {id: 1178, cat: PC/Mobile-Other, desc: " |- Программы"}
+    - {id: 1177, cat: PC/Mobile-Other, desc: " |- Прошивки"}
+    - {id: 1203, cat: PC/Mobile-Other, desc: " |- Разное"}
+    - {id: 1168, cat: PC/Mobile-Other, desc: "iOS"}
+    - {id: 1182, cat: PC/Mobile-Other, desc: " |- Игры"}
+    - {id: 1181, cat: PC/Mobile-Other, desc: " |- Программы"}
+    - {id: 1180, cat: PC/Mobile-Other, desc: " |- Прошивки"}
+    - {id: 1205, cat: PC/Mobile-Other, desc: " |- Разное"}
+    - {id: 1170, cat: PC/Mobile-Other, desc: "Другие ОС"}
+    - {id: 1188, cat: PC/Mobile-Other, desc: " |- Игры"}
+    - {id: 1187, cat: PC/Mobile-Other, desc: " |- Программы"}
+    - {id: 1186, cat: PC/Mobile-Other, desc: " |- Прошивки"}
+    - {id: 1206, cat: PC/Mobile-Other, desc: " |- Разное"}
+    - {id: 1172, cat: PC/Mobile-Other, desc: "Программы для PC"}
     # Программное обеспечение
     # Software
     - {id: 349, cat: PC, desc: "Mac OS. Программное обеспечение под них"}
@@ -785,19 +785,19 @@ settings:
   - name: sort
     type: select
     label: Sort requested from site
-    default: "1"
+    default: 1
     options:
-      "1": "created"
-      "10": "seeders"
-      "7": "size"
-      "2": "title"
+      1: created
+      10: seeders
+      7: size
+      2: title
   - name: type
     type: select
     label: Order requested from site
-    default: "2"
+    default: 2
     options:
-      "2": "desc"
-      "1": "asc"
+      2: desc
+      1: asc
 
 login:
   method: cookie
@@ -818,7 +818,7 @@ search:
     - name: re_replace # S01E01 to сезон 1 серии 1
       args: ["(?i)\\bS0*(\\d+)E0*(\\d+)\\b", "сезон $1 серии $2"]
   inputs:
-    $raw: "{{ if .Categories }}{{ range .Categories }}f[]={{.}}&{{end}}{{else}}f[]=-1{{end}}"
+    $raw: "{{ if .Categories }}{{ range .Categories }}f[]={{.}}&{{end}}{{ else }}f[]=-1{{ end }}"
     prev_allw: 0
     prev_a: 0
     prev_dla: 0
@@ -846,9 +846,9 @@ search:
     prev_mod: 0
     prev_gold: 0
     prev_silver: 0
-    # sort by 1=registered 2=topicTitle 4=completed 10=seed 11=leech 12=up 13=down 5=replies 6=views 7=size 8=lastPost 9=seedLastSeen
+    # sort by 1=registered, 2=topicTitle, 4=completed, 10=seed, 11=leech, 12=up, 13=down, 5=replies, 6=views, 7=size, 8=lastPost, 9=seedLastSeen
     o: "{{ .Config.sort }}"
-    # 1=asc 2=desc
+    # 1=asc, 2=desc
     s: "{{ .Config.type }}"
     # show category
     dc: 0

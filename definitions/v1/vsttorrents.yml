@@ -29,7 +29,9 @@ search:
     s: "{{ .Keywords }}"
 
   rows:
-    selector: article
+    selector: article:has(h3)
+    filters:
+      - name: andmatch
 
   fields:
     category:
@@ -42,7 +44,7 @@ search:
     download:
       selector: h3 > a
       attribute: href
-    banner:
+    poster:
       selector: img
       attribute: src
     description:

@@ -44,21 +44,21 @@ settings:
   - name: sort
     type: select
     label: Sort requested from site (Applies only to Search with Keywords)
-    default: "0"
+    default: 0
     options:
-      "0": "created desc"
-      "1": "created asc"
-      "2": "seeders desc"
-      "3": "seeders asc"
-      "6": "size desc"
-      "7": "size asc"
-      "8": "title desc"
-      "9": "title asc"
+      0: "created desc"
+      1: "created asc"
+      2: "seeders desc"
+      3: "seeders asc"
+      6: "size desc"
+      7: "size asc"
+      8: "title desc"
+      9: "title asc"
 
 search:
   paths:
     # http://rutor.info/search/0/0/100/0/gotham%2004x01
-    - path: "{{ if .Keywords }}search/0/0/100/{{ .Config.sort }}/{{ .Keywords }}/{{else}}top/{{end}}"
+    - path: "{{ if .Keywords }}search/0/0/100/{{ .Config.sort }}/{{ .Keywords }}/{{ else }}top/{{ end }}"
 
   rows:
     selector: tr:has(td:has(a.downgif))
@@ -117,9 +117,8 @@ search:
           args: ["Ноя", "Nov"]
         - name: replace
           args: ["Дек", "Dec"]
-          # Moscow +3 UTC
         - name: append
-          args: " 00:00:00 +03:00"
+          args: " 00:00:00 +03:00" # MSK
         - name: dateparse
           args: "02 Jan 06 15:04:05 -07:00"
     # some results don't have comments which throws off td count. So we go fishing for the following fields

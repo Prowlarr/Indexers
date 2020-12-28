@@ -32,12 +32,12 @@ caps:
     - {id: 9, cat: PC/Games, desc: "Játék/ISO"}
     - {id: 43, cat: Console, desc: "Játék/Konzol"}
     - {id: 29, cat: Other, desc: "Képek"}
-    - {id: 28, cat: XXX/Imageset, desc: "XXX Képek"}
+    - {id: 28, cat: XXX/ImageSet, desc: "XXX Képek"}
     - {id: 3, cat: PC/0day, desc: "Program/Egyéb"}
     - {id: 18, cat: Audio/MP3, desc: "Zene/Eng"}
     - {id: 26, cat: Audio/Lossless, desc: "Lossless/Eng"}
     - {id: 11, cat: PC/Games, desc: "Játék/Rip"}
-    - {id: 13, cat: PC/Phone-Other, desc: "Mobil"}
+    - {id: 13, cat: PC/Mobile-Other, desc: "Mobil"}
 
 
   modes:
@@ -61,19 +61,19 @@ settings:
   - name: sort
     type: select
     label: Sort requested from site
-    default: "4"
+    default: 4
     options:
-      "4": "created"
-      "7": "seeders"
-      "5": "size"
-      "1": "title"
+      4: created
+      7: seeders
+      5: size
+      1: title
   - name: type
     type: select
     label: Order requested from site
-    default: "desc"
+    default: desc
     options:
-      "desc": "desc"
-      "asc": "asc"
+      desc: desc
+      asc: asc
 
 login:
   path: login.php
@@ -120,15 +120,12 @@ search:
       selector: a[href*="/download.php/"]
       attribute: href
     imdb:
-      optional: true
       selector: a[title="IMDb link"]
       attribute: href
-    banner:
-      optional: true
+    poster:
       selector: img[alt="offer"]
       attribute: src
-    banner:
-      optional: true
+    poster:
       selector: a.cover
       attribute: href
     files:

@@ -24,7 +24,7 @@ caps:
     - {id: 12, cat: PC/0day, desc: "Win Update"}
     - {id: 13, cat: PC/0day, desc: "Win VST"}
     - {id: 14, cat: PC/0day, desc: "Win VSTi"}
-    - {id: 15, cat: PC/Phone-Other, desc: "Handheld App"}
+    - {id: 15, cat: PC/Mobile-Other, desc: "Handheld App"}
 
   modes:
     search: [q]
@@ -40,12 +40,12 @@ settings:
   - name: sort
     type: select
     label: Sort requested from site
-    default: "0"
+    default: 0
     options:
-      "0": "created"
-      "5": "seeders"
-      "2": "size"
-      "1": "title"
+      0: created
+      5: seeders
+      2: size
+      1: title
 
 login:
   method: cookie
@@ -75,8 +75,10 @@ search:
           args: ["Added On ", ""]
         - name: re_replace
           args: ["(th|st|nd|rd)", ""]
+        - name: append
+          args: " -07:00" # PDT
         - name: dateparse
-          args: "Jan 02 2006"
+          args: "Jan 02 2006 -07:00"
 
   fields:
     title:

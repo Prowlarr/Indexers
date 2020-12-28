@@ -17,7 +17,7 @@ caps:
     - {id: 90, cat: Movies, desc: "ซีรีย์ (หนังชุด) [movie series]"}
     - {id: 92, cat: Console, desc: "เกมส์ (non PC) [games]"}
     - {id: 91, cat: PC/Games, desc: "เกมส์ (PC) [games]"}
-    - {id: 100, cat: PC/Phone-Other, desc: "โปรแกรมที่ใช้บน (มือถือ) [mobiles]"}
+    - {id: 100, cat: PC/Mobile-Other, desc: "โปรแกรมที่ใช้บน (มือถือ) [mobiles]"}
     - {id: 82, cat: PC, desc: "โปรแกรมที่ใช้บน (Linux)"}
     - {id: 83, cat: PC/0day, desc: "โปรแกรมที่ใช้บน (Windows)"}
     - {id: 110, cat: Audio, desc: "เพลงไทย [Thai music]"}
@@ -70,19 +70,19 @@ settings:
   - name: sort
     type: select
     label: Sort requested from site
-    default: "4"
+    default: 4
     options:
-      "4": "created"
-      "7": "seeders"
-      "5": "size"
-      "1": "title"
+      4: created
+      7: seeders
+      5: size
+      1: title
   - name: type
     type: select
     label: Order requested from site
-    default: "desc"
+    default: desc
     options:
-      "desc": "desc"
-      "asc": "asc"
+      desc: desc
+      asc: asc
 
 login:
   path: login.php
@@ -149,8 +149,10 @@ search:
     date:
       selector: td:nth-child(7)
       filters:
+        - name: append
+          args: " +07:00" # ICT
         - name: dateparse
-          args: "2006-01-0215:04:05"
+          args: "2006-01-0215:04:05 -07:00"
     size:
       selector: td:nth-child(8)
     grabs:

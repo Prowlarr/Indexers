@@ -14,8 +14,6 @@ caps:
 
   modes:
     search: [q]
-    tv-search: [q]
-    movie-search: [q]
 
 settings: []
 
@@ -44,10 +42,9 @@ search:
     download:
       selector: a[href^="/torrent/"]
       attribute: href
-    banner:
+    poster:
       selector: img.content__item-img-wrapper
       attribute: src
-      optional: true
     date:
       text: now
     size:

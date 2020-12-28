@@ -21,8 +21,8 @@ legacylinks:
   - https://cpasbiens.ind-unblock.xyz/
 
 caps:
-  categorymappings:
-    - {id: other, cat: Other, desc: "Movies/TV/Other"}
+  categories:
+    Other: Other
 
   modes:
     search: [q]
@@ -30,6 +30,10 @@ caps:
     movie-search: [q]
 
 settings:
+  - name: info_8000
+    type: info
+    label: About cpasbienclone Categories
+    default: cpasbienclone does not return categories in its search results.</br>To add to your Apps' Torznab indexer, replace all categories with 8000(Other).
   - name: multilang
     type: checkbox
     label: Replace MULTI by another language in release name
@@ -39,12 +43,12 @@ settings:
     label: Replace MULTI by this language
     default: FRENCH
     options:
-      FRENCH: "FRENCH"
-      MULTI.FRENCH: "MULTI.FRENCH"
-      ENGLISH: "ENGLISH"
-      MULTI.ENGLISH: "MULTI.ENGLISH"
-      VOSTFR: "VOSTFR"
-      MULTI.VOSTFR: "MULTI.VOSTFR"
+      FRENCH: FRENCH
+      MULTI.FRENCH: MULTI.FRENCH
+      ENGLISH: ENGLISH
+      MULTI.ENGLISH: MULTI.ENGLISH
+      VOSTFR: VOSTFR
+      MULTI.VOSTFR: MULTI.VOSTFR
   - name: vostfr
     type: checkbox
     label: Replace VOSTFR with ENGLISH
@@ -52,20 +56,16 @@ settings:
   - name: sort
     type: select
     label: Sort requested from site (Only works for searches with Keywords)
-    default: "?trie-date-d"
+    default: ?trie-date-d
     options:
-      "?trie-date-d": "created desc"
-      "?trie-date-a": "created asc"
-      "?trie-seeds-d": "seeders desc"
-      "?trie-seeds-a": "seeders asc"
-      "?trie-poid-d": "size desc"
-      "?trie-poid-a": "size asc"
-      "?trie-nom-d": "title desc"
-      "?trie-nom-a": "title asc"
-  - name: info_categories
-    type: info
-    label: "About categories"
-    default: "cpasbien clone does not show <b>Categories</b> in its Search Results.<br />To use this indexer with Sonarr/Radarr set your indexer category to <b>7000</b>."
+      ?trie-date-d: created desc
+      ?trie-date-a: created asc
+      ?trie-seeds-d: seeders desc
+      ?trie-seeds-a: seeders asc
+      ?trie-poid-d: size desc
+      ?trie-poid-a: size asc
+      ?trie-nom-d: title desc
+      ?trie-nom-a: title asc
 
 download:
   selector: a[href^="magnet:"]
@@ -73,14 +73,14 @@ download:
 
 search:
   paths:
-    - path: "{{ if .Keywords }}search_torrent/{{ .Keywords }}{{ .Config.sort }}{{else}}home/{{end}}"
+    - path: "{{ if .Keywords }}search_torrent/{{ .Keywords }}{{ .Config.sort }}{{ else }}home/{{ end }}"
 
   rows:
     selector: table.table-corps > tbody > tr:has(a)
 
   fields:
     category:
-      text: other
+      text: Other
     site_date:
       selector: a
       filters:

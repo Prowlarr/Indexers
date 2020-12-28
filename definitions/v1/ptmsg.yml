@@ -47,23 +47,19 @@ settings:
   - name: sort
     type: select
     label: Sort requested from site
-    default: "4"
+    default: 4
     options:
-      "4": "created"
-      "7": "seeders"
-      "5": "size"
-      "1": "title"
+      4: created
+      7: seeders
+      5: size
+      1: title
   - name: type
     type: select
     label: Order requested from site
-    default: "desc"
+    default: desc
     options:
-      "desc": "desc"
-      "asc": "asc"
-  - name: info_tpp
-    type: info
-    label: Results Per Page
-    default: For best results, change the <b>Torrents per page:</b> setting to <b>100</b> on your account profile.
+      desc: desc
+      asc: asc
 
 login:
   method: cookie
@@ -112,7 +108,6 @@ search:
       selector: a[href^="download.php?id="]
       attribute: href
     imdb:
-      optional: true
       selector: a[href*="imdb.com/title/tt"]
       attribute: href
     date:

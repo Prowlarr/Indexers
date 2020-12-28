@@ -23,7 +23,7 @@ caps:
     - {id: 418, cat: Console/PS3, desc: "Game/PS3"}
     - {id: 419, cat: Console/PSP, desc: "Game/PSP"}
     - {id: 420, cat: Console/Wii, desc: "Game/WII"}
-    - {id: 421, cat: Console/Xbox 360, desc: "Game/Xbox360"}
+    - {id: 421, cat: Console/XBox 360, desc: "Game/Xbox360"}
     - {id: 429, cat: Console, desc: "Game/Archive"}
     - {id: 422, cat: PC, desc: "APPS"}
     - {id: 423, cat: PC/0day, desc: "0day"}
@@ -54,19 +54,19 @@ settings:
   - name: sort
     type: select
     label: Sort requested from site
-    default: "4"
+    default: 4
     options:
-      "4": "created"
-      "7": "seeders"
-      "5": "size"
-      "1": "title"
+      4: created
+      7: seeders
+      5: size
+      1: title
   - name: type
     type: select
     label: Order requested from site
-    default: "desc"
+    default: desc
     options:
-      "desc": "desc"
-      "asc": "asc"
+      desc: desc
+      asc: asc
   - name: info_tpp
     type: info
     label: Results Per Page
@@ -133,7 +133,6 @@ search:
       selector: a[href^="download.php?id="]
       attribute: href
     imdb:
-      optional: true
       selector: div.imdb_100 > a
       attribute: href
     date:
@@ -143,7 +142,7 @@ search:
       optional: true
       filters:
         - name: append
-          args: " +08:00"
+          args: " +08:00" # CST
         - name: dateparse
           args: "2006-01-02 15:04:05 -07:00"
     date:
@@ -152,7 +151,7 @@ search:
       optional: true
       filters:
         - name: append
-          args: " +08:00"
+          args: " +08:00" # CST
         - name: dateparse
           args: "2006-01-0215:04:05 -07:00"
     size:

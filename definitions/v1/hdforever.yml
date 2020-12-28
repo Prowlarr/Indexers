@@ -38,6 +38,10 @@ settings:
     type: checkbox
     label: Always try to use the FreeLeech Token
     default: false
+  - name: info_token
+    type: info
+    label: About the Freeleech token
+    default: If you <b>do not</b> have any <i>Freeleech tokens</i> then do not tick this box.</br>Attempting a token download when you have no tokens will generate an <b>error</b>.
   - name: multilang
     type: checkbox
     label: Replace MULTI by another language in release name
@@ -47,12 +51,12 @@ settings:
     label: Replace MULTI by this language
     default: FRENCH
     options:
-      FRENCH: "FRENCH"
-      MULTI.FRENCH: "MULTI.FRENCH"
-      ENGLISH: "ENGLISH"
-      MULTI.ENGLISH: "MULTI.ENGLISH"
-      VOSTFR: "VOSTFR"
-      MULTI.VOSTFR: "MULTI.VOSTFR"
+      FRENCH: FRENCH
+      MULTI.FRENCH: MULTI.FRENCH
+      ENGLISH: ENGLISH
+      MULTI.ENGLISH: MULTI.ENGLISH
+      VOSTFR: VOSTFR
+      MULTI.VOSTFR: MULTI.VOSTFR
   - name: vostfr
     type: checkbox
     label: Replace VOSTFR with ENGLISH
@@ -60,18 +64,18 @@ settings:
   - name: sort
     type: select
     label: Sort requested from site
-    default: "time"
+    default: time
     options:
-      "time": "created"
-      "seeders": "seeders"
-      "size": "size"
+      time: created
+      seeders: seeders
+      size: size
   - name: type
     type: select
     label: Order requested from site
-    default: "desc"
+    default: desc
     options:
-      "desc": "desc"
-      "asc": "asc"
+      desc: desc
+      asc: asc
   - name: info_radarr
     type: info
     label: About Radarr
@@ -94,7 +98,7 @@ search:
   # https://hdf.world/torrents.php?groupname=blood&freetorrent=1&order_by=time&order_way=desc&action=advanced&searchsubmit=1
   path: torrents.php
   inputs:
-    $raw: "{{range .Categories}}filter_cat[{{.}}]=1&{{end}}"
+    $raw: "{{ range .Categories }}filter_cat[{{.}}]=1&{{end}}"
     groupname: "{{ .Keywords }}"
     order_by: "{{ .Config.sort }}"
     order_way: "{{ .Config.type }}"
@@ -128,7 +132,7 @@ search:
         - name: append
           args: "&usetoken=1"
     download:
-      text: "{{if .Config.usetoken}}{{ .Result.download-usetoken }}{{else}}{{ .Result.download-regular }}{{end}}"
+      text: "{{ if .Config.usetoken }}{{ .Result.download-usetoken }}{{ else }}{{ .Result.download-regular }}{{ end }}"
     title_phase1:
       selector: div.group_info
       remove: span:nth-child(1), div.tags
@@ -250,14 +254,10 @@ search:
       text: "{{ if .Config.vostfr }}{{ .Result.title_vostfr }}{{ else }}{{ .Result.title_phase2 }}{{ end }}"
     description:
       selector: div.group_info
-    banner:
+    poster:
       selector: div.group_image img
       attribute: src
-      optional: true
     details:
-      selector: a[href^="torrents.php?id="]
-      attribute: href
-    comments:
       selector: a[href^="torrents.php?id="]
       attribute: href
     files:

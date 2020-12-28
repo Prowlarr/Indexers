@@ -13,7 +13,7 @@ legacylinks:
 caps:
   categorymappings:
     - {id: 13, cat: Movies/BluRay, desc: "Films BD-Rip / BRRip"}
-    - {id: 19, cat: Movies/WEBDL, desc: "Films WEB-DL / WEB-Rip"}
+    - {id: 19, cat: Movies/WEB-DL, desc: "Films WEB-DL / WEB-Rip"}
     - {id: 15, cat: Movies/DVD, desc: "Films DVD-Rip"}
     - {id: 18, cat: Movies/HD, desc: "Films HD 720p"}
     - {id: 20, cat: Movies/HD, desc: "Films HD 1080p"}
@@ -62,10 +62,10 @@ caps:
     - {id: 58, cat: Audio/Other, desc: "Musique Autres"}
     - {id: 59, cat: PC/Games, desc: "Jeux PC"}
     - {id: 60, cat: Console, desc: "Jeux Consoles"}
-    - {id: 61, cat: Books/Ebook, desc: "Livres epub"}
-    - {id: 62, cat: Books/Ebook, desc: "Livres pdf"}
-    - {id: 63, cat: Books/Magazines, desc: "Livres Journaux"}
-    - {id: 64, cat: Books/Magazines, desc: "Livres Magazines"}
+    - {id: 61, cat: Books/EBook, desc: "Livres epub"}
+    - {id: 62, cat: Books/EBook, desc: "Livres pdf"}
+    - {id: 63, cat: Books/Mags, desc: "Livres Journaux"}
+    - {id: 64, cat: Books/Mags, desc: "Livres Magazines"}
     - {id: 65, cat: Books/Comics, desc: "Livres Bandes Dessinées"}
     - {id: 66, cat: Books/Other, desc: "Livres Multi-Format"}
     - {id: 68, cat: PC/0day, desc: "Logiciels Windows"}
@@ -105,12 +105,12 @@ settings:
     label: Replace MULTI by this language
     default: FRENCH
     options:
-      FRENCH: "FRENCH"
-      MULTI.FRENCH: "MULTI.FRENCH"
-      ENGLISH: "ENGLISH"
-      MULTI.ENGLISH: "MULTI.ENGLISH"
-      VOSTFR: "VOSTFR"
-      MULTI.VOSTFR: "MULTI.VOSTFR"
+      FRENCH: FRENCH
+      MULTI.FRENCH: MULTI.FRENCH
+      ENGLISH: ENGLISH
+      MULTI.ENGLISH: MULTI.ENGLISH
+      VOSTFR: VOSTFR
+      MULTI.VOSTFR: MULTI.VOSTFR
   - name: vostfr
     type: checkbox
     label: Replace VOSTFR with ENGLISH
@@ -124,7 +124,7 @@ login:
   inputs:
     uid: "{{ .Config.username }}"
     pwd: "{{ .Config.password }}"
-    rememberme: forever
+    rememberme: ""
   captcha:
     type: image
     selector: img[src^="access_code/"]
@@ -141,7 +141,7 @@ search:
     - path: index.php
   inputs:
     page: torrents
-    search: "{{ if .Keywords }}{{ .Keywords }}{{ else }}{{ end }}"
+    search: "{{ .Keywords }}"
     parentcategory: 0
     category: 0
     genre: 0
@@ -185,7 +185,7 @@ search:
     download:
       selector: td a[href^="download.php?id="]
       attribute: href
-    banner:
+    poster:
       selector: a[href^="index.php?page=torrent-details"][onmouseover]
       attribute: onmouseover
       filters:
@@ -195,8 +195,10 @@ search:
       # 06/02/2019 18:19:28
       selector: td:nth-child(7)
       filters:
+        - name: append
+          args: " +01:00" # CET
         - name: dateparse
-          args: "02/01/2006 15:04:05"
+          args: "02/01/2006 15:04:05 -07:00"
     seeders:
       selector: td:nth-child(8)
     leechers:

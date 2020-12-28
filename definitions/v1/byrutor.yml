@@ -284,7 +284,7 @@ search:
     resorder: desc
 
   rows:
-    selector: div.short_search
+    selector: div.short_search:has(div.shor_subtitles span:nth-child(2):contains("Б"))
 
   fields:
     category:
@@ -305,10 +305,9 @@ search:
     download:
       selector: div.short_titles > a
       attribute: href
-    banner:
+    poster:
       selector: img
       attribute: src
-      optional: true
     description:
       selector: div.shor_desc
       optional: true

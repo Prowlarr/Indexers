@@ -12,16 +12,16 @@ legacylinks:
 
 caps:
   categorymappings:
-    - {id: 3, cat: PC/Phone-Android, desc: "Android"}
+    - {id: 3, cat: PC/Mobile-Android, desc: "Android"}
     - {id: 4, cat: TV/Anime, desc: "Anime"}
     - {id: 5, cat: Books/Comics, desc: "Comic"}
     - {id: 7, cat: TV/Documentary, desc: "Documentales"}
     - {id: 13, cat: Books/Other, desc: "e-Learning"}
-    - {id: 12, cat: Books/Ebook, desc: "eBooks"}
+    - {id: 12, cat: Books/EBook, desc: "eBooks"}
     - {id: 8, cat: Console/NDS, desc: "Juegos Nintendo"}
     - {id: 17, cat: PC/Games, desc: "Juegos PC"}
     - {id: 18, cat: Console/PS4, desc: "Juegos PlayStation"}
-    - {id: 19, cat: Console/Xbox, desc: "Juegos Xbox"}
+    - {id: 19, cat: Console/XBox, desc: "Juegos Xbox"}
     - {id: 20, cat: PC, desc: "Programas Linux"}
     - {id: 21, cat: PC/Mac, desc: "Programas MacOS"}
     - {id: 9, cat: Movies/HD, desc: "Peliculas 1080p"}
@@ -60,19 +60,19 @@ settings:
   - name: sort
     type: select
     label: Sort requested from site
-    default: "added"
+    default: added
     options:
-      "added": "created"
-      "seeders": "seeders"
-      "size": "size"
-      "name": "title"
+      added: created
+      seeders: seeders
+      size: size
+      name: title
   - name: type
     type: select
     label: Order requested from site
-    default: "desc"
+    default: desc
     options:
-      "desc": "desc"
-      "asc": "asc"
+      desc: desc
+      asc: asc
 
 login:
   path: takelogin.php
@@ -91,14 +91,14 @@ search:
   paths:
     - path: browse.php
   inputs:
-    # does not support multi categories so defaulting to ALL
     do: search
+    # does not support multi categories so defaulting to ALL
     category: 0
     # yes incldead, no activeonly
     include_dead_torrents: yes
-    keywords: "{{ if .Query.IMDBID }}{{ .Query.IMDBID }}{{else}}{{ .Keywords }}{{end}}"
+    keywords: "{{ if .Query.IMDBID }}{{ .Query.IMDBID }}{{ else }}{{ .Keywords }}{{ end }}"
     # t_name, t_description, t_both, t_uploader, t_genre
-    search_type: "{{ if .Query.IMDBID }}t_genre{{else}}t_name{{end}}"
+    search_type: "{{ if .Query.IMDBID }}t_genre{{ else }}t_name{{ end }}"
     sort: "{{ .Config.sort }}"
     order: "{{ .Config.type }}"
     # does not return imdb link in results
@@ -126,7 +126,7 @@ search:
     details:
       selector: a[href*="torrent-details-"]
       attribute: href
-    banner:
+    poster:
       selector: div[id^="port-content-"] img
       attribute: src
     date:
@@ -144,9 +144,6 @@ search:
       attribute: href
     magnet:
       selector: a[href^="magnet:?xt="]
-      attribute: href
-    comments:
-      selector: td:nth-child(4) a
       attribute: href
     size:
       selector: td:nth-child(5)

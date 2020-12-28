@@ -13,7 +13,7 @@ legacylinks:
 caps:
   categorymappings:
     - {id: 37, cat: Other, desc: "Diğer"}
-    - {id: 210, cat: Books/Ebook, desc: "E-Kitap"}
+    - {id: 210, cat: Books/EBook, desc: "E-Kitap"}
     - {id: 208, cat: Other, desc: "Eğitim"}
     - {id: 101, cat: Other, desc: "Resim"}
     - {id: 15, cat: TV, desc: "TV Dizi/Show/Spor"}
@@ -108,7 +108,7 @@ search:
   inputs:
     # does not support multi categories so defaulting to ALL
     do: search
-    keywords: "{{.Keywords}}"
+    keywords: "{{ .Keywords }}"
     category: 0
     search_type: t_name
     include_dead_torrents: yes
@@ -129,7 +129,7 @@ search:
       filters:
         - name: querystring
           args: category
-    banner:
+    poster:
       selector: div[id^="port-content-"] img
       attribute: src
     date:
@@ -138,13 +138,12 @@ search:
         - name: regexp
           args: (\d{2}-\d{2}-\d{4} \d{2}:\d{2})
       filters:
+        - name: append
+          args: " +03:00" # TRT
         - name: dateparse
-          args: "02-01-2006 15:04"
+          args: "02-01-2006 15:04 -07:00"
     download:
       selector: a[href*="download.php?id="]
-      attribute: href
-    comments:
-      selector: td:nth-child(4) a
       attribute: href
     size:
       selector: td:nth-child(5)
@@ -156,11 +155,16 @@ search:
       selector: td:nth-child(8)
     downloadvolumefactor:
       case:
-        img[src$="/freedownload.gif"]: "0"
-        img[src$="/silverdownload.gif"]: "0.5"
-        "*": "1"
+        img[src$="/freedownload.gif"]: 0
+        img[src$="/silverdownload.gif"]: 0.5
+        "*": 1
     uploadvolumefactor:
       case:
-        img[src$="/x2.gif"]: "2"
-        "*": "1"
+        img[src$="/x2.gif"]: 2
+        "*": 1
+    minimumratio:
+      text: 1.0
+    minimumseedtime:
+      # 3.75days (as seconds =  3.75 x 24 x 60 x 60)
+      text: 324000
 # TS Special Edition v.7.5

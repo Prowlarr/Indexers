@@ -22,7 +22,7 @@ caps:
     - {id: 43, cat: Console, desc: "Games | Console"}
     - {id: 29, cat: Other, desc: "Images"}
     - {id: 2, cat: Other, desc: "MiSC"}
-    - {id: 5, cat: PC/Phone-Other, desc: "Mobile"}
+    - {id: 5, cat: PC/Mobile-Other, desc: "Mobile"}
     - {id: 27, cat: Movies, desc: "Movies | Pack"}
     - {id: 63, cat: Movies, desc: "Movies | Pack-Ro"}
     - {id: 46, cat: Movies/3D, desc: "Movies | 3D"}
@@ -74,19 +74,19 @@ settings:
   - name: sort
     type: select
     label: Sort requested from site
-    default: "4"
+    default: 4
     options:
-      "4": "created"
-      "7": "seeders"
-      "5": "size"
-      "1": "title"
+      4: created
+      7: seeders
+      5: size
+      1: title
   - name: type
     type: select
     label: Order requested from site
-    default: "desc"
+    default: desc
     options:
-      "desc": "desc"
-      "asc": "asc"
+      desc: desc
+      asc: asc
 
 login:
   path: takelogin.php
@@ -103,8 +103,8 @@ search:
   paths:
     - path: browse.php
   inputs:
-    $raw: "{{ if .Categories}}{{ range .Categories }}c{{.}}=1&{{end}}{{else}}cat=0{{end}}"
-    search: "{{ if .Query.IMDBID }}{{ .Query.IMDBID }}{{ else }}{{ .Keywords }}{{ end }}"
+    $raw: "{{ if .Categories}}{{ range .Categories }}c{{.}}=1&{{end}}{{ else }}cat=0{{ end }}"
+    search: "{{ if .Query.IMDBID }}{{ .Query.IMDBID }}{{ else }}{{ .Keywords }}{{ end }}" # for dashboard imdbid search
     # 1 active, 2 incldead, 3 onlydead, 4 free
     # note: searching with 4 (freeleech) does not return any results!
     # incldead: "{{ if .Config.freeleech }}4{{ else }}2{{ end }}"
@@ -123,7 +123,7 @@ search:
     details:
       selector: a.tname
       attribute: href
-    banner:
+    poster:
       selector: a.tname
       attribute: onmouseover
       filters:
@@ -131,7 +131,6 @@ search:
           args: src=([^\s]+)
     imdb:
       selector: a[href*="imdb.com/title/tt"]
-      optional: true
       attribute: href
     category:
       selector: a[href^="browse.php?cat="]

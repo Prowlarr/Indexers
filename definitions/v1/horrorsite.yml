@@ -26,7 +26,7 @@ caps:
     - {id: 75, cat: Other, desc: "Képek"}
     - {id: 107, cat: Books, desc: "eBook/Eng"}
     - {id: 61, cat: Books, desc: "eBook/Hun"}
-    - {id: 106, cat: PC/Phone-Other, desc: "Mobil"}
+    - {id: 106, cat: PC/Mobile-Other, desc: "Mobil"}
     - {id: 50, cat: Audio/MP3, desc: "Mp3/Eng"}
     - {id: 49, cat: Audio/MP3, desc: "Mp3/Hun"}
     - {id: 45, cat: PC, desc: "Program ISO /RIP"}
@@ -58,19 +58,19 @@ settings:
   - name: sort
     type: select
     label: Sort requested from site
-    default: "4"
+    default: 4
     options:
-      "4": "created"
-      "7": "seeders"
-      "5": "size"
-      "1": "title"
+      4: created
+      7: seeders
+      5: size
+      1: title
   - name: type
     type: select
     label: Order requested from site
-    default: "2"
+    default: 2
     options:
-      "2": "desc"
-      "1": "asc"
+      2: desc
+      1: asc
   - name: info
     type: info
     label: Results Per Page
@@ -130,11 +130,9 @@ search:
       attribute: href
     imdb:
       selector: a[href*="imdb.com/title/tt"]
-      optional: true
       attribute: href
-    banner:
+    poster:
       selector: a[onmouseover]
-      optional: true
       attribute: onmouseover
       filters:
         - name: regexp

@@ -17,7 +17,7 @@ caps:
     - {id: 410, cat: Movies/HD, desc: "Movies 1080p"}
     - {id: 411, cat: Movies/HD, desc: "Movies 720p"}
     - {id: 414, cat: Movies/DVD, desc: "Movies DVD"}
-    - {id: 412, cat: Movies/WEBDL, desc: "Movies WEB-DL"}
+    - {id: 412, cat: Movies/WEB-DL, desc: "Movies WEB-DL"}
     - {id: 413, cat: Movies/HD, desc: "Movies HDTV"}
     - {id: 417, cat: Movies/Other, desc: "Movies iPad"}
     - {id: 404, cat: TV/Documentary, desc: "Documentaries"}
@@ -54,19 +54,19 @@ settings:
   - name: sort
     type: select
     label: Sort requested from site
-    default: "4"
+    default: 4
     options:
-      "4": "created"
-      "7": "seeders"
-      "5": "size"
-      "1": "title"
+      4: created
+      7: seeders
+      5: size
+      1: title
   - name: type
     type: select
     label: Order requested from site
-    default: "desc"
+    default: desc
     options:
-      "desc": "desc"
-      "asc": "asc"
+      desc: desc
+      asc: asc
   - name: info_tpp
     type: info
     label: Results Per Page
@@ -119,7 +119,6 @@ search:
       selector: a[href^="download.php?id="]
       attribute: href
     imdb:
-      optional: true
       selector: a[href*="imdb.com/title/tt"]
       attribute: href
     date:
@@ -129,7 +128,7 @@ search:
       optional: true
       filters:
         - name: append
-          args: " +08:00"
+          args: " +08:00" # CST
         - name: dateparse
           args: "2006-01-02 15:04:05 -07:00"
     date:
@@ -138,7 +137,7 @@ search:
       optional: true
       filters:
         - name: append
-          args: " +08:00"
+          args: " +08:00" # CST
         - name: dateparse
           args: "2006-01-0215:04:05 -07:00"
     size:

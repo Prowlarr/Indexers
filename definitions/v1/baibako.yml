@@ -6,9 +6,10 @@ language: ru-ru
 type: semi-private
 encoding: windows-1251
 links:
-  - https://baibako.tv/
+  - http://bko.baibako.tv/ # https is unsupported ERR_CONNECTION_REFUSED
 legacylinks:
   - http://baibako.tv/
+  - https://baibako.tv/
 
 caps:
   categorymappings:
@@ -36,19 +37,19 @@ settings:
   - name: sort
     type: select
     label: Sort requested from site
-    default: "4"
+    default: 4
     options:
-      "4": "created"
-      "7": "seeders"
-      "5": "size"
-      "1": "title"
+      4: created
+      7: seeders
+      5: size
+      1: title
   - name: type
     type: select
     label: Order requested from site
-    default: "desc"
+    default: desc
     options:
-      "desc": "desc"
-      "asc": "asc"
+      desc: desc
+      asc: asc
 
 login:
   path: takelogin.php
@@ -111,7 +112,7 @@ search:
     details:
       selector: a[href^="details.php?id="]
       attribute: href
-    banner:
+    poster:
       selector: img[src^="/posters/"]
       attribute: src
     download:

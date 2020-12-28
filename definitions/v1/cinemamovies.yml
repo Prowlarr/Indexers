@@ -1,7 +1,7 @@
 ---
 id: cinemamovies
-name: CinemaMovies
-description: "CinemaMovies is a POLISH Private Torrent Tracker for MOVIES / TV / GENERAL"
+name: CinemaMovieS_ZT
+description: "CinemaMovieS_ZT is a POLISH Private Torrent Tracker for MOVIES / TV / GENERAL"
 language: pl-pl
 type: private
 encoding: ISO-8859-2
@@ -25,7 +25,7 @@ caps:
     - {id: 25, cat: TV/SD, desc: "TV SD"}
     - {id: 1, cat: PC, desc: "Aplikacje"}
     - {id: 15, cat: PC/Games, desc: "Gry"}
-    - {id: 16, cat: PC/Phone-Other, desc: "Mobile"}
+    - {id: 16, cat: PC/Mobile-Other, desc: "Mobile"}
     - {id: 17, cat: Other, desc: "Inne"}
     - {id: 19, cat: Audio, desc: "Muzyka"}
     - {id: 21, cat: Books, desc: "Book"}
@@ -56,19 +56,19 @@ settings:
   - name: sort
     type: select
     label: Sort requested from site
-    default: "2"
+    default: 2
     options:
-      "2": "created"
-      "5": "seeders"
-      "3": "size"
-      "1": "title"
+      2: created
+      5: seeders
+      3: size
+      1: title
   - name: type
     type: select
     label: Order requested from site
-    default: "desc"
+    default: desc
     options:
-      "desc": "desc"
-      "asc": "asc"
+      desc: desc
+      asc: asc
 
 login:
   method: cookie
@@ -118,14 +118,13 @@ search:
     download:
       selector: a[href^="download.php/"]
       attribute: href
-    banner:
+    poster:
       selector: a[href^="details.php?id="]
       attribute: onmouseover
       filters:
         - name: regexp
           args: "src=(.+?) "
     imdb:
-      optional: true
       selector: a[href*="imdb.com/title/tt"]
       attribute: href
     description:

@@ -47,6 +47,10 @@ settings:
     type: checkbox
     label: Search freeleech only
     default: false
+  - name: flaresolverr
+    type: info
+    label: FlareSolverr
+    default: This site may use Cloudflare DDoS Protection, therefore Jackett requires <a href="https://github.com/Jackett/Jackett#configuring-flaresolverr" target="_blank">FlareSolver</a> to access it.
   - name: info_tpp
     type: info
     label: Results Per Page
@@ -118,7 +122,7 @@ search:
       attribute: title
       filters:
         - name: append
-          args: " +08:00"
+          args: " +08:00" # CST
         - name: dateparse
           args: "2006-01-02 15:04:05 -07:00"
     size:
@@ -143,6 +147,8 @@ search:
         img.pro_free2up: 2
         img.pro_2up: 2
         "*": 1
+    minimumratio:
+      text: 1.2
     description:
       selector: td.rowfollow:nth-child(2)
       remove: a, img

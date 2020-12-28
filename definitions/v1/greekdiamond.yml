@@ -36,20 +36,20 @@ caps:
     - {id: 50, cat: Audio, desc: "Music Διάφορα (Other)"}
     - {id: 33, cat: PC/Games, desc: "Games PC"}
     - {id: 34, cat: Console/PSP, desc: "Games Playstation/PSP"}
-    - {id: 35, cat: Console/Xbox, desc: "Games Xbox"}
+    - {id: 35, cat: Console/XBox, desc: "Games Xbox"}
     - {id: 36, cat: TV/Anime, desc: "Anime /Μεταγλωτισμένα"}
     - {id: 37, cat: TV/Anime, desc: "Anime /Subtitled"}
     - {id: 40, cat: Books/Comics, desc: "Comics"}
-    - {id: 41, cat: Books/Magazines, desc: "Magazines"}
-    - {id: 42, cat: Books/Ebook, desc: "E-books"}
-    - {id: 43, cat: Books/Ebook, desc: "PDF"}
+    - {id: 41, cat: Books/Mags, desc: "Magazines"}
+    - {id: 42, cat: Books/EBook, desc: "E-books"}
+    - {id: 43, cat: Books/EBook, desc: "PDF"}
     - {id: 44, cat: Other, desc: "Images"}
     - {id: 45, cat: TV/Sport, desc: "Football Leagues"}
     - {id: 46, cat: TV/Sport, desc: "Formula 1"}
     - {id: 48, cat: PC/0day, desc: "Apps Win"}
     - {id: 8, cat: PC, desc: "Apps Linux"}
     - {id: 9, cat: PC/Mac, desc: "Apps Mac"}
-    - {id: 49, cat: PC/Phone-Other, desc: "Apps Mobile"}
+    - {id: 49, cat: PC/Mobile-Other, desc: "Apps Mobile"}
 
   modes:
     search: [q]
@@ -72,19 +72,19 @@ settings:
   - name: sort
     type: select
     label: Sort requested from site
-    default: "3"
+    default: 3
     options:
-      "3": "created"
-      "5": "seeders"
-      "4": "size"
-      "2": "title"
+      3: created
+      5: seeders
+      4: size
+      2: title
   - name: type
     type: select
     label: Order requested from site
-    default: "2"
+    default: 2
     options:
-      "2": "desc"
-      "1": "asc"
+      2: desc
+      1: asc
   - name: info
     type: info
     label: Results Per Page
@@ -138,35 +138,36 @@ search:
     download:
       selector: a[href^="download.php?id="]
       attribute: href
-    banner:
+    poster:
       selector: a[onmouseover][href^="index.php?page=torrent-details&id="]
       attribute: onmouseover
       filters:
         - name: regexp
           args: "src=(.*?) "
-    date: # some users will have a extra wait time column before the bookmark column, so use last-of-type
-      selector: td:nth-last-of-type(11)
+    # some users will have an extra wait time column before the bookmark column, so we count up from the bottom
+    date:
+      selector: td:nth-last-of-type(12)
       filters:
         - name: append
           args: " +00:00" # auto adjusted by site account profile
         - name: dateparse
           args: "02/01/2006 -07:00"
     seeders:
-      selector: td:nth-last-of-type(9)
+      selector: td:nth-last-of-type(10)
     leechers:
-      selector: td:nth-last-of-type(8)
+      selector: td:nth-last-of-type(9)
     grabs:
-      selector: td:nth-last-of-type(7)
+      selector: td:nth-last-of-type(8)
       filters:
         - name: replace
           args: ["---", "0"]
     size:
-      selector: td:nth-last-of-type(5)
+      selector: td:nth-last-of-type(6)
       filters:
         - name: replace
           args: [",", ""]
     description:
-      selector: td:nth-last-of-type(3) img
+      selector: td:nth-last-of-type(4) img
       attribute: title
       filters:
         - name: prepend
@@ -181,4 +182,7 @@ search:
       text: 1
     minimumratio:
       text: 1.0
+    minimumseedtime:
+      # 3 days (as seconds = 3 x 24 x 60 x 60)
+      text: 259200
 # xbtit dt fm v20.0

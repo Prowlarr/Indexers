@@ -83,19 +83,19 @@ settings:
   - name: sort
     type: select
     label: Sort requested from site
-    default: "data"
+    default: data
     options:
-      "data": "created"
-      "s.seeds": "seeders"
-      "n.size": "size"
-      "n.filename": "title"
+      data: created
+      s.seeds: seeders
+      n.size: size
+      n.filename: title
   - name: type
     type: select
     label: Order requested from site
-    default: "DESC"
+    default: DESC
     options:
-      "DESC": "desc"
-      "ASC": "asc"
+      DESC: desc
+      ASC: asc
 
 login:
   path: index.php
@@ -151,8 +151,10 @@ search:
       # 19/01/2019
       selector: td:nth-last-child(9)
       filters:
+        - name: append
+          args: " +00:00" # auto adjusted by site account profile
         - name: dateparse
-          args: "02/01/2006"
+          args: "02/01/2006 -07:00"
     size:
       selector: td:nth-last-child(8)
     seeders:

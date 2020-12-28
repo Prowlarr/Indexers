@@ -6,10 +6,11 @@ language: el-gr
 type: private
 encoding: UTF-8
 links:
-  - https://magico.club/
+  - https://magico.fun/
 legacylinks:
   - https://magico.info/
   - https://magico.one/
+  - https://magico.club/
 
 caps:
   categorymappings:
@@ -83,12 +84,12 @@ caps:
 
     - {id: 6, cat: PC, desc: "Programs"}
     - {id: 18, cat: PC/0day, desc: "Programs PC"}
-    - {id: 40, cat: PC/Phone-Android, desc: "Programs Android"}
+    - {id: 40, cat: PC/Mobile-Android, desc: "Programs Android"}
     - {id: 19, cat: PC/Mac, desc: "Programs Mac"}
 
     - {id: 2, cat: PC/Games, desc: "Games"}
     - {id: 27, cat: PC/Games, desc: "Games PC"}
-    - {id: 68, cat: PC/Phone-Android, desc: "Games Android"}
+    - {id: 68, cat: PC/Mobile-Android, desc: "Games Android"}
 
     - {id: 88, cat: Other, desc: "Tutorials / Design / Accessories"}
     - {id: 89, cat: Other, desc: "Tutorials Photoshop"}
@@ -180,7 +181,6 @@ search:
       selector: a[href*="?p=torrents"][href*="&action=download"]
       attribute: href
     imdb:
-      optional: true
       selector: a[href*="imdb.com/title/tt"]
       attribute: href
     size:
@@ -191,8 +191,7 @@ search:
       selector: a[rel="torrent_leechers"]
     grabs:
       selector: a[rel="times_completed"]
-    banner:
-      optional: true
+    poster:
       selector: a[rel="fancybox"]
       attribute: href
     description:

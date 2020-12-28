@@ -7,7 +7,7 @@ type: public
 encoding: UTF-8
 followredirect: true
 links:
-  - https://wvw.gktorrent.pw/
+  - https://vww.gktorrent.pw/
 legacylinks:
   - https://www.gktorrent.com/
   - http://www.gktorrent.com/
@@ -29,6 +29,7 @@ legacylinks:
   - https://www.gktorrent.biz/
   - https://www.gktorrent.io/
   - https://www.gktorrent.pw/
+  - https://wvw.gktorrent.pw/
 
 caps:
   categorymappings:
@@ -49,13 +50,6 @@ caps:
     book-search: [q]
 
 settings:
-  - name: downloadlink
-    type: select
-    label: Download link
-    default: "magnet:?xt="
-    options:
-      "get_torrent": ".torrent"
-      "magnet:?xt=": "magnet"
   - name: multilang
     type: checkbox
     label: Replace MULTI by another language in release name
@@ -65,24 +59,30 @@ settings:
     label: Replace MULTI by this language
     default: FRENCH
     options:
-      FRENCH: "FRENCH"
-      MULTI.FRENCH: "MULTI.FRENCH"
-      ENGLISH: "ENGLISH"
-      MULTI.ENGLISH: "MULTI.ENGLISH"
-      VOSTFR: "VOSTFR"
-      MULTI.VOSTFR: "MULTI.VOSTFR"
+      FRENCH: FRENCH
+      MULTI.FRENCH: MULTI.FRENCH
+      ENGLISH: ENGLISH
+      MULTI.ENGLISH: MULTI.ENGLISH
+      VOSTFR: VOSTFR
+      MULTI.VOSTFR: MULTI.VOSTFR
   - name: vostfr
     type: checkbox
     label: Replace VOSTFR with ENGLISH
     default: false
 
 download:
-  selector: a[href*="{{ .Config.downloadlink }}"]
+  selector: a[href*="magnet:?xt="]
   attribute: href
 
 search:
   paths:
-    - path: "{{if .Keywords}}recherche/{{.Keywords}}{{ else }}{{ end }}"
+    - path: "{{ if .Keywords }}recherche/{{ .Keywords }}{{ else }}{{ end }}"
+  keywordsfilters:
+    # if searching for season packs swith S01 to saison 1 #9712
+    - name: re_replace
+      args: ["(?i)(S0)(\\d{1,2})$", "saison $2"]
+    - name: re_replace
+      args: ["(?i)(S)(\\d{1,3})$", "saison $2"]
 
   rows:
     selector: table.table-hover > tbody > tr:has(a)
@@ -91,14 +91,14 @@ search:
     category:
       selector: td:nth-child(1) > i
       case:
-        .Films: "movies"
-        .Séries: "tvshows"
-        .Logiciels: "softwares"
-        .Musique: "music"
-        .Jeux-Consoles: "console-games"
-        .Jeux-PC: "pc-games"
-        .Ebook: "books"
-        .Porno: "xxx"
+        .Films: movies
+        .Séries: tvshows
+        .Logiciels: softwares
+        .Musique: music
+        .Jeux-Consoles: console-games
+        .Jeux-PC: pc-games
+        .Ebook: books
+        .Porno: xxx
     site_date:
       selector: td:nth-child(1) a
       filters:

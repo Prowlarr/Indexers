@@ -27,7 +27,7 @@ caps:
     - {id: 18, cat: PC/Games, desc: "Játék/Rip"}
     - {id: 19, cat: Other, desc: "Képek"}
     - {id: 11, cat: Audio/Video, desc: "Klippek/Videók"}
-    - {id: 8, cat: PC/Phone-Other, desc: "Mobil"}
+    - {id: 8, cat: PC/Mobile-Other, desc: "Mobil"}
     - {id: 35, cat: Books, desc: "Oktató Anyagok"}
     - {id: 28, cat: PC, desc: "PC/Egyéb"}
     - {id: 21, cat: PC/ISO, desc: "PC/ISO"}
@@ -59,19 +59,19 @@ settings:
   - name: sort
     type: select
     label: Sort requested from site
-    default: "added"
+    default: added
     options:
-      "name": "name"
-      "size": "size"
-      "added": "added"
-      "seeders": "seeders"
+      name: name
+      size: size
+      added: added
+      seeders: seeders
   - name: type
     type: select
     label: Order requested from site
-    default: "DESC"
+    default: DESC
     options:
-      "DESC": "desc"
-      "ASC": "asc"
+      DESC: desc
+      ASC: asc
 
 login:
   path: login.php
@@ -124,7 +124,7 @@ search:
     details:
       selector: a[href^="torrentdetails.php?id="]
       attribute: href
-    banner:
+    poster:
       selector: a.poster
       attribute: href
     grabs:
@@ -141,8 +141,10 @@ search:
     date:
       selector: td:nth-child(9)
       filters:
+        - name: append
+          args: " +01:00" # CET
         - name: dateparse
-          args: "2006.01.02. 15:04"
+          args: "2006.01.02. 15:04 -07:00"
     downloadvolumefactor:
       text: 1
     downloadvolumefactor:

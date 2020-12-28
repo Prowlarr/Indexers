@@ -20,7 +20,7 @@ caps:
     - {id: 408, cat: PC, desc: "Software软件"}
     - {id: 409, cat: Console, desc: "Games游戏"}
     - {id: 411, cat: Books, desc: "Books纪录片"}
-    - {id: 412, cat: PC/Phone-Other, desc: "Mobile移动视频"}
+    - {id: 412, cat: PC/Mobile-Other, desc: "Mobile移动视频"}
     - {id: 410, cat: Other, desc: "Misc其他"}
 
   modes:
@@ -44,19 +44,19 @@ settings:
   - name: sort
     type: select
     label: Sort requested from site
-    default: "4"
+    default: 4
     options:
-      "4": "created"
-      "7": "seeders"
-      "5": "size"
-      "1": "title"
+      4: created
+      7: seeders
+      5: size
+      1: title
   - name: type
     type: select
     label: Order requested from site
-    default: "desc"
+    default: desc
     options:
-      "desc": "desc"
-      "asc": "asc"
+      desc: desc
+      asc: asc
   - name: info_tpp
     type: info
     label: Results Per Page
@@ -78,7 +78,7 @@ login:
 
 search:
   paths:
-     # https://tjupt.org/torrents.php?incldead=0&spstate=0&picktype=0&inclbookmarked=0&search=&search_area=0&search_mode=0
+    # https://tjupt.org/torrents.php?incldead=0&spstate=0&picktype=0&inclbookmarked=0&search=&search_area=0&search_mode=0
     - path: torrents.php
   inputs:
     $raw: "{{ range .Categories }}cat{{.}}=1&{{end}}"
@@ -119,7 +119,6 @@ search:
       selector: a[href^="download.php?id="]
       attribute: href
     imdb:
-      optional: true
       selector: a[href*="imdb.com/title/tt"]
       attribute: href
     date:
@@ -129,7 +128,7 @@ search:
       optional: true
       filters:
         - name: append
-          args: " +08:00"
+          args: " +08:00" # CST
         - name: dateparse
           args: "2006-01-02 15:04:05 -07:00"
     date:
@@ -138,7 +137,7 @@ search:
       optional: true
       filters:
         - name: append
-          args: " +08:00"
+          args: " +08:00" # CST
         - name: dateparse
           args: "2006-01-0215:04:05 -07:00"
     size:
@@ -166,4 +165,6 @@ search:
     description:
       selector: td:nth-child(2)
       remove: a, img
+    minimumratio:
+      text: 0.8
 # NexusPHP Standard v1.5 Beta 4 (custom ulvf dlvf)

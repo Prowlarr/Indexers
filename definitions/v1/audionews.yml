@@ -10,9 +10,9 @@ links:
 
 caps:
   categorymappings:
-    - {id: 106, cat: PC/Phone-Other, desc: "Mobile Apps"}
-    - {id: 161, cat: PC/Phone-IOS, desc: "Mobile Apps iOS"}
-    - {id: 160, cat: PC/Phone-Android, desc: "Mobile Apps Android"}
+    - {id: 106, cat: PC/Mobile-Other, desc: "Mobile Apps"}
+    - {id: 161, cat: PC/Mobile-iOS, desc: "Mobile Apps iOS"}
+    - {id: 160, cat: PC/Mobile-Android, desc: "Mobile Apps Android"}
     - {id: 12, cat: PC, desc: "AUDIOAPPS"}
     - {id: 32, cat: PC, desc: "AUDIOAPPS DAW Apps"}
     - {id: 175, cat: PC, desc: "AUDIOAPPS Ableton"}
@@ -207,19 +207,19 @@ settings:
   - name: sort
     type: select
     label: Sort requested from site
-    default: "1"
+    default: 1
     options:
-      "1": "created"
-      "10": "seeders"
-      "7": "size"
-      "2": "title"
+      1: created
+      10: seeders
+      7: size
+      2: title
   - name: type
     type: select
     label: Order requested from site
-    default: "2"
+    default: 2
     options:
-      "2": "desc"
-      "1": "asc"
+      2: desc
+      1: asc
 
 login:
   path: login.php
@@ -243,7 +243,7 @@ search:
     - path: tracker.php
       method: post
   inputs:
-    $raw: "{{ if .Categories }}{{ range .Categories }}f[]={{.}}&{{end}}{{else}}f[]=-1{{end}}"
+    $raw: "{{ if .Categories }}{{ range .Categories }}f[]={{.}}&{{end}}{{ else }}f[]=-1{{ end }}"
     prev_allw: 1
     prev_a: 0
     prev_dla: 0

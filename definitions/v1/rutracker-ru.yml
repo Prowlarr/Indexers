@@ -100,6 +100,10 @@ caps:
     - {id: 1347, cat: TV/HD, desc: " |- BDRip 1080p , HDTV 1080 , WEB-DL 1080р"}
     - {id: 1348, cat: TV/HD, desc: " |- BDRip 720p , WEB-DL 720p , HDTVRip 720p"}
     - {id: 1349, cat: TV/SD, desc: " |- DVD5 , DVD9"}
+    # Документалистика, развлекательные телепередачи, спорт Docs
+    - {id: 11, cat: TV/Documentary, desc: "Документальные фильмы и телепередачи"}
+    - {id: 12, cat: TV, desc: "Развлекательные телепередачи"}
+    - {id: 13, cat: TV/Sport, desc: "Спорт"}
     # Игры Games
     - {id: 60, cat: PC/Games, desc: "Игры для PC"}
     - {id: 73, cat: Console, desc: " |- Горячие новинки 2020 года (только AAA проекты)"}
@@ -113,13 +117,7 @@ caps:
     - {id: 76, cat: Console, desc: " |- Аркады"}
     - {id: 1538, cat: Console, desc: "Игры для консолей"}
     - {id: 1539, cat: Console/PSP, desc: " |- PlayStation"}
-    - {id: 878, cat: Console/Xbox, desc: " |- XBox"}
-    # Документалистика, развлекательные телепередачи, спорт Docs
-    - {id: 11, cat: TV/Documentary, desc: "Документальные фильмы и телепередачи"}
-    - {id: 12, cat: TV, desc: "Развлекательные телепередачи"}
-    - {id: 13, cat: TV/Sport, desc: "Спорт"}
-    - {id: 1621, cat: TV/Sport, desc: " |- Формула 1"}
-    - {id: 1622, cat: TV/Sport, desc: " |- Автоспорт"}
+    - {id: 878, cat: Console/XBox, desc: " |- XBox"}
     # Книги, Журналы, Аудиокниги Books
     - {id: 726, cat: Books, desc: "Художественная литература, журналы, газеты"}
     - {id: 728, cat: Books, desc: " |- Журналы и газеты"}
@@ -142,14 +140,25 @@ caps:
     - {id: 1315, cat: Audio/Audiobook, desc: " |- Детская аудиокнига"}
     - {id: 1223, cat: Audio/Audiobook, desc: " |- Аудиокниги Учебная, Научная и Техническая литература"}
     # Музыка (Lossy) Music
+    - {id: 1635, cat: Audio/MP3, desc: "Зарубежная музыка (Disco, Italo-Disco, Eurodance,.."}
+    - {id: 1636, cat: Audio/MP3, desc: " |- Сборники поп музыки (50/50 общие mp3)"}
+    - {id: 1647, cat: Audio/Lossless, desc: " |- Зарубежная поп музыка (Lossless)"}
+    - {id: 1643, cat: Audio/MP3, desc: " |- Зарубежная поп музыка (альбомы, синглы mp3)"}
+    - {id: 1637, cat: Audio/MP3, desc: " |- Зарубежная поп-музыка (сборники mp3)"}
+    - {id: 1655, cat: Audio/Lossless, desc: " |- Eurodance, Disco, Hi-NRG, Technopop (Lossless)"}
+    - {id: 1654, cat: Audio/MP3, desc: " |- Eurodance, Disco, Hi-NRG, Technopop (mp3)"}
+    - {id: 1638, cat: Audio/MP3, desc: " |- Eurodance, Disco, Hi-NRG, Technopop (Сборники mp3)"}
+    - {id: 1639, cat: Audio/MP3, desc: " |- Club, Dance, Hands Up (Сборники mp3)"}
+    - {id: 1640, cat: Audio/Lossless, desc: " |- Зарубежный шансон (mp3, Lossless)"}
     - {id: 1177, cat: Audio/MP3, desc: "Неофициальные и внежанровые сборники"}
-    - {id: 1179, cat: Audio/MP3, desc: " |- Сборники поп музыки (50/50 общие)"}
-    - {id: 1178, cat: Audio/MP3, desc: " |- Зарубежные поп сборники"}
-    - {id: 1606, cat: Audio/MP3, desc: " |- Eurodance, Disco, Hi-NRG, Technopop (Сборники)"}
-    - {id: 1603, cat: Audio/MP3, desc: " |- Club, Dance, Hands Up (Сборники)"}
+    - {id: 1642, cat: Audio/MP3, desc: " |- Российская попса (альбомы, синглы mp3)"}
+    - {id: 1644, cat: Audio/Lossless, desc: " |- Отечественная поп музыка (Lossless)"}
     - {id: 1427, cat: Audio/MP3, desc: " |- Сборники Российской поп музыки"}
+    - {id: 1646, cat: Audio/Lossless, desc: " |- Шансон, авторская песня (Lossless)"}
+    - {id: 1641, cat: Audio/MP3, desc: " |- Шансон и авторская песня (mp3)"}
     - {id: 1561, cat: Audio/MP3, desc: " |- Сборники Русского шансона"}
     - {id: 1168, cat: Audio/MP3, desc: "Рок музыка"}
+    - {id: 1652, cat: Audio/Lossless, desc: " |- Зарубежная рок музыка (Lossless)"}
     - {id: 1200, cat: Audio/MP3, desc: " |- Зарубежный Classic Rock&Hard Rock"}
     - {id: 1552, cat: Audio/MP3, desc: " |- Зарубежный Progressive&Art-Rock"}
     - {id: 1565, cat: Audio/MP3, desc: " |- Зарубежный Folk-Rock, Folk-Punk, Songwriter"}
@@ -159,6 +168,7 @@ caps:
     - {id: 1566, cat: Audio/MP3, desc: " |- Зарубежный Rockabilly, Rock'n'Roll"}
     - {id: 1556, cat: Audio/MP3, desc: " |- Сборники зарубежного рока"}
     - {id: 1579, cat: Audio/MP3, desc: "Зарубежный Metal"}
+    - {id: 1653, cat: Audio/Lossless, desc: " |- Зарубежный Metal (Lossless)"}
     - {id: 1588, cat: Audio/MP3, desc: " |- Avant-garde, Experimental Metal"}
     - {id: 1580, cat: Audio/MP3, desc: " |- Black Metal"}
     - {id: 1581, cat: Audio/MP3, desc: " |- Death, Doom"}
@@ -179,10 +189,18 @@ caps:
     - {id: 1596, cat: Audio/MP3, desc: " |- Gothic Rock&Dark Folk"}
     - {id: 1597, cat: Audio/MP3, desc: " |- Avant-garde, Experimental Rock"}
     - {id: 1598, cat: Audio/MP3, desc: "Отечественный Rock, Metal"}
+    - {id: 1645, cat: Audio/Lossless, desc: " |- Отечественный Rock, Metal (Lossless)"}
     - {id: 1599, cat: Audio/MP3, desc: " |- Отечественный Rock"}
     - {id: 1600, cat: Audio/MP3, desc: " |- Отечественный Metal"}
     - {id: 1601, cat: Audio/MP3, desc: " |- Сборники Rock, Metal"}
+    - {id: 1626, cat: Audio/MP3, desc: " |- Зарубежный джаз (mp3)"}
+    - {id: 1625, cat: Audio/Lossless, desc: " |- Зарубежный джаз (Lossless)"}
+    - {id: 1627, cat: Audio/MP3, desc: " |- Зарубежный блюз (mp3)"}
+    - {id: 1624, cat: Audio/Lossless, desc: " |- Зарубежный блюз (Lossless)"}
+    - {id: 1628, cat: Audio/MP3, desc: " |- Отечественный джаз и блюз (mp3)"}
+    - {id: 1629, cat: Audio/Lossless, desc: " |- Отечественный джаз и блюз (Lossless)"}
     - {id: 1171, cat: Audio/MP3, desc: "Электронная музыка"}
+    - {id: 1648, cat: Audio/Lossless, desc: " |- Electronic and club music (Lossless)"}
     - {id: 1610, cat: Audio/MP3, desc: " |- Goa Trance, Psy-Trance"}
     - {id: 1611, cat: Audio/MP3, desc: " |- PsyChill, Ambient, Dub"}
     - {id: 1457, cat: Audio/MP3, desc: " |- Trance"}
@@ -200,32 +218,18 @@ caps:
     - {id: 1575, cat: Audio/MP3, desc: " |- Traditional Electronic, Ambient, Modern Classical,..."}
     - {id: 1576, cat: Audio/MP3, desc: " |- Industrial, Noise, EBM, Dark Electro, Aggrotech,..."}
     - {id: 1577, cat: Audio/MP3, desc: " |- Electronic music (разные стили)"}
+    - {id: 1630, cat: Audio/MP3, desc: "Рэп, Хип-Хоп, R'n'B"}
+    - {id: 1631, cat: Audio/MP3, desc: " |- Рэп, Хип-Хоп, R'n'B"}
+    - {id: 1632, cat: Audio/Lossless, desc: " |- Отечественный Рэп, Хип-Хоп (lossless)"}
+    - {id: 1633, cat: Audio/MP3, desc: " |- Зарубежный Рэп, Хип-Хоп (mp3)"}
+    - {id: 1634, cat: Audio/Lossless, desc: " |- Зарубежный Рэп, Хип-Хоп (lossless)"}
     - {id: 1540, cat: Audio/MP3, desc: "Остальные муз. жанры, + Видео"}
-    - {id: 1578, cat: Audio/MP3, desc: " |- Российская попса (альбомы, синглы)"}
-    - {id: 1170, cat: Audio/MP3, desc: " |- Русский шансон"}
-    - {id: 1167, cat: Audio/MP3, desc: " |- Отечественный Рэп, Хип-Хоп"}
-    - {id: 1173, cat: Audio/MP3, desc: " |- Rap, Hip-hop, R'n'B"}
-    - {id: 1607, cat: Audio/MP3, desc: " |- Rap, Hip-hop, R'n'B"}
-    - {id: 1563, cat: Audio/MP3, desc: " |- Jazz, Blues, Swing"}
-    - {id: 1605, cat: Audio/MP3, desc: " |- Blues"}
     - {id: 1604, cat: Audio/MP3, desc: " |- Reggae, Ska, Dub"}
+    - {id: 1651, cat: Audio/Lossless, desc: " |- Классическая и инструментальная музыка (Lossless)"}
     - {id: 1562, cat: Audio/MP3, desc: " |- Инструментальная и классическая музыка"}
     - {id: 1185, cat: Audio/MP3, desc: " |- New Age, Relax, Meditative"}
+    - {id: 1649, cat: Audio/Lossless, desc: " |- Other musical genres (Lossless)"}
     - {id: 1183, cat: Audio/MP3, desc: " |- Музыкальное видео (все жанры)"}
-    # Музыка (Lossless) Music
-    - {id: 1210, cat: Audio/Lossless, desc: "Отечественная музыка (Lossless)"}
-    - {id: 1211, cat: Audio/Lossless, desc: " |- Поп музыка"}
-    - {id: 1212, cat: Audio/Lossless, desc: " |- Отечественный Рок, Панк, Метал, Альтернатива."}
-    - {id: 1213, cat: Audio/Lossless, desc: " |- Шансон, авторская песня"}
-    - {id: 1309, cat: Audio/Lossless, desc: " |- Официальные сборники отечественных исполнителей"}
-    - {id: 1209, cat: Audio/Lossless, desc: "Зарубежная музыка (Lossless)"}
-    - {id: 1214, cat: Audio/Lossless, desc: " |- Pop music"}
-    - {id: 1215, cat: Audio/Lossless, desc: " |- Rock, Punk, Metal, Alternative music"}
-    - {id: 1217, cat: Audio/Lossless, desc: " |- Electronic and club music"}
-    - {id: 1394, cat: Audio/Lossless, desc: " |- Jazz, Blues, Soul"}
-    - {id: 1308, cat: Audio/Lossless, desc: " |- Официальные сборники зарубежных исполнителей"}
-    - {id: 1534, cat: Audio/Lossless, desc: " |- Classical and instrumental music"}
-    - {id: 1231, cat: Audio/Lossless, desc: " |- Other musical genres"}
     # Программное обеспечение Software
     - {id: 105, cat: PC, desc: "Операционные системы"}
     - {id: 1120, cat: PC, desc: " |- Windows 10"}
@@ -278,23 +282,23 @@ caps:
     - {id: 1503, cat: PC, desc: " |- Дополнительные материалы для мультимедиа"}
     - {id: 968, cat: PC, desc: " |- Разное (Программы для работы с мультимедиа и 3D)"}
     # Все для мобильных устройств Mobiles
-    - {id: 1287, cat: PC/Phone-Other, desc: "Видео"}
-    - {id: 1307, cat: PC/Phone-Other, desc: " |- Мобильные телефоны"}
-    - {id: 1306, cat: PC/Phone-IOS, desc: " |- iPhone"}
-    - {id: 1305, cat: PC/Phone-IOS, desc: " |- iPad"}
+    - {id: 1287, cat: PC/Mobile-Other, desc: "Видео"}
+    - {id: 1307, cat: PC/Mobile-Other, desc: " |- Мобильные телефоны"}
+    - {id: 1306, cat: PC/Mobile-iOS, desc: " |- iPhone"}
+    - {id: 1305, cat: PC/Mobile-iOS, desc: " |- iPad"}
     - {id: 1289, cat: PC, desc: "Программы"}
     - {id: 1302, cat: PC, desc: " |- Мобильные телефоны"}
-    - {id: 1301, cat: PC/Phone-Android, desc: " |- Android OS"}
+    - {id: 1301, cat: PC/Mobile-Android, desc: " |- Android OS"}
     - {id: 1298, cat: PC, desc: " |- Symbian OS"}
-    - {id: 1293, cat: PC/Phone-Other, desc: " |- Windows Mobile"}
-    - {id: 1292, cat: PC/Phone-IOS, desc: " |- iPhone"}
-    - {id: 1291, cat: PC/Phone-IOS, desc: " |- Apple Macintosh"}
+    - {id: 1293, cat: PC/Mobile-Other, desc: " |- Windows Mobile"}
+    - {id: 1292, cat: PC/Mobile-iOS, desc: " |- iPhone"}
+    - {id: 1291, cat: PC/Mobile-iOS, desc: " |- Apple Macintosh"}
     - {id: 1294, cat: PC, desc: "Игры"}
     - {id: 1303, cat: PC, desc: " |- Мобильные телефоны"}
-    - {id: 1300, cat: PC/Phone-Android, desc: " |- Android OS"}
+    - {id: 1300, cat: PC/Mobile-Android, desc: " |- Android OS"}
     - {id: 1299, cat: PC, desc: " |- Symbian OS"}
-    - {id: 1296, cat: PC/Phone-IOS, desc: " |- iPhone"}
-    - {id: 1295, cat: PC/Phone-Other, desc: " |- Windows Mobile"}
+    - {id: 1296, cat: PC/Mobile-iOS, desc: " |- iPhone"}
+    - {id: 1295, cat: PC/Mobile-Other, desc: " |- Windows Mobile"}
     # Клубничка ХХХ 18+️
     - {id: 1490, cat: XXX, desc: "Эротика (не порно)"}
     - {id: 1491, cat: XXX, desc: " |-  Эротические фильмы ≪с переводом Rus≫"}
@@ -362,19 +366,19 @@ settings:
   - name: sort
     type: select
     label: Sort requested from site
-    default: "1"
+    default: 1
     options:
-      "1": "created"
-      "10": "seeders"
-      "7": "size"
-      "2": "title"
+      1: created
+      10: seeders
+      7: size
+      2: title
   - name: type
     type: select
     label: Order requested from site
-    default: "2"
+    default: 2
     options:
-      "2": "desc"
-      "1": "asc"
+      2: desc
+      1: asc
 
 search:
   paths:
@@ -387,7 +391,7 @@ search:
     - name: re_replace # S01E01 to сезон 1 серии 1
       args: ["(?i)\\bS0*(\\d+)E0*(\\d+)\\b", "сезон $1 серии $2"]
   inputs:
-    $raw: "{{ if .Categories }}{{ range .Categories }}f[]={{.}}&{{end}}{{else}}f[]=-1{{end}}"
+    $raw: "{{ if .Categories }}{{ range .Categories }}f[]={{.}}&{{end}}{{ else }}f[]=-1{{ end }}"
     prev_allw: 1
     prev_a: 0
     prev_dla: 0

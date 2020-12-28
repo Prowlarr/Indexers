@@ -38,18 +38,18 @@ settings:
   - name: sort
     type: select
     label: Sort requested from site
-    default: "created_at"
+    default: created_at
     options:
-      "created_at": "created"
-      "seeders": "seeders"
-      "size": "size"
+      created_at: created
+      seeders: seeders
+      size: size
   - name: type
     type: select
     label: Order requested from site
-    default: "desc"
+    default: desc
     options:
-      "desc": "desc"
-      "asc": "asc"
+      desc: desc
+      asc: asc
 
 login:
   path: login
@@ -74,7 +74,7 @@ search:
     - path: torrents
   inputs:
     $raw: "{{ range .Categories }}categories[]={{.}}&{{end}}"
-    title: "{{ if .Query.IMDBID }}{{ else }}{{ .Keywords }}{{ end }}"
+    title: "{{ if .Query.IMDBID }}{{ else }}{{ .Keywords }}{{ end }}" # for dashboard imdbid search
     imdb: "{{ .Query.IMDBIDShort }}"
     freeleech: "{{ if .Config.freeleech }}on{{ else }}{{ end }}"
     order_by: "{{ .Config.sort }}"
@@ -112,7 +112,6 @@ search:
     grabs:
       selector: td:nth-last-child(1)
     imdb:
-      optional: true
       selector: a[href*="imdb.com/title/tt"]
       attribute: href
     downloadvolumefactor:

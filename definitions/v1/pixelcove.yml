@@ -16,9 +16,9 @@ caps:
     - {id: 47, cat: PC, desc: "Linux"}
     - {id: 56, cat: PC, desc: "VR"}
     # Microsoft
-    - {id: 14, cat: Console/Xbox, desc: "Xbox"}
-    - {id: 61, cat: Console/Xbox360, desc: "Xbox 360"}
-    - {id: 62, cat: Console/XboxOne, desc: "Xbox One"}
+    - {id: 14, cat: Console/XBox, desc: "Xbox"}
+    - {id: 61, cat: Console/XBox 360, desc: "Xbox 360"}
+    - {id: 62, cat: Console/XBox One, desc: "Xbox One"}
     # Sony
     - {id: 43, cat: Console/PS3, desc: "Playstation "}
     - {id: 63, cat: Console/PS3, desc: "Playstation 2"}
@@ -34,11 +34,11 @@ caps:
     - {id: 15, cat: Console/NDS, desc: "DS"}
     - {id: 68, cat: Console/NDS, desc: "3DS"}
     - {id: 69, cat: Console/PSP, desc: "PSP"}
-    - {id: 70, cat: Console/PSVita, desc: "PSVita"}
+    - {id: 70, cat: Console/PS Vita, desc: "PSVita"}
     # Mobile
-    - {id: 65, cat: PC/Phone-IOS, desc: "iOS"}
-    - {id: 49, cat: PC/Phone-Android, desc: "Android"}
-    - {id: 66, cat: PC/Phone-Other, desc: "Windows Mobile"}
+    - {id: 65, cat: PC/Mobile-iOS, desc: "iOS"}
+    - {id: 49, cat: PC/Mobile-Android, desc: "Android"}
+    - {id: 66, cat: PC/Mobile-Other, desc: "Windows Mobile"}
     # Reading
     - {id: 53, cat: Books, desc: "Books/Mags"}
     - {id: 60, cat: Books, desc: "Comics"}
@@ -74,18 +74,18 @@ settings:
   - name: sort
     type: select
     label: Sort requested from site
-    default: "time"
+    default: time
     options:
-      "time": "created"
-      "seeders": "seeders"
-      "size": "size"
+      time: created
+      seeders: seeders
+      size: size
   - name: type
     type: select
     label: Order requested from site
-    default: "desc"
+    default: desc
     options:
-      "desc": "desc"
-      "asc": "asc"
+      desc: desc
+      asc: asc
 
 login:
   path: login
@@ -137,8 +137,7 @@ search:
     details:
       selector: a[href^="/torrents.php?id="]
       attribute: href
-    banner:
-      optional: true
+    poster:
       selector: td:nth-child(2) > script
       filters:
         - name: regexp
@@ -154,7 +153,7 @@ search:
       attribute: title
       filters:
         - name: append
-          args: " +00:00"
+          args: " +00:00" # auto adjusted by site account profile
         - name: dateparse
           args: "Jan 02 2006, 15:04 -07:00"
     size:

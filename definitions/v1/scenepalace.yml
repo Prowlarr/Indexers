@@ -11,7 +11,7 @@ links:
 caps:
   categorymappings:
     - {id: 14, cat: PC/0day, desc: "Apps"}
-    - {id: 12, cat: Books/Ebook, desc: "E-BOOKS"}
+    - {id: 12, cat: Books/EBook, desc: "E-BOOKS"}
     - {id: 7, cat: Console, desc: "Games/Console"}
     - {id: 9, cat: Console/Other, desc: "Games/Handheld"}
     - {id: 10, cat: PC/Mac, desc: "Games/Mac"}
@@ -52,19 +52,19 @@ settings:
   - name: sort
     type: select
     label: Sort requested from site
-    default: "4"
+    default: 4
     options:
-      "4": "created"
-      "7": "seeders"
-      "5": "size"
-      "1": "title"
+      4: created
+      7: seeders
+      5: size
+      1: title
   - name: type
     type: select
     label: Order requested from site
-    default: "desc"
+    default: desc
     options:
-      "desc": "desc"
-      "asc": "asc"
+      desc: desc
+      asc: asc
 
 login:
   path: login.php
@@ -109,7 +109,7 @@ search:
     download:
       selector: a[href^="download.php?torrent="]
       attribute: href
-    banner:
+    poster:
       selector: a[href^="details.php?id="]
       attribute: onmouseover
       filters:

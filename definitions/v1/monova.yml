@@ -1,7 +1,7 @@
 ---
 id: monova
 name: Monova
-description: "Monova is a Public torrent index."
+description: "Monova is a Public torrent index"
 language: en-us
 type: public
 encoding: UTF-8
@@ -9,10 +9,10 @@ followredirect: true
 links:
   - https://monova.org/
   - https://monova.to/
-  - https://monova.unblockit.lat/
+  - https://monova.unblockit.dev/
   - https://monova.unblocked.rest/
+  - https://monova.unblockninja.com/
 legacylinks:
-  - https://monova.unblockninja.com/ # currently redirects to https://monova.org/
   - https://monova.unblockit.pro/
   - https://monova.unblockit.one/
   - https://monova.black-mirror.xyz/
@@ -26,18 +26,19 @@ legacylinks:
   - https://monova.proxyportal.pw/
   - https://monova.uk-unblock.pro/
   - https://monova.unblockit.id/
+  - https://monova.unblockit.lat/
+  - https://monova.unblockit.app/
 
 caps:
-  categories:
-    "venus-mars": XXX
-    "video-camera": Movies
-    "music": Audio
-    "book": Books
-    "gamepad": PC/Games
-    "cog": PC/0day
-    "venus-mars": XXX
-    "list": Other
-    "picture-o": Other/Misc
+  categorymappings:
+    - {id: venus-mars, cat: XXX, desc: Adult}
+    - {id: video-camera, cat: Movies, desc: Video}
+    - {id: music, cat: Audio, desc: Audio}
+    - {id: book, cat: Books, desc: Books}
+    - {id: gamepad, cat: PC/Games, desc: Games}
+    - {id: cog, cat: PC/0day, desc: Software}
+    - {id: list, cat: Other, desc: Others}
+    - {id: picture-o, cat: Other/Misc, desc: Photos}
 
   modes:
     search: [q]
@@ -52,10 +53,10 @@ search:
   paths:
     # https://monova.to/search?term=vikings+s05e05
     # https://monova.to/video
-    - path: "{{if .Keywords}}search?term={{.Keywords}}{{else}}video{{end}}"
-    - path: "{{ if .Keywords }}search?term={{ .Keywords }}&{{ else }}video?{{end}}page=2"
-    - path: "{{ if .Keywords }}search?term={{ .Keywords }}&{{ else }}video?{{end}}page=3"
-    - path: "{{ if .Keywords }}search?term={{ .Keywords }}&{{ else }}video?{{end}}page=4"
+    - path: "{{ if .Keywords }}search?term={{ .Keywords }}{{ else }}video{{ end }}"
+    - path: "{{ if .Keywords }}search?term={{ .Keywords }}&{{ else }}video?{{ end }}page=2"
+    - path: "{{ if .Keywords }}search?term={{ .Keywords }}&{{ else }}video?{{ end }}page=3"
+    - path: "{{ if .Keywords }}search?term={{ .Keywords }}&{{ else }}video?{{ end }}page=4"
 
   keywordsfilters:
     - name: re_replace
@@ -67,8 +68,6 @@ search:
       - name: andmatch
 
   fields:
-    title:
-      selector: td.torrent_name a
     category:
       selector: td.torrent_name i
       attribute: class
@@ -76,32 +75,23 @@ search:
         # remove fa fa- prefix
         - name: replace
           args: ["fa fa-", ""]
+    title:
+      selector: td.torrent_name a
     details:
       selector: td.torrent_name a
       attribute: href
-    _magnetfilename: # convert title to valid magnet filename
-      text: "{{ .Result.title }}"
-      filters:
-        - name: validfilename
-        - name: urlencode
-    magnet: # generate magnet link from details link
+    infohash:
       selector: td.torrent_name a
       attribute: href
       filters:
         - name: regexp
           args: ([0-9A-Fa-f]{40})
-        - name: prepend
-          args: "magnet:?xt=urn:btih:"
-        - name: append
-          args: "&dn={{ .Result._magnetfilename }}.torrent"
-        - name: append
-          args: "&tr=udp://tracker.opentrackr.org:1337&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.internetwarriors.net:1337&tr=udp://tracker.leechers-paradise.org:6969"
     size:
       optional: true
       selector: td.center-align
       filters:
         - name: replace
-          args: ["N/A", "500 MB"]
+          args: ["N/A", "512 MB"]
     seeders:
       text: 1
     leechers:

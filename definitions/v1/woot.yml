@@ -12,7 +12,7 @@ caps:
   categorymappings:
     - {id: 73, cat: Audio/Audiobook, desc: "Misc/Abooks"}
     - {id: 74, cat: Other, desc: "Misc/All"}
-    - {id: 72, cat: Books/Ebook, desc: "Misc/Ebooks"}
+    - {id: 72, cat: Books/EBook, desc: "Misc/Ebooks"}
     - {id: 71, cat: PC/Games, desc: "Misc/Games"}
     - {id: 70, cat: PC/0day, desc: "Misc/Software"}
     - {id: 60, cat: Movies/HD, desc: "Movies/HD"}
@@ -21,7 +21,7 @@ caps:
     - {id: 62, cat: Movies, desc: "Movies/Untouched"}
     - {id: 66, cat: TV/Documentary, desc: "TV/Doku HD"}
     - {id: 67, cat: TV/Documentary, desc: "TV/Doku SD"}
-    - {id: 69, cat: TV/OTHER, desc: "TV/Misc"}
+    - {id: 69, cat: TV/Other, desc: "TV/Misc"}
     - {id: 64, cat: TV/HD, desc: "TV/Serien HD"}
     - {id: 65, cat: TV/SD, desc: "TV/Serien SD"}
     - {id: 68, cat: TV/Sport, desc: "TV/Sport"}
@@ -81,6 +81,12 @@ search:
     selector: div.tbList table tbody tr:has(a[href^="download.php?torrent="])
 
   fields:
+    category:
+      selector: a[href^="/list.php?cat="]
+      attribute: href
+      filters:
+        - name: querystring
+          args: cat
     title:
       selector: a[href^="item.php?id="]
     details:
@@ -89,30 +95,15 @@ search:
     download:
       selector: a[href^="download.php?torrent="]
       attribute: href
-    banner:
+    poster:
       selector: a[href^="item.php?id="]
       attribute: onmouseover
-      optional: true
       filters:
         - name: regexp
           args: src="(.+?)"
-    category:
-      selector: a[href^="/list.php?cat="]
-      attribute: href
-      filters:
-        - name: querystring
-          args: cat
     imdb:
-      optional: true
       selector: a[href*="imdb.com/title/tt"]
       attribute: href
-    seeders:
-      selector: td:last-child
-      filters:
-        - name: regexp
-          args: "(\\d+) Peers"
-    leechers:
-      text: 0
     size:
       selector: td:last-child
       filters:
@@ -131,6 +122,13 @@ search:
           args: " +01:00" # CET
         - name: dateparse
           args: "02.01.2006 15:04:05 -07:00"
+    seeders:
+      selector: td:last-child
+      filters:
+        - name: regexp
+          args: "(\\d+) Peers"
+    leechers:
+      text: 0
     downloadvolumefactor:
       text: 1
     uploadvolumefactor:

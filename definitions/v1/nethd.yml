@@ -38,19 +38,19 @@ settings:
   - name: sort
     type: select
     label: Sort requested from site
-    default: "added"
+    default: added
     options:
-      "added": "created"
-      "seeders": "seeders"
-      "size": "size"
-      "name": "title"
+      added: created
+      seeders: seeders
+      size: size
+      name: title
   - name: type
     type: select
     label: Order requested from site
-    default: "desc"
+    default: desc
     options:
-      "desc": "desc"
-      "asc": "asc"
+      desc: desc
+      asc: asc
   - name: info_tpp
     type: info
     label: Results Per Page
@@ -106,12 +106,9 @@ search:
     details:
       selector: td.name > div > a[href*="-torrent-"][title]
       attribute: href
-    banner:
+    poster:
       selector: td.name > a.poster-preview img
       attribute: src
-    comments:
-      selector: a[href*="#comments"]
-      attribute: href
     download:
       selector: td.name > div > a[href*="-torrent-"][title]
       attribute: href
