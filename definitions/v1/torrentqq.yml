@@ -7,7 +7,7 @@ type: public
 encoding: UTF-8
 followredirect: true
 links:
-  - https://torrentqq83.com/
+  - https://torrentqq89.com/
 legacylinks:
   - https://torrentqq76.com/
   - https://torrentqq77.com/
@@ -16,6 +16,12 @@ legacylinks:
   - https://torrentqq80.com/
   - https://torrentqq81.com/
   - https://torrentqq82.com/
+  - https://torrentqq83.com/
+  - https://torrentqq84.com/
+  - https://torrentqq85.com/
+  - https://torrentqq86.com/
+  - https://torrentqq87.com/
+  - https://torrentqq88.com/
 
 caps:
   categorymappings:
@@ -77,7 +83,6 @@ search:
       selector: a[href$=".html"][title]
       attribute: href
     date:
-      # note: this will cause 0m date results for MM-dd dates that are higher than current date, as Jackett dateparse assumes year is now.
       selector: div.wr-date:contains("-")
       optional: true
       filters:
