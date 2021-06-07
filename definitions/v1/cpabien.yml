@@ -69,7 +69,7 @@ settings:
   - name: flaresolverr
     type: info
     label: FlareSolverr
-    default: This site may use Cloudflare DDoS Protection, therefore Jackett requires <a href="https://github.com/Jackett/Jackett#configuring-flaresolverr" target="_blank">FlareSolver</a> to access it.
+    default: This site may use Cloudflare DDoS Protection, currently Prowlarr doesn't support Flaresolverr, see <a href="https://wikijs.servarr.com/en/prowlarr/faq#can-i-use-flaresolverr-indexers" target="_blank">here</a> for more details.
   - name: info_8000
     type: info
     label: About cpasbien Categories
