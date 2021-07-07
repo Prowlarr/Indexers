@@ -124,7 +124,7 @@ login:
   inputs:
     username: "{{ .Config.username }}"
     password: "{{ .Config.password }}"
-    loginButton: XZ
+    loginButton: X
   error:
     - selector: "p[style=\"color: #B73C38\"]"
   test:
