@@ -144,7 +144,7 @@ settings:
     options:
       "http://itorrents.org/": iTorrents.org
       "http://torrage.info/": Torrage
-+     "http://btcache.me/": BTcache
+      "http://btcache.me/": BTcache
       "magnet:": magnet
   - name: sort
     type: select
