@@ -16,17 +16,5 @@ jobs:
     - name: Lint YAML sources with yamllint
       run: |
         yamllint --version
-    - name: yaml-lint
-      uses: ibiqlik/action-yamllint@v3
-      with:
-        format: github
-        config_data: |
-          extends: default
-          rules:
-            document-start:
-              level: error
-            line-length: disable
-            key-duplicates: disable
-            truthy: disable
-            comments:
-              min-spaces-from-content: 1
+    - name: Lint YAML files
+      run: yamllint --format github .
