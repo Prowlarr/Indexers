@@ -11,27 +11,14 @@ on:
 
 jobs:
   test:
+    name: 'Yamllint'
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: yamllint version
-      run: |
-        yamllint --version
-        ls
-    - name: yaml-lint
-      uses: ibiqlik/action-yamllint@v3
-      with:
-        format: github
-        config_data: |
-          extends: default
-          ignore: |
-            .git
-            /.git/workflows/
-          rules:
-            document-start:
-              level: error
-            line-length: disable
-            key-duplicates: disable
-            truthy: disable
-            comments:
-              min-spaces-from-content: 1
+      - name: 'Checkout'
+        uses: actions/checkout@master
+      - name: 'Yamllint'
+        uses: karancode/yamllint-github-action@master
+        with:
+          yamllint_file_or_dir: 'definitions'
+          yamllint_strict: false
+          yamllint_comment: true
