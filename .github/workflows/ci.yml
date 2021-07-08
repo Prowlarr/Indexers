@@ -23,8 +23,10 @@ jobs:
       with:
         format: github
         config_data: |
-          ignore: .git
           extends: default
+          ignore: |
+            .git
+            /.git/workflows/
           rules:
             document-start:
               level: error
