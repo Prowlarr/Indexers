@@ -17,6 +17,7 @@ jobs:
     - name: yamllint version
       run: |
         yamllint --version
+        ls
     - name: yaml-lint
       uses: ibiqlik/action-yamllint@v3
       with:
