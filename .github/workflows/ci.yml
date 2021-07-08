@@ -19,6 +19,7 @@ jobs:
     - name: yaml-lint
       uses: ibiqlik/action-yamllint@v3
       with:
+        file_or_dir: definitions/**/*.yml
         config_data: |
           extends: default
           rules:
