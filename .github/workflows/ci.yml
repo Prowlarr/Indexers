@@ -1,0 +1,22 @@
+---
+name: Yaml Lint
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: yamllint version
+      run: |
+        yamllint --version
+    - name: yamllint run
+      run: |
+        yamllint definitions --format github
