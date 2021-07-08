@@ -21,8 +21,9 @@ jobs:
     - name: yaml-lint
       uses: ibiqlik/action-yamllint@v3
       with:
-        file_or_dir: '**/definitions/**/*.yml'
+        format: github
         config_data: |
+          ignore: .git
           extends: default
           rules:
             document-start:
