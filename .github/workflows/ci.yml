@@ -21,7 +21,7 @@ jobs:
     - name: yaml-lint
       uses: ibiqlik/action-yamllint@v3
       with:
-        file_or_dir: definitions/**/*.*
+        file_or_dir: definitions/**/*.* definitions/* definitions/*.* definitions/. **/definitions/**/*.*
         config_data: |
           extends: default
           rules:
