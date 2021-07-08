@@ -22,3 +22,4 @@ jobs:
           yamllint_file_or_dir: 'definitions'
           yamllint_strict: false
           yamllint_comment: true
+          yamllint_config_filepath: 'yamllint.config'
