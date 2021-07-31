@@ -323,7 +323,7 @@ login:
     path: files/
 
 download:
-  selector: a[href^="magnet:?xt="]
+  selector: a[href^="/files/download/"]:has(i.fa-download)
   attribute: href
 
 search:

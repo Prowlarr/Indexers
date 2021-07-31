@@ -7,8 +7,8 @@ type: public
 encoding: UTF-8
 followredirect: true
 links:
-  - https://www.oxtorrent.pe/
-  - https://www.oxtorrent.co/
+  - https://www.oxtorrent.io/
+  - https://oxtorrent.unblockit.uno/
   - https://oxtorrent.nocensor.space/
 legacylinks:
   - https://wwv.oxtorrent.com/
@@ -32,6 +32,8 @@ legacylinks:
   - https://www.oxtorrent.tv/
   - https://www.oxtorrent.ph/
   - https://wvw.oxtorrent.pe/
+  - https://www.oxtorrent.pe/
+  - https://www.oxtorrent.co/
 
 caps:
   categorymappings:
