@@ -1,0 +1,146 @@
+---
+id: morethantv
+name: MoreThanTV
+description: "MoreThanTV is a Torrent Tracker for TV / MOVIES"
+language: en-us
+type: private
+encoding: UTF-8
+links:
+  - https://www.morethantv.me/
+
+caps:
+  categorymappings:
+    - {id: 1, cat: Movies/HD, desc: "HD Movies"}
+    - {id: 2, cat: Movies/SD, desc: "SD Movies"}
+    - {id: 3, cat: TV/HD, desc: "HD TV Episode"}
+    - {id: 4, cat: TV/SD, desc: "SD TV Episode"}
+    - {id: 5, cat: TV/HD, desc: "HD TV Season"}
+    - {id: 6, cat: TV/SD, desc: "SD TV Season"}
+
+  modes:
+    search: [q]
+    tv-search: [q]
+    movie-search: [q]
+
+settings:
+  - name: username
+    type: text
+    label: Username
+  - name: password
+    type: password
+    label: Password
+  - name: sort
+    type: select
+    label: Sort requested from site
+    default: time
+    options:
+      time: created
+      seeders: seeders
+      size: size
+  - name: type
+    type: select
+    label: Order requested from site
+    default: desc
+    options:
+      desc: desc
+      asc: asc
+
+login:
+  path: login
+  method: form
+  inputs:
+    username: "{{ .Config.username }}"
+    password: "{{ .Config.password }}"
+    cinfo: "2550|1350|24|-60"
+    keeploggedin: 1
+  error:
+    - selector: div.error
+  test:
+    path: torrents.php
+    selector: a.username
+
+search:
+  paths:
+    # https://www.morethantv.me/torrents.php?filter_cat%5B3%5D=1&filter_cat%5B5%5D=1&order_by=time&order_way=desc&searchtext=&action=advanced&title=Game+of+Thrones&sizeall=&sizetype=gb&sizerange=0.01&filelist=&taglist=&autocomplete_toggle=on
+    - path: torrents.php
+  inputs:
+    $raw: "{{ range .Categories }}filter_cat[{{.}}]=1&{{end}}"
+    order_by: "{{ .Config.sort }}"
+    order_way: "{{ .Config.type }}"
+    action: advanced
+    searchtext: ""
+    title: "{{ .Keywords }}"
+    filelist: ""
+    taglist: ""
+    sizeall: ""
+    sizetype: "gb"
+    sizerange: "0.01"
+    autocomplete_togle: "on"
+
+  rows:
+    # exclude redbar torrents
+    selector: table#torrent_table > tbody > tr[class^="torrent row"]
+
+  fields:
+    download:
+      selector: a[href^="/torrents.php?action=download&id="]
+      attribute: href
+    description:
+      selector: div.tags
+    title:
+      selector: a[href^="/torrents.php?id="]
+    category:
+      selector: td:nth-child(1) > div
+      attribute: title
+      filters:
+        - name: replace
+          args: ["hd.movie", "1"]
+        - name: replace
+          args: ["sd.movie", "2"]
+        - name: replace
+          args: ["hd.episode", "3"]
+        - name: replace
+          args: ["sd.episode", "4"]
+        - name: replace
+          args: ["hd.season", "5"]
+        - name: replace
+          args: ["sd.season", "6"]
+    details:
+      selector: a[href^="/torrents.php?id="]
+      attribute: href
+    poster:
+      selector: td:nth-child(2) > script
+      filters:
+        - name: regexp
+          args: "src=\\\\\"(.*?)\\\\\""
+        - name: re_replace
+          args: ["\\\\(.)", "$1"]
+        - name: replace
+          args: ["/static/common/noartwork/noimage.png", ""]
+    files:
+      selector: td:nth-child(3)
+    date:
+      selector: td:nth-child(5) > span
+      attribute: title
+      filters:
+        - name: append
+          args: " +00:00" # auto adjusted by site account profile
+        - name: dateparse
+          args: "Jan 02 2006, 15:04 -07:00"
+    size:
+      selector: td:nth-child(6)
+    grabs:
+      selector: td:nth-child(7)
+    seeders:
+      selector: td:nth-child(8)
+    leechers:
+      selector: td:nth-child(9)
+    downloadvolumefactor:
+      case:
+        img[src$="/freedownload.gif"]: 0
+        "*": 1
+    uploadvolumefactor:
+      text: 1
+    minimumratio:
+      text: 0.5
+# luminance
