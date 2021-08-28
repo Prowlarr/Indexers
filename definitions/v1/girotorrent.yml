@@ -6,7 +6,9 @@ language: it-it
 type: private
 encoding: UTF-8
 links:
-  - http://girotorrent.org/ # site does not support https ERR_CONNECTION_REFUSED
+  - https://girotorrent.org/
+legacylinks:
+  - http://girotorrent.org/ # site forces https
 
 caps:
   categorymappings:
