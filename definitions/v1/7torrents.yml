@@ -31,7 +31,7 @@ settings:
   - name: flaresolverr
     type: info
     label: FlareSolverr
-    default: This site may use Cloudflare DDoS Protection, currently Prowlarr doesn't support Flaresolverr, see <a href="https://wiki.servarr.com/prowlarr/faq#can-i-use-flaresolverr-indexers" target="_blank">here</a> for more details.
+    default: This site may use Cloudflare DDoS Protection, therefore Prowlarr may require <a href="https://github.com/FlareSolverr/FlareSolverr" target="_blank">FlareSolver</a> added as a proxy in Prowlarr (Settings => Indexers) to access it.
   - name: info_8000
     type: info
     label: About 7torrents Categories
