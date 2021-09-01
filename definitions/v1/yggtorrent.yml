@@ -112,7 +112,7 @@ settings:
     label: Password
   - name: category
     type: select
-    label: Catégorie
+    label: Category
     default: all
     options:
       all: Tous
