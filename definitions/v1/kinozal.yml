@@ -2,7 +2,7 @@
 id: kinozal
 name: Kinozal
 description: "Kinozal is a RUSSIAN Semi-Private Torrent Tracker for MOVIES / TV / MUSIC"
-language: ru-ru
+language: ru-RU
 type: semi-private
 encoding: windows-1251
 links:
@@ -108,6 +108,24 @@ login:
         selector: div.bx1 div.red
   test:
     path: userdetails.php
+
+download:
+  before:
+    path: get_srv_details.php
+    inputs:
+      action: 2
+      id: "{{ .DownloadUri.Query.id }}"
+  infohash:
+    before: true
+    hash:
+      selector: li:first-child
+      filters:
+        - name: regexp
+          args: ([A-F|0-9]{40})
+    title:
+      selector: div.b
+      filters:
+        - name: trim
 
 search:
   paths:

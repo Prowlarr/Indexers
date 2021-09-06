@@ -2,11 +2,12 @@
 id: badasstorrents
 name: Badass Torrents
 description: "Badass Torrents is a Public torrent site for MOVIES / TV / GENERAL"
-language: en-us
+language: en-US
 type: public
 encoding: UTF-8
 links:
   - https://badasstorrents.com/
+  - https://badasstorrents.nocensor.work/
 
 caps:
   categories:

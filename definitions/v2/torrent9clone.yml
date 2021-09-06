@@ -2,12 +2,14 @@
 id: torrent9clone
 name: Torrent9 clone
 description: "Torrent9 clone is a FRENCH Public Torrent9 clone for TV / MOVIES / GENERAL"
-language: fr-fr
+language: fr-FR
 type: public
 encoding: UTF-8
 followredirect: true
 links:
   - https://www.torrent9.pw/
+  - https://torrent9.nocensor.work/
+legacylinks:
   - https://torrent9.nocensor.space/
 
 legacylinks:

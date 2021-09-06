@@ -2,14 +2,14 @@
 id: torrentdownload
 name: TorrentDownload
 description: "TorrentDownload is a Public general torrent index"
-language: en-us
+language: en-US
 type: semi-private
 encoding: UTF-8
 followredirect: true
 links:
   - https://www.torrentdownload.info/
-  - https://torrentdownload.unblockit.ch/
-  - https://torrentdownload.nocensor.space/
+  - https://torrentdownload.unblockit.ws/
+  - https://torrentdownload.nocensor.work/
 legacylinks:
   - https://torrentdownload.unblockit.pro/
   - https://torrentdownload.unblockit.one/
@@ -38,6 +38,8 @@ legacylinks:
   - https://torrentdownload.unblockit.onl/
   - https://torrentdownload.unblockit.li/
   - https://torrentdownload.unblockit.uno/
+  - https://torrentdownload.unblockit.ch/
+  - https://torrentdownload.nocensor.space/
 
 caps:
   categorymappings:

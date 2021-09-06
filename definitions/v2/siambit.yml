@@ -2,7 +2,7 @@
 id: siambit
 name: SiamBIT
 description: "SiamBIT is a THAI Private Torrent Tracker for GENERAL"
-language: th-th
+language: th-TH
 type: private
 encoding: tis-620
 links:
@@ -110,7 +110,7 @@ download:
     path: ajax.php
     method: get
     inputs:
-      _action: "say_thank"
+      action: "say_thanks"
       id: "{{ .DownloadUri.Query.id }}"
   selectors:
     - selector: a[href^="downloadnew.php?id="]
@@ -163,9 +163,6 @@ search:
       selector: td:nth-child(8)
     grabs:
       selector: td:nth-child(9)
-      filters:
-        - name: regexp
-          args: (\d+)
     seeders:
       selector: td:nth-child(10)
     leechers:

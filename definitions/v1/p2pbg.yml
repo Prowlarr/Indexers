@@ -2,7 +2,7 @@
 id: p2pbg
 name: P2PBG
 description: "P2PBG is a BULGARIAN Private Torrent Tracker for 0DAY / GENERAL"
-language: bg
+language: bg-BG
 type: private
 encoding: UTF-8
 links:
@@ -184,6 +184,9 @@ search:
       selector: td:nth-child(9)
     grabs:
       selector: td:nth-child(10)
+      filters:
+        - name: replace
+          args: ["---", "0"]
     downloadvolumefactor:
       text: 1
     uploadvolumefactor:

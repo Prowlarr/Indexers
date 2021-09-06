@@ -1,46 +1,46 @@
 ---
-id: nordicplus
-name: Nordic+
-description: "Nordic+ is a Private Torrent Tracker for MOVIES / TV / GENERAL"
-language: en
+id: purovicio
+name: PuroVicio
+description: "PuroVicio is a Latin American Private Torrent Tracker for MOVIES / TV / GENERAL"
+language: es-419
 type: private
 encoding: UTF-8
 links:
-  - https://nordicplus.org/
+  - https://purovicio.in/
+legacylinks:
+  - https://purovicio.pw/
 
 caps:
   categorymappings:
     - {id: 1, cat: Movies, desc: "Movies"}
     - {id: 2, cat: TV, desc: "TV"}
     - {id: 3, cat: Audio, desc: "Music"}
-    - {id: 4, cat: Console, desc: "Games"}
-    - {id: 5, cat: PC, desc: "Apps"}
-    - {id: 6, cat: Books, desc: "Books"}
-    - {id: 11, cat: Movies/Other, desc: "Movies Boxset"}
-    - {id: 12, cat: Movies/Foreign, desc: "Movies Non Nordic"}
-    - {id: 13, cat: TV/Anime, desc: "Movies Kids"}
-    - {id: 14, cat: TV/Other, desc: "TV Boxset"}
-    - {id: 15, cat: TV/Foreign, desc: "TV Non Nordic"}
-    - {id: 16, cat: TV/Anime, desc: "TV Kids"}
+    - {id: 4, cat: PC/Mac, desc: "Mac"}
+    - {id: 5, cat: Console, desc: "Game"}
+    - {id: 6, cat: PC/0day, desc: "Soft"}
+    - {id: 7, cat: Other, desc: "Various"}
+    - {id: 8, cat: XXX, desc: "XXX"}
+    - {id: 9, cat: Other, desc: "Cursos"}
+    - {id: 10, cat: PC/ISO, desc: "Sistemas Operativos"}
 
   modes:
     search: [q]
     tv-search: [q, season, ep, imdbid, tvdbid]
     movie-search: [q, imdbid, tmdbid]
     music-search: [q]
-    book-search: [q]
 
 settings:
-  - name: username
+  - name: cookie
     type: text
-    label: Username
-  - name: password
-    type: password
-    label: Password
-  - name: usemagnet
-    type: checkbox
-    label: "Use Magnet Download Link"
-    default: false
+    label: Cookie
+  - name: info_login
+    type: info
+    label: Purovicio Login
+    default: "Purovicio is using a <b>ReCaptcha</b> challenge during <b>login</b> which Jackett cannot solve.</br>So Jackett is using the <b>cookie</b> method to allow Jackett access to the site.</br>However, for this to work you need to <b>remain logged in</b> at the Purovicio website, otherwise the cookie will become invalidated. (You can close the Browser Tab, just don't <b>Logout</b>).</br>If you get no results, then <b>refresh</b> your cookie."
+  - name: info_cookie
+    type: info
+    label: How to get the Cookie
+    default: "<ol><li>Login to this tracker with your browser<li>Open the <b>DevTools</b> panel by pressing <b>F12</b><li>Select the <b>Network</b> tab<li>Click on the <b>Doc</b> button (Chrome Browser) or <b>HTML</b> button (FireFox)<li>Refresh the page by pressing <b>F5</b><li>Click on the first row entry<li>Select the <b>Headers</b> tab on the Right panel<li>Find <b>'cookie:'</b> in the <b>Request Headers</b> section<li><b>Select</b> and <b>Copy</b> the whole cookie string <i>(everything after 'cookie: ')</i> and <b>Paste</b> here.</ol>"
   - name: freeleech
     type: checkbox
     label: Search freeleech only
@@ -63,39 +63,24 @@ settings:
       asc: asc
 
 login:
-  path: login
-  method: form
-  form: form[action$="/login"]
+  method: cookie
   inputs:
-    username: "{{ .Config.username }}"
-    password: "{{ .Config.password }}"
-    remember: on
-  selectorinputs:
-    _token:
-      selector: input[name="_token"]
-      attribute: value
-  error:
-    - selector: div#ERROR_COPY
-#    test:
-#      path: /
-#      selector: a[href$="/logout"]
+    cookie: "{{ .Config.cookie }}"
+  test:
+    path: /
 
 search:
   paths:
-    - path: torrents/filter
+    - path: filterTorrents
   inputs:
     $raw: "{{ range .Categories }}categories[]={{.}}&{{end}}"
     search: "{{ if .Query.IMDBID }}{{ else }}{{ .Keywords }}{{ end }}" # for dashboard imdbid search
     description: ""
-    keywords: ""
     uploader: ""
     imdb: "{{ .Query.IMDBIDShort }}"
     tvdb: "{{ .Query.TVDBID }}"
     tmdb: "{{ .Query.TMDBID }}"
     mal: ""
-    igdb: ""
-    start_year: ""
-    end_year: ""
     sorting: "{{ .Config.sort }}"
     direction: "{{ .Config.type }}"
     qty: 100
@@ -112,45 +97,39 @@ search:
       attribute: href
       filters:
         - name: regexp
-          args: "/categories/(\\d+)"
+          args: "/categories/.*?\\.(\\d+)"
     title:
-      selector: a[href*="/torrents/"]
-    details:
-      selector: a[href*="/torrents/"]
-      attribute: href
-    download1:
+      selector: a.view-torrent
+    download:
       selector: a[href*="/download/"]
       attribute: href
-    download2:
-      selector: a[href^="magnet:?"]
+    details:
+      selector: a.view-torrent
       attribute: href
-    download:
-      text: "{{ if .Config.usemagnet }}{{ .Result.download2 }}{{ else }}{{ .Result.download1 }}{{ end }}"
     poster:
       selector: div.torrent-poster img
       attribute: src
       filters:
+        - name: prepend
+          args: "https://images.weserv.nl/?url=" # for display on dashboard
+        - name: append
+          args: "&w=180&h=270" # for display on dashboard
         - name: replace
-          args: ["&w=60&h=90", "&w=180&h=270"] # for display on dashboard
-        - name: replace
-          args: ["/img/NoPoster.png", ""]
-    size:
-      selector: td:nth-last-child(4)
-    seeders:
-      selector: td:nth-last-child(3)
-    leechers:
-      selector: td:nth-last-child(2)
-    grabs:
-      selector: td:nth-last-child(1)
-      filters:
-        - name: regexp
-          args: (\d+)
+          args: ["https://images.weserv.nl/?url=https://via.placeholder.com/600x900&w=180&h=270", ""]
     imdb:
       selector: a[href*="imdb.com/title/tt"]
       attribute: href
     tmdbid:
       selector: a[href*="themoviedb.org/movie/"]
       attribute: href
+    size:
+      selector: td:nth-last-child(4)
+    grabs:
+      selector: td:nth-last-child(3)
+    seeders:
+      selector: td:nth-last-child(2)
+    leechers:
+      selector: td:nth-last-child(1)
     date:
       selector: time
       filters:
@@ -206,6 +185,4 @@ search:
         i[class*="fa-globe text-green"]: 2 # Global Double Upload
         i[class*="fa-certificate text-pink"]: 2 # Featured Torrent
         "*": 1
-    minimumratio:
-      text: 0.4
-# UNIT3D 5.2.0
+# UNIT3D 1.9.4

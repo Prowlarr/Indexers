@@ -2,7 +2,7 @@
 id: ibit
 name: IBit
 description: "IBit is a Public Verified Torrent Search Engine"
-language: en-us
+language: en-US
 type: public
 encoding: UTF-8
 links:
@@ -89,19 +89,10 @@ search:
         - name: timeago
     size:
       selector: td:nth-child(5)
-      filters:
-        - name: replace
-          args: ["-", "0 B"]
     seeders:
       selector: td:nth-child(6)
-      filters:
-        - name: replace
-          args: [",", ""]
     leechers:
       selector: td:nth-child(7)
-      filters:
-        - name: replace
-          args: [",", ""]
     downloadvolumefactor:
       text: 0
     uploadvolumefactor:

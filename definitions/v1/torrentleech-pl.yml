@@ -2,7 +2,7 @@
 id: torrentleech-pl
 name: Torrentleech.pl
 description: "Torrentleech.pl is a POLISH Private Torrent Tracker for 0DAY / GENERAL"
-language: pl-pl
+language: pl-PL
 type: private
 encoding: UTF-8
 links:
@@ -164,4 +164,7 @@ search:
         "*": 1
     uploadvolumefactor:
       text: 1
+    minimumseedtime:
+      # 2 days (as seconds = 2 x 24 x 60 x 60)
+      text: 172800
 # engine n/a

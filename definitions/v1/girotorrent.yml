@@ -2,7 +2,7 @@
 id: girotorrent
 name: Girotorrent
 description: "Girotorrent is an ITALIAN Private site for TV / MOVIES / GENERAL"
-language: it-it
+language: it-IT
 type: private
 encoding: UTF-8
 links:
@@ -131,13 +131,7 @@ login:
     selector: a[href="logout.php"]
 
 download:
-  before:
-    path: thanks.php
-    method: post
-    inputs:
-      infohash: "{{ .DownloadUri.Query.id }}"
-      thanks: 1
-      rndval: "1487013827343"
+
   selector: a[href^="download.php?id="]
   attribute: href
 
