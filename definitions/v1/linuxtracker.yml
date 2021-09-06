@@ -2,7 +2,7 @@
 id: linuxtracker
 name: LinuxTracker
 description: "LinuxTracker is a Public Linux ISO Torrent Repository"
-language: en-us
+language: en-US
 type: public
 encoding: UTF-8
 links:
@@ -377,6 +377,9 @@ search:
     grabs:
       selector: td:nth-child(2) > table > tbody > tr:nth-child(5) > td
       remove: strong
+      filters:
+        - name: replace
+          args: ["---", "0"]
     cat:
       selector: a[href^="index.php?page=torrents&category="]
       attribute: href

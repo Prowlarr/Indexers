@@ -7,7 +7,7 @@ type: public
 encoding: UTF-8
 followredirect: true
 links:
-  - https://torrentqq103.com/
+  - https://torrentqq105.com/
 legacylinks:
   - https://torrentqq76.com/
   - https://torrentqq77.com/
@@ -35,6 +35,8 @@ legacylinks:
   - https://torrentqq100.com/
   - https://torrentqq101.com/
   - https://torrentqq102.com/
+  - https://torrentqq103.com/
+  - https://torrentqq104.com/
 
 caps:
   categorymappings:
@@ -59,16 +61,19 @@ settings:
   - name: flaresolverr
     type: info
     label: FlareSolverr
-    default: This site may use Cloudflare DDoS Protection, therefore Prowlarr may require <a href="https://github.com/FlareSolverr/FlareSolverr" target="_blank">FlareSolver</a> added as a proxy in Prowlarr (Settings => Indexers) to access it.
-  - name: downloads
-    type: info
-    label: About Downloads
-    default: Some download links on this site use a link to a direct file download service, instead of a .torrent link. Jackett does not support direct file downloads, so you will get a page-cannot-be-found error when you try them.
+    default: This site may use Cloudflare DDoS Protection, therefore Prowlarr may require <a href="https://github.com/FlareSolverr/FlareSolverr" target="_blank">FlareSolver</a> added as a proxy in Prowlarr (Settings => Indexers) to access it. The proxy and this indexer should share a tag.
 
 download:
-  selectors:
-    - selector: a[href^="/torrent/download/"]
-      attribute: href
+  infohash:
+    hash:
+      selector: table.table-bordered > tbody > tr > td > ul > li
+      filters:
+        - name: regexp
+          args: ([a-f|0-9]{40})
+    title:
+      selector: table.table-bordered > thead > tr > th > strong
+      filters:
+        - name: trim
 
 search:
   paths:

@@ -2,7 +2,7 @@
 id: torrentland
 name: Torrentland
 description: "Torrentland is a SPANISH Private Torrent Tracker for MOVIES / TV / GENERAL"
-language: es-es
+language: es-ES
 type: private
 encoding: UTF-8
 links:
@@ -109,7 +109,7 @@ search:
 
   fields:
     category:
-      selector: td.category-col div:nth-child(2)
+      selector: td:nth-child(2) div:last-child
       case:
         "span:contains(\"Películas\")": 1
         "span:contains(\"Series\")": 2

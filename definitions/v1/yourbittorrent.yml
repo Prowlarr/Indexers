@@ -2,15 +2,16 @@
 id: yourbittorrent
 name: YourBittorrent
 description: "YourBittorrent is a Public torrent index"
-language: en-us
+language: en-US
 type: public
 encoding: UTF-8
 links:
   - https://yourbittorrent.com/
   - https://yourbittorrent2.com/
-  - https://yourbittorrent.nocensor.space/
+  - https://yourbittorrent.nocensor.work/
 legacylinks:
   - https://yourbittorrent.host/
+  - https://yourbittorrent.nocensor.space/
 
 caps:
   categorymappings:

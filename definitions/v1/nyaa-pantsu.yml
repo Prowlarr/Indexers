@@ -2,15 +2,16 @@
 id: nyaa-pantsu
 name: Nyaa-pantsu
 description: "Nyaa-pantsu is a Public site for dedicated to Asian ANIME"
-language: en-en
+language: en-EN
 type: public
 encoding: UTF-8
 links:
   - https://nyaa.net/
-  - https://nyaapantsu.nocensor.space/
+  - https://nyaapantsu.nocensor.work/
 legacylinks:
   - https://nyaa.pantsu.cat/
   - https://nyaa.pt/
+  - https://nyaapantsu.nocensor.space/
 
 settings:
   - name: cat-id
