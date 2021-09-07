@@ -2,7 +2,7 @@
 id: abnormal
 name: Abnormal
 description: "General French Private Tracker"
-language: fr-fr
+language: fr-FR
 type: private
 encoding: UTF-8
 links:
