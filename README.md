@@ -16,6 +16,8 @@ Prowlarr will fall back to a previous version if no YML exists for the current v
   - Regex removal for Size parsing
   - Multiple Download Selectors
   - Optional Selectors
+  - Testlink Torrents
+  - InfoHash links
   
 ## Depreciated Versions
 - None
