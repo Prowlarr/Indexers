@@ -1,4 +1,5 @@
 # Indexers
+
 This Repo contains Cardigann YML indexer definitions for [Prowlarr](https://github.com/Prowlarr/Prowlarr).
 
 For more information on the formatting of the YML Indexer Definition, please see [our wiki entry](https://wiki.servarr.com/en/prowlarr/cardigann-yml-definition)
@@ -11,6 +12,7 @@ Versions require Prowlarr Cardigann C# modifications.
 Prowlarr will fall back to a previous version if no YML exists for the current version.
 
 ## Active Versions
+
 - V1 Indexers are base level standard YML
 - V2 Indexers include:
   - Regex removal for Size parsing
@@ -20,4 +22,5 @@ Prowlarr will fall back to a previous version if no YML exists for the current v
   - InfoHash links
   
 ## Depreciated Versions
+
 - None
