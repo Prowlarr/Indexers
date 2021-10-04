@@ -7,7 +7,7 @@ type: public
 encoding: UTF-8
 followredirect: true
 links:
-  - https://torrentqq109.com/
+  - https://torrentqq110.com/
 legacylinks:
   - https://torrentqq76.com/
   - https://torrentqq77.com/
@@ -41,6 +41,7 @@ legacylinks:
   - https://torrentqq106.com/
   - https://torrentqq107.com/
   - https://torrentqq108.com/
+  - https://torrentqq109.com/
 
 caps:
   categorymappings:
@@ -69,7 +70,7 @@ settings:
   - name: downloads
     type: info
     label: About Downloads
-    default: Some download links on this site use a link to a direct file download service, instead of a .torrent link. Jackett does not support direct file downloads, so you will get a page-cannot-be-found error when you try them.
+    default: Some download links on this site use a link to a direct file download service, instead of a .torrent link. Prowlarr does not support direct file downloads, so you will get a page-cannot-be-found error when you try them.
 
 download:
   selector: a[href^="/torrent/download/"]
