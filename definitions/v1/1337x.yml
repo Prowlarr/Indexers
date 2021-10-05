@@ -144,7 +144,7 @@ settings:
   - name: downloadlink
     type: select
     label: Download link
-    default: "default: "magnet:"
+    default: "magnet:"
     options:
       "http://itorrents.org/": iTorrents.org
       "http://torrage.info/": Torrage
