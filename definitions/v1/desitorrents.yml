@@ -129,39 +129,39 @@ search:
       filters:
         # translations for Turkish|Estonian|Danish|Italian|Polish|Norwegian|Portuguese|Czech|Russian|Romanian|Spanish|French|German|Bulgarian|Dutch|Chinese|Japanese|Swedish
         - name: re_replace
-          args: ["(?i)(�nce|tagasi|geleden|fa|temu|siden|h�|atr�s|nazpet|?????|acum|�n urma|hace|il y a|vor|?????|?|sedan)", " ago"]
+          args: ["(?i)(önce|tagasi|geleden|fa|temu|siden|há|atrás|nazpět|назад|acum|în urmă|hace|il y a|vor|преди|前|sedan)", " ago"]
         - name: re_replace
-          args: ["(?i)(saniye|sekundit|sekunder|secondi|sekund|segundos|sekundami|??????|secunde|secondes|Sekunden|???????|seconden|??)", "seconds"]
+          args: ["(?i)(saniye|sekundit|sekunder|secondi|sekund|segundos|sekundami|секунд|secunde|secondes|Sekunden|секунди|seconden|秒前)", "seconds"]
         - name: re_replace
-          args: ["(?i)(minutit|minutter|minuti|minuty|minutos|??????|?????|Minuten|??????|minuten|minuter)", "minutes"]
+          args: ["(?i)(minutit|minutter|minuti|minuty|minutos|минуты|минут|Minuten|минути|minuten|minuter)", "minutes"]
         - name: re_replace
-          args: ["(?i)(dakika|minut|minuto|minuta|minutt|??????|Minute|minuut|??|?)", " minute"]
+          args: ["(?i)(dakika|minut|minuto|minuta|minutt|минута|Minute|minuut|分钟|分)", " minute"]
         - name: re_replace
-          args: ["(?i)(tundi|timer|ore|godziny|horas|hodiny|hoden|????|?????|ore|heures|Stunden|timmar)", "hours"]
+          args: ["(?i)(tundi|timer|ore|godziny|horas|hodiny|hoden|часа|часов|ore|heures|Stunden|timmar)", "hours"]
         - name: re_replace
-          args: ["(?i)(saat|tund|time|ora|godzina|hora|hodina|???|ora|heure|Stunde|uur|??|??|timme)", " hour"]
+          args: ["(?i)(saat|tund|time|ora|godzina|hora|hodina|час|oră|heure|Stunde|uur|小时|時間|timme)", " hour"]
         - name: re_replace
-          args: ["(?i)(p�eva|dage|giorni|dni|dias|dny|???|????|zile|d�as|jours|Tagen|???|dagen|dagar)", "days"]
+          args: ["(?i)(päeva|dage|giorni|dni|dias|dny|дня|дней|zile|días|jours|Tagen|дни|dagen|dagar)", "days"]
         - name: re_replace
-          args: ["(?i)(g�n|p�ev|dag|giorno|dzien|dia|den|????|zi|d�a|jour|Tag|???|?|?)", " day"]
+          args: ["(?i)(gün|päev|dag|giorno|dzień|dia|den|день|zi|día|jour|Tag|ден|天|日)", " day"]
         - name: re_replace
-          args: ["(?i)(n�dalat|uger|settimane|tygodnie|uker|semanas|t�dny|??????|??????|saptam�ni|semaines|Wochen|???????|weken|veckor)", "weeks"]
+          args: ["(?i)(nädalat|uger|settimane|tygodnie|uker|semanas|týdny|недели|недель|săptămâni|semaines|Wochen|седмици|weken|veckor)", "weeks"]
         - name: re_replace
-          args: ["(?i)(hafta|n�dal|uge|settimana|tydzien|uke|semana|t�den|??????|saptam�na|semaine|Woche|???????|?|??|vecka)", " week"]
+          args: ["(?i)(hafta|nädal|uge|settimana|tydzień|uke|semana|týden|неделю|săptămână|semaine|Woche|седмица|周|週間|vecka)", " week"]
         - name: re_replace
           args: ["(?i) (ay)", "month"]
         - name: re_replace
-          args: ["(?i)(kuud|m�neder|mesi|miesiace|meses|mes�ce|??????|???????|luni|meses|mois|Monaten|??????|maanden|m�nader)", "months"]
+          args: ["(?i)(kuud|måneder|mesi|miesiące|meses|měsíce|месяца|месяцев|luni|meses|mois|Monaten|месеца|maanden|månader)", "months"]
         - name: re_replace
-          args: ["(?i)(kuu|m�ned|mese|miesiac|m�s|mes�c|?????|luna|mes|Monat|?????|maand|??|??|m�nad)", " month"]
+          args: ["(?i)(kuu|måned|mese|miesiąc|mês|měsíc|месяц|lună|mes|Monat|месец|maand|个月|ヶ月|månad)", " month"]
         - name: re_replace
-          args: ["(?i)(aastat|anni|lata|anos|roky|????|ani|a�os|ans|Jahren|??????)", " years"]
+          args: ["(?i)(aastat|anni|lata|anos|roky|года|ani|años|ans|Jahren|години)", " years"]
         - name: re_replace
-          args: ["(?i)(yil|aasta|�r|anno|rok|ano|???|a�o|Jahr|??????|jaar|?)", " year"]
+          args: ["(?i)(yil|aasta|år|anno|rok|ano|год|año|Jahr|година|jaar|年)", " year"]
         - name: re_replace
           args: ["(?i) (an)", "year"]
         - name: re_replace
-          args: ["(?i)(F�r |und)", ""] # Misc removals
+          args: ["(?i)(För |und)", ""] # Misc removals
         - name: timeago
     downloadvolumefactor:
       case:
