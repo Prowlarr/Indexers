@@ -20,6 +20,7 @@ Prowlarr will fall back to a previous version if no YML exists for the current v
   - Optional Selectors
   - Testlink Torrents
   - InfoHash links
+  - AllowRawSearch property in caps
   
 ## Depreciated Versions
 
