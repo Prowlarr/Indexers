@@ -1,3 +1,5 @@
+extends: default
+
 rules:
   document-start:
     level: error
@@ -6,3 +8,16 @@ rules:
   truthy: disable
   comments:
     min-spaces-from-content: 1
+  comments-indentation: disable
+  braces:
+    forbid: false
+    min-spaces-inside: -1
+    max-spaces-inside: -1
+    min-spaces-inside-empty: -1
+    max-spaces-inside-empty: -1
+  brackets:
+    forbid: false
+    min-spaces-inside: -1
+    max-spaces-inside: -1
+    min-spaces-inside-empty: -1
+    max-spaces-inside-empty: -1
