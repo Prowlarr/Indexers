@@ -51,7 +51,7 @@ download:
 
 search:
   paths:
-    # https://torrentwiz22.me/bbs/search.php?url=&stx=sin&srows=100&gr_id=&sfl=wr_subject&sop=and
+    # https://torrentwiz31.com/bbs/search.php?url=&stx=sin&srows=100&gr_id=&sfl=wr_subject&sop=and
     - path: bbs/search.php
   inputs:
     stx: "{{ if .Keywords }}{{ .Keywords }}{{ else }}{{ .Today.Year }}{{ end }}"
