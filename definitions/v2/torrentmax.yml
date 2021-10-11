@@ -7,14 +7,12 @@ type: public
 encoding: UTF-8
 followredirect: true
 links:
+  - https://torrentmax1.net/
+legacylinks:
   - https://torrentmax15.com/
 
 caps:
   categorymappings:
-    - {id: "PHOTO", cat: XXX, desc: "후방주의 (Adult)"}
-    - {id: "19", cat: XXX, desc: "후방주의2 (Adult)"}
-    - {id: "GIRL", cat: XXX, desc: "걸그룹 (Adult)"}
-    - {id: "CAM", cat: XXX, desc: "직캠 (Adult)"}
     - {id: "ANIMATION", cat: TV/Anime, desc: "애니 (Animation)"}
     - {id: "GAME", cat: Console, desc: "게임 (Games)"}
     - {id: "MOVIE_EN", cat: Movies/Foreign, desc: "영화 (Movie EN)"}
@@ -26,8 +24,6 @@ caps:
     - {id: "VARIETY", cat: TV, desc: "예능 (Variety)"}
     - {id: "MUSIC", cat: Audio, desc: "한국음악 (Music)"}
     - {id: "MUSIK", cat: Audio/Foreign, desc: "외국음악 (Music Foreign)"}
-    - {id: "notice", cat: Other, desc: "공지사항 (Notice)"}
-    - {id: "humor", cat: Other, desc: "유머 (Humor)"}
     - {id: "MOBILE", cat: PC/Mobile-Other, desc: "모바일 (Mobile)"}
     - {id: "UTIL", cat: PC, desc: "유틸 (Software)"}
 
@@ -45,16 +41,22 @@ settings:
     default: This site may use Cloudflare DDoS Protection, therefore Prowlarr may require <a href="https://github.com/FlareSolverr/FlareSolverr" target="_blank">FlareSolver</a> added as a proxy in Prowlarr (Settings => Indexers) to access it.
 
 download:
-  selectors:
-    - selector: a[href*="magnet:?xt="]
+  infohash:
+    hash:
+      selector: a[href^="magnet:?xt="]
       attribute: href
       filters:
-        - name: append
-          args: "&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969%2Fannounce&tr=udp%3A%2F%2Fopen.stealth.si%3A80%2Fannounce&tr=udp%3A%2F%2Fexodus.desync.com%3A6969&tr=udp%3A%2F%2Fp4p.arenabg.com%3A1337%2Fannounce&tr=udp%3A%2F%2Fexplodie.org%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&tr=udp%3A%2F%2Ftracker.tiny-vps.com%3A6969%2Fannounce&tr=udp%3A%2F%2Fopen.demonii.si%3A1337%2Fannounce&tr=udp%3A%2F%2Ftracker.torrent.eu.org%3A451%2Fannounce&tr=udp%3A%2F%2Ftracker.pirateparty.gr%3A6969%2Fannounce&tr=udp%3A%2F%2Fipv4.tracker.harry.lu%3A80%2Fannounce&tr=udp%3A%2F%2Ftracker.cyberia.is%3A6969%2Fannounce&tr=udp%3A%2F%2F9.rarbg.to%3A2710%2Fannounce&tr=udp%3A%2F%2Fdenis.stalker.upeer.me%3A6969%2Fannounce"
+        - name: regexp
+          args: ([A-F|a-f|0-9]{40})
+    title:
+      selector: h3.panel-title
+      filters:
+        - name: trim
+        - name: validfilename
 
 search:
   paths:
-    # https://torrentmax15.com/bbs/search.php?srows=100&gr_id=&sfl=wr_subject&stx=2021&sop=and
+    # https://torrentmax1.net/bbs/search.php?srows=100&gr_id=&sfl=wr_subject&stx=2021&sop=and
     - path: bbs/search.php
   inputs:
     stx: "{{ if .Keywords }}{{ .Keywords }}{{ else }}{{ .Today.Year }}{{ end }}"
@@ -66,7 +68,7 @@ search:
     sop: and
 
   rows:
-    selector: div.search-media div.media
+    selector: div.search-media div.media:not(:has(a[href*="/max/PHOTO/"])):not(:has(a[href*="/max/GIRL/"])):not(:has(a[href*="/max/CAM/"])):not(:has(a[href*="/max/notice/"])):not(:has(a[href*="/max/humor/"]))
 
   fields:
     category:

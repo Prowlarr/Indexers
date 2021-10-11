@@ -86,7 +86,7 @@ search:
         - name: replace
           args: ["Torrent Magnet ", ""]
         - name: replace
-          args: ["Download ", ""]
+          args: ["Download", ""]
     details:
       selector: h2 > a
       attribute: href
@@ -109,4 +109,4 @@ search:
       text: 0
     uploadvolumefactor:
       text: 1
-# engine wordpress
+# engine wordpress 5.8
