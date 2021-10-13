@@ -1,0 +1,167 @@
+---
+id: bjshare
+name: Bj-Share
+description: "Private PT-BR torrent"
+language: pt-br
+type: private
+encoding: UTF-8
+links:
+  - https://bj-share.info/
+
+caps:
+  categorymappings:
+    - {id: 1, cat: Movies, desc: "Moviess", default: false}
+    - {id: 2, cat: TV, desc: "TV", default: false}
+    - {id: 14, cat: TV, desc: "TV", default: false} # Anime format is equal to TV Show (SXXEXX) except old ones like one piece
+
+  modes:
+    search: [q]
+    tv-search: [q]
+    movie-search: [q, imdbid]
+
+settings:
+  - name: username
+    type: text
+    label: Username
+  - name: password
+    type: password
+    label: Password
+  - name: freeleech
+    type: checkbox
+    label: Search freeleech only
+    default: false
+
+login:
+  path: login.php
+  method: form
+  form: form#xaloginform
+  inputs:
+    username: "{{ .Config.username }}"
+    password: "{{ .Config.password }}"
+    keeplogged: 1
+  error:
+    - selector: div[id="msgPublic"]
+  test:
+    path: index.php
+    selector: a[href^="/logout.php?auth="]
+
+search:
+  # https://bj-share.info/torrents.php?searchstr=aves+de+rapina&filter_cat%5B1%5D=1
+  paths:
+    - path: torrents.php
+
+  inputs:
+    $raw: "{{ range .Categories }}filter_cat[{{.}}]=1&{{end}}"
+    searchstr: "{{ if .Query.IMDBID }}{{ .Query.IMDBID }}{{ else }}{{ .Keywords }}{{ .Query.Year }}{{ end }}"
+    freetorrent: "{{ if .Config.freeleech }}1{{ else }}{{ end }}"
+
+  keywordsfilters:
+    - name: re_replace
+      args: ["(S[0-9]+E[0-9]+|S[0-9]+)",""] # remove SXXEXX or SXX from search
+
+  rows:
+    #If the category is a TV show/Anime, there's a necessity to filter the results by season/episode to not show all of them 
+    selector: "table.torrent_table > tbody > tr:not(tr.colhead).group,
+           table.torrent_table tbody tr:not(tr.colhead){{ if eq \"category:{{ join .Categories \"\" }}\" \"category:1\" }}{{else}}:contains('
+           {{ re_replace .Query.Keywords \".*(S[0-9]*E[0-9]*|S[0-9]*).*\" \"$1\" }}'){{ end }}"
+    filters:
+      - name: andmatch
+
+  fields:
+    download:
+      selector: a[title="Baixar"]
+      attribute: href
+      optional: true 
+
+    _singleTorrentInfo: 
+      selector: div.torrent_info
+
+    _multipleTorrentInfo:
+      selector: a[href^="torrents.php?id="]
+
+    _info: #example [MKV / x265 / WEB-DL / Legendado / 4K / Free]
+      text: "{{ if .Result._singleTorrentInfo }}{{.Result._singleTorrentInfo}}{{ else }}{{.Result._multipleTorrentInfo}}{{ end }}"
+      filters:
+        - name: replace
+          args: ["Full HD", "1080p"]
+        - name: replace
+          args: ["4K", "2160p"]
+        - name: replace
+          args: ["SD", "480p"]
+        - name: replace
+          args: ["/ HD]", "720p"]
+        - name: replace
+          args: ["/ HD /", "720p"]
+        - name: replace
+          args: ["/ Free", ""]
+        - name: re_replace
+          args: ["[\\[\\]]+",""]
+
+    _rawTitle:
+      selector: div.group_info
+      filters:
+        - name: re_replace
+          args: ["\n|  |\t",""] # remove newline, double space and tabs
+
+    _year:
+      text: "{{ .Result._rawTitle }}"
+      filters:
+        - name: regexp
+          args: "\\[([0-9]*)\\]"
+
+    details:
+      selector: a[href^="torrents.php?id="] 
+      attribute: href
+
+    description:
+      text: "{{ .Result._details }}"
+
+    title_details: 
+      # Title defined as:
+        # PT-BR/Japanese title [en-US title] [year]
+      text: "{{ .Result._rawTitle }}"
+      filters:    
+        - name: re_replace
+          args: ["\\[[0-9]*\\].*",""] # Removes the year and everything after   
+        - name: re_replace
+          args: ["(.*)\\[(!?[^/]*?)\\]","$2"]   # Parse only en-us title, when available
+
+    category_details:
+      selector: td.cats_col > a 
+      attribute: href
+      filters:
+        - name: regexp
+          args: "%5b(\\d+?)%5d"  
+
+    category:
+      text: "{{ .Result.category_details }}"
+
+    title:
+      text: "{{ .Result.title_details }}"
+      filters:
+        - name: append
+          args: "{{ .Result._year }}"
+        - name: append
+          args: " {{ .Result._info }}"
+
+    size:
+      selector: td:nth-last-child(4)
+    grabs:
+      selector: td:nth-last-child(3)
+    seeders:
+      selector: td:nth-last-child(2)
+    leechers:
+      selector: td:nth-last-child(1)
+
+    downloadvolumefactor:
+      case:
+        strong[title*="Free"]: 0
+        "*": 1
+    uploadvolumefactor:
+      text: 1
+    minimumratio:
+      text: 1.0
+    minimumseedtime:
+      # 7 days (as seconds = 7 x 24 x 60 x 60)
+      text: 604800
+      
