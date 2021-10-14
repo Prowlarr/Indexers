@@ -60,7 +60,7 @@ search:
       args: ["(S[0-9]+E[0-9]+|S[0-9]+)",""] # remove SXXEXX or SXX from search
 
   rows:
-    #If the category is a TV show/Anime, there's a necessity to filter the results by season/episode to not show all of them 
+    # If the category is a TV show/Anime, there's a necessity to filter the results by season/episode to not show all of them 
     selector: "table.torrent_table > tbody > tr:not(tr.colhead).group,
            table.torrent_table tbody tr:not(tr.colhead){{ if eq \"category:{{ join .Categories \"\" }}\" \"category:1\" }}{{else}}:contains('
            {{ re_replace .Query.Keywords \".*(S[0-9]*E[0-9]*|S[0-9]*).*\" \"$1\" }}'){{ end }}"
@@ -79,7 +79,7 @@ search:
     _multipleTorrentInfo:
       selector: a[href^="torrents.php?id="]
 
-    _info: #example [MKV / x265 / WEB-DL / Legendado / 4K / Free]
+    _info: # example [MKV / x265 / WEB-DL / Legendado / 4K / Free]
       text: "{{ if .Result._singleTorrentInfo }}{{.Result._singleTorrentInfo}}{{ else }}{{.Result._multipleTorrentInfo}}{{ end }}"
       filters:
         - name: replace
