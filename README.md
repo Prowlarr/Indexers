@@ -26,6 +26,12 @@ Prowlarr will fall back to a previous version if no YML exists for the current v
     - InfoHash links
     - AllowRawSearch property in caps
   - All new indexers shall be added to v2 as of 2021-10-13
+- V3 Indexers
+  - **Note: This is still in development in Prowlarr.**
+  - Prowlarr Cardigann v3 includes support for APIs and JSON
+  - Replace `imdb:` selector with `imdbid:`
+  - Makes `Description` an optional by default
+  - All new Indexers using APIs shall be in v3 as of 2021-10-21
   
 ## Depreciated Versions
 
