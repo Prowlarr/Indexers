@@ -13,10 +13,6 @@ Prowlarr will fall back to a previous version if no YML exists for the current v
 
 ## Active Versions
 
-- V1 Indexers
-  - Prowlarr Cardigann v1 are base level standard YML
-  - No new indexers are to be added to v1 as of 2021-10-13
-  - V2 updates for indexers existing as v1 will be backported to V1 where possible until V1 is depreciated
 - V2 Indexers
   - Prowlarr Cardigann v2 include several changes such as
     - Regex removal for Size parsing
@@ -35,4 +31,7 @@ Prowlarr will fall back to a previous version if no YML exists for the current v
   
 ## Depreciated Versions
 
-- None
+- V1 Indexers
+  - Prowlarr Cardigann v1 are base level standard YML
+  - No new indexers are to be added to v1 as of 2021-10-13
+  - No new updates backported to v1 as of 2021-10-17
