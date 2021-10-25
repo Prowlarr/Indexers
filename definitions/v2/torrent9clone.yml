@@ -8,9 +8,10 @@ encoding: UTF-8
 followredirect: true
 links:
   - https://www.torrent9.pw/
-  - https://torrent9.nocensor.work/
+  - https://torrent9.nocensor.biz/
 legacylinks:
   - https://torrent9.nocensor.space/
+  - https://torrent9.nocensor.work/
 
 legacylinks:
   - https://www.torrents9.pw/
@@ -176,16 +177,16 @@ search:
       text: now
     size:
       selector: td:nth-child(2)
-    seeders:
-      text: 0
-    seeders:
+    seeders_optional:
       selector: td:nth-child(3)
       optional: true
-    leechers:
-      text: 0
-    leechers:
+    seeders:
+      text: "{{ if .Result.seeders_optional }}{{ .Result.seeders_optional }}{{ else }}0{{ end }}"
+    leechers_optional:
       selector: td:nth-child(4)
       optional: true
+    leechers:
+      text: "{{ if .Result.leechers_optional }}{{ .Result.leechers_optional }}{{ else }}0{{ end }}"
     downloadvolumefactor:
       text: 0
     uploadvolumefactor:
