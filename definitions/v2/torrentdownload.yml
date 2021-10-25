@@ -9,7 +9,7 @@ followredirect: true
 links:
   - https://www.torrentdownload.info/
   - https://torrentdownload.unblockit.kim/
-  - https://torrentdownload.nocensor.work/
+  - https://torrentdownload.nocensor.biz/
 legacylinks:
   - https://torrentdownload.unblockit.pro/
   - https://torrentdownload.unblockit.one/
@@ -41,6 +41,7 @@ legacylinks:
   - https://torrentdownload.unblockit.ch/
   - https://torrentdownload.nocensor.space/
   - https://torrentdownload.unblockit.ws/
+  - https://torrentdownload.nocensor.work/
 
 caps:
   categorymappings:
@@ -54,6 +55,7 @@ caps:
     - {id: Applications, cat: PC/0day, desc: Applications}
     - {id: ApplicationsAndroid, cat: PC/Mobile-Android, desc: "Applications Android"}
     - {id: AudioBooks, cat: Audio/Audiobook, desc: "Books Audiobooks"}
+    - {id: AudioAudiobooks, cat: Audio/Audiobook, desc: "Books Audiobooks"}
     - {id: AudioLossless, cat: Audio/Lossless, desc: "Audio Lossless"}
     - {id: BooksAcademic, cat: Books, desc: "Books Academic"}
     - {id: BooksComics, cat: Books/Comics, desc: "Books Comics"}
@@ -68,6 +70,7 @@ caps:
     - {id: Movies, cat: Movies, desc: Movies}
     - {id: MoviesAction, cat: Movies, desc: Movies Action}
     - {id: MoviesConcerts, cat: Movies, desc: "Movies Concerts"}
+    - {id: MoviesCrime, cat: Movies, desc: "Movies Crime"}
     - {id: MoviesDocumentary, cat: TV/Documentary, desc: "Movies Documentary"}
     - {id: MoviesDubbedMovies, cat: Movies, desc: "Movies Dubbed Movies"}
     - {id: MoviesMusicvideos, cat: Audio/Video, desc: "Movies Musicvideos"}
@@ -84,6 +87,7 @@ caps:
     - {id: PicturesPicturesOther, cat: Other/Misc, desc: "Pictures Other"}
     - {id: PicturesWallpapers, cat: Other/Misc, desc: "Pictures Wallpapers"}
     - {id: TV, cat: TV, desc: TV}
+    - {id: TVBBC, cat: TV, desc: "TV BBC"}
     - {id: TVEllenDeGeneres, cat: TV, desc: "TV Ellen DeGeneres"}
     - {id: TVOther, cat: TV/Other, desc: "TV Other"}
     - {id: TVshows, cat: TV, desc: "TV shows"}

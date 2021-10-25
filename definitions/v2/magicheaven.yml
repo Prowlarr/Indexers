@@ -5,6 +5,7 @@ description: "magic-heaven is a Private Torrent Tracker for MOVIES / TV / GENERA
 language: en-US
 type: private
 encoding: UTF-8
+testlinktorrent: false
 links:
   - https://magic-heaven.info/
 
@@ -57,8 +58,8 @@ caps:
 
   modes:
     search: [q]
-    tv-search: [q, season, ep]
-    movie-search: [q]
+    tv-search: [q, season, ep, imdbid]
+    movie-search: [q, imdbid]
     music-search: [q]
     book-search: [q]
 
@@ -116,9 +117,9 @@ download:
     path: takethanks.php
     method: post
     inputs:
-      torrentid: "{{ .DownloadUri.Query.id }}"
+      torrentid: "{{ re_replace  .DownloadUri.PathAndQuery \".*torrent-details-(\\d+).*\" \"$1\"}}"
   selectors:
-    - selector: a[href*="/download.php?id="]
+    - selector: a[href*="download-torrent-"]
       attribute: href
 
 search:
@@ -130,35 +131,40 @@ search:
     category: 0
     # yes incldead, no activeonly
     include_dead_torrents: yes
-    keywords: "{{ .Keywords }}"
+    keywords: "{{ if .Query.IMDBID }}{{ .Query.IMDBID }}{{ else }}{{ .Keywords }}{{ end }}"
     # t_name, t_description, t_both, t_uploader, t_genre
-    search_type: t_name
+    search_type: "{{ if .Query.IMDBID }}t_genre{{ else }}t_name{{ end }}"
     sort: "{{ .Config.sort }}"
     order: "{{ .Config.type }}"
-    # does not return imdb link in results, does not support imdbid searches
+    # does not return imdb link in results
   keywordsfilters:
     - name: re_replace # replace special characters with "%" (wildcard)
       args: ["[^a-zA-Z0-9]+", "%"]
 
   rows:
-    selector: "table#sortabletable tbody tr:has(a[href*=\"download.php?id=\"]){{ if .Config.freeleech }}:has(img[src$=\"/freedownload.gif\"]){{ else }}{{ end }}"
+    selector: "table#sortabletable tbody tr:has(a[href*=\"download-torrent-\"]){{ if .Config.freeleech }}:has(img[src$=\"/freedownload.gif\"]){{ else }}{{ end }}"
 
   fields:
     category:
-      selector: a[href*="browse.php?category="]
+      selector: a[href*="torrent-category-"]
       attribute: href
       filters:
-        - name: querystring
-          args: category
-    title:
+        - name: regexp
+          args: (\d+)
+    title_default:
       # is often abbreviated
-      selector: a[href*="details.php?id="]
-    title:
+      selector: a[href*="torrent-details-"]
+    title_optional:
       # usually longer than details title
       selector: div[id^="port-content-"] div
       optional: true
+    title:
+      text: "{{ if .Result.title_optional }}{{ .Result.title_optional }}{{ else }}{{ .Result.title_default }}{{ end }}"
     details:
-      selector: a[href*="details.php?id="]
+      selector: a[href*="torrent-details-"]
+      attribute: href
+    download:
+      selector: a[href*="torrent-details-"]
       attribute: href
     poster:
       selector: div[id^="port-content-"] img
@@ -168,17 +174,10 @@ search:
       filters:
         - name: regexp
           args: (\d{2}-\d{2}-\d{4} \d{2}:\d{2})
-      filters:
         - name: append
           args: " +00:00" # auto adjusted by site account profile
         - name: dateparse
           args: "02-01-2006 15:04 -07:00"
-    download:
-      selector: a[href*="details.php?id="]
-      attribute: href
-    magnet:
-      selector: a[href^="magnet:?xt="]
-      attribute: href
     size:
       selector: td:nth-child(5)
     grabs:
@@ -199,4 +198,4 @@ search:
     minimumseedtime:
       # 1 day (as seconds = 24 x 60 x 60)
       text: 86400
-# TS Special Edition v.7.5
+# TS Special Edition v.8.0

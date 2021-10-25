@@ -7,10 +7,11 @@ type: public
 encoding: UTF-8
 requestDelay: 2.5 # 2.5 requests per second (2 causes problems)
 links:
+  # dont forget to update the details, download and poster replace args
   - https://yts.mx/
   - https://yts.unblockit.kim/
   - https://yts.unblockninja.com/
-  - https://yts.nocensor.work/
+  - https://yts.nocensor.biz/
 legacylinks:
   - https://yts.ag/
   - https://yts.am/
@@ -27,6 +28,7 @@ legacylinks:
   - https://yts.unblockit.li/
   - https://yts.unblockit.ws/
   - https://yts.nocensor.space/
+  - https://yts.nocensor.work/
 
 caps:
   categorymappings:
@@ -87,15 +89,31 @@ search:
         # append type: BRRip or WEBRip, resolves #3558 via #4577
         - name: append
           args: ".{{ .Result.year }}.{{ .Result.quality }}.{{ if eq .Result.type \"web\" }}WEBRip{{ else }}BRRip{{ end }}-YTS"
+    sitelink_trimmed:
+      text: "{{ .Config.sitelink }}"
+      filters:
+        - name: replace
+          args: ["https://", ""]
+        - name: replace
+          args: ["/", ""]
     details:
       selector: ..url
+      filters:
+        - name: replace
+          args: ["yts.mx", "{{ .Result.sitelink_trimmed }}"] # fix for 12494
     download:
       selector: url
+      filters:
+        - name: replace
+          args: ["yts.mx", "{{ .Result.sitelink_trimmed }}"] # fix for 12494
     infohash:
       selector: hash
     poster:
       selector: ..large_cover_image
-    imdb:
+      filters:
+        - name: replace
+          args: ["yts.mx", "{{ .Result.sitelink_trimmed }}"] # fix for 12494
+    imdbid:
       selector: ..imdb_code
     date:
       selector: date_uploaded_unix
