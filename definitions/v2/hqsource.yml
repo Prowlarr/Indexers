@@ -88,22 +88,20 @@ search:
     download:
       selector: a[href^="download.php/"]
       attribute: href
-    description:
+    language:
       optional: true
       selector: img[src="pic/pl.png"]
       filters:
         - name: append
           args: "Language: polish\n<br>"
-        - name: prepend
-          args: "{{ .Result.description }}"
-    description:
+    subbed:
       optional: true
       selector: img[src="pic/napisy.png"]
       filters:
         - name: append
           args: "Subbed\n<br>"
-        - name: prepend
-          args: "{{ .Result.description }}"
+    description:
+      text: "{{ .Result.language }}{{ .Result.subbed }}"
     imdb:
       selector: a[href*="imdb.com/title/tt"]
     grabs:
