@@ -7,7 +7,7 @@ type: public
 encoding: UTF-8
 followredirect: true
 links:
-  - https://torrentview41.com/
+  - https://torrentview42.com/
 legacylinks:
   - https://torrentview.net/
   - https://torrentview3.net/
@@ -48,6 +48,7 @@ legacylinks:
   - https://torrentview38.com/
   - https://torrentview39.com/
   - https://torrentview40.com/
+  - https://torrentview41.com/
 
 caps:
   categorymappings:
@@ -111,11 +112,6 @@ search:
       # 2020-03-28T01:30:01+09:00
       selector: time
       attribute: datetime
-      filters:
-        - name: replace
-          args: ["T", " "]
-        - name: dateparse
-          args: "2006-01-02 15:04:05-07:00"
     cat:
       selector: div.media-heading > a[href^="./board.php"]
       attribute: href
