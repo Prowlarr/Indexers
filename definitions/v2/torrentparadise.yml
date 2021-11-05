@@ -6,17 +6,16 @@ language: en-US
 type: public
 encoding: UTF-8
 links:
-  - https://torrentparadise.cl/
+  - https://torrentparadise.cc/
 legacylinks:
-  - https://torrentparadise.cc/ # redirects to *.cl
-  - https://torrentparadise.to/ # redirects to *.cl
-  - https://torrentparadise.la/ # redirects to *.cl
-  - https://torrentparadise.org/ # redirects to *.cl
+  - https://torrentparadise.cl/ # redirects to *.cc
+  - https://torrentparadise.to/ # redirects to *.cc
+  - https://torrentparadise.la/ # broken
+  - https://torrentparadise.org/ # redirects to *.cc
   - https://torrentparadise.pm/ # DNS_PROBE_FINISHED_NXDOMAIN
 
 caps:
   categories:
-    "": Other
     ADULT: XXX
     ADULTHENTAI: XXX
     ADULTLATINA: XXX
@@ -221,6 +220,8 @@ search:
 
   fields:
     category:
+      text: OTHER
+    category|noappend:
       selector: td:nth-child(1) a
       filters:
         - name: re_replace

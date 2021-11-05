@@ -182,7 +182,7 @@ search:
     download:
       selector: a[href*="?p=torrents"][href*="&action=download"]
       attribute: href
-    imdb:
+    imdbid:
       selector: a[href*="imdb.com/title/tt"]
       attribute: href
     size:

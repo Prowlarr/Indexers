@@ -137,7 +137,7 @@ search:
     poster:
       selector: img[data-orig]
       attribute: data-orig
-    imdb:
+    imdbid:
       selector: a[href*="imdb.com/title/tt"]
       attribute: href
     # staff have extra columns at the start and end of a row, so we have to float the next lot of selectors off an anchor
