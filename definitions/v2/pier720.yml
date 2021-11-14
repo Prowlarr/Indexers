@@ -111,8 +111,9 @@ login:
     selector: :has(a[href^="./ucp.php?mode=logout&"])
 
 download:
-  selector: a[href*="/download/torrent?id="]
-  attribute: href
+  selectors:
+    - selector: a[href*="/download/torrent?id="]
+      attribute: href
 
 search:
   paths:

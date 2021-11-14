@@ -10,33 +10,33 @@ links:
 
 caps:
   categorymappings:
-    - { id: 32, cat: PC, desc: "Aplikacje PC" }
-    - { id: 33, cat: Books, desc: "eBooki/AudioBooki/Prasa" }
-    - { id: 65, cat: Movies/3D, desc: "Filmy/3D" }
-    - { id: 69, cat: Movies/UHD, desc: "Filmy/4K UHD" }
-    - { id: 28, cat: TV/Anime, desc: "Filmy/Animowane" }
-    - { id: 66, cat: Movies/BluRay, desc: "Filmy/BDRip" }
-    - { id: 61, cat: Movies/BluRay, desc: "Filmy/BRRip" }
-    - { id: 67, cat: Movies, desc: "Filmy/CAM-TC-TS" }
-    - { id: 58, cat: TV/Documentary, desc: "Filmy/Dokumentalne" }
-    - { id: 39, cat: Movies/HD, desc: "Filmy/Full HD" }
-    - { id: 36, cat: Movies/HD, desc: "Filmy/HD Ready" }
-    - { id: 64, cat: Movies, desc: "Filmy/Kino Polskie" }
-    - { id: 59, cat: Movies, desc: "Filmy/PACK" }
-    - { id: 40, cat: Movies/SD, desc: "Filmy/SD" }
-    - { id: 68, cat: Movies/WEB-DL, desc: "Filmy/WEB-DL" }
-    - { id: 62, cat: Console, desc: "Gry/Dodatki" }
-    - { id: 41, cat: Console, desc: "Gry/Konsole" }
-    - { id: 42, cat: PC/Games, desc: "Gry/PC" }
-    - { id: 44, cat: PC/Mobile-Other, desc: "GSM/PDA" }
-    - { id: 57, cat: Audio/Video, desc: "Koncerty/Teledyski" }
-    - { id: 63, cat: Audio/Lossless, desc: "Muzyka/FLAC" }
-    - { id: 46, cat: Audio/MP3, desc: "Muzyka/MP3" }
-    - { id: 47, cat: Other, desc: "Różne" }
-    - { id: 60, cat: TV/Sport, desc: "Sport" }
-    - { id: 53, cat: TV, desc: "TV Seriale" }
-    - { id: 56, cat: XXX, desc: "XXX" }
-    - { id: 70, cat: TV/Anime, desc: "Anime" }
+    - {id: 32, cat: PC, desc: "Aplikacje PC"}
+    - {id: 33, cat: Books, desc: "eBooki/AudioBooki/Prasa"}
+    - {id: 65, cat: Movies/3D, desc: "Filmy/3D"}
+    - {id: 69, cat: Movies/UHD, desc: "Filmy/4K UHD"}
+    - {id: 28, cat: TV/Anime, desc: "Filmy/Animowane"}
+    - {id: 66, cat: Movies/BluRay, desc: "Filmy/BDRip"}
+    - {id: 61, cat: Movies/BluRay, desc: "Filmy/BRRip"}
+    - {id: 67, cat: Movies, desc: "Filmy/CAM-TC-TS"}
+    - {id: 58, cat: TV/Documentary, desc: "Filmy/Dokumentalne"}
+    - {id: 39, cat: Movies/HD, desc: "Filmy/Full HD"}
+    - {id: 36, cat: Movies/HD, desc: "Filmy/HD Ready"}
+    - {id: 64, cat: Movies, desc: "Filmy/Kino Polskie"}
+    - {id: 59, cat: Movies, desc: "Filmy/PACK"}
+    - {id: 40, cat: Movies/SD, desc: "Filmy/SD"}
+    - {id: 68, cat: Movies/WEB-DL, desc: "Filmy/WEB-DL"}
+    - {id: 62, cat: Console, desc: "Gry/Dodatki"}
+    - {id: 41, cat: Console, desc: "Gry/Konsole"}
+    - {id: 42, cat: PC/Games, desc: "Gry/PC"}
+    - {id: 44, cat: PC/Mobile-Other, desc: "GSM/PDA"}
+    - {id: 57, cat: Audio/Video, desc: "Koncerty/Teledyski"}
+    - {id: 63, cat: Audio/Lossless, desc: "Muzyka/FLAC"}
+    - {id: 46, cat: Audio/MP3, desc: "Muzyka/MP3"}
+    - {id: 47, cat: Other, desc: "Różne"}
+    - {id: 60, cat: TV/Sport, desc: "Sport"}
+    - {id: 53, cat: TV, desc: "TV Seriale"}
+    - {id: 56, cat: XXX, desc: "XXX"}
+    - {id: 70, cat: TV/Anime, desc: "Anime"}
 
   modes:
     search: [q]

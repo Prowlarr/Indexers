@@ -24,11 +24,12 @@ settings:
     default: This site may use Cloudflare DDoS Protection, therefore Prowlarr may require <a href="https://github.com/FlareSolverr/FlareSolverr" target="_blank">FlareSolver</a> added as a proxy in Prowlarr (Settings => Indexers) to access it.
 
 download:
-  selector: a[href^="magnet:?xt="]
-  attribute: href
-  filters:
-    - name: re_replace
-      args: ["\\s+", " "]
+  selectors:
+    - selector: a[href^="magnet:?xt="]
+      attribute: href
+      filters:
+        - name: re_replace
+          args: ["\\s+", " "]
 
 search:
   paths:

@@ -155,6 +155,7 @@ search:
         "*": 1
     description:
       selector: div.contenttext
+      optional: true
       remove: div.contenttitle
     minimumratio:
       text: 1.0
