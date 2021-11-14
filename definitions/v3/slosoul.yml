@@ -126,7 +126,7 @@ search:
     poster:
       selector: a[href*="data/torrents/torrent_images/"]
       attribute: href
-    imdb:
+    imdbid:
       selector: a[href*="imdb.com/title/tt"]
       attribute: href
     size:
@@ -146,7 +146,7 @@ search:
       # Naložil danes ob 09:28 by
       # Uploaded Today at 09:17 by
       # Uploaded Yesterday at 10:31 by
-      selector: div.torrentOwner:contains("day"), div.torrentOwner:contains("vceraj"), div.torrentOwner:contains("danes")
+      selector: div.torrentOwner:contains("day"), div.torrentOwner:contains("včeraj"), div.torrentOwner:contains("danes")
       optional: true
       filters:
         - name: regexp
@@ -156,7 +156,7 @@ search:
         - name: replace
           args: ["danes", "Today"]
         - name: replace
-          args: ["vceraj", "Yesterday"]
+          args: ["včeraj", "Yesterday"]
         - name: append
           args: " +00:00" # auto adjusted by site account profile
         - name: fuzzytime
