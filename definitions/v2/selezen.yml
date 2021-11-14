@@ -106,7 +106,7 @@ search:
   fields:
     category:
       text: 0
-    category:
+    category|noappend:
       selector: div.noimg > a
       optional: true
       case:
