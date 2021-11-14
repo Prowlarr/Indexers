@@ -157,7 +157,7 @@ search:
           args: "{{ .Result.description }}"
     description:
       text: "{{ .Result.genre }}{{ .Result.language }}{{ .Result.subbed }}"
-    imdbid:
+    imdb:
       selector: a[href*="imdb.com/title/tt"]
     date:
       selector: td:nth-child(4)
