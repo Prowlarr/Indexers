@@ -17,6 +17,8 @@ caps:
     - {id: 6, cat: Audio, desc: "Music"}
     # Although books are supported, most of their names contains Hebrew chars, which makes it difficult to cleanup other releases from their Hebrew names
     # - {id: 7, cat: Books, desc: "Books"}
+    - {id: 9, cat: XXX, desc: "XXX"}
+    - {id: 10, cat: Other, desc: "Other"}
 
   modes:
     search: [q]
