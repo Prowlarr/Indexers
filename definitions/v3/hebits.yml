@@ -15,7 +15,7 @@ caps:
     - {id: 4, cat: PC/0day, desc: "Apps"}
     - {id: 5, cat: PC/Games, desc: "Games"}
     - {id: 6, cat: Audio, desc: "Music"}
-    # Although books are supported, most of their names contains Hebrew chars, which makes it dificult to cleanup other releases from their Hebrew names
+    # Although books are supported, most of their names contains Hebrew chars, which makes it difficult to cleanup other releases from their Hebrew names
     # - {id: 7, cat: Books, desc: "Books"}
 
   modes:
