@@ -146,7 +146,7 @@ search:
       # Naložil danes ob 09:28 by
       # Uploaded Today at 09:17 by
       # Uploaded Yesterday at 10:31 by
-      selector: div.torrentOwner:contains("day"), div.torrentOwner:contains("vceraj"), div.torrentOwner:contains("danes")
+      selector: div.torrentOwner:contains("day"), div.torrentOwner:contains("včeraj"), div.torrentOwner:contains("danes")
       optional: true
       filters:
         - name: regexp
@@ -156,11 +156,12 @@ search:
         - name: replace
           args: ["danes", "Today"]
         - name: replace
-          args: ["vceraj", "Yesterday"]
+          args: ["včeraj", "Yesterday"]
         - name: append
           args: " +00:00" # auto adjusted by site account profile
         - name: fuzzytime
     date_year:
+      # Uploaded 14-11-2021 09:41 by
       selector: div.torrentOwner:contains("-")
       optional: true
       filters:
