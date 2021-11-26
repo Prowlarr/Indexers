@@ -1,0 +1,100 @@
+---
+id: hebits
+name: Hebits
+description: "not here _ not scene"
+language: en-US
+type: private
+encoding: UTF-8
+links:
+  - https://hebits.net/
+
+caps:
+  categorymappings:
+    - {id: 1, cat: Movies, desc: "Movies"}
+    - {id: 2, cat: TV, desc: "TV"}
+    - {id: 4, cat: PC/0day, desc: "Apps"}
+    - {id: 5, cat: PC/Games, desc: "Games"}
+    - {id: 6, cat: Audio, desc: "Music"}
+    # Although books are supported, most of their names contains Hebrew chars, which makes it difficult to cleanup other releases from their Hebrew names
+    # - {id: 7, cat: Books, desc: "Books"}
+    - {id: 9, cat: XXX, desc: "XXX"}
+    - {id: 10, cat: Other, desc: "Other"}
+
+  modes:
+    search: [q]
+    tv-search: [q, season, ep]
+    movie-search: [q]
+    music-search: [q]
+    book-search: [q]
+
+settings:
+  - name: cookie
+    type: text
+    label: Cookie
+  - name: info
+    type: info
+    label: How to get the Cookie
+    default: "<ol><li>Login to this tracker with your browser<li>Open the <b>DevTools</b> panel by pressing <b>F12</b><li>Select the <b>Network</b> tab<li>Click on the <b>Doc</b> button (Chrome Browser) or <b>HTML</b> button (FireFox)<li>Refresh the page by pressing <b>F5</b><li>Click on the first row entry<li>Select the <b>Headers</b> tab on the Right panel<li>Find <b>'cookie:'</b> in the <b>Request Headers</b> section<li><b>Select</b> and <b>Copy</b> the whole cookie string <i>(everything after 'cookie: ')</i> and <b>Paste</b> here.</ol>"
+
+login:
+  method: cookie
+  inputs:
+    cookie: "{{ .Config.cookie }}"
+  test:
+    path: torrents.php
+    selector: a[href="/index.php"]
+
+search:
+  paths:
+    - path: "torrents.php"
+  inputs:
+    searchstr: "{{ .Keywords }}"
+    order_by: "time"
+    order_way: "desc"
+    $raw: "{{ range .Categories }}filter_cat[{{.}}]=1&{{end}}"
+  keywordsfilters:
+    # remove dashes at the beginning of keywords as they exclude search strings (see issue #3096)
+    - name: re_replace
+      args: ["(^|\\s)-", " "]
+  rows:
+    selector: .torrent
+
+  fields:
+    title:
+      selector: .torrent_info
+      filters:
+        - name: re_replace
+          args: ["[א-ת].*", ""]
+    id:
+      selector: .torrent_name
+      attribute: href
+      filters:
+        - name: regexp
+          args: ["id=(\\d+)", ""]
+    filename:
+      selector: filename
+    details:
+      selector: a[href*="torrentid"]
+      attribute: href
+    magnet:
+      selector: a[href^="magnet"]
+      attribute: href
+    download:
+      selector: download_ic
+      attribute: href
+    files:
+      selector: .number_column:nth-of-type(3)
+    size:
+      selector: .number_column:nth-of-type(5)
+    grabs:
+      selector: .number_column:nth-of-type(6)
+    seeders:
+      selector: .number_column:nth-of-type(7)
+    leechers:
+      selector: .number_column:nth-of-type(8)
+    date:
+      selector: .time
+      attribute: title
+      filters:
+        - name: dateparse
+          args: "02/01/2006, 15:04"
