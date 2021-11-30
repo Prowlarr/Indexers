@@ -1,8 +1,8 @@
 ---
 id: hebits
 name: Hebits
-description: "not here _ not scene"
-language: en-US
+description: "The Israeli Tracker"
+language: he-IL
 type: private
 encoding: UTF-8
 links:
@@ -22,8 +22,8 @@ caps:
 
   modes:
     search: [q]
-    tv-search: [q, season, ep]
-    movie-search: [q]
+    tv-search: [q, imdbid, season, ep]
+    movie-search: [q, imdbid]
     music-search: [q]
     book-search: [q]
 
@@ -48,7 +48,7 @@ search:
   paths:
     - path: "torrents.php"
   inputs:
-    searchstr: "{{ .Keywords }}"
+    searchstr: "{{ if .Query.IMDBID }}{{ .Query.IMDBID }}{{ else }}{{ .Keywords }}{{ end }}"
     order_by: "time"
     order_way: "desc"
     $raw: "{{ range .Categories }}filter_cat[{{.}}]=1&{{end}}"
@@ -66,13 +66,11 @@ search:
         - name: re_replace
           args: ["[א-ת].*", ""]
     id:
-      selector: .torrent_name
+      selector: a[href*="reportsv2.php?action=report&id="]
       attribute: href
       filters:
-        - name: regexp
-          args: ["id=(\\d+)", ""]
-    filename:
-      selector: filename
+        - name: re_replace
+          args: [".*&id=", ""]
     details:
       selector: a[href*="torrentid"]
       attribute: href
@@ -80,21 +78,32 @@ search:
       selector: a[href^="magnet"]
       attribute: href
     download:
-      selector: download_ic
+      selector: a[href^="torrents.php?action=download"]
       attribute: href
     files:
-      selector: .number_column:nth-of-type(3)
-    size:
-      selector: .number_column:nth-of-type(5)
-    grabs:
-      selector: .number_column:nth-of-type(6)
-    seeders:
-      selector: .number_column:nth-of-type(7)
-    leechers:
-      selector: .number_column:nth-of-type(8)
+      selector: td:nth-child(3)
     date:
-      selector: .time
+      selector: td:nth-child(4) span
       attribute: title
       filters:
+        - name: append
+          args: " +02:00"
         - name: dateparse
-          args: "02/01/2006, 15:04"
+          args: "02/01/2006, 15:04 -07:00"
+    size:
+      selector: td:nth-child(5)
+    grabs:
+      selector: td:nth-child(6)
+    seeders:
+      selector: td:nth-child(7)
+    leechers:
+      selector: td:nth-child(8)
+    downloadvolumefactor:
+      case:
+        "strong.tl_notice[title*=\"חצי פריליץ'\"]": 0.5
+        "strong.tl_notice[title*=\"פריליץ'\"]": 0
+        "*": 1
+    uploadvolumefactor:
+      case:
+        "strong.tl_notice[title*=\"העלאה כפולה\"]": 2
+        "*": 1
