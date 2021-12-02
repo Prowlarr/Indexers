@@ -76,7 +76,7 @@ search:
       args: ["(S[0-9]+E[0-9]+|S[0-9]+)",""] # remove SXXEXX or SXX from search
 
   rows:
-    # If the category is a TV show/Anime, there's a necessity to filter the results by season/episode to not show all of them 
+    # If the category is a TV show/Anime, there's a necessity to filter the results by season/episode to not show all of them
    selector: "table.torrent_table > tbody > tr:not(tr.colhead).group,
               table.torrent_table tbody tr:not(tr.colhead):contains('{{ .Query.Episode }}')"
    filters:
@@ -88,7 +88,7 @@ search:
       selector: a[title="Baixar"]
       attribute: href
 
-    _singleTorrentInfo: 
+    _singleTorrentInfo:
       selector: div.torrent_info
 
     _multipleTorrentInfo:
@@ -115,7 +115,7 @@ search:
     _rawTitle:
       selector: div.group_info
       filters:
-        - name: re_replace 
+        - name: re_replace
           args: ["(\n.*)",""] # remove everything after newline
         - name: re_replace
           args: ["  |\t",""] # remove double space and tabs
@@ -135,9 +135,9 @@ search:
       # Title defined as:
         # PT-BR/Japanese title [en-US title] [year]
       text: "{{ .Result._rawTitle }}"
-      filters:    
+      filters:
         - name: re_replace
-          args: ["\\[[0-9]*\\].*",""] # Removes the year and everything after   
+          args: ["\\[[0-9]*\\].*",""] # Removes the year and everything after
         - name: re_replace
           args: ["(.*)\\[(!?[^/]*?)\\]","$2"]   # Parse only en-us title, when available
         - name: append
@@ -145,40 +145,40 @@ search:
         - name: append
           args: " {{ .Result._info }}"
 
-    title_Other: 
+    title_Other:
       # Only remove brackets
       text: "{{ .Result._rawTitle }}"
-      filters:    
+      filters:
         - name: re_replace
-          args: ["\\[|\\]"," "] # Remove Brackets   
+          args: ["\\[|\\]"," "] # Remove Brackets
 
-    title_details: 
+    title_details:
       # Title defined as:
         # PT-BR/Japanese title [en-US title] [year]
       text: "{{ .Result._rawTitle }}"
-      filters:    
+      filters:
         - name: re_replace
-          args: ["\\[[0-9]*\\].*",""] # Removes the year and everything after 
+          args: ["\\[[0-9]*\\].*",""] # Removes the year and everything after
         - name: re_replace
           args: ["(.*)\\[(!?[^/]*?)\\]","$2"]   # Parse only en-us title, when available
 
     category_details:
-      selector: td.cats_col > a 
+      selector: td.cats_col > a
       attribute: href
       filters:
         - name: regexp
-          args: "%5b(\\d+?)%5d"  
+          args: "%5b(\\d+?)%5d"
 
     category:
       text: "{{ .Result.category_details }}"
-     
+
 
     title:
-      text: "{{ if 
+      text: "{{ if
                     or (eq .Result.category_details \"1\")
                    (or (eq .Result.category_details \"2\")  (or (eq .Result.category_details \"14\")
                    (or (eq .Result.category_details \"16\") (or (eq .Result.category_details \"17\")
-                   (or eq .Result.category_details \"8\")  
+                   (or eq .Result.category_details \"8\")
                    (or (eq .Result.category_details \"13\") (eq .Result.category_details \"6\")))))))
              }}{{.Result.title_MovieTV}}{{ else }}{{.Result.title_Other}}{{ end }}"
 
