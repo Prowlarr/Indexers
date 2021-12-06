@@ -220,6 +220,8 @@ search:
     - name: replace
       args: ["\"", ""]
     - name: replace
+      args: ["-", " "]
+    - name: replace
       args: ["  ", " "]
     - name: trim
     # put each word in quotations to prevent exact phrase search
