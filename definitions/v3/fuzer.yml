@@ -101,8 +101,7 @@ login:
   inputs:
     cookie: "{{ .Config.cookie }}"
   test:
-    path: /
-    selector: a[href="/login.php"]
+    path: /browse.php
 
 search:
   paths:
