@@ -2,13 +2,13 @@
 id: gktorrent
 name: GkTorrent
 description: "GkTorrent is a French Public site for TV / MOVIES / GENERAL"
-language: fr-fr
+language: fr-FR
 type: public
 encoding: UTF-8
 followredirect: true
 links:
-  - https://www.gktorrents.com/
-  - https://gktorrent.nocensor.space/
+  - https://www.gktorrents.net/
+  - https://gktorrent.nocensor.work/
 legacylinks:
   - https://www.gktorrent.com/
   - http://www.gktorrent.com/
@@ -33,6 +33,8 @@ legacylinks:
   - https://wvw.gktorrent.pw/
   - https://vww.gktorrent.pw/
   - https://www.gktorrent.cc/
+  - https://gktorrent.nocensor.space/
+  - https://www.gktorrents.com/
 
 caps:
   categorymappings:

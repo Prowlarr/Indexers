@@ -2,11 +2,11 @@
 id: btsow
 name: BTSOW
 description: "BTSOW is a Public torrent indexer"
-language: en-us
+language: en-US
 type: public
 encoding: UTF-8
 links:
-  - https://btsow.one/
+  - https://btsow.rest/
 legacylinks:
   - https://btos.pw/
   - https://btio.pw/
@@ -28,6 +28,7 @@ legacylinks:
   - https://btsow.digital/
   - https://btsow.shop/
   - https://btsow.us/
+  - https://btsow.one/
 
 caps:
   categories:

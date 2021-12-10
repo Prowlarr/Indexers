@@ -2,7 +2,7 @@
 id: funkytorrents
 name: FunkyTorrents
 description: "FunkyTorrents (FT) is a Private Torrent Tracker for MUSIC"
-language: en-us
+language: en-US
 type: private
 encoding: UTF-8
 links:
@@ -12,10 +12,10 @@ legacylinks:
 
 caps:
   categorymappings:
-    - {id: 1, cat: PC, desc: "Apps"}
-    - {id: 2, cat: Books, desc: "eBooks"}
+    - {id: 1, cat: PC/0day, desc: "Apps"}
+    - {id: 2, cat: Books/EBook, desc: "eBooks"}
     - {id: 3, cat: Movies, desc: "Movie"}
-    - {id: 33, cat: Audio, desc: "Music DVDs"}
+    - {id: 33, cat: Audio/Video, desc: "Music DVDs"}
     - {id: 5, cat: Audio/Video, desc: "Music Vids"}
     - {id: 4, cat: Audio, desc: "OST"}
     - {id: 19, cat: Audio, desc: "Music Alternative"}

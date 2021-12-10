@@ -2,14 +2,14 @@
 id: iv-torrents
 name: IV-Torrents
 description: "IV-Torrents is a RUSSIAN Semi-Private Torrent Tracker for MOVIES / TV / GENERAL"
-language: ru-ru
+language: ru-RU
 type: semi-private
 encoding: UTF-8
 links:
-  - http://iv-torrents.com/
-legacylinks:
   - https://iv-torrents.ru/
+legacylinks:
   - https://iv-torrents.com/
+  - http://iv-torrents.com/
 
 caps:
   categorymappings:

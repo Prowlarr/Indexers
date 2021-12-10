@@ -2,7 +2,7 @@
 id: hddolby
 name: HDDolby
 description: "HD Dolby is a CHINESE Private Torrent Tracker for HD MOVIES / TV / GENERAL"
-language: zh-cn
+language: zh-CN
 type: private
 encoding: UTF-8
 links:
@@ -19,8 +19,8 @@ caps:
     - {id: 407, cat: TV/Sport, desc: "Sports体育"}
     - {id: 408, cat: Audio, desc: "HQ Audio音乐"}
     - {id: 409, cat: Other, desc: "Others其他"}
-    - {id: 410, cat: Console, desc: "Games游戏"}
-    - {id: 411, cat: Books, desc: "Study学习"}
+    - {id: 410, cat: PC/Games, desc: "Games游戏"}
+    - {id: 411, cat: Other, desc: "Study学习"}
 
   modes:
     search: [q]
@@ -50,7 +50,7 @@ settings:
   - name: flaresolverr
     type: info
     label: FlareSolverr
-    default: This site may use Cloudflare DDoS Protection, currently Prowlarr doesn't support Flaresolverr, see <a href="https://wiki.servarr.com/prowlarr/faq#can-i-use-flaresolverr-indexers" target="_blank">here</a> for more details.
+    default: This site may use Cloudflare DDoS Protection, therefore Prowlarr may require <a href="https://github.com/FlareSolverr/FlareSolverr" target="_blank">FlareSolver</a> added as a proxy in Prowlarr (Settings => Indexers) to access it.
   - name: info_tpp
     type: info
     label: Results Per Page
@@ -118,13 +118,24 @@ search:
       selector: a[href^="download.php?id="]
       attribute: href
     date:
+      # time type: time elapsed (default)
       selector: td.rowfollow:nth-child(4) > span[title]
       attribute: title
+      optional: true
       filters:
         - name: append
           args: " +08:00" # CST
         - name: dateparse
           args: "2006-01-02 15:04:05 -07:00"
+    date:
+      # time added
+      selector: td.rowfollow:nth-child(4):not(:has(span))
+      optional: true
+      filters:
+        - name: append
+          args: " +08:00" # CST
+        - name: dateparse
+          args: "2006-01-0215:04:05 -07:00"
     size:
       selector: td.rowfollow:nth-child(5)
     seeders:

@@ -2,7 +2,7 @@
 id: btschool
 name: BTSCHOOL
 description: "BTSCHOOL is a CHINESE Private Torrent Tracker for MOVIES / TV / GENERAL"
-language: zh-cn
+language: zh-CN
 type: private
 encoding: UTF-8
 links:
@@ -12,10 +12,10 @@ caps:
   categorymappings:
     - {id: 405, cat: Movies, desc: "电影/Movies"}
     - {id: 406, cat: TV, desc: "连续剧/TV-Series"}
-    - {id: 407, cat: TV/Anime, desc: "动漫/Anime"}
+    - {id: 407, cat: TV/Anime, desc: "动漫/Animation"}
     - {id: 408, cat: TV/Documentary, desc: "纪录片/Documentary"}
     - {id: 412, cat: TV, desc: "综艺/TV-Show"}
-    - {id: 404, cat: PC, desc: "软件/Software"}
+    - {id: 404, cat: PC/0day, desc: "软件/Software"}
     - {id: 402, cat: TV, desc: "资料/Education"}
     - {id: 411, cat: PC/Games, desc: "游戏/Game"}
     - {id: 409, cat: Audio, desc: "音乐/Music"}
@@ -43,7 +43,7 @@ settings:
   - name: flaresolverr
     type: info
     label: FlareSolverr
-    default: This site may use Cloudflare DDoS Protection, currently Prowlarr doesn't support Flaresolverr, see <a href="https://wiki.servarr.com/prowlarr/faq#can-i-use-flaresolverr-indexers" target="_blank">here</a> for more details.
+    default: This site may use Cloudflare DDoS Protection, therefore Prowlarr may require <a href="https://github.com/FlareSolverr/FlareSolverr" target="_blank">FlareSolver</a> added as a proxy in Prowlarr (Settings => Indexers) to access it.
   - name: info_tpp
     type: info
     label: Results Per Page
@@ -94,13 +94,24 @@ search:
       selector: a[href^="download.php?id="]
       attribute: href
     date:
+      # time type: time elapsed (default)
       selector: td:nth-child(4) > span[title]
       attribute: title
+      optional: true
       filters:
         - name: append
           args: " +08:00" # CST
         - name: dateparse
           args: "2006-01-02 15:04:05 -07:00"
+    date:
+      # time added
+      selector: td:nth-child(4):not(:has(span))
+      optional: true
+      filters:
+        - name: append
+          args: " +08:00" # CST
+        - name: dateparse
+          args: "2006-01-0215:04:05 -07:00"
     size:
       selector: td.rowfollow:nth-child(5)
     seeders:

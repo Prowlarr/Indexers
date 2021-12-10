@@ -7,7 +7,7 @@ type: public
 encoding: UTF-8
 followredirect: true
 links:
-  - https://torrentwiz28.me/
+  - https://torrentwiz31.com/
 legacylinks:
   - https://torrentwiz22.me/
   - https://torrentwiz23.me/
@@ -15,7 +15,9 @@ legacylinks:
   - https://torrentwiz25.me/
   - https://torrentwiz26.me/
   - https://torrentwiz27.me/
-
+  - https://torrentwiz28.me/
+  - https://torrentwiz29.me/
+  - https://torrentwiz30.com/
 
 caps:
   categorymappings:
@@ -38,7 +40,7 @@ settings:
   - name: flaresolverr
     type: info
     label: FlareSolverr
-    default: This site may use Cloudflare DDoS Protection, currently Prowlarr doesn't support Flaresolverr, see <a href="https://wiki.servarr.com/prowlarr/faq#can-i-use-flaresolverr-indexers" target="_blank">here</a> for more details.
+    default: This site may use Cloudflare DDoS Protection, therefore Prowlarr may require <a href="https://github.com/FlareSolverr/FlareSolverr" target="_blank">FlareSolver</a> added as a proxy in Prowlarr (Settings => Indexers) to access it.
 
 download:
   selector: a[href*="magnet:?xt="]
@@ -49,7 +51,7 @@ download:
 
 search:
   paths:
-    # https://torrentwiz22.me/bbs/search.php?url=&stx=sin&srows=100&gr_id=&sfl=wr_subject&sop=and
+    # https://torrentwiz31.com/bbs/search.php?url=&stx=sin&srows=100&gr_id=&sfl=wr_subject&sop=and
     - path: bbs/search.php
   inputs:
     stx: "{{ if .Keywords }}{{ .Keywords }}{{ else }}{{ .Today.Year }}{{ end }}"

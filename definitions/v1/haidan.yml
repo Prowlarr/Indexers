@@ -2,7 +2,7 @@
 id: haidan
 name: HaiDan
 description: "HaiDan is a CHINESE Private Torrent Tracker for HD MOVIES / TV"
-language: zh-cn
+language: zh-CN
 type: private
 encoding: UTF-8
 links:
@@ -145,6 +145,15 @@ search:
           args: " +08:00" # CST
         - name: dateparse
           args: "2006-01-02 15:04:05 -07:00"
+    date:
+      # time added
+      selector: div.time_col:not(:has(span))
+      optional: true
+      filters:
+        - name: append
+          args: " +08:00" # CST
+        - name: dateparse
+          args: "2006-01-0215:04:05 -07:00"
     size:
       # group size.  item size
       selector: div.group > div.video_size, div.torrent_item > div.video_size

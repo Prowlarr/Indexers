@@ -2,14 +2,13 @@
 id: torrent9clone
 name: Torrent9 clone
 description: "Torrent9 clone is a FRENCH Public Torrent9 clone for TV / MOVIES / GENERAL"
-language: fr-fr
+language: fr-FR
 type: public
 encoding: UTF-8
 followredirect: true
 links:
-  - https://www.torrent9.pw/
-  - https://torrent9.nocensor.space/
-
+  - https://www.torrent9.si/
+  - https://torrent9.nocensor.biz/
 legacylinks:
   - https://www.torrents9.pw/
   - https://www.torrent9.ch/
@@ -55,6 +54,9 @@ legacylinks:
   - https://torrent9.unblocked.monster/
   - https://www.torrent9.la/
   - https://www.torrent9.ninja/
+  - https://torrent9.nocensor.space/
+  - https://torrent9.nocensor.work/
+  - https://www.torrent9.pw/
 
 caps:
   categorymappings:
@@ -78,7 +80,7 @@ settings:
   - name: flaresolverr
     type: info
     label: FlareSolverr
-    default: This site may use Cloudflare DDoS Protection, currently Prowlarr doesn't support Flaresolverr, see <a href="https://wiki.servarr.com/prowlarr/faq#can-i-use-flaresolverr-indexers" target="_blank">here</a> for more details.
+    default: This site may use Cloudflare DDoS Protection, therefore Prowlarr may require <a href="https://github.com/FlareSolverr/FlareSolverr" target="_blank">FlareSolver</a> added as a proxy in Prowlarr (Settings => Indexers) to access it.
   - name: multilang
     type: checkbox
     label: Replace MULTI by another language in release name
@@ -98,19 +100,17 @@ settings:
     type: checkbox
     label: Replace VOSTFR with ENGLISH
     default: false
-  - name: info_145469
-    type: info
-    label: About Torrent9clone Categories
-    default: Torrent9clone only returns category <b>Movies</b> in its <i>Keywordless</i> search results page.</br>To pass your apps' indexer TEST you will need to include the 145469(Movies) category.
 
 download:
   selectors:
-    - selector: a[href^="magnet:?"]
-      attribute: href
+    - selector: script:contains("magnet:?")
+      filters:
+        - name: regexp
+          args: "\\s'(magnet:\\?.+?)';"
 
 search:
   paths:
-    - path: "{{ if .Keywords }}/recherche/{{ .Keywords }}{{ else }}/top{{ end }}"
+    - path: "{{ if .Keywords }}/recherche/{{ .Keywords }}{{ else }}{{ end }}"
   keywordsfilters:
     # if searching for season packs swith S01 to saison 1 #9712
     - name: re_replace
@@ -174,16 +174,16 @@ search:
       text: now
     size:
       selector: td:nth-child(2)
-    seeders:
-      text: 0
-    seeders:
+    seeders_optional:
       selector: td:nth-child(3)
       optional: true
-    leechers:
-      text: 0
-    leechers:
+    seeders:
+      text: "{{ if .Result.seeders_optional }}{{ .Result.seeders_optional }}{{ else }}0{{ end }}"
+    leechers_optional:
       selector: td:nth-child(4)
       optional: true
+    leechers:
+      text: "{{ if .Result.leechers_optional }}{{ .Result.leechers_optional }}{{ else }}0{{ end }}"
     downloadvolumefactor:
       text: 0
     uploadvolumefactor:

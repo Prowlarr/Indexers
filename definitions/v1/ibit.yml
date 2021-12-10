@@ -2,7 +2,7 @@
 id: ibit
 name: IBit
 description: "IBit is a Public Verified Torrent Search Engine"
-language: en-us
+language: en-US
 type: public
 encoding: UTF-8
 links:
@@ -49,7 +49,7 @@ settings:
       asc: asc
 
 download:
-  selector: script:contains("magnet:?xt=")
+  selector: script:contains("magnet:")
   filters:
     - name: regexp
       args: "play\\('(.+?)'"
@@ -96,6 +96,8 @@ search:
       filters:
         - name: replace
           args: [",", ""]
+        - name: replace
+          args: ["-", "0"]
     leechers:
       selector: td:nth-child(7)
       filters:

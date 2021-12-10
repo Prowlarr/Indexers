@@ -2,7 +2,7 @@
 id: yggcookie
 name: YGGcookie
 description: "YGGTorrent is a FRENCH Semi-Private Torrent Tracker for 0DAY / GENERAL"
-language: fr-fr
+language: fr-FR
 type: semi-private
 encoding: UTF-8
 followredirect: true
@@ -121,7 +121,7 @@ settings:
     default: "<ol><li>From the same place you fetched the cookie,<li>Find <b>'user-agent:'</b> in the <b>Request Headers</b> section<li><b>Select</b> and <b>Copy</b> the whole user-agent string <i>(everything after 'user-agent: ')</i> and <b>Paste</b> here.</ol>"
   - name: category
     type: select
-    label: Catégorie
+    label: Category
     default: all
     options:
       all: Tous
@@ -179,7 +179,7 @@ settings:
   - name: flaresolverr
     type: info
     label: FlareSolverr
-    default: This site may use Cloudflare DDoS Protection, currently Prowlarr doesn't support Flaresolverr, see <a href="https://wiki.servarr.com/prowlarr/faq#can-i-use-flaresolverr-indexers" target="_blank">here</a> for more details.
+    default: This site may use Cloudflare DDoS Protection, therefore Prowlarr may require <a href="https://github.com/FlareSolverr/FlareSolverr" target="_blank">FlareSolver</a> added as a proxy in Prowlarr (Settings => Indexers) to access it.
 
 login:
   method: cookie

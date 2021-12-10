@@ -7,33 +7,26 @@ type: public
 encoding: UTF-8
 followredirect: true
 links:
-  - https://torrentqq102.com/
+  - https://torrentqq119.com/
 legacylinks:
-  - https://torrentqq76.com/
-  - https://torrentqq77.com/
-  - https://torrentqq78.com/
-  - https://torrentqq79.com/
-  - https://torrentqq80.com/
-  - https://torrentqq81.com/
-  - https://torrentqq82.com/
-  - https://torrentqq83.com/
-  - https://torrentqq84.com/
-  - https://torrentqq85.com/
-  - https://torrentqq86.com/
-  - https://torrentqq87.com/
-  - https://torrentqq88.com/
-  - https://torrentqq89.com/
-  - https://torrentqq90.com/
-  - https://torrentqq91.com/
-  - https://torrentqq92.com/
-  - https://torrentqq93.com/
-  - https://torrentqq95.com/
-  - https://torrentqq96.com/
-  - https://torrentqq97.com/
-  - https://torrentqq98.com/
-  - https://torrentqq99.com/
   - https://torrentqq100.com/
   - https://torrentqq101.com/
+  - https://torrentqq102.com/
+  - https://torrentqq103.com/
+  - https://torrentqq104.com/
+  - https://torrentqq105.com/
+  - https://torrentqq106.com/
+  - https://torrentqq107.com/
+  - https://torrentqq108.com/
+  - https://torrentqq109.com/
+  - https://torrentqq110.com/
+  - https://torrentqq111.com/
+  - https://torrentqq112.com/
+  - https://torrentqq113.com/
+  - https://torrentqq114.com/
+  - https://torrentqq115.com/
+  - https://torrentqq117.com/
+  - https://torrentqq118.com/
 
 caps:
   categorymappings:
@@ -58,16 +51,20 @@ settings:
   - name: flaresolverr
     type: info
     label: FlareSolverr
-    default: This site may use Cloudflare DDoS Protection, currently Prowlarr doesn't support Flaresolverr, see <a href="https://wiki.servarr.com/prowlarr/faq#can-i-use-flaresolverr-indexers" target="_blank">here</a> for more details.
-  - name: downloads
-    type: info
-    label: About Downloads
-    default: Some download links on this site use a link to a direct file download service, instead of a .torrent link. Jackett does not support direct file downloads, so you will get a page-cannot-be-found error when you try them.
+    default: This site may use Cloudflare DDoS Protection, therefore Prowlarr may require <a href="https://github.com/FlareSolverr/FlareSolverr" target="_blank">FlareSolver</a> added as a proxy in Prowlarr (Settings => Indexers) to access it. The proxy and this indexer should share a tag.
 
 download:
-  selectors:
-    - selector: a[href^="/torrent/download/"]
-      attribute: href
+  infohash:
+    hash:
+      selector: table.table-bordered > tbody > tr > td > ul > li
+      filters:
+        - name: regexp
+          args: ([A-F|a-f|0-9]{40})
+    title:
+      selector: table.table-bordered > thead > tr > th > strong
+      filters:
+        - name: trim
+        - name: validfilename
 
 search:
   paths:
@@ -95,18 +92,20 @@ search:
     download:
       selector: a[href$=".html"][title]
       attribute: href
-    date:
+    date_day:
       selector: div.wr-date:contains("-")
       optional: true
       filters:
         - name: dateparse
           args: "01-02"
-    date:
+    date_time:
       selector: div.wr-date:contains(":")
       optional: true
       filters:
         - name: dateparse
           args: "15:04"
+    date:
+      text: "{{ if or .Result.date_time .Result.date_day }}{{ or .Result.date_time .Result.date_day }}{{ else }}now{{ end }}"
     size:
       selector: div.wr-size
       filters:

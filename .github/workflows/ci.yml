@@ -19,4 +19,8 @@ jobs:
         yamllint --version
     - name: yamllint run
       run: |
-        yamllint definitions --format github
+        for f in `find definitions -type f`
+        do
+          echo "$f"
+          yamllint "$f" --format github
+        done

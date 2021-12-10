@@ -2,14 +2,14 @@
 id: audiobookbay
 name: AudioBookBay
 description: "AudioBook Bay (ABB) is a public Torrent Tracker for AUDIOBOOKS"
-language: en-us
+language: en-US
 type: public
 encoding: UTF-8
 links:
   - http://audiobookbay.nl/ # site forces http, does not support https
   - http://audiobookbay.net/
   - http://audiobookbayabb.com/
-  - https://audiobookbay.unblockit.ch/
+  - https://audiobookbay.unblockit.kim/
 legacylinks:
   - https://audiobookbay.la/
   - https://audiobookbay.unblockit.lat/
@@ -22,6 +22,8 @@ legacylinks:
   - https://audiobookbay.unblockit.onl/
   - https://audiobookbay.unblockit.li/
   - https://audiobookbay.unblockit.uno/
+  - https://audiobookbay.unblockit.ch/
+  - https://audiobookbay.unblockit.ws/
 
 caps:
   categorymappings:

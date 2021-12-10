@@ -2,7 +2,7 @@
 id: movietorrent
 name: MovieTorrent
 description: "MovieTorrent is a Public site for Bollywood, Hollywood, Hindi Dubbed, Tamil , Punjabi, Pakistani MOVIES"
-language: en-us
+language: en-US
 type: public
 encoding: UTF-8
 links:
@@ -86,7 +86,7 @@ search:
         - name: replace
           args: ["Torrent Magnet ", ""]
         - name: replace
-          args: ["Download ", ""]
+          args: ["Download", ""]
     details:
       selector: h2 > a
       attribute: href
@@ -109,4 +109,4 @@ search:
       text: 0
     uploadvolumefactor:
       text: 1
-# engine wordpress
+# engine wordpress 5.8

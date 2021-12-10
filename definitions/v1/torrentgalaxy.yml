@@ -2,7 +2,7 @@
 id: torrentgalaxy
 name: TorrentGalaxy
 description: "TorrentGalaxy (TGx) is a Public site for TV / MOVIES / GENERAL"
-language: en-us
+language: en-US
 type: public
 encoding: UTF-8
 followredirect: true
@@ -11,8 +11,8 @@ links:
   - https://torrentgalaxy.mx/
   - https://torrentgalaxy.su/
   - https://torrentgalaxy.unblockninja.com/
-  - https://torrentgalaxy.unblockit.ch/
-  - https://torrentgalaxy.nocensor.space/
+  - https://torrentgalaxy.unblockit.kim/
+  - https://torrentgalaxy.nocensor.work/
 legacylinks:
   - https://torrentgalaxy.org/ # redirects to *.to
   - https://torrentgalaxy.unblockit.pro/
@@ -44,6 +44,9 @@ legacylinks:
   - https://torrentgalaxy.unblockit.onl/
   - https://torrentgalaxy.unblockit.li/
   - https://torrentgalaxy.unblockit.uno/
+  - https://torrentgalaxy.unblockit.ch/
+  - https://torrentgalaxy.nocensor.space/
+  - https://torrentgalaxy.unblockit.ws/
 
 caps:
   categorymappings:

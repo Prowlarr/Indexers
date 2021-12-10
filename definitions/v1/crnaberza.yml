@@ -2,7 +2,7 @@
 id: crnaberza
 name: CrnaBerza
 description: "Crna Berza is a BALKAN Private Torrent Tracker for MOVIES / TV / GENERAL"
-language: sr-sp
+language: sr-SP
 type: private
 encoding: UTF-8
 links:
@@ -13,6 +13,7 @@ legacylinks:
 caps:
   categorymappings:
     - {id: 65, cat: Movies/3D, desc: "3D Film"}
+    - {id: 79, cat: PC/Mobile-Android, desc: "Android"}
     - {id: 37, cat: Movies, desc: "Deca"}
     - {id: 43, cat: TV/Documentary, desc: "Dokumentarci"}
     - {id: 52, cat: Movies/DVD, desc: "Film/DVD Domaće"}

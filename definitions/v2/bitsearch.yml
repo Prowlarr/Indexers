@@ -2,32 +2,39 @@
 id: bitsearch
 name: BitSearch
 description: "BitSearch is a Public torrent meta-search engine"
-language: en
+language: en-US
 type: public
 encoding: UTF-8
 links:
   - https://bitsearch.to/
+  - https://bitsearch.nocensor.biz/
 
 caps:
   categories:
     eBook: Books/EBook
     "Ebook/Course": Books/EBook
+    Games: PC/Games
+    "Games/PC": PC/Games
     Movies: Movies
+    Music: Audio
     "Music/Album": Audio
     "Music/mp3": Audio/MP3
     "Music/Lossless": Audio/Lossless
+    "Music/Video": Audio/Video
     Other: Other
     "Other/Android": PC/Mobile-Android
     "Other/Archive": Other
     "Other/Audio": Audio
-    "Other/Database": Movies/DVD
+    "Other/Database": PC
     "Other/DiskImage": PC/ISO
     "Other/Document": Books/Comics
     "Other/Image": Other/Misc
     "Other/Program": PC/0day
-    "Other/Sourcecode": Movies/Other
+    "Other/Sourcecode": PC
+    "Other/Source Code": PC
     "Other/Video": TV
-    "Software/Windows": PC/0day
+    Softwares: PC/0day
+    "Softwares/Windows": PC/0day
     TV: TV
     Unknown: Other
     XXX: XXX
@@ -56,11 +63,6 @@ settings:
       desc: desc
       asc: asc
 
-download:
-  selectors:
-    - selector: a[href^="magnet:?xt"]
-      attribute: href
-
 search:
   paths:
      # https://bitsearch.to/search?q=&sort=date&order=desc
@@ -82,8 +84,14 @@ search:
       selector: h5 a
       attribute: href
     download:
-      selector: h5 a
+      selector: a[class="dl-torrent"]
       attribute: href
+    infohash:
+      selector: a[href^="magnet:?xt"]
+      attribute: href
+      filters:
+        - name: regexp
+          args: ([A-F|a-f|0-9]{40})
     grabs:
       selector: div.stats div:has(img[alt="Download"])
       filters:
@@ -91,6 +99,8 @@ search:
           args: [".", ""]
         - name: replace
           args: ["K", "00"]
+        - name: replace
+          args: ["M", "00000"]
     size:
       selector: div.stats div:has(img[alt="Size"])
     seeders:
@@ -100,6 +110,8 @@ search:
           args: [".", ""]
         - name: replace
           args: ["K", "00"]
+        - name: replace
+          args: ["M", "00000"]
     leechers:
       selector: div.stats div:has(img[alt="Leecher"])
       filters:
@@ -107,6 +119,8 @@ search:
           args: [".", ""]
         - name: replace
           args: ["K", "00"]
+        - name: replace
+          args: ["M", "00000"]
     date:
       selector: div.stats div:has(img[alt="Date"])
       filters:

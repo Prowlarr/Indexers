@@ -2,15 +2,15 @@
 id: zooqle
 name: Zooqle
 description: "Zooqle is a Public torrent index providing a huge database of verified torrents"
-language: en-us
+language: en-US
 type: public
 encoding: UTF-8
 followredirect: true
 links:
   - https://zooqle.com/
   - https://zooqle.unblockninja.com/
-  - https://zooqle.unblockit.ch/
-  - https://zooqle.nocensor.space/
+  - https://zooqle.unblockit.kim/
+  - https://zooqle.nocensor.work/
 legacylinks:
   - https://zooqle.unblockit.pro/
   - https://zooqle.unblockit.one/
@@ -39,6 +39,9 @@ legacylinks:
   - https://zooqle.unblockit.onl/
   - https://zooqle.unblockit.li/
   - https://zooqle.unblockit.uno/
+  - https://zooqle.unblockit.ch/
+  - https://zooqle.nocensor.space/
+  - https://zooqle.unblockit.ws/
 
 caps:
   categorymappings:

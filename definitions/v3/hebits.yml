@@ -1,0 +1,109 @@
+---
+id: hebits
+name: Hebits
+description: "The Israeli Tracker"
+language: he-IL
+type: private
+encoding: UTF-8
+links:
+  - https://hebits.net/
+
+caps:
+  categorymappings:
+    - {id: 1, cat: Movies, desc: "Movies"}
+    - {id: 2, cat: TV, desc: "TV"}
+    - {id: 4, cat: PC/0day, desc: "Apps"}
+    - {id: 5, cat: PC/Games, desc: "Games"}
+    - {id: 6, cat: Audio, desc: "Music"}
+    # Although books are supported, most of their names contains Hebrew chars, which makes it difficult to cleanup other releases from their Hebrew names
+    # - {id: 7, cat: Books, desc: "Books"}
+    - {id: 9, cat: XXX, desc: "XXX"}
+    - {id: 10, cat: Other, desc: "Other"}
+
+  modes:
+    search: [q]
+    tv-search: [q, imdbid, season, ep]
+    movie-search: [q, imdbid]
+    music-search: [q]
+    book-search: [q]
+
+settings:
+  - name: cookie
+    type: text
+    label: Cookie
+  - name: info
+    type: info
+    label: How to get the Cookie
+    default: "<ol><li>Login to this tracker with your browser<li>Open the <b>DevTools</b> panel by pressing <b>F12</b><li>Select the <b>Network</b> tab<li>Click on the <b>Doc</b> button (Chrome Browser) or <b>HTML</b> button (FireFox)<li>Refresh the page by pressing <b>F5</b><li>Click on the first row entry<li>Select the <b>Headers</b> tab on the Right panel<li>Find <b>'cookie:'</b> in the <b>Request Headers</b> section<li><b>Select</b> and <b>Copy</b> the whole cookie string <i>(everything after 'cookie: ')</i> and <b>Paste</b> here.</ol>"
+
+login:
+  method: cookie
+  inputs:
+    cookie: "{{ .Config.cookie }}"
+  test:
+    path: torrents.php
+    selector: a[href="/index.php"]
+
+search:
+  paths:
+    - path: "torrents.php"
+  inputs:
+    searchstr: "{{ if .Query.IMDBID }}{{ .Query.IMDBID }}{{ else }}{{ .Keywords }}{{ end }}"
+    order_by: "time"
+    order_way: "desc"
+    $raw: "{{ range .Categories }}filter_cat[{{.}}]=1&{{end}}"
+  keywordsfilters:
+    # remove dashes at the beginning of keywords as they exclude search strings (see issue #3096)
+    - name: re_replace
+      args: ["(^|\\s)-", " "]
+  rows:
+    selector: .torrent
+
+  fields:
+    title:
+      selector: .torrent_info
+      filters:
+        - name: re_replace
+          args: ["[א-ת].*", ""]
+    id:
+      selector: a[href*="reportsv2.php?action=report&id="]
+      attribute: href
+      filters:
+        - name: re_replace
+          args: [".*&id=", ""]
+    details:
+      selector: a[href*="torrentid"]
+      attribute: href
+    magnet:
+      selector: a[href^="magnet"]
+      attribute: href
+    download:
+      selector: a[href^="torrents.php?action=download"]
+      attribute: href
+    files:
+      selector: td:nth-child(3)
+    date:
+      selector: td:nth-child(4) span
+      attribute: title
+      filters:
+        - name: append
+          args: " +02:00"
+        - name: dateparse
+          args: "02/01/2006, 15:04 -07:00"
+    size:
+      selector: td:nth-child(5)
+    grabs:
+      selector: td:nth-child(6)
+    seeders:
+      selector: td:nth-child(7)
+    leechers:
+      selector: td:nth-child(8)
+    downloadvolumefactor:
+      case:
+        "strong.tl_notice[title*=\"חצי פריליץ'\"]": 0.5
+        "strong.tl_notice[title*=\"פריליץ'\"]": 0
+        "*": 1
+    uploadvolumefactor:
+      case:
+        "strong.tl_notice[title*=\"העלאה כפולה\"]": 2
+        "*": 1

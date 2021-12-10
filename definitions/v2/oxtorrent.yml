@@ -2,14 +2,14 @@
 id: oxtorrent
 name: OxTorrent
 description: "OxTorrent is a French Public site for TV / MOVIES / GENERAL"
-language: fr-fr
+language: fr-FR
 type: public
 encoding: UTF-8
 followredirect: true
 links:
-  - https://www.oxtorrent.io/
-  - https://oxtorrent.unblockit.ch/
-  - https://oxtorrent.nocensor.space/
+  - https://www.oxtorrent.be/
+  - https://oxtorrent.unblockit.tv/
+  - https://oxtorrent.nocensor.biz/
 legacylinks:
   - https://wwv.oxtorrent.com/
   - https://www.smartorrent.tv/
@@ -35,6 +35,18 @@ legacylinks:
   - https://www.oxtorrent.pe/
   - https://www.oxtorrent.co/
   - https://oxtorrent.unblockit.uno/
+  - https://www.oxtorrent.io/
+  - https://oxtorrent.unblockit.ch/
+  - https://oxtorrent.nocensor.space/
+  - https://www.oxtorrent.cx/
+  - https://oxtorrent.unblockit.ws/
+  - https://www.oxtorrent.nz/
+  - https://oxtorrent.nocensor.work/
+  - https://oxtorrent.unblockit.kim/
+  - https://www.oxtorrent.sh/
+  - https://www.oxtorrent.pl/
+  - https://oxtorrent.unblockit.bz/
+  - https://www.oxtorrent.vc/
 
 caps:
   categorymappings:
@@ -77,8 +89,10 @@ settings:
 
 download:
   selectors:
-    - selector: a[href^="magnet:?"]
-      attribute: href
+    - selector: script:contains("magnet:?")
+      filters:
+        - name: regexp
+          args: "\\s'(magnet:\\?.+?)';"
 
 search:
   paths:
