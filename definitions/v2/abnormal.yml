@@ -104,7 +104,7 @@ search:
     title:
       text: "{{ if .Config.subfrench }}{{ .Result.title_vostfr }}{{ else }}{{ .Result.title_phase2 }}{{ end }}"
     download:
-      selector: td:nth-child(4) > a
+      selector: a[href^="/Torrent/Download?ReleaseId="]
       attribute: href
     details:
       selector: a[href^="/Torrent/Details?ReleaseId="]
