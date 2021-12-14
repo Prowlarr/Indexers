@@ -63,6 +63,11 @@ login:
 search:
   paths:
     - path: browse.php
+  keywordsfilters:
+    - name: prepend
+      args: "+"
+    - name: replace
+      args: [" ", " +"]
   inputs:
     $raw: "{{ range .Categories }}c{{.}}=1&{{end}}"
     search: "{{ .Keywords }}"
