@@ -70,7 +70,7 @@ search:
       args: [" ", " +"]
   inputs:
     $raw: "{{ range .Categories }}c{{.}}=1&{{end}}"
-    search: "{{ .Keywords }}"
+    search: "{{ if .Query.Keywords }}{{ .Keywords }}{{ else }}{{ end }}"
     incldead: 1
 
   rows:
