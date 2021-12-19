@@ -1,25 +1,24 @@
 ---
-id: brsociety
-name: BrSociety
-description: "BrSociety (SemeandoCC) is a BRAZILIAN Private Torrent Tracker for E-LEARNING"
-language: pt-BR
+id: blutopia
+name: Blutopia
+description: "Blutopia (BLU) is a Private Torrent Tracker for HD MOVIES / TV"
+language: en-US
 type: private
 encoding: UTF-8
 links:
-  - https://brsociety.club/
+  - https://blutopia.xyz/
 
 caps:
   categorymappings:
-    - {id: 1, cat: TV, desc: "Cursos (courses)"}
-    - {id: 2, cat: Books/EBook, desc: "eBooks"}
-    - {id: 5, cat: Books/Mags, desc: "Revistas (Magazines)"}
-    - {id: 3, cat: Audio/Audiobook, desc: "Audiobooks"}
-    - {id: 4, cat: Other, desc: "Arquivos de Auxilio (Help Files)"}
+    - {id: 1, cat: Movies, desc: "Movie"}
+    - {id: 2, cat: TV, desc: "TV"}
+    - {id: 3, cat: Movies/Other, desc: "FANRES"}
+    - {id: 5, cat: Movies/Other, desc: "Trailer"}
 
   modes:
     search: [q]
-    tv-search: [q]
-    book-search: [q]
+    tv-search: [q, season, ep, imdbid, tvdbid]
+    movie-search: [q, imdbid, tmdbid]
 
 settings:
   - name: username
@@ -72,16 +71,28 @@ search:
     - path: torrents
   inputs:
     $raw: "{{ range .Categories }}categories[]={{.}}&{{end}}"
-    name: "{{ .Keywords }}"
+    name: "{{ if .Query.IMDBID }}{{ else }}{{ .Keywords }}{{ end }}" # for dashboard imdbid search
     description: ""
     mediainfo: ""
     keywords: ""
     uploader: ""
+    tmdbId: "{{ .Query.TMDBID }}"
+    imdbId: "{{ .Query.IMDBIDShort }}"
+    tvdbId: "{{ .Query.TVDBID }}"
+    malId: ""
+    startYear: ""
+    endYear: ""
+    playlistId: ""
+    collectionId: ""
     sortField: "{{ .Config.sort }}"
     sortDirection: "{{ .Config.type }}"
     perPage: 100
     page: 1
     free: "{{ if .Config.freeleech }}1{{ else }}{{ end }}"
+
+  keywordsfilters:
+    - name: re_replace
+      args: ["\\.", " "]
 
   rows:
     selector: table > tbody > tr
@@ -96,11 +107,8 @@ search:
     title:
       selector: a.view-torrent
     download:
-      selector: a[href*="/download_check/"]
+      selector: a[href*="/download/"]
       attribute: href
-      filters:
-        - name: replace
-          args: ["download_check", "download"]
     details:
       selector: a.view-torrent
       attribute: href
@@ -161,23 +169,27 @@ search:
         - name: timeago
     downloadvolumefactor:
       case:
-        i[class*="fa-id-badge text-orange"]: 0 # 24 Hour FreeLeech From BON Store
-        i[class*="fa-trophy text-purple"]: 0 # Special FreeLeech For Certain User Groups
-        i[class*="fa-star text-bold"]: 0 # Freeleech From Token
-        i[class*="fa-coins text-bold"]: 0 # Freeleech From Token
-        i[class*="fa-globe text-blue"]: 0 # Global Freeleech
-        i[class*="fa-star text-gold"]: 0 # Freeleech
-        i[class*="fa-certificate text-pink"]: 0 # Featured Torrent
+        span.torrent-listings-global-freeleech: 0
+        span.torrent-listings-personal-freeleech: 0
+        span.torrent-listings-freeleech-token: 0
+        span.torrent-listings-featured: 0
+        span.torrent-listings-freeleech[data-original-title*="25%"]: 0.75
+        span.torrent-listings-freeleech[data-original-title*="50%"]: 0.5
+        span.torrent-listings-freeleech[data-original-title*="75%"]: 0.25
+        span.torrent-listings-freeleech[data-original-title*="100%"]: 0
+        span.torrent-listings-special-freeleech: 0
         "*": 1
     uploadvolumefactor:
       case:
-        i[class*="fa-gem text-green"]: 2 # Single Torrent Double Upload
-        i[class*="fa-globe text-green"]: 2 # Global Double Upload
-        i[class*="fa-certificate text-pink"]: 2 # Featured Torrent
+        span.torrent-listings-global-double-upload: 2
+        span.torrent-listings-double-upload: 2
+        span.torrent-listings-featured: 2
+        span.torrent-listings-special-double-upload: 2
         "*": 1
-    minimumratio:
-      text: 1.0
+# global MR is 0.4 but torrents must be seeded for 7 days regardless of ratio
+#    minimumratio:
+#      text: 0.4
     minimumseedtime:
-      # 5 days (as seconds = 5 x 24 x 60 x 60)
-      text: 432000
-# UNIT3D 5.3.0
+      # 7 day (as seconds = 7 x 24 x 60 x 60)
+      text: 604800
+# UNIT3D 5.3.1b
