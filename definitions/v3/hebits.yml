@@ -48,7 +48,7 @@ search:
   paths:
     - path: "torrents.php"
   inputs:
-    searchstr: "{{ if .Query.IMDBID }}{{ .Query.IMDBID }}{{ else }}{{ .Keywords }}{{ end }}"
+    searchstr: "{{ if .Query.IMDBID }}{{ .Query.IMDBID }} {{ .Query.Episode }}{{ else }}{{ .Keywords }}{{ end }}"
     order_by: "time"
     order_way: "desc"
     $raw: "{{ range .Categories }}filter_cat[{{.}}]=1&{{end}}"
