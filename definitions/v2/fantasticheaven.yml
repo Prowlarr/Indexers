@@ -6,6 +6,9 @@ language: de-DE
 type: private
 encoding: UTF-8
 links:
+  - http://fantastic-heaven.eu/
+  
+legacylinks:
   - https://fantastic-heaven.eu/
 
 caps:
