@@ -31,7 +31,7 @@ esac
 prowlarr_git_path="/c/Development/Code/Prowlarr_Indexers/"
 jackett_repo_name="z_Jackett/master"
 jackett_pulls_branch="jackett-pulls"
-prowlarr_commit_template=$(sed -n 1p .gitcommit_pulltemplate.txt)
+prowlarr_commit_template="jackett indexers as of"
 ### Indexer Versions
 v1_pattern="v1"
 v2_pattern="v2"
@@ -47,7 +47,6 @@ echo "Fetching and pruning repos"
 git fetch --all --prune --progress
 ## Config Git
 git config advice.statusHints false                    # Mute Git Hints
-git config commit.template .gitcommit_pulltemplate.txt # Set Git Commit Template
 echo "Configured Git"
 ## Check if jackett-pulls exists (remote)
 pulls_check=$(git ls-remote --heads origin "$jackett_pulls_branch")
