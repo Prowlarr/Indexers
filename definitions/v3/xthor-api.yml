@@ -111,7 +111,6 @@ search:
     - path: "https://api.xthor.tk/"
       inputs:
         passkey: "{{ .Config.passkey }}"
-        #$raw: "{{ range .Categories }}categories[]={{.}}&{{end}}"
         category: "{{ if .Categories }}{{ range .Categories }}{{.}}+{{end}}{{ else }}{{ end }}"
         search: "{{ if .Query.TMDBID }}{{ else }}{{ .Keywords }}{{ end }}"
         tmdbid: "{{ .Query.TMDBID }}"
