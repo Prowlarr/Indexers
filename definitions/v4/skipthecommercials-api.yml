@@ -1,34 +1,22 @@
 ---
-id: datascene-api
-name: DataScene (API)
-description: "DataScene (DS) is a ROMANIAN Private Torrent Tracker for MOVIES / TV / GENERAL"
+id: skipthecommercials-api
+name: SkipTheCommercials (API)
+description: "SkipTheCommercials (STC) is a Private Torrent Tracker for TV"
 language: en-US
 type: private
 encoding: UTF-8
 links:
-  - https://datascene.xyz/
-legacylinks:
-  - http://datascene.net/
-  - https://datascene.net/
+  - https://skipthecommericals.xyz/
 
 caps:
   # dont forget to update the case block in the search fields category
   categorymappings:
-    - {id: 1, cat: Movies, desc: "Movies"}
-    - {id: 2, cat: TV, desc: "TV"}
-    - {id: 3, cat: Audio, desc: "Music"}
-    - {id: 4, cat: PC/Games, desc: "Game"}
-    - {id: 5, cat: PC/0day, desc: "Application"}
-    - {id: 6, cat: XXX, desc: "XXX"}
-    - {id: 7, cat: PC/Mobile-Other, desc: "Mobile"}
-    - {id: 8, cat: Books/EBook, desc: "E-Book"}
+    - {id: 2, cat: TV, desc: "TV Show"}
 
   modes:
     search: [q]
     tv-search: [q, season, ep, imdbid, tvdbid]
     movie-search: [q, imdbid, tmdbid]
-    music-search: [q]
-    book-search: [q]
 
 settings:
   - name: apikey
@@ -78,23 +66,18 @@ search:
         type: json
         attribute: attributes
 
+  keywordsfilters:
+    - name: re_replace
+      args: ["\\.", " "]
+
   rows:
     selector: data
     count:
       selector: meta.total
 
   fields:
-    category:
+    categorydesc:
       selector: category
-      case:
-        "Movie": 1
-        "TV": 2
-        "Music": 3
-        "Game": 4
-        "Application": 5
-        "XXX": 6
-        "Mobile": 7
-        "E-Book": 8
     title:
       selector: name
     details:
@@ -139,9 +122,4 @@ search:
       case:
         0: 1 # normal
         1: 2 # double
-    minimumratio:
-      text: 1.0
-    minimumseedtime:
-      # 3 days (as seconds = 3 x 24 x 60 x 60)
-      text: 259200
 # json UNIT3D 5.3.0

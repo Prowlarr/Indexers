@@ -1,27 +1,27 @@
 ---
-id: datascene-api
-name: DataScene (API)
-description: "DataScene (DS) is a ROMANIAN Private Torrent Tracker for MOVIES / TV / GENERAL"
-language: en-US
+id: shareisland-api
+name: Shareisland (API)
+description: "A general italian tracker"
+language: it-IT
 type: private
 encoding: UTF-8
 links:
-  - https://datascene.xyz/
+  - https://shareisland.org/
 legacylinks:
-  - http://datascene.net/
-  - https://datascene.net/
+  - http://shareisland.org/
+  - http://www.shareisland.org/
 
 caps:
   # dont forget to update the case block in the search fields category
   categorymappings:
-    - {id: 1, cat: Movies, desc: "Movies"}
-    - {id: 2, cat: TV, desc: "TV"}
+    - {id: 1, cat: Movies, desc: "Movie"}
+    - {id: 2, cat: TV, desc: "Serie TV"}
+    - {id: 15, cat: Books/EBook, desc: "Ebook"}
+    - {id: 17, cat: Books/Mags, desc: "Riviste e Giornali"}
+    - {id: 19, cat: XXX, desc: "XXX"}
     - {id: 3, cat: Audio, desc: "Music"}
-    - {id: 4, cat: PC/Games, desc: "Game"}
-    - {id: 5, cat: PC/0day, desc: "Application"}
-    - {id: 6, cat: XXX, desc: "XXX"}
-    - {id: 7, cat: PC/Mobile-Other, desc: "Mobile"}
-    - {id: 8, cat: Books/EBook, desc: "E-Book"}
+    - {id: 7, cat: PC/Games, desc: "Games"}
+    - {id: 23, cat: PC, desc: "Software"}
 
   modes:
     search: [q]
@@ -37,7 +37,7 @@ settings:
   - name: info_key
     type: info
     label: About your API key
-    default: "Find or Generate a new API Token by accessing your <a href=\"https://datascene.xyz/\" target =_blank>DataScene</a> account <i>My Security</i> page and clicking on the <b>API Token</b> tab."
+    default: "Find or Generate a new API Token by accessing your <a href=\"https://shareisland.org/\" target =_blank>Shareisland</a> account <i>My Security</i> page and clicking on the <b>API Token</b> tab."
   - name: freeleech
     type: checkbox
     label: Search freeleech only
@@ -78,25 +78,48 @@ search:
         type: json
         attribute: attributes
 
+  keywordsfilters:
+    - name: diacritics
+      args: replace
+    - name: re_replace # S01 to 1
+      args: ["(?i)\\bS0*(\\d+)\\b", "$1"]
+    - name: re_replace # S01E01 to 1 1
+      args: ["(?i)\\bS0*(\\d+)E0*(\\d+)\\b", "$1 $2"]
+
   rows:
     selector: data
     count:
       selector: meta.total
 
   fields:
-    category:
+    categorydesc:
       selector: category
-      case:
-        "Movie": 1
-        "TV": 2
-        "Music": 3
-        "Game": 4
-        "Application": 5
-        "XXX": 6
-        "Mobile": 7
-        "E-Book": 8
     title:
       selector: name
+      filters:
+        - name: re_replace # replace special characters with " " (space)
+          args: ["[\\[!\"#$%&'()*+,\\-.\\/:;<=>?@[\\]^_`{|}~]", " "]
+        - name: diacritics
+          args: replace
+        - name: re_replace # replace multiple spaces
+          args: ["[ ]{2,}", " "]
+        # normalize to SXXEYY format
+        - name: re_replace # S01 E01 to S01E01
+          args: ["(?i)\\bS(\\d+)\\sE(\\d+)\\b", "S$1E$2"]
+        - name: re_replace # 01x01 to S01E01
+          args: ["(?i)(\\d{2})x(\\d+)", "S$1E$2"]
+        - name: re_replace # 1x01 to S01E01
+          args: ["(?i)\\b(\\d{1})x(\\d+)", "S0$1E$2"]
+        - name: re_replace # Stagione X --> S0X
+          args: ["(?i)\\bStagion[ei]\\s?(\\d{1})\\b|\\bSeason'?s?\\s?(\\d{1})\\b", "S0$1$2"]
+        - name: re_replace # Stagione XX --> SXX
+          args: ["(?i)\\bStagion[ei]\\s?(\\d{2,})\\b|\\bSeason'?s?\\s?(\\d{2,})\\b", "S$1$2"]
+        - name: re_replace # Episodio 4 to E4
+          args: ["(?i)\\b(?:[\\/\\|]?Episodio\\s?(\\d+)|Puntata\\s?(\\d+))", "E$1$2"]
+        - name: re_replace # Episodi 4 5 to E04-05
+          args: ["(?i)\\b(?:Puntate\\s*)(\\d+)\\s?(\\d+)", "E0$1-0$2"]
+        - name: re_replace # rimozioni varie
+          args: ["(?i)(Serie completa|Completat?a?|in pausa)", ""]
     details:
       selector: details_link
     download:
@@ -139,9 +162,10 @@ search:
       case:
         0: 1 # normal
         1: 2 # double
-    minimumratio:
-      text: 1.0
+# global MR is 0.4 but torrents must be seeded for 7 days regardless of ratio
+#    minimumratio:
+#      text: 0.4
     minimumseedtime:
-      # 3 days (as seconds = 3 x 24 x 60 x 60)
-      text: 259200
+      # 7 day (as seconds = 7 x 24 x 60 x 60)
+      text: 604800
 # json UNIT3D 5.3.0
