@@ -1,27 +1,19 @@
 ---
-id: datascene-api
-name: DataScene (API)
-description: "DataScene (DS) is a ROMANIAN Private Torrent Tracker for MOVIES / TV / GENERAL"
+id: reelflix-api
+name: ReelFLiX (API)
+description: "ReelFLiX (HD4Free,LegacyHD) is a Private Torrent Tracker for HD MOVIES"
 language: en-US
 type: private
 encoding: UTF-8
 links:
-  - https://datascene.xyz/
+  - https://reelflix.xyz/
 legacylinks:
-  - http://datascene.net/
-  - https://datascene.net/
+  - https://legacyhd.org/
 
 caps:
   # dont forget to update the case block in the search fields category
   categorymappings:
     - {id: 1, cat: Movies, desc: "Movies"}
-    - {id: 2, cat: TV, desc: "TV"}
-    - {id: 3, cat: Audio, desc: "Music"}
-    - {id: 4, cat: PC/Games, desc: "Game"}
-    - {id: 5, cat: PC/0day, desc: "Application"}
-    - {id: 6, cat: XXX, desc: "XXX"}
-    - {id: 7, cat: PC/Mobile-Other, desc: "Mobile"}
-    - {id: 8, cat: Books/EBook, desc: "E-Book"}
 
   modes:
     search: [q]
@@ -37,7 +29,7 @@ settings:
   - name: info_key
     type: info
     label: About your API key
-    default: "Find or Generate a new API Token by accessing your <a href=\"https://datascene.xyz/\" target =_blank>DataScene</a> account <i>My Security</i> page and clicking on the <b>API Token</b> tab."
+    default: "Find or Generate a new API Token by accessing your <a href=\"https://reelflix.xyz/\" target =_blank>ReelFlix</a> account <i>My Security</i> page and clicking on the <b>API Token</b> tab."
   - name: freeleech
     type: checkbox
     label: Search freeleech only
@@ -84,17 +76,8 @@ search:
       selector: meta.total
 
   fields:
-    category:
+    categorydesc:
       selector: category
-      case:
-        "Movie": 1
-        "TV": 2
-        "Music": 3
-        "Game": 4
-        "Application": 5
-        "XXX": 6
-        "Mobile": 7
-        "E-Book": 8
     title:
       selector: name
     details:
@@ -103,13 +86,13 @@ search:
       selector: download_link
     poster:
       selector: poster
+    imdbid:
+      selector: imdb_id
       filters:
         - name: replace
           args: ["https://via.placeholder.com/90x135", ""]
         - name: replace
           args: ["https://via.placeholder.com/400x600", ""]
-    imdbid:
-      selector: imdb_id
     tmdbid:
       selector: tmdb_id
     tvdbid:
@@ -140,8 +123,8 @@ search:
         0: 1 # normal
         1: 2 # double
     minimumratio:
-      text: 1.0
+      text: 0.4
     minimumseedtime:
-      # 3 days (as seconds = 3 x 24 x 60 x 60)
-      text: 259200
+      # 5 days (as seconds = 5 x 24 x 60 x 60)
+      text: 432000
 # json UNIT3D 5.3.0

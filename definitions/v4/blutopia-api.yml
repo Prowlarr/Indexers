@@ -1,34 +1,25 @@
 ---
-id: datascene-api
-name: DataScene (API)
-description: "DataScene (DS) is a ROMANIAN Private Torrent Tracker for MOVIES / TV / GENERAL"
+id: blutopia-api
+name: Blutopia (API)
+description: "Blutopia (BLU) is a Private Torrent Tracker for HD MOVIES / TV"
 language: en-US
 type: private
 encoding: UTF-8
 links:
-  - https://datascene.xyz/
-legacylinks:
-  - http://datascene.net/
-  - https://datascene.net/
+  - https://blutopia.xyz/
 
 caps:
   # dont forget to update the case block in the search fields category
   categorymappings:
-    - {id: 1, cat: Movies, desc: "Movies"}
-    - {id: 2, cat: TV, desc: "TV"}
-    - {id: 3, cat: Audio, desc: "Music"}
-    - {id: 4, cat: PC/Games, desc: "Game"}
-    - {id: 5, cat: PC/0day, desc: "Application"}
-    - {id: 6, cat: XXX, desc: "XXX"}
-    - {id: 7, cat: PC/Mobile-Other, desc: "Mobile"}
-    - {id: 8, cat: Books/EBook, desc: "E-Book"}
+    - {id: 1, cat: Movies, desc: "Movie"}
+    - {id: 2, cat: TV, desc: "TV Show"}
+    - {id: 3, cat: Movies/Other, desc: "FANRES"}
+    - {id: 5, cat: Movies/Other, desc: "Trailer"}
 
   modes:
     search: [q]
     tv-search: [q, season, ep, imdbid, tvdbid]
     movie-search: [q, imdbid, tmdbid]
-    music-search: [q]
-    book-search: [q]
 
 settings:
   - name: apikey
@@ -37,7 +28,7 @@ settings:
   - name: info_key
     type: info
     label: About your API key
-    default: "Find or Generate a new API Token by accessing your <a href=\"https://datascene.xyz/\" target =_blank>DataScene</a> account <i>My Security</i> page and clicking on the <b>API Token</b> tab."
+    default: "Find or Generate a new API Token by accessing your <a href=\"https://blutopia.xyz/\" target =_blank>Blutopia</a> account <i>My Security</i> page and clicking on the <b>API Token</b> tab."
   - name: freeleech
     type: checkbox
     label: Search freeleech only
@@ -78,23 +69,18 @@ search:
         type: json
         attribute: attributes
 
+  keywordsfilters:
+    - name: re_replace
+      args: ["\\.", " "]
+
   rows:
     selector: data
     count:
       selector: meta.total
 
   fields:
-    category:
+    categorydesc:
       selector: category
-      case:
-        "Movie": 1
-        "TV": 2
-        "Music": 3
-        "Game": 4
-        "Application": 5
-        "XXX": 6
-        "Mobile": 7
-        "E-Book": 8
     title:
       selector: name
     details:
@@ -128,20 +114,25 @@ search:
     size:
       selector: size
     downloadvolumefactor:
-      # api returns 0=false, 1=true
+      # api returns 0%, 25%, 50%, 75%, 100%
       selector: freeleech
       case:
-        0: 1 # not free
-        1: 0 # freeleech
+        0%: 1 # not free
+        25%: 0.75
+        50%: 0.5
+        75%: 0.25
+        100%: 0 # freeleech
+        "*": 0 # catch errors
     uploadvolumefactor:
       # api returns 0=false, 1=true
       selector: double_upload
       case:
         0: 1 # normal
         1: 2 # double
-    minimumratio:
-      text: 1.0
+# global MR is 0.4 but torrents must be seeded for 7 days regardless of ratio
+#    minimumratio:
+#      text: 0.4
     minimumseedtime:
-      # 3 days (as seconds = 3 x 24 x 60 x 60)
-      text: 259200
-# json UNIT3D 5.3.0
+      # 7 day (as seconds = 7 x 24 x 60 x 60)
+      text: 604800
+# json UNIT3D 5.3.1b
