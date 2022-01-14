@@ -12,23 +12,27 @@ caps:
   categorymappings:
     - {id: 1, cat: Movies, desc: "Filmes"}
     - {id: 2, cat: TV, desc: "TV"}
-    - {id: 14, cat: TV, desc: "TV/Anime"} # Anime format is equal to TV Show (SXXEXX) except old ones like one piece
     - {id: 3, cat: PC, desc: "Aplicativos"}
+    - {id: 4, cat: PC/Games, desc: "Jogos"}
+    - {id: 5, cat: Books/Comics, desc: "Mangás"}
+    - {id: 6, cat: TV, desc: "Vídeos de TV"}
+    - {id: 7, cat: Other, desc: "Outros"}
+    - {id: 8, cat: TV/Sport, desc: "Esportes"}
+    - {id: 9, cat: Books/Mags, desc: "Revistas"}
+    - {id: 10, cat: Books, desc: "E-Books"}
     - {id: 11, cat: Audio/Audiobook, desc: "Audiobook"}
+    - {id: 12, cat: Books/Comics, desc: "Histórias em Quadrinhos"}
+    - {id: 13, cat: TV, desc: "Stand Up Comedy"}
+    - {id: 14, cat: TV, desc: "TV/Anime"} # Anime format is equal to TV Show (SXXEXX) except old ones like one piece
+    - {id: 15, cat: XXX/ImageSet, desc: "Fotos Adultas"}
     - {id: 16, cat: TV/Other, desc: "Desenho Animado"}
     - {id: 17, cat: TV/Documentary, desc: "Documentários"}
-    - {id: 10, cat: Books, desc: "E-Books"}
-    - {id: 8, cat: TV/Sport, desc: "Esportes"}
-    - {id: 12, cat: Books/Comics, desc: "Histórias em Quadrinhos"}
-    - {id: 7, cat: Other, desc: "Outros"}
-    - {id: 9, cat: Books/Mags, desc: "Revistas"}
-    - {id: 13, cat: TV, desc: "Stand Up Comedy"}
-    - {id: 11, cat: Other, desc: "Video-Aula"}
-    - {id: 6, cat: TV, desc: "Vídeos de TV"}
-    - {id: 4, cat: PC/Games, desc: "Jogos"}
+    - {id: 18, cat: Other, desc: "Cursos"}
     - {id: 19, cat: XXX, desc: "Filmes Adultos"}
-    - {id: 20, cat: XXX, desc: "Jogos Adultos"}
-    - {id: 15, cat: XXX/ImageSet, desc: "Fotos Adultas"}
+    - {id: 20, cat: XXX/Other, desc: "Jogos Adultos"}
+    - {id: 21, cat: XXX/Other, desc: "Mangás Adultos"}
+    - {id: 22, cat: XXX/Other, desc: "Animes Adultos"}
+    - {id: 23, cat: XXX/Other, desc: "HQ Adultos"}
 
   modes:
     search: [q]
@@ -36,27 +40,23 @@ caps:
     movie-search: [q, imdbid]
 
 settings:
-  - name: username
+  - name: cookie
     type: text
-    label: Username
-  - name: password
-    type: password
-    label: Password
+    label: Cookie
+  - name: info_cookie
+    type: info
+    label: How to get the Cookie
+    default: "<ol><li>Login to this tracker with your browser<li>Open the <b>DevTools</b> panel by pressing <b>F12</b><li>Select the <b>Network</b> tab<li>Click on the <b>Doc</b> button (Chrome Browser) or <b>HTML</b> button (FireFox)<li>Refresh the page by pressing <b>F5</b><li>Click on the first row entry<li>Select the <b>Headers</b> tab on the Right panel<li>Find <b>'cookie:'</b> in the <b>Request Headers</b> section<li><b>Select</b> and <b>Copy</b> the whole cookie string <i>(everything after 'cookie: ')</i> and <b>Paste</b> here.</ol>"
   - name: freeleech
     type: checkbox
     label: Search freeleech only
     default: false
 
+
 login:
-  path: login.php
-  method: form
-  form: form#xaloginform
+  method: cookie
   inputs:
-    username: "{{ .Config.username }}"
-    password: "{{ .Config.password }}"
-    keeplogged: 1
-  error:
-    - selector: div[id="msgPublic"]
+    cookie: "{{ .Config.cookie }}"
   test:
     path: index.php
     selector: a[href^="/logout.php?auth="]
