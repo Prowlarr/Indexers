@@ -27,7 +27,22 @@ Prowlarr will fall back to a previous version if no YML exists for the current v
   - Replace `imdb:` selector with `imdbid:`
   - Makes `Description` an optional by default
   - All new Indexers using APIs shall be in v3 as of 2021-10-21
-  
+    - Indexers utiizing CategoryDescr or any v4 features MUST be in v4
+- V4 Indexers
+  - Prowlarr Cardigann v4 includes support for Newznab Indexers (Usenet)
+  - Better SearchBlock and DownloadBlock header support and use
+  - Cardigann v4 additionally includes the following changes:
+    -  Search Caps and Release Response
+      - TMDBId
+      - Genre
+      - TraktID
+    - CategoryDescr
+    - Protocol
+    - ignoreblankinputs (defined as SupportsEmptyInputs)
+    - allowdownloadredirect (defined as SupportsRedirect)
+    - SearchBlock Error
+    - DownloadBlock Error
+
 ## Depreciated Versions
 
 - V1 Indexers
