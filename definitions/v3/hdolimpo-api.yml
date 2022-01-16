@@ -76,7 +76,7 @@ search:
       selector: meta.total
 
   fields:
-    categorydesc:
+    category:
       selector: category
     title:
       selector: name
