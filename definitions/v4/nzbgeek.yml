@@ -101,11 +101,11 @@ search:
   inputs:
     t: "{{ .Query.Type }}"
     apikey: "{{ .Config.apikey }}"
-    q: "{{ if or (.Query.TVRageID) (.Query.TVDBID) (.Query.IMDBID) (.Query.TMDBID) (.Query.TraktId) (.Query.Album) (.Query.Artist) (.Query.Label) (.Query.Year) (.Query.Genre) }}{{ else }}{{ .Keywords }}{{ end }}"
+    q: "{{ if or (.Query.TVRageID) (.Query.TVDBID) (.Query.IMDBIDShort) (.Query.TMDBID) (.Query.TraktId) (.Query.Album) (.Query.Artist) (.Query.Label) (.Query.Year) (.Query.Genre) }}{{ else }}{{ .Keywords }}{{ end }}"
     rid: "{{ if .Query.TVRageID }}{{ .Query.TVRageID }}{{ else }}{{ end }}"
     tmdbid: "{{ if .Query.TMDBID }}{{ .Query.TMDBID }}{{ else }}{{ end }}"
     tvdbid: "{{ if .Query.TVDBID }}{{ .Query.TVDBID }}{{ else }}{{ end }}"
-    imdbid: "{{ if .Query.IMDBID }}{{ .Query.IMDBID }}{{ else }}{{ end }}"
+    imdbid: "{{ if .Query.IMDBIDShort }}{{ .Query.IMDBIDShort }}{{ else }}{{ end }}"
     traktid: "{{ if .Query.TraktId }}{{ .Query.TraktId }}{{ else }}{{ end }}"
     season: "{{ if .Query.Season }}{{ .Query.Season }}{{ else }}{{ end }}"
     ep: "{{ if .Query.Ep }}{{ .Query.Ep }}{{ else }}{{ end }}"
