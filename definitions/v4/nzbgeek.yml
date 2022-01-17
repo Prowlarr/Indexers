@@ -76,7 +76,7 @@ caps:
     search: [q] # group is supported by the indexer but not Cardigann/Prowlarr
     tv-search: [q, rid, tvdbid, season, ep]
     movie-search: [q, imdbid, genre]
-    music-search: [q, album, artist, label, genre, year]
+    music-search: [q] # other params not actually supported by nzbgeek even though caps call says so - returns recent feed only[, album, artist, label, genre, year]
 
 # The below are standard Newznab values and likely do not need modification
 settings:
