@@ -3,11 +3,11 @@
 ## Script to keep Prowlarr/Indexers up to date with Jackett/Jackett
 ## Created by Bakerboy448
 ## Requirements
-### Prowlarr/Indexers git repo exists
-### Jackett/Jackett git repo exists
+### Prowlarr/Indexers local git repo exists
 ### Set variables as needed
+### Typically only prowlarr_git_path would be needed to be set
 ## Using the Script
-### Run from the current directory being Prowlarr/Indexers local Repo using Git Bash `./scripts/prowlarr-indexers-jackettpull.sh`
+### Suggested to run from the current directory being Prowlarr/Indexers local Repo using Git Bash `./scripts/prowlarr-indexers-jackettpull.sh`
 
 ## Enhanced Logging
 case $1 in
@@ -239,61 +239,59 @@ echo "Evaluating and Reviewing Changes"
 # New Indexers pulled
 ### Depreciated
 ### v1
-### SupportedOld
-### v2
 ### Supported
+### v2
+### Current
 ### v3
+### Latest
 ### v4
 
-indexers_new=$(git diff --cached --diff-filter=A --name-only | grep ".yml" | grep "$v1_pattern\|$v2_pattern\|$v3_pattern")
 # Changes Indexers pulled to older versions
-v1_indexers=$(git diff --cached --name-only | grep ".yml" | grep "$v1_pattern")
-move_indexers_new="$indexers_new"
-depreciated_indexers="$v1_indexers"
+depreciated_indexers=$(git diff --cached --name-only | grep ".yml" | grep "$v1_pattern")
 # v2, v3, and v4 are supported
-changed_supported_indexers=$(git diff --cached --diff-filter=M --name-only | grep ".yml" | grep "$v2_pattern\|$v3_pattern\|$v4_pattern")
-removed_indexers=$(git diff --cached --diff-filter=D --name-only | grep ".yml")
+added_indexers=$(git diff --cached --diff-filter=A --name-only | grep ".yml" | grep "$v1_pattern\|$v2_pattern\|$v3_pattern\|$v4_pattern")
+modified_indexers=$(git diff --cached --diff-filter=M --name-only | grep ".yml" | grep "$v2_pattern\|$v3_pattern\|$v4_pattern")
+removed_indexers=$(git diff --cached --diff-filter=D --name-only | grep ".yml" | grep "$v1_pattern\|$v2_pattern\|$v3_pattern\|$v4_pattern")
 
-## Move new in vSupportedOld to vSupportedNew
 ### v1 frozen 2021-10-13
-if [[ -n $move_indexers_new ]]; then
+if [[ -n $added_indexers ]]; then
     echo "New Indexers detected"
-    for indexer in ${move_indexers_new}; do
-        indexer_supported=${indexer/$v1_pattern/$v2_pattern}
-        indexer_supported_new=${indexer/$v1_pattern/$v3_pattern}
-        indexer_supported_new2=${indexer/$v2_pattern/$v3_pattern}
-        echo "Comparing [$indexer] looking for [$v1_pattern] and [$v2_pattern] and determining if indexer is [$v2_pattern] or [$v3_pattern]"
+    for indexer in ${added_indexers}; do
+        indexer_supported=${indexer/v[0-9]/$v2_pattern}
+        indexer_supported_current=${indexer/v[0-9]/$v3_pattern}
+        indexer_supported_latest=${indexer/v[0-9]/$v4_pattern}
+        echo "Evaluating [$indexer] Cardigann Version"
         if [[ -f $indexer ]]; then
+            updated_indexer=$indexer
+            if grep -Eq "$v4_regex1" "$indexer"; then
+                echo "[$indexer] is [$v4_pattern]"
+                updated_indexer=$indexer_supported_latest
+            fi
             if grep -Eq "$v3_regex1" "$indexer" || grep -Pq "$v3_regex2" "$indexer"; then
-                # code if new
                 echo "[$indexer] is [$v3_pattern]"
-                if [ "$indexer" = "$indexer_supported_new" ]; then
-                    moveto_indexer=$indexer_supported_new2
-                else
-                    moveto_indexer=$indexer_supported_new
-                fi
+                updated_indexer=$indexer_supported_current
             else
                 # code if not v3
                 echo "[$indexer] is [$v2_pattern]"
-                moveto_indexer=$indexer_supported
+                updated_indexer=$indexer_supported
             fi
-            if [ "$indexer" != "$moveto_indexer" ]; then
-                echo "Moving indexer old [$indexer] to new [$moveto_indexer]"
+            if [ "$indexer" != "$updated_indexer" ]; then
+                echo "Moving indexer old [$indexer] to new [$updated_indexer]"
                 if [[ $debug = true ]]; then
-                    read -ep $"Reached [vSupportedOld to vSupportedNew] ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
+                    read -ep $"Reached [vCurrent to vLatest] ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
                 fi
-                mv "$indexer" "$moveto_indexer"
+                mv "$indexer" "$updated_indexer"
                 git rm -f "$indexer"
-                git add -f "$moveto_indexer"
+                git add -f "$updated_indexer"
+            else
+                echo "Doing nothing; [$indexer] already is [$updated_indexer]"
             fi
-        else
-            echo "Doing nothing; [$indexer] already in [$moveto_indexer]"
         fi
     done
     unset indexer
     unset indexer_supported
-    unset indexer_supported_new
-    unset moveto_indexer
+    unset indexer_supported_current
+    unset updated_indexer
     unset pattern
 fi
 echo "--------------------------------------------- completed new indexers ---------------------------------------------"
@@ -302,115 +300,107 @@ echo "--------------------------------------------- completed new indexers -----
 if [[ -n $depreciated_indexers ]]; then
     echo "Depreciated ([$v1_pattern]) Indexers with changes detected"
     for indexer in ${depreciated_indexers}; do
-        indexer_supported=${indexer/$v1_pattern/$v2_pattern}
-        indexer_supported_new=${indexer/$v1_pattern/$v3_pattern}
-        indexer_supported_new2=${indexer/$v2_pattern/$v3_pattern}
+        indexer_supported=${indexer/v[0-9]/$v2_pattern}
+        indexer_supported_current=${indexer/v[0-9]/$v3_pattern}
+        indexer_supported_latest=${indexer/v[0-9]/$v4_pattern}
         echo "evaluating depreciated [$v1_pattern] [$indexer]"
         if [[ -f $indexer ]]; then
-            if grep -Eq "$v3_regex1" "$indexer" || grep -Eq "$v3_regex2" "$indexer"; then
-                # code if new
-                echo "[$indexer] is [$v3_pattern]"
-                if [ "$indexer" = "$indexer_supported_new" ]; then
-                    moveto_indexer=$indexer_supported_new2
-                else
-                    moveto_indexer=$indexer_supported_new
-                fi
-            else
-                # code if not v3
-                echo "[$indexer] is [$v2_pattern]"
-                moveto_indexer=$indexer_supported
+            updated_indexer=$indexer_supported
+            if grep -Eq "$v4_regex1" "$indexer"; then
+                echo "[$indexer] is [$v4_pattern]"
+                updated_indexer=$indexer_supported_latest
             fi
-            copyto_indexer=$moveto_indexer
-            if [ "$indexer" != "$copyto_indexer" ]; then
-                echo "found changes | copying to [$copyto_indexer] and resetting [$indexer]"
+            if grep -Eq "$v3_regex1" "$indexer" || grep -Eq "$v3_regex2" "$indexer"; then
+                echo "[$indexer] is [$v3_pattern]"
+                updated_indexer=$indexer_supported_current
+            fi
+            if [ "$updated_indexer" = "$indexer_supported" ]; then
+                echo "[$indexer] is not  [$v4_pattern] nor [$v3_pattern]. assuming [$v2_pattern]"
+            fi
+            if [ "$indexer" != "$updated_indexer" ]; then
+                echo "found changes | copying to [$updated_indexer] and resetting [$indexer]"
                 if [[ $debug = true ]]; then
                     read -ep $"Reached [vDepreciated to vSupported] ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
                 fi
-                cp "$indexer" "$copyto_indexer"
-                git add "$copyto_indexer"
+                cp "$indexer" "$updated_indexer"
+                git add "$updated_indexer"
                 git checkout @ -f "$indexer"
             fi
         fi
     done
     unset indexer
     unset indexer_supported
-    unset indexer_supported_new
-    unset copyto_indexer
+    unset indexer_supported_current
+    unset updated_indexer
     unset pattern
 fi
 echo "--------------------------------------------- completed depreciated indexers ---------------------------------------------"
-## Check for changes between vSupported that are type vNew
-if [[ -n $changed_supported_indexers ]]; then
-    echo "Older Supported ([$v2_pattern] or [$v3_pattern]) Indexers with changes detected..."
-    for indexer in ${changed_supported_indexers}; do
-        indexer_supported=${indexer/$v2_pattern/$v2_pattern}
-        indexer_supported_new=${indexer/$v2_pattern/$v3_pattern}
-        indexer_supported_new2=${indexer/$v3_pattern/$v4_pattern}
-        echo "[$indexer] is changed | evaluating for [$v3_pattern] changes"
+## Check for changes between vSupported that are type vCurrent and vLatest
+if [[ -n $modified_indexers ]]; then
+    echo "Older Supported Indexers with changes detected..."
+    for indexer in ${modified_indexers}; do
+        indexer_supported=${indexer/v[0-9]/$v2_pattern}
+        indexer_supported_current=${indexer/v[0-9]/$v3_pattern}
+        indexer_supported_latest=${indexer/v[0-9]/$v4_pattern}
+        echo "[$indexer] is changed | evaluating for [$v4_pattern] and [$v3_pattern] changes"
         if [[ -f $indexer ]]; then
-            if grep -Eq "$v3_regex1" "$indexer" || grep -Pq "$v3_regex2" "$indexer"; then
-                # code if new
-                echo "[$indexer] is changed in v3 | evaluating for [$v4_pattern] changes"
-                if grep -Eq "$v4_regex1" "$indexer"; then
-                    echo "[$indexer] is [$v4_pattern]"
-                    moveto_indexer=$indexer_supported_new2
-                else
-                    echo "[$indexer] is [$v3_pattern]"
-                    moveto_indexer=$indexer_supported_new
-                fi
-            else
-                # code if not v3
-                echo "[$indexer] is [$v2_pattern]"
-                moveto_indexer=$indexer_supported
+            updated_indexer=$indexer_supported
+            if grep -Eq "$v4_regex1" "$indexer"; then
+                echo "[$indexer] is [$v4_pattern]"
+                updated_indexer=$indexer_supported_latest
             fi
-            copyto_indexer=$moveto_indexer
-            if [ "$indexer" != "$copyto_indexer" ]; then
-                echo "found changes | copying to [$copyto_indexer] and resetting [$indexer]"
+            if grep -Eq "$v3_regex1" "$indexer" || grep -Pq "$v3_regex2" "$indexer"; then
+                echo "[$indexer] is [$v3_pattern]"
+                updated_indexer=$indexer_supported_current
+            fi
+            if [ "$indexer" != "$updated_indexer" ]; then
+                echo "found changes | copying to [$updated_indexer] and resetting [$indexer]"
                 if [[ $debug = true ]]; then
-                    read -ep $"Reached [vSupported is vNew] ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
+                    read -ep $"Reached [vSupported is vCurrent and vLatest] ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
                 fi
-                cp "$indexer" "$copyto_indexer"
-                git add "$copyto_indexer"
+                cp "$indexer" "$updated_indexer"
+                git add "$updated_indexer"
                 git checkout @ -f "$indexer"
             fi
         fi
     done
     unset indexer
     unset indexer_supported
-    unset indexer_supported_new
-    unset copyto_indexer
+    unset indexer_supported_current
+    unset indexer_supported_latest
+    unset updated_indexer
     unset pattern
 fi
 echo "--------------------------------------------- completed changed indexers ---------------------------------------------"
 ## Backport V3 => V2
 ## Backport V4 => V3
-## No backport V2 => V1 2021-10-23 per Q on discord
+## Backport V4 => V3
+## Backport V2 => V1 - Discontinued 2021-10-23 per Q on discord
 backport_indexers=$(git diff --cached --name-only | grep ".yml" | grep "$v3_pattern\|$v4_pattern")
 if [[ -n $backport_indexers ]]; then
     for indexer in ${backport_indexers}; do
         # ToDo - switch to regex and match group conditionals or make a loop
-        backport_indexer=${indexer/$v4_pattern/$v3_pattern}
-        backport_indexer2=${indexer/$v3_pattern/$v2_pattern}
-        backport_indexer_pattern=$v3_pattern
-        backport_indexer_pattern2=$v2_pattern
-        echo "looking for [$backport_indexer_pattern] indexer of [$indexer]"
-        if [[ -f $backport_indexer ]]; then
-            echo "Found [$backport_indexer_pattern] indexer for [$indexer] - backporting to [$backport_indexer]"
+        indexer_supported=${indexer/v[0-9]/$v2_pattern}
+        indexer_supported_current=${indexer/v[0-9]/$v3_pattern}
+        indexer_supported_latest=${indexer/v[0-9]/$v4_pattern}
+        echo "looking for [$v2_pattern] indexer of [$indexer]"
+        if [[ -f $indexer_supported_current ]]; then
+            echo "Found [$v2_pattern] indexer for [$indexer] - backporting to [$indexer_supported_current]"
             if [[ $debug = true ]]; then
                 read -ep $"Reached [backporting] ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
             fi
-            git difftool --no-index "$indexer" "$backport_indexer"
-            git add "$backport_indexer"
+            git difftool --no-index "$indexer" "$indexer_supported_current"
+            git add "$indexer_supported_current"
         else
-            echo "looking for [$backport_indexer_pattern2] indexer of [$indexer]"
-            if [[ -f $backport_indexer2 ]]; then
-                echo "Found [$backport_indexer_pattern2] indexer for [$indexer] - backporting to [$backport_indexer2]"
+            echo "looking for [$v3_pattern] indexer of [$indexer]"
+            if [[ -f $indexer_supported ]]; then
+                echo "Found [$v3_pattern] indexer for [$indexer] - backporting to [$indexer_supported]"
                 if [[ $debug = true ]]; then
                     read -ep $"Reached [backporting] ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
                 fi
 
-                git difftool --no-index "$indexer" "$backport_indexer2"
-                git add "$backport_indexer2"
+                git difftool --no-index "$indexer" "$indexer_supported"
+                git add "$indexer_supported"
             else
                 echo "[$v2_pattern] nor [$v3_pattern] found for [$indexer]"
             fi
@@ -423,10 +413,10 @@ echo "--------------------------------------------- completed backporting indexe
 if [[ -n $removed_indexers ]]; then
     for indexer in ${backport_indexers}; do
         # ToDo - switch to regex and match group conditionals or make a loop
-        remove_indexer1=${indexer/v\d/$v1_pattern}
-        remove_indexer2=${indexer/v\d/$v2_pattern}
-        remove_indexer3=${indexer/v\d/$v3_pattern}
-        remove_indexer4=${indexer/v\d/$v4_pattern}
+        remove_indexer1=${indexer/v[0-9]/$v1_pattern}
+        remove_indexer2=${indexer/v[0-9]/$v2_pattern}
+        remove_indexer3=${indexer/v[0-9]/$v3_pattern}
+        remove_indexer4=${indexer/v[0-9]/$v4_pattern}
         echo "looking for previous versions of removed indexer [$indexer]"
         if [[ -f $remove_indexer1 || -f $remove_indexer2 || -f $remove_indexer3 || -f $remove_indexer4 ]]; then
             echo "found previous versions of removed indexer [$indexer]"
