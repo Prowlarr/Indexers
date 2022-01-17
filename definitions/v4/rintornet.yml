@@ -59,30 +59,8 @@ search:
     selector: div.entry:has(div.entry__title)
 
   fields:
-    category:
-      selector: div.entry__info
-      case:
-        "a:last-of-type:contains(\"Movies 2160p\")": 27
-        "a:last-of-type:contains(\"Video 2160p\")": 20
-        "a:last-of-type:contains(\"Movies HD\")": 1
-        "a:last-of-type:contains(\"SiteRips\")": 9
-        "a:last-of-type:contains(\"WEBRip\")": 12
-        "a:last-of-type:contains(\"Amateur\")": 10
-        "a:last-of-type:contains(\"Incest\")": 24
-        "a:last-of-type:contains(\"Lesbians\")": 22
-        "a:last-of-type:contains(\"Casting\")": 26
-        "a:last-of-type:contains(\"Japanese\")": 29
-        "a:last-of-type:contains(\"Classic\")": 23
-        "a:last-of-type:contains(\"Femdom\")": 21
-        "a:last-of-type:contains(\"BDSM\")": 17
-        "a:last-of-type:contains(\"Pregnant\")": 19
-        "a:last-of-type:contains(\"Bukkake\")": 28
-        "a:last-of-type:contains(\"Peeing\")": 25
-        "a:last-of-type:contains(\"Shemale\")": 16
-        "a:last-of-type:contains(\"Picture\")": 11
-        "a:last-of-type:contains(\"Cartoons\")": 14
-        "a:last-of-type:contains(\"Games\")": 13
-        "a:last-of-type:contains(\"Gay\")": 15
+    categorydesc:
+      selector: div.entry__info > span > a
     title:
       selector: div.entry__title > h3 > a
     details:
