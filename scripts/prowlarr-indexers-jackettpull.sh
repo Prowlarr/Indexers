@@ -29,7 +29,12 @@ esac
 
 ## Variables
 prowlarr_git_path="/c/Development/Code/Prowlarr_Indexers/"
-jackett_repo_name="z_Jackett/master"
+prowlarr_release_branch="master"
+prowlarr_remote_name="origin"
+prowlarr_repo_url="https://github.com/Prowlarr/Indexers"
+jackett_repo_url="https://github.com/Jackett/Jackett"
+jackett_release_branch="master"
+jackett_remote_name="z_Jackett"
 jackett_pulls_branch="jackett-pulls"
 prowlarr_commit_template="jackett indexers as of"
 ### Indexer Versions
@@ -45,13 +50,16 @@ echo "Variables set"
 
 ## Switch to Prowlarr directory and fetch all
 cd "$prowlarr_git_path" || exit
-echo "Fetching and pruning repos"
-git fetch --all --prune --progress
-## Config Git
+## Config Git and remotes
 git config advice.statusHints false # Mute Git Hints
 echo "Configured Git"
+git remote set-url --add "$prowlarr_remote_name" "$prowlarr_repo_url"
+git remote set-url --add "$jackett_remote_name" "$jackett_repo_url"
+jackett_branch="$jackett_remote_name/$jackett_release_branch"
+echo "Fetching and pruning repos"
+git fetch --all --prune --progress
 ## Check if jackett-pulls exists (remote)
-pulls_check=$(git ls-remote --heads origin "$jackett_pulls_branch")
+remote_pulls_check=$(git ls-remote --heads $prowlarr_remote_name "$jackett_pulls_branch")
 local_pulls_check=$(git branch --list "$jackett_pulls_branch")
 if [ -z "$local_pulls_check" ]; then
     local_exist=false
@@ -61,14 +69,14 @@ else
     echo "local [$jackett_pulls_branch] does exist"
 fi
 # Check if Remote Branch exists
-if [[ -z "$pulls_check" ]]; then
+if [[ -z "$remote_pulls_check" ]]; then
     ## no existing remote  branch found
     pulls_exists=false
-    echo "remote origin/$jackett_pulls_branch does not exist"
+    echo "remote [$prowlarr_remote_name/$jackett_pulls_branch] does not exist"
 else
     ## existing remote branch found
     pulls_exists=true
-    echo "remote origin/$jackett_pulls_branch does exist"
+    echo "remote [$prowlarr_remote_name/$jackett_pulls_branch] does exist"
 fi
 
 if [ "$pulls_exists" = false ]; then
@@ -78,16 +86,16 @@ if [ "$pulls_exists" = false ]; then
         ## reset on master
         echo "checking out local branch [$jackett_pulls_branch]"
         git checkout -B "$jackett_pulls_branch"
-        git reset origin/master
-        echo "local [$jackett_pulls_branch] reset based on [origin/master]"
+        git reset "$prowlarr_release_branch"
+        echo "local [$jackett_pulls_branch] reset based on [$prowlarr_release_branch]"
         if [[ $trace = true ]]; then
             read -ep $"Reached - Finished Github Actions [LocalExistsNoRemote] | Pausing for trace debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
         fi
     else
         ## local branch does not exist
         ## create new branch from master
-        git checkout -B "$jackett_pulls_branch" origin/master --no-track
-        echo "local [$jackett_pulls_branch] created [from origin/master]"
+        git checkout -B "$jackett_pulls_branch" "$prowlarr_release_branch" --no-track
+        echo "local [$jackett_pulls_branch] created from [$prowlarr_release_branch]"
         if [[ $trace = true ]]; then
             read -ep $"Reached - Finished Github Actions [NoLocalNoRemote] | Pausing for trace debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
         fi
@@ -98,15 +106,15 @@ else
     if [ "$local_exist" = true ]; then
         # if local exists; reset to remote
         git checkout -B "$jackett_pulls_branch"
-        git reset origin/$jackett_pulls_branch
-        echo "local [$jackett_pulls_branch] reset from [origin/$jackett_pulls_branch]"
+        git reset "$prowlarr_remote_name"/"$jackett_pulls_branch"
+        echo "local [$jackett_pulls_branch] reset from [$prowlarr_remote_name/$jackett_pulls_branch]"
         if [[ $trace = true ]]; then
             read -ep $"Reached - Finished Github Actions [LocalExistsRemoteExists] | Pausing for trace debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
         fi
     else
         # else create local
-        git checkout -B "$jackett_pulls_branch" origin/$jackett_pulls_branch
-        echo "local [$jackett_pulls_branch] created from [origin/$jackett_pulls_branch]"
+        git checkout -B "$jackett_pulls_branch" "$prowlarr_remote_name"/"$jackett_pulls_branch"
+        echo "local [$jackett_pulls_branch] created from [$prowlarr_remote_name/$jackett_pulls_branch]"
         if [[ $trace = true ]]; then
             read -ep $"Reached - Finished Github Actions [NoLocalRemoteExists] | Pausing for trace debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
         fi
@@ -117,11 +125,11 @@ echo "Reviewing Commits"
 existing_message=$(git log --format=%B -n1)
 existing_message_ln1=$(echo "$existing_message" | awk 'NR==1')
 jackett_commit_message=$(git log --format=%B -n1 -n 10 | grep "$prowlarr_commit_template" | awk 'NR==1')
-jackett_recent_commit=$(git rev-parse "$jackett_repo_name")
-echo "most recent jackett commit is: [$jackett_recent_commit] from [$jackett_repo_name]"
+jackett_recent_commit=$(git rev-parse "$jackett_branch")
+echo "most recent jackett commit is: [$jackett_recent_commit] from [$jackett_branch]"
 recent_pulled_commit=$(git log -n 10 | grep "$prowlarr_commit_template" | awk 'NR==1{print $5}')
 ## check most recent 10 commits in case we have other commits
-echo "most recent jackett commit is: [$recent_pulled_commit] from [origin/$jackett_pulls_branch]"
+echo "most recent jackett commit is: [$recent_pulled_commit] from [$prowlarr_remote_name/$jackett_pulls_branch]"
 
 if [[ $trace = true ]]; then
     read -ep $"Reached - Ready to Cherrypick | Pausing for trace debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
@@ -140,10 +148,16 @@ commit_count=$(git rev-list --count "$recent_pulled_commit".."$jackett_recent_co
 echo "Commit Range is: [ $commit_range ]"
 echo "There are [$commit_count] commits to cherry-pick"
 echo "--------------------------------------------- Beginning Cherrypicking ------------------------------"
+git config merge.directoryRenames true
+git config merge.verbosity 0
 for pick_commit in ${commit_range}; do
+    has_conflicts=$(git status --porcelain | grep "[ADRCUM]")
+    if [[ -n $has_conflicts ]]; then
+        echo "Error Conflicts Exist - Cannot Cherrypick"
+        read -ep $"Pausing due to conflicts. Press any key to continue when resolved." -n1 -s
+        echo "Continuing Cherrypicking"
+    fi
     echo "cherrypicking [$pick_commit]"
-    git config merge.directoryRenames true
-    git config merge.verbosity 0
     git cherry-pick --no-commit --rerere-autoupdate --allow-empty --keep-redundant-commits "$pick_commit"
     if [[ $trace = true ]]; then
         echo "cherrypicked $pick_commit"
@@ -153,32 +167,19 @@ for pick_commit in ${commit_range}; do
     has_conflicts=$(git ls-files --unmerged)
     if [[ -n $has_conflicts ]]; then
         readme_conflicts=$(git diff --cached --name-only | grep "README.md")
-        csharp_conflicts=$(git diff --cached --name-only | grep ".cs")
-        js_conflicts=$(git diff --cached --name-only | grep ".js")
-        html_conflicts=$(git diff --cached --name-only | grep ".html")
+        nonyml_conflicts=$(git diff --cached --name-only | grep "\.cs\|\.js\|\.iss\|\.html")
         yml_conflicts=$(git diff --cached --name-only | grep ".yml")
         ## Handle Common Conflicts
         echo "conflicts exist"
-        if [[ -n $csharp_conflicts ]]; then
-            echo "C# & related conflicts exist; removing *.cs*"
+        if [[ -n $nonyml_conflicts ]]; then
+            echo "Non-YML conflicts exist; removing cs, js, iss, html"
             if [[ $trace = true ]]; then
-                read -ep $"Reached - C# Conflict Remove ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
+                read -ep $"Reached - Non-YML Conflict Remove ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
             fi
-            git rm --f --q "*.cs*"
-        fi
-        if [[ -n $js_conflicts ]]; then
-            echo "JS conflicts exist; removing *.js"
-            if [[ $trace = true ]]; then
-                read -ep $"Reached - JS Conflict Remove ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
-            fi
-            git rm --f --q "*.js"
-        fi
-        if [[ -n $html_conflicts ]]; then
-            echo "html conflicts exist; removing *.html*"
-            if [[ $trace = true ]]; then
-                read -ep $"Reached - HTML Conflict Remove ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
-            fi
-            git rm --f --q "*.html"
+            git rm --f --q --ignore-unmatch "*.cs*"
+            git rm --f --q --ignore-unmatch "*.js*"
+            git rm --f --q --ignore-unmatch "*.iss*"
+            git rm --f --q --ignore-unmatch "*.html*"
         fi
         if [[ -n $readme_conflicts ]]; then
             echo "README conflict exists; using Prowlarr README"
@@ -191,7 +192,7 @@ for pick_commit in ${commit_range}; do
         if [[ -n $yml_conflicts ]]; then
             echo "YML conflict exists; [$yml_conflicts]"
             # handle removals first
-            yml_remove=$(git status | grep yml | grep -v "definitions/" | awk -F ': ' '{print $2}' | awk '{ gsub(/^[ \t]+|[ \t]+$/, ""); print }')
+            yml_remove=$(git status --porcelain | grep yml | grep -v "definitions/" | awk -F '[ADUMRC]{1,2} ' '{print $2}' | awk '{ gsub(/^[ \t]+|[ \t]+$/, ""); print }')
             for def in $yml_remove; do
                 echo "Removing non-definition yml; [$yml_remove]"
                 if [[ $debug = true ]]; then
@@ -202,9 +203,10 @@ for pick_commit in ${commit_range}; do
                 yml_conflicts=$(git diff --cached --name-only | grep ".yml")
             done
             if [[ -n $yml_conflicts ]]; then
-                yml_defs=$(git status | grep yml | grep "definitions/")
-                yml_add=$(echo "$yml_defs" | grep -v "deleted by them" | awk -F ': ' '{print $2}' | awk '{ gsub(/^[ \t]+|[ \t]+$/, ""); print }')
-                yml_delete=$(echo "$yml_defs" | grep "deleted by them" | awk -F ': ' '{print $2}' | awk '{ gsub(/^[ \t]+|[ \t]+$/, ""); print }')
+                yml_defs=$(git status --porcelain | grep yml | grep "definitions/")
+                yml_add=$(echo "$yml_defs" | grep -v "UD" | awk -F '[ADUMRC]{1,2} ' '{print $2}' | awk '{ gsub(/^[ \t]+|[ \t]+$/, ""); print }')
+                yml_delete=$(echo "$yml_defs" | grep "UD" | awk -F '[ADUMRC]{1,2} ' '{print $2}' | awk '{ gsub(/^[ \t]+|[ \t]+$/, ""); print }')
+                # Import Jackett Definitions
                 for def in $yml_add; do
                     echo "Using & Adding Jackett's definition yml; [$def]"
                     if [[ $debug = true ]]; then
@@ -213,12 +215,13 @@ for pick_commit in ${commit_range}; do
                     git checkout --theirs "$def"
                     git add --f "$def" ## Add any new yml definitions
                 done
+                # Remove Jackett Removals
                 for def in $yml_delete; do
                     echo "Removing definitions Jackett deleted; [$def]"
                     if [[ $debug = true ]]; then
                         read -ep $"Reached - Def YML Conflict Delete ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
                     fi
-                    git rm --f "$def" ## Remove any yml definitions
+                    git rm --f --ignore-unmatch "$def" ## Remove any yml definitions
                 done
             fi
         fi
@@ -249,6 +252,7 @@ move_indexers_new="$indexers_new"
 depreciated_indexers="$v1_indexers"
 # v2, v3, and v4 are supported
 changed_supported_indexers=$(git diff --cached --diff-filter=M --name-only | grep ".yml" | grep "$v2_pattern\|$v3_pattern\|$v4_pattern")
+removed_indexers=$(git diff --cached --diff-filter=D --name-only | grep ".yml")
 
 ## Move new in vSupportedOld to vSupportedNew
 ### v1 frozen 2021-10-13
@@ -416,6 +420,29 @@ if [[ -n $backport_indexers ]]; then
     unset backport_indexer
 fi
 echo "--------------------------------------------- completed backporting indexers ---------------------------------------------"
+if [[ -n $removed_indexers ]]; then
+    for indexer in ${backport_indexers}; do
+        # ToDo - switch to regex and match group conditionals or make a loop
+        remove_indexer1=${indexer/v\d/$v1_pattern}
+        remove_indexer2=${indexer/v\d/$v2_pattern}
+        remove_indexer3=${indexer/v\d/$v3_pattern}
+        remove_indexer4=${indexer/v\d/$v4_pattern}
+        echo "looking for previous versions of removed indexer [$indexer]"
+        if [[ -f $remove_indexer1 || -f $remove_indexer2 || -f $remove_indexer3 || -f $remove_indexer4 ]]; then
+            echo "found previous versions of removed indexer [$indexer]"
+            rm -f "$remove_indexer1"
+            git rm --f --ignore-unmatch "$remove_indexer1"
+            rm -f "$remove_indexer2"
+            git rm --f --ignore-unmatch "$remove_indexer2"
+            rm -f "$remove_indexer3"
+            git rm --f --ignore-unmatch "$remove_indexer3"
+            rm -f "$remove_indexer4"
+            git rm --f --ignore-unmatch "$remove_indexer4"
+        fi
+    done
+    unset indexer
+fi
+echo "--------------------------------------------- completed removing indexers ---------------------------------------------"
 ## Wait for user interaction to handle any conflicts and review
 echo "After review; the script will commit the changes."
 read -ep $"Press any key to continue or [Ctrl-C] to abort.  Waiting for human review..." -n1 -s
@@ -427,64 +454,41 @@ if [ $pulls_exists = true ]; then
         echo "Jackett Commit Message is [$jackett_commit_message]"
         read -ep $"Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
     fi
+    # Append if previous commit is a jackett commit
     if [ "$existing_message_ln1" = "$jackett_commit_message" ]; then
         git commit --amend -m "$new_commit_msg" -m "$existing_message"
-        echo "Commit Appended"
-        # Ask if we should force push
-        while true; do
-            read -ep $"Do you wish to Force Push with Lease [Force] or Push to Origin [Push]? Enter any other value to exit:" -n1 fp
-            case $fp in
-            [Ff]*)
-                if [[ $debug = true ]]; then
-                    read -ep $"Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
-                fi
-                git push origin $jackett_pulls_branch --force-if-includes --force-with-lease
-                echo "Branch Force Pushed"
-                exit 0
-                ;;
-            [Pp]*)
-                if [[ $debug = true ]]; then
-                    read -ep $"Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
-                fi
-                git push origin $jackett_pulls_branch --force-if-includes --force-with-lease --set-upstream
-                echo "Branch Pushed"
-                exit 0
-                ;;
-            *)
-                echo "Exiting"
-                exit 0
-                ;;
-            esac
-        done
+        echo "Commit Appended - [$new_commit_msg]"
+    else
+        git commit -m "$new_commit_msg"
+        echo "New Commit made - [$new_commit_msg]"
     fi
 else
     ## new branches; new commit
     git commit -m "$new_commit_msg"
-    echo "New Commit made"
-    # Ask if we should push
-    while true; do
-        read -ep $"Do you wish to Force Push with Lease [Force] or Push to Origin [Push]? Enter any other value to exit." fp
-        case $fp in
-        [Ff]*)
-            if [[ $debug = true ]]; then
-                read -ep $"Reached [Ready to Force Push]; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
-            fi
-            git push origin $jackett_pulls_branch --force-if-includes --force-with-lease
-            echo "Branch Force Pushed"
-            exit 0
-            ;;
-        [Pp]*)
-            if [[ $debug = true ]]; then
-                read -ep $"Reached [Ready to Push]; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
-            fi
-            git push origin $jackett_pulls_branch --force-if-includes --force-with-lease --set-upstream
-            echo "Branch Pushed"
-            exit 0
-            ;;
-        *)
-            echo "Exiting"
-            exit 0
-            ;;
-        esac
-    done
+    echo "New Commit made - [$new_commit_msg]"
 fi
+while true; do
+    read -ep $"Do you wish to Force Push with Lease [Ff] or Push to $prowlarr_remote_name [Pp]? Enter any other value to exit:" -n1 fp
+    case $fp in
+    [Ff]*)
+        if [[ $debug = true ]]; then
+            read -ep $"Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
+        fi
+        git push "$prowlarr_remote_name" "$jackett_pulls_branch" --force-if-includes --force-with-lease
+        echo "Branch Force Pushed"
+        exit 0
+        ;;
+    [Pp]*)
+        if [[ $debug = true ]]; then
+            read -ep $"Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
+        fi
+        git push "$prowlarr_remote_name" "$jackett_pulls_branch" --force-if-includes --force-with-lease --set-upstream
+        echo "Branch Pushed"
+        exit 0
+        ;;
+    *)
+        echo "Exiting"
+        exit 0
+        ;;
+    esac
+done
