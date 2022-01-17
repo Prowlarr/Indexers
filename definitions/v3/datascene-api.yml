@@ -14,7 +14,7 @@ legacylinks:
 caps:
   # dont forget to update the case block in the search fields category
   categorymappings:
-    - {id: 1, cat: Movies, desc: "Movies"}
+    - {id: 1, cat: Movies, desc: "Movie"}
     - {id: 2, cat: TV, desc: "TV"}
     - {id: 3, cat: Audio, desc: "Music"}
     - {id: 4, cat: PC/Games, desc: "Game"}
