@@ -1,0 +1,189 @@
+---
+id: nzbplanet-yml
+name: Nzb Planet
+description: "Nzb Planet is a Semi-Private Usenet Indexer"
+language: en-US
+type: semi-private
+allowdownloadredirect: true
+protocol: usenet
+encoding: UTF-8
+links:
+  - https://api.nzbplanet.net/
+
+caps:
+  # These can typically be found at {site}/api?t=caps
+  categorymappings:
+    - {id: 1000, cat: Console, descr: Games}
+    - {id: 1010, cat: Console/NDS, descr: Games/NDS}
+#    - {id: 1096, cat: Console/NSwitch, descr: Games/NSwitch}
+    - {id: 1080, cat: Console/PS3, descr: Games/PS3}
+    - {id: 1090, cat: Console/PS4, descr: Games/PS4}
+    - {id: 1020, cat: Console/PSP, descr: Games/PSP}
+    - {id: 1097, cat: PC/Games, descr: Games/Pc}
+    - {id: 1030, cat: Console/Wii, descr: Games/Wii}
+    - {id: 1060, cat: Console/Wiiware, descr: Games/WiiWare/VC}
+    - {id: 1070, cat: Console/XBox DLC, descr: Games/XBOX DLC}
+    - {id: 1095, cat: Console/XBox One, descr: Games/XBOXONE}
+    - {id: 1040, cat: Console/XBox, descr: Games/Xbox}
+    - {id: 1050, cat: Console/XBox 360, descr: Games/Xbox 360}
+    - {id: 2000, cat: Movies, descr: Movies}
+    - {id: 2060, cat: Movies/3D, descr: Movies/3D}
+    - {id: 2050, cat: Movies/BluRay, descr: Movies/BluRay}
+    - {id: 2080, cat: Movies/SD, descr: Movies/Cam}
+    - {id: 2010, cat: Movies/Foreign, descr: Movies/Foreign}
+    - {id: 2040, cat: Movies/HD, descr: Movies/HD}
+    - {id: 2020, cat: Movies/Other, descr: Movies/Other}
+    - {id: 2090, cat: Movies/Other, descr: Movies/Packs}
+    - {id: 2030, cat: Movies/SD, descr: Movies/SD}
+    - {id: 2070, cat: Movies/UHD, descr: Movies/UHD}
+    - {id: 3000, cat: Audio, descr: Audio}
+    - {id: 3030, cat: Audio/Audiobook, descr: Audio/Audiobook}
+    - {id: 3040, cat: Audio/Lossless, descr: Audio/Lossless}
+    - {id: 3010, cat: Audio/MP3, descr: Audio/MP3}
+    - {id: 3020, cat: Audio/Video, descr: Audio/Video}
+    - {id: 4000, cat: PC, descr: PC}
+    - {id: 4010, cat: PC/0day, descr: PC/0day}
+    - {id: 4020, cat: PC/ISO, descr: PC/ISO}
+    - {id: 4070, cat: PC/Mobile-Android, descr: PC/M-Android}
+    - {id: 4060, cat: PC/Mobile-iOS, descr: PC/M-iOS}
+    - {id: 4030, cat: PC/Mac, descr: PC/Mac}
+    - {id: 4040, cat: PC/Mobile-Other, descr: PC/Mobile-Other}
+    - {id: 5000, cat: TV, descr: TV}
+    - {id: 5080, cat: TV/Documentary, descr: TV/Doc's}
+    - {id: 5020, cat: TV/Foreign, descr: TV/Foreign}
+    - {id: 5040, cat: TV/HD, descr: TV/HD}
+    - {id: 5050, cat: TV/Other, descr: TV/Other}
+    - {id: 5030, cat: TV/SD, descr: TV/SD}
+    - {id: 5060, cat: TV/Sport, descr: TV/Sport}
+    - {id: 5045, cat: TV/UHD, descr: TV/UHD}
+    - {id: 6000, cat: XXX, descr: XXX}
+    - {id: 6010, cat: XXX/DVD, descr: XXX/DVD}
+    - {id: 6060, cat: XXX/ImageSet, descr: XXX/ImgSet}
+    - {id: 6070, cat: XXX/Other, descr: XXX/Other}
+    - {id: 6050, cat: XXX/Pack, descr: XXX/Pack}
+    - {id: 6020, cat: XXX/WMV, descr: XXX/WMV}
+    - {id: 6030, cat: XXX/XviD, descr: XXX/XviD}
+    - {id: 6040, cat: XXX/x264, descr: XXX/x264}
+    - {id: 7000, cat: Books, descr: Books}
+    - {id: 7030, cat: Books/Comics, descr: Books/Comics}
+    - {id: 7020, cat: Books/EBook, descr: Books/Ebook}
+    - {id: 7040, cat: Books/Mags, descr: Books/Magazines}
+    - {id: 8000, cat: Other, descr: Other}
+    - {id: 5070, cat: Other, descr: Other/Anime}
+    - {id: 8010, cat: Other, descr: Other/Misc}
+    - {id: 6040, cat: Other, descr: Other/x264}
+    - {id: 7000, cat: Books, descr: Books}
+    - {id: 7030, cat: Books/Comics, descr: Books/Comics}
+    - {id: 7020, cat: Books/EBook, descr: Books/Ebook}
+    - {id: 7060, cat: Books/Foreign, descr: Books/Foreign}
+    - {id: 7010, cat: Books/Mags, descr: Books/Mags}
+    - {id: 7050, cat: Books/Other, descr: Books/Other}
+    - {id: 7040, cat: Books/Technical, descr: Books/Technical}
+    - {id: 8000, cat: Other, descr: Other}
+    - {id: 8020, cat: Other/Hashed, descr: Other/Hashed}
+    - {id: 8010, cat: Other/Misc, descr: Other/Misc}
+
+  modes:
+    # Be sure to update the search inputs
+    search: [q]
+    tv-search: [q,rid,tvdbid,tvmazeid,season,ep]
+    movie-search: [q, imdbid,genre]
+
+# The below are standard Newznab values and likely do not need modification
+settings:
+  - name: apikey
+    type: text
+    label: Site API Key
+
+search:
+  ignoreblankinputs: true
+  paths:
+    - path: /api/
+      response:
+        type: xml
+        attribute: attributes
+
+  error:
+    - selector: error
+      message:
+        selector: error
+        attribute: description
+
+  inputs:
+    t: "{{ .Query.Type }}"
+    apikey: "{{ .Config.apikey }}"
+    q: "{{ if or (.Query.TVRageID) (.Query.TVDBID) (.Query.IMDBIDShort) (.Query.TMDBID) (.Query.TraktId) (.Query.Album) (.Query.Artist) (.Query.Label) (.Query.Year) (.Query.Genre) }}{{ else }}{{ .Keywords }}{{ end }}"
+    rid: "{{ if .Query.TVRageID }}{{ .Query.TVRageID }}{{ else }}{{ end }}"
+    tmdbid: "{{ if .Query.TMDBID }}{{ .Query.TMDBID }}{{ else }}{{ end }}"
+    tvdbid: "{{ if .Query.TVDBID }}{{ .Query.TVDBID }}{{ else }}{{ end }}"
+    imdbid: "{{ if .Query.IMDBIDShort }}{{ .Query.IMDBIDShort }}{{ else }}{{ end }}"
+    traktid: "{{ if .Query.TraktId }}{{ .Query.TraktId }}{{ else }}{{ end }}"
+    season: "{{ if .Query.Season }}{{ .Query.Season }}{{ else }}{{ end }}"
+    ep: "{{ if .Query.Ep }}{{ .Query.Ep }}{{ else }}{{ end }}"
+    album: "{{ if .Query.Album }}{{ .Query.Album }}{{ else }}{{ end }}"
+    artist: "{{ if .Query.Artist }}{{ .Query.Artist }}{{ else }}{{ end }}"
+    label: "{{ if .Query.Label }}{{ .Query.Label }}{{ else }}{{ end }}"
+    genre: "{{ if .Query.Genre }}{{ .Query.Genre }}{{ else }}{{ end }}"
+    year: "{{ if .Query.Year }}{{ .Query.Year }}{{ else }}{{ end }}"
+    cat: "{{ join .Categories \",\" }}"
+    $raw: "&extended=1"
+
+  rows:
+    selector: rss > channel > item
+
+  fields:
+    title:
+      selector: title
+    details:
+      selector: comments
+    date:
+      selector: pubDate
+    download:
+      selector: link
+    description:
+      selector: description
+    tvdbid:
+      selector: tvdbid
+    imdbid:
+      selector: imdb
+    tmdbid:
+      selector: tmdb
+    traktid:
+      selector: traktid
+      optional: true
+    genre:
+      selector: genre
+      optional: true
+    year:
+      selector: year
+      optional: true
+    category:
+      selector: attr[name="category"]:nth-of-type(1)
+      attribute: value
+    category:
+      optional: true
+      selector: attr[name="category"]:nth-of-type(2)
+      attribute: value
+    size:
+      selector: attr[name="size"]
+      attribute: value
+    grabs:
+      selector: attr[name="grabs"]
+      attribute: value
+    poster:
+      selector: attr[name="poster"]
+      attribute: value
+    files:
+      selector: attr[name="files"]
+      attribute: value
+      optional: true
+    coverurl:
+      selector: attr[name="coverurl"]
+      attribute: value
+download:
+  error:
+    - selector: error
+      message:
+        selector: error
+        attribute: description
+# newznab standard
