@@ -94,16 +94,16 @@ if [ "$pulls_exists" = false ]; then
         ## reset on master
         echo "--- checking out local branch [$jackett_pulls_branch]"
         git checkout -B "$jackett_pulls_branch"
-        git reset "$prowlarr_release_branch"
-        echo "--- local [$jackett_pulls_branch] reset based on [$prowlarr_release_branch]"
+        git reset "$prowlarr_remote_name"/"$prowlarr_release_branch"
+        echo "--- local [$jackett_pulls_branch] reset based on [$prowlarr_remote_name/$prowlarr_release_branch]"
         if [ $trace = true ]; then
             read -ep $"Reached - Finished Github Actions [LocalExistsNoRemote] | Pausing for trace debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
         fi
     else
         ## local branch does not exist
         ## create new branch from master
-        git checkout -B "$jackett_pulls_branch" "$prowlarr_release_branch" --no-track
-        echo "--- local [$jackett_pulls_branch] created from [$prowlarr_release_branch]"
+        git checkout -B "$jackett_pulls_branch" "$prowlarr_remote_name"/"$prowlarr_release_branch" --no-track
+        echo "--- local [$jackett_pulls_branch] created from [$prowlarr_remote_name/$prowlarr_release_branch]"
         if [ $trace = true ]; then
             read -ep $"Reached - Finished Github Actions [NoLocalNoRemote] | Pausing for trace debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
         fi
