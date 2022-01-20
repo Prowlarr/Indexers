@@ -45,6 +45,7 @@ v4_pattern="v4"
 ## ID new Version indexers by Regex
 v3_regex1="# json (engine|api|UNIT3D|Elasticsearch|rartracker)"
 v3_regex2="    imdbid:\r" # Requires \r to ensure is not part of another string or condition
+v3_regex3="type: xml"
 v4_regex1="    categorydesc:"
 echo "--- Variables set"
 
@@ -281,7 +282,7 @@ if [ -n "$added_indexers" ]; then
             if grep -Eq "$v4_regex1" "$indexer"; then
                 echo "--- [$indexer] is [$v4_pattern]"
                 updated_indexer=$indexer_supported_latest
-            elif grep -Eq "$v3_regex1" "$indexer" || grep -Pq "$v3_regex2" "$indexer" || [ "indexer" == "$indexer_supported_current" ]; then
+            elif grep -Eq "$v3_regex1" "$indexer" || grep -Pq "$v3_regex2" "$indexer" || grep -Pq "$v3_regex3" "$indexer" || [ "indexer" == "$indexer_supported_current" ]; then
                 echo "--- [$indexer] is [$v3_pattern]"
                 updated_indexer=$indexer_supported_current
             else
@@ -323,7 +324,7 @@ if [ -n "$depreciated_indexers" ]; then
             if grep -Eq "$v4_regex1" "$indexer"; then
                 echo "--- [$indexer] is [$v4_pattern]"
                 updated_indexer=$indexer_supported_latest
-            elif grep -Eq "$v3_regex1" "$indexer" || grep -Eq "$v3_regex2" "$indexer"; then
+            elif grep -Eq "$v3_regex1" "$indexer" || grep -Eq "$v3_regex2" "$indexer" || grep -Pq "$v3_regex3" "$indexer"; then
                 echo "--- [$indexer] is [$v3_pattern]"
                 updated_indexer=$indexer_supported_current
             elif [ "$updated_indexer" = "$indexer_supported" ]; then
@@ -359,7 +360,7 @@ if [ -n "$modified_indexers" ]; then
             if grep -Eq "$v4_regex1" "$indexer"; then
                 echo "--- [$indexer] is [$v4_pattern]"
                 updated_indexer=$indexer_supported_latest
-            elif grep -Eq "$v3_regex1" "$indexer" || grep -Pq "$v3_regex2" "$indexer"; then
+            elif grep -Eq "$v3_regex1" "$indexer" || grep -Pq "$v3_regex2" "$indexer" || grep -Pq "$v3_regex3" "$indexer"; then
                 echo "--- [$indexer] is [$v3_pattern]"
                 updated_indexer=$indexer_supported_current
             else
@@ -397,7 +398,7 @@ if [ -n "$backport_indexers" ]; then
         indexer_supported_current=${indexer/v[0-9]/$v3_pattern}
         # indexer_supported_latest=${indexer/v[0-9]/$v4_pattern}
         echo "--- looking for [$v3_pattern] indexer of [$indexer]"
-        if [ -f "$indexer"_supported_current ]; then
+        if [ -f "$indexer_supported_current" ]; then
             echo "--- Found [$v3_pattern] indexer for [$indexer] - backporting to [$indexer_supported_current]"
             if [ $debug = true ]; then
                 read -ep $"Reached [backporting] ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
@@ -406,7 +407,7 @@ if [ -n "$backport_indexers" ]; then
             git add "$indexer_supported_current"
         fi
         echo "--- looking for [$v2_pattern] indexer of [$indexer]"
-        if [ -f "$indexer"_supported ]; then
+        if [ -f "$indexer_supported" ]; then
             echo "--- Found [$v2_pattern] indexer for [$indexer] - backporting to [$indexer_supported]"
             if [ $debug = true ]; then
                 read -ep $"Reached [backporting] ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
