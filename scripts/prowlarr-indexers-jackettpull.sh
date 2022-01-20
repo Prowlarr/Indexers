@@ -167,9 +167,9 @@ echo "--- --------------------------------------------- Beginning Cherrypicking 
 git config merge.directoryRenames true
 git config merge.verbosity 0
 for pick_commit in ${commit_range}; do
-    has_conflicts=$(git status --porcelain | grep "[ADRCUM]")
+    has_conflicts=$(git ls-files --unmerged)
     if [ -n "$has_conflicts" ]; then
-        echo "--- [ToDo - Fix False Positives] Error Conflicts Exist [$has_conflicts] - Cannot Cherrypick"
+        echo "--- Error Conflicts Exist [$has_conflicts] - Cannot Cherrypick"
         read -ep $"Pausing due to conflicts. Press any key to continue when resolved." -n1 -s
         echo "--- Continuing Cherrypicking"
     fi
