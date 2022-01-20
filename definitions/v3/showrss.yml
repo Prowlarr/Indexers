@@ -1,6 +1,6 @@
 ---
 id: showrss-yml
-name: showrss
+name: showRSS
 description: "showRSS is a service that allows you to keep track of your favorite TV shows"
 language: en-US
 type: public
@@ -11,9 +11,8 @@ links:
 caps:
   # dont forget to update the case block in the search fields category
   categorymappings:
-    - {id: 1, cat: TV}
-    - {id: 2, cat: TV/SD}
-    - {id: 3, cat: TV/HD}
+    - {id: 1, cat: TV/SD}
+    - {id: 2, cat: TV/HD}
 
   modes:
     search: [q]
@@ -30,20 +29,23 @@ search:
 
   rows:
     selector: rss > channel > item
+    filters:
+      - name: andmatch
 
   fields:
-    title:
-      selector: raw_title
-    date:
-      optional: true
-      selector: pubDate
     category:
       selector: raw_title
       filters:
       case:
-        ":contains(\"720p\")": 3
-        ":contains(\"1080p\")": 3
-        "*": 2
+        ":contains(\"720p\")": 2
+        ":contains(\"1080p\")": 2
+        "*": 1
+    title:
+      selector: raw_title
+    details:
+      text: "{{ .Config.sitelink }}"
+    date:
+      selector: pubDate
     download:
       selector: link
     description:
@@ -51,10 +53,13 @@ search:
     infohash:
       selector: info_hash
     size:
-      text: 512
+      text: "512 MB"
     seeders:
+      text: 1
+    leechers:
       text: 1
     downloadvolumefactor:
       text: 0
     uploadvolumefactor:
       text: 1
+# engine n/a
