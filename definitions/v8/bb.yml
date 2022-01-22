@@ -1,0 +1,36 @@
+﻿---
+id: bb
+name: BB
+description: "BB is a Private Torrent Tracker for 0DAY / GENERAL"
+language: en-US
+type: private
+implementation: bb
+encoding: utf-8
+links:
+- https://baconbits.org/
+caps:
+  categorymappings:
+  - { id: 1, cat: Audio, desc: "" }
+  - { id: 12, cat: Console, desc: "" }
+  - { id: 11, cat: PC/Games, desc: "" }
+  - { id: 10, cat: TV, desc: "" }
+  - { id: 10, cat: TV/SD, desc: "" }
+  - { id: 10, cat: TV/HD, desc: "" }
+  - { id: 9, cat: Movies, desc: "" }
+  - { id: 8, cat: TV/Anime, desc: "" }
+  - { id: 7, cat: Books/Comics, desc: "" }
+  - { id: 6, cat: Books/Mags, desc: "" }
+  - { id: 5, cat: Other, desc: "" }
+  - { id: 4, cat: Audio/Audiobook, desc: "" }
+  - { id: 3, cat: Books/EBook, desc: "" }
+  - { id: 2, cat: PC, desc: "" }
+  - { id: 1, cat: Audio/Lossless, desc: "" }
+  - { id: 1, cat: Audio/MP3, desc: "" }
+  - { id: 13, cat: Other, desc: "" }
+  - { id: 14, cat: Other, desc: "" }
+  modes:
+    search: [q]
+    tv-search: [q,season,ep]
+    movie-search: [q]
+    book-search: [q]
+    music-search: [q]

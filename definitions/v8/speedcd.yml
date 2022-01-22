@@ -1,0 +1,52 @@
+﻿---
+id: speedcd
+name: SpeedCD
+description: "Your home now!"
+language: en-US
+type: private
+implementation: speedcd
+encoding: utf-8
+links:
+- https://speed.cd/
+- https://speed.click/
+- https://speeders.me/
+caps:
+  categorymappings:
+  - { id: 1, cat: Movies/Other, desc: "Movies/XviD" }
+  - { id: 3, cat: Audio, desc: "Music/Flac" }
+  - { id: 26, cat: Audio, desc: "Music/Audio" }
+  - { id: 27, cat: Books, desc: "Books-Mags" }
+  - { id: 54, cat: Books, desc: "Educational" }
+  - { id: 51, cat: PC/Mac, desc: "Mac" }
+  - { id: 24, cat: PC/0day, desc: "Apps/0DAY" }
+  - { id: 46, cat: PC/Mobile-Other, desc: "Mobile" }
+  - { id: 33, cat: Console/XBox 360, desc: "Games/XboX360" }
+  - { id: 35, cat: Console, desc: "Games/Nintendo" }
+  - { id: 45, cat: Console/PS3, desc: "Games/PS3" }
+  - { id: 39, cat: Console/Wii, desc: "Games/Wii" }
+  - { id: 25, cat: PC/ISO, desc: "Games/PC ISO" }
+  - { id: 30, cat: TV/Anime, desc: "TV/Anime" }
+  - { id: 2, cat: TV/SD, desc: "TV/Episodes" }
+  - { id: 49, cat: TV/HD, desc: "TV/HD" }
+  - { id: 57, cat: TV, desc: "TV/DiVERSiTY" }
+  - { id: 55, cat: TV, desc: "TV/Kids" }
+  - { id: 41, cat: TV, desc: "TV/Packs" }
+  - { id: 53, cat: TV/SD, desc: "TV/DVD-R" }
+  - { id: 52, cat: TV/HD, desc: "TV/B-Ray" }
+  - { id: 50, cat: TV/Sport, desc: "TV/Sports" }
+  - { id: 56, cat: Movies, desc: "Movies/Anime" }
+  - { id: 40, cat: Movies/DVD, desc: "Movies/DVD-R" }
+  - { id: 48, cat: Movies/3D, desc: "Movies/3D" }
+  - { id: 28, cat: Movies/BluRay, desc: "Movies/B-Ray" }
+  - { id: 47, cat: Movies, desc: "Movies/DiVERSiTY" }
+  - { id: 43, cat: Movies/HD, desc: "Movies/HD" }
+  - { id: 32, cat: Movies, desc: "Movies/Kids" }
+  - { id: 42, cat: Movies, desc: "Movies/Packs" }
+  - { id: 44, cat: Audio, desc: "Music/Pack" }
+  - { id: 29, cat: Audio/Video, desc: "Music/Video" }
+  modes:
+    search: [q]
+    tv-search: [q,season,ep,imdbId]
+    movie-search: [q,imdbId]
+    book-search: [q]
+    music-search: [q]

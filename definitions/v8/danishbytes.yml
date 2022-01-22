@@ -1,0 +1,25 @@
+﻿---
+id: danishbytes
+name: DanishBytes
+description: "DanishBytes is a Private Danish Tracker"
+language: en-US
+type: private
+implementation: danishbytes
+encoding: utf-8
+links:
+- https://danishbytes.club/
+- https://danishbytes2.org/
+caps:
+  categorymappings:
+  - { id: 1, cat: Movies, desc: "Movies" }
+  - { id: 2, cat: TV, desc: "TV" }
+  - { id: 3, cat: Audio, desc: "Music" }
+  - { id: 4, cat: PC/Games, desc: "Games" }
+  - { id: 5, cat: PC/0day, desc: "Appz" }
+  - { id: 8, cat: Books, desc: "Bookz" }
+  modes:
+    search: [q]
+    tv-search: [q,season,ep,imdbId,tvdbId]
+    movie-search: [q,imdbId,tmdbId]
+    book-search: [q]
+    music-search: [q]

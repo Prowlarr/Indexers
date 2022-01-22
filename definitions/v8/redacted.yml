@@ -1,0 +1,25 @@
+﻿---
+id: redacted
+name: Redacted
+description: "REDActed (Aka.PassTheHeadPhones) is one of the most well-known music trackers."
+language: en-US
+type: private
+implementation: redacted
+encoding: utf-8
+links:
+- https://redacted.ch/
+caps:
+  categorymappings:
+  - { id: 1, cat: Audio, desc: "Music" }
+  - { id: 2, cat: PC, desc: "Applications" }
+  - { id: 3, cat: Books/EBook, desc: "E-Books" }
+  - { id: 4, cat: Audio/Audiobook, desc: "Audiobooks" }
+  - { id: 5, cat: Movies/Other, desc: "E-Learning Videos" }
+  - { id: 6, cat: TV/Other, desc: "Comedy" }
+  - { id: 7, cat: Books/Comics, desc: "Comics" }
+  modes:
+    search: [q]
+    tv-search: [q,season,ep]
+    movie-search: [q]
+    book-search: [q]
+    music-search: [q,album,artist,label,year]

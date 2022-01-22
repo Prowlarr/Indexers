@@ -1,0 +1,21 @@
+﻿---
+id: cgpeers
+name: CGPeers
+description: "CGPeers is a Private Torrent Tracker for GRAPHICS SOFTWARE / TUTORIALS / ETC"
+language: en-US
+type: private
+implementation: cgpeers
+encoding: utf-8
+links:
+- https://cgpeers.to/
+caps:
+  categorymappings:
+  - { id: 1, cat: PC/ISO, desc: "Full Applications" }
+  - { id: 2, cat: PC/0day, desc: "Plugins" }
+  - { id: 3, cat: Other, desc: "Tutorials" }
+  - { id: 4, cat: Other, desc: "Models" }
+  - { id: 5, cat: Other, desc: "Materials" }
+  - { id: 6, cat: Other/Misc, desc: "Misc" }
+  - { id: 7, cat: Other, desc: "GameDev" }
+  modes:
+    search: [q]

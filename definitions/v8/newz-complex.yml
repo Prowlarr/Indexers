@@ -1,0 +1,75 @@
+---
+id: newz-complex-yml
+name: Newz-Complex
+description: "Newz-Complex is a PRIVATE Newznab Usenet Indexer"
+language: en-US
+type: private
+allowdownloadredirect: true
+implementation: newznab
+encoding: UTF-8
+links:
+- https://newz-complex.org/www/
+caps:
+  categorymappings:
+  - { id: 1000, cat: Console, desc: Spiele }
+#  - { id: 100003, cat: Console/PS2, desc: Console/PS2 }
+  - { id: 100005, cat: Console/3DS, desc: Console/3DS }
+#  - { id: 100006, cat: Console/PS1, desc: Console/PS1 }
+#  - { id: 100007, cat: Console/NSwitch, desc: Console/NSwitch }
+  - { id: 1010, cat: Console/NDS, desc: Console/NDS }
+  - { id: 1011, cat: PC/Games, desc: Console/PC }
+  - { id: 1020, cat: Console/PSP, desc: Console/PSP }
+  - { id: 1021, cat: Console/PS Vita, desc: Console/PSVita }
+  - { id: 1030, cat: Console/Wii, desc: Console/Wii }
+  - { id: 1031, cat: Console/WiiU, desc: Console/WiiU }
+  - { id: 1040, cat: Console/XBox, desc: Console/Xbox }
+  - { id: 1050, cat: Console/XBox 360, desc: Console/Xbox 360 }
+  - { id: 1070, cat: Console/XBox 360 DLC, desc: Console/XBOX 360 DLC }
+  - { id: 1080, cat: Console/PS3, desc: Console/PS3 }
+  - { id: 1081, cat: Console/PS4, desc: Console/PS4 }
+  - { id: 2000, cat: Movies, desc: Movies }
+  - { id: 2020, cat: Movies/Other, desc: Movies/Other }
+  - { id: 2021, cat: Movies/HD, desc: Movies/1080P }
+  - { id: 2022, cat: Movies/HD, desc: Movies/720P }
+  - { id: 2023, cat: Movies/SD, desc: Movies/SD }
+  - { id: 2024, cat: Movies/UHD, desc: Movies/2160P }
+  - { id: 2050, cat: Movies/BluRay, desc: Movies/BluRay }
+  - { id: 2060, cat: Movies/3D, desc: Movies/3D }
+  - { id: 3000, cat: Audio, desc: Audio }
+  - { id: 3010, cat: Audio/MP3, desc: Audio/MP3 }
+  - { id: 3020, cat: Audio/Video, desc: Audio/Video }
+  - { id: 3030, cat: Audio/Audiobook, desc: Audio/Audiobook }
+  - { id: 3040, cat: Audio/Lossless, desc: Audio/Lossless }
+  - { id: 4000, cat: PC, desc: PC }
+  - { id: 4010, cat: PC/0day, desc: PC/0day }
+  - { id: 4011, cat: PC, desc: PC/Software }
+  - { id: 4020, cat: PC/ISO, desc: PC/ISO }
+  - { id: 4030, cat: PC/Mac, desc: PC/Mac }
+  - { id: 4040, cat: PC/Mobile-Other, desc: PC/Mobile-Other }
+  - { id: 4050, cat: PC/Games, desc: PC/Games }
+  - { id: 4060, cat: PC/Mobile-iOS, desc: PC/Mobile-iOS }
+  - { id: 4070, cat: PC/Mobile-Android, desc: PC/Mobile-Android }
+  - { id: 5000, cat: TV, desc: TV }
+  - { id: 5020, cat: TV/SD, desc: TV/SD }
+  - { id: 5030, cat: TV/HD, desc: TV/720p }
+  - { id: 5040, cat: TV/HD, desc: TV/1080P }
+  - { id: 5041, cat: TV/UHD, desc: TV/2160P }
+  - { id: 5050, cat: TV/Other, desc: TV/Other }
+  - { id: 5060, cat: TV/Sport, desc: TV/Sport }
+  - { id: 5070, cat: TV/Anime, desc: TV/Anime }
+  - { id: 5080, cat: TV/Documentary, desc: TV/Dokus }
+  - { id: 7000, cat: Books, desc: Books }
+  - { id: 7010, cat: Books/Mags, desc: Books/Mags }
+  - { id: 7020, cat: Books/EBook, desc: Books/Ebook }
+  - { id: 7030, cat: Books/Comics, desc: Books/Comics }
+  - { id: 8000, cat: Other, desc: Other }
+  - { id: 8010, cat: Other/Misc, desc: Other/Misc }
+  modes:
+    search: [q]
+    tv-search: [q,rid,tvdbid,tvmazeid,season,ep]
+    movie-search: [q,imdbid,genre]
+settings:
+- name: apikey
+  type: text
+  label: Site API Key
+# newznab standard

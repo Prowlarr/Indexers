@@ -1,0 +1,20 @@
+﻿---
+id: anthelion
+name: Anthelion
+description: "A movies tracker"
+language: en-US
+type: private
+implementation: anthelion
+encoding: utf-8
+links:
+- https://anthelion.me/
+caps:
+  categorymappings:
+  - { id: 1, cat: Movies, desc: "Film/Feature" }
+  - { id: 2, cat: Movies, desc: "Film/Short" }
+  - { id: 3, cat: TV, desc: "TV/Miniseries" }
+  - { id: 4, cat: Other, desc: "Other" }
+  modes:
+    search: [q]
+    tv-search: [q,season,ep]
+    movie-search: [q]

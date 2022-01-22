@@ -1,0 +1,14 @@
+﻿---
+id: generictorznab
+name: Generic Torznab
+description: "A Newznab-like api for torrents."
+language: en-US
+type: private
+implementation: torznab
+encoding: utf-8
+links:
+- ""
+caps:
+  categorymappings: []
+  modes:
+    search: [q]

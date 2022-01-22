@@ -1,0 +1,46 @@
+﻿---
+id: alpharatio
+name: AlphaRatio
+description: "AlphaRatio(AR) is a Private Torrent Tracker for 0DAY / GENERAL"
+language: en-US
+type: private
+implementation: alpharatio
+encoding: utf-8
+links:
+- https://alpharatio.cc/
+caps:
+  categorymappings:
+  - { id: 1, cat: TV/SD, desc: "TvSD" }
+  - { id: 28, cat: Audio/Audiobook, desc: "AudioBook" }
+  - { id: 27, cat: Books, desc: "eBook" }
+  - { id: 26, cat: XXX, desc: "0dayXXX" }
+  - { id: 25, cat: PC/Mobile-Other, desc: "AppsMobile" }
+  - { id: 24, cat: PC/0day, desc: "AppsLinux" }
+  - { id: 23, cat: PC/Mac, desc: "AppsMAC" }
+  - { id: 22, cat: PC/0day, desc: "AppsWindows" }
+  - { id: 21, cat: Console/Wii, desc: "GamesNin" }
+  - { id: 20, cat: Console/PS4, desc: "GamesPS" }
+  - { id: 19, cat: Console/XBox, desc: "GamesxBox" }
+  - { id: 18, cat: PC/Games, desc: "GamesPC" }
+  - { id: 17, cat: TV/Anime, desc: "AnimeHD" }
+  - { id: 16, cat: TV/Anime, desc: "AnimeSD" }
+  - { id: 15, cat: Movies/BluRay, desc: "Bluray" }
+  - { id: 14, cat: XXX, desc: "MovieXXX" }
+  - { id: 13, cat: Movies/UHD, desc: "MoviePackUHD" }
+  - { id: 12, cat: Movies/HD, desc: "MoviePackHD" }
+  - { id: 11, cat: Movies/SD, desc: "MoviePackSD" }
+  - { id: 10, cat: Movies/UHD, desc: "MovieUHD" }
+  - { id: 9, cat: Movies/HD, desc: "MovieHD" }
+  - { id: 8, cat: Movies/SD, desc: "MovieSD" }
+  - { id: 7, cat: TV/UHD, desc: "TvPackUHD" }
+  - { id: 6, cat: TV/HD, desc: "TvPackHD" }
+  - { id: 5, cat: TV/SD, desc: "TvPackSD" }
+  - { id: 4, cat: TV/SD, desc: "TvDVDRip" }
+  - { id: 3, cat: TV/UHD, desc: "TvUHD" }
+  - { id: 2, cat: TV/HD, desc: "TvHD" }
+  - { id: 29, cat: Audio/Other, desc: "Music" }
+  - { id: 30, cat: Other, desc: "Misc" }
+  modes:
+    search: [q]
+    tv-search: [q,season,ep]
+    movie-search: [q]

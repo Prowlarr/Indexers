@@ -1,0 +1,57 @@
+---
+id: spotnzb-yml
+name: SpotNZB
+description: "SpotNZB is a PRIVATE Newznab Usenet Indexer"
+language: en-US
+type: private
+allowdownloadredirect: true
+implementation: newznab
+encoding: UTF-8
+links:
+- https://spotnzb.xyz/
+caps:
+  categorymappings:
+  - { id: 1000, cat: Console, desc: Console }
+  - { id: 1010, cat: Console/NDS, desc: Console/NDS }
+  - { id: 1020, cat: Console/PSP, desc: Console/PSP }
+  - { id: 1030, cat: Console/Wii, desc: Console/Wii }
+  - { id: 1040, cat: Console/XBox, desc: Console/Xbox }
+  - { id: 1050, cat: Console/XBox 360, desc: Console/Xbox 360 }
+  - { id: 1080, cat: Console/PS3, desc: Console/PS3 }
+  - { id: 2000, cat: Movies, desc: Movies }
+  - { id: 2030, cat: Movies/SD, desc: Movies/SD }
+  - { id: 2040, cat: Movies/HD, desc: Movies/HD }
+  - { id: 2050, cat: Movies/BluRay, desc: Movies/BluRay }
+  - { id: 2060, cat: Movies/3D, desc: Movies/3D }
+  - { id: 3000, cat: Audio, desc: Audio }
+  - { id: 3010, cat: Audio/MP3, desc: Audio/MP3 }
+  - { id: 3020, cat: Audio/Video, desc: Audio/Video }
+  - { id: 3040, cat: Audio/Lossless, desc: Audio/Lossless }
+  - { id: 4000, cat: PC, desc: PC }
+  - { id: 4030, cat: PC/Mac, desc: PC/Mac }
+  - { id: 4040, cat: PC/Mobile-Other, desc: PC/Mobile }
+  - { id: 4050, cat: PC/Games, desc: PC/Games }
+  - { id: 5000, cat: TV, desc: TV }
+  - { id: 5020, cat: TV/Foreign, desc: TV/Foreign }
+  - { id: 5030, cat: TV/SD, desc: TV/SD }
+  - { id: 5040, cat: TV/HD, desc: TV/HD }
+  - { id: 5050, cat: TV/Other, desc: TV/Other }
+  - { id: 5060, cat: TV/Sport, desc: TV/Sport }
+  - { id: 5070, cat: TV/Anime, desc: TV/Anime }
+  - { id: 6000, cat: XXX, desc: XXX }
+  - { id: 6010, cat: XXX/DVD, desc: XXX/DVD }
+  - { id: 6020, cat: XXX/WMV, desc: XXX/WMV }
+  - { id: 6030, cat: XXX/XviD, desc: XXX/XviD }
+  - { id: 6040, cat: XXX/x264, desc: XXX/x264 }
+  - { id: 7000, cat: Other, desc: Other }
+  - { id: 7010, cat: Other/Misc, desc: Other/Misc }
+  - { id: 7020, cat: Books/Other, desc: Other/Ebook }
+  modes:
+    search: []
+    tv-search: [q,rid,tvmazeid,season,ep]
+    movie-search: [q,imdbid]
+settings:
+- name: apikey
+  type: text
+  label: Site API Key
+# newznab standard

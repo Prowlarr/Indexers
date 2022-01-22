@@ -1,0 +1,67 @@
+---
+id: abnzb-yml
+name: abNZB
+description: "abNZB is a PRIVATE Newznab Usenet Indexer"
+language: en-US
+type: private
+allowdownloadredirect: true
+implementation: newznab
+encoding: UTF-8
+links:
+- https://abnzb.com/
+caps:
+  categorymappings:
+  - { id: 2000, cat: Movies, desc: Movies }
+  - { id: 2010, cat: Movies/Foreign, desc: Movies/Non-English }
+  - { id: 2020, cat: Movies/Other, desc: Movies/Other }
+  - { id: 2030, cat: Movies/SD, desc: Movies/SD }
+  - { id: 2040, cat: Movies/HD, desc: Movies/HD }
+  - { id: 2045, cat: Movies/UHD, desc: Movies/UHD }
+  - { id: 2050, cat: Movies/BluRay, desc: Movies/BluRay }
+  - { id: 2060, cat: Movies/3D, desc: Movies/3D }
+  - { id: 3000, cat: Audio, desc: Audio }
+  - { id: 3010, cat: Audio/MP3, desc: Audio/MP3 }
+  - { id: 3020, cat: Audio/Video, desc: Audio/Video }
+  - { id: 3030, cat: Audio/Audiobook, desc: Audio/Audiobook }
+  - { id: 3040, cat: Audio/Lossless, desc: Audio/Lossless }
+  - { id: 4000, cat: PC, desc: Software }
+  - { id: 4010, cat: PC/0day, desc: PC/0day }
+  - { id: 4020, cat: PC/ISO, desc: PC/ISO }
+  - { id: 4030, cat: PC/Mac, desc: PC/Mac }
+  - { id: 4050, cat: PC/Games, desc: PC/Games }
+#  - { id: 4090, cat: PC/Bookware, desc: PC/Bookware }
+  - { id: 5000, cat: TV, desc: TV }
+  - { id: 5020, cat: TV/Foreign, desc: TV/Non-English }
+  - { id: 5030, cat: TV/SD, desc: TV/SD }
+  - { id: 5040, cat: TV/HD, desc: TV/HD }
+  - { id: 5045, cat: TV/UHD, desc: TV/UHD }
+  - { id: 5050, cat: TV/Other, desc: TV/Other }
+  - { id: 5060, cat: TV/Sport, desc: TV/Sport }
+  - { id: 5070, cat: TV/Anime, desc: TV/Anime }
+  - { id: 5080, cat: TV/Documentary, desc: TV/Documentary }
+  - { id: 6000, cat: XXX, desc: XXX }
+  - { id: 6030, cat: XXX/SD, desc: XXX/SD }
+  - { id: 6040, cat: XXX, desc: XXX/HD }
+  - { id: 6050, cat: XXX/Pack, desc: XXX/Pack }
+  - { id: 6060, cat: XXX/ImageSet, desc: XXX/ImgSet }
+  - { id: 6070, cat: XXX/Other, desc: XXX/Other }
+  - { id: 6080, cat: XXX/Other, desc: XXX/VR }
+  - { id: 6090, cat: XXX/UHD, desc: XXX/UHD }
+  - { id: 7000, cat: Books, desc: Books }
+  - { id: 7010, cat: Books/Mags, desc: Books/Mags }
+  - { id: 7020, cat: Books/EBook, desc: Books/Ebook }
+  - { id: 7030, cat: Books/Comics, desc: Books/Comics }
+  - { id: 7040, cat: Books/Foreign, desc: Books/Ebook Non-English }
+  - { id: 7050, cat: Books/Technical, desc: Books/Ebook Technical }
+  - { id: 8000, cat: Other, desc: Other }
+  - { id: 8010, cat: Other/Misc, desc: Other/Misc }
+  - { id: 8080, cat: Other/Hashed, desc: Other/Obfuscated }
+  modes:
+    search: [q]
+    tv-search: [q,rid,tvdbid,tvmazeid,season,ep]
+    movie-search: [q,imdbid,genre]
+settings:
+- name: apikey
+  type: text
+  label: Site API Key
+# newznab standard

@@ -1,0 +1,14 @@
+﻿---
+id: torrentpotato
+name: TorrentPotato
+description: "A JSON based torrent provider previously developed for CouchPotato"
+language: en-US
+type: private
+implementation: torrentpotato
+encoding: utf-8
+links:
+- http://127.0.0.1
+caps:
+  categorymappings: []
+  modes:
+    search: []

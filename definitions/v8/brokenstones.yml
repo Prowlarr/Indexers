@@ -1,0 +1,22 @@
+﻿---
+id: brokenstones
+name: BrokenStones
+description: "Broken Stones is a Private site for MacOS and iOS APPS / GAMES"
+language: en-US
+type: private
+implementation: brokenstones
+encoding: utf-8
+links:
+- https://brokenstones.club/
+caps:
+  categorymappings:
+  - { id: 1, cat: PC/Mac, desc: "MacOS Apps" }
+  - { id: 2, cat: PC/Mac, desc: "MacOS Games" }
+  - { id: 3, cat: PC/Mobile-iOS, desc: "iOS Apps" }
+  - { id: 4, cat: PC/Mobile-iOS, desc: "iOS Games" }
+  - { id: 5, cat: Other, desc: "Graphics" }
+  - { id: 6, cat: Audio, desc: "Audio" }
+  - { id: 7, cat: Other, desc: "Tutorials" }
+  - { id: 8, cat: Other, desc: "Other" }
+  modes:
+    search: [q]

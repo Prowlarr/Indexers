@@ -1,0 +1,34 @@
+﻿---
+id: anidub
+name: Anidub
+description: "Anidub is russian anime voiceover group and eponymous anime tracker."
+language: ru-RU
+type: semiprivate
+implementation: anidub
+encoding: utf-8
+links:
+- https://tr.anidub.com/
+caps:
+  categorymappings:
+  - { id: 2, cat: TV/Anime, desc: "Аниме TV" }
+  - { id: 3, cat: Movies, desc: "Аниме Фильмы" }
+  - { id: 4, cat: TV/Anime, desc: "Аниме OVA" }
+  - { id: 5, cat: TV/Anime, desc: "Аниме OVA |- Аниме ONA" }
+  - { id: 6, cat: TV, desc: "Дорамы / Японские Сериалы и Фильмы" }
+  - { id: 7, cat: TV, desc: "Дорамы / Корейские Сериалы и Фильмы" }
+  - { id: 8, cat: TV, desc: "Дорамы / Китайские Сериалы и Фильмы" }
+  - { id: 9, cat: TV, desc: "Дорамы" }
+  - { id: 10, cat: TV/Anime, desc: "Аниме TV / Аниме Ongoing" }
+  - { id: 11, cat: TV/Anime, desc: "Аниме TV / Многосерийный сёнэн" }
+  - { id: 12, cat: Other, desc: "Аниме Ongoing Анонсы" }
+  - { id: 13, cat: XXX, desc: "18+" }
+  - { id: 14, cat: TV/Anime, desc: "Аниме TV / Законченные сериалы" }
+  - { id: 15, cat: Books/Comics, desc: "Манга" }
+  - { id: 16, cat: Audio, desc: "OST" }
+  - { id: 17, cat: Audio, desc: "Подкасты" }
+  modes:
+    search: [q]
+    tv-search: [q,season,ep]
+    movie-search: [q]
+    book-search: [q]
+    music-search: [q]

@@ -1,0 +1,42 @@
+﻿---
+id: rarbg
+name: Rarbg
+description: "RARBG is a Public torrent site for MOVIES / TV / GENERAL"
+language: en-US
+type: public
+implementation: rarbg
+encoding: utf-8
+links:
+- https://torrentapi.org
+caps:
+  categorymappings:
+  - { id: 4, cat: XXX, desc: "XXX (18+)" }
+  - { id: 52, cat: Movies/UHD, desc: "Movs/x265/4k/HDR" }
+  - { id: 51, cat: Movies/UHD, desc: "Movies/x265/4k" }
+  - { id: 50, cat: Movies/UHD, desc: "Movies/x264/4k" }
+  - { id: 49, cat: TV/UHD, desc: "Movies/TV-UHD-episodes" }
+  - { id: 49, cat: TV/UHD, desc: "TV UHD Episodes" }
+  - { id: 48, cat: Movies/HD, desc: "Movies/XVID/720" }
+  - { id: 47, cat: Movies/3D, desc: "Movies/x264/3D" }
+  - { id: 46, cat: Movies/BluRay, desc: "Movies/BD Remux" }
+  - { id: 45, cat: Movies/HD, desc: "Movies/x264/720" }
+  - { id: 44, cat: Movies/HD, desc: "Movies/x264/1080" }
+  - { id: 53, cat: Console/PS4, desc: "Games/PS4" }
+  - { id: 42, cat: Movies/BluRay, desc: "Movies/Full BD" }
+  - { id: 40, cat: Console/PS3, desc: "Games/PS3" }
+  - { id: 33, cat: PC/ISO, desc: "Software/PC ISO" }
+  - { id: 32, cat: Console/XBox 360, desc: "Games/XBOX-360" }
+  - { id: 28, cat: PC/Games, desc: "Games/PC RIP" }
+  - { id: 27, cat: PC/Games, desc: "Games/PC ISO" }
+  - { id: 25, cat: Audio/Lossless, desc: "Music/FLAC" }
+  - { id: 23, cat: Audio/MP3, desc: "Music/MP3" }
+  - { id: 18, cat: TV/SD, desc: "TV Episodes" }
+  - { id: 17, cat: Movies/SD, desc: "Movies/x264" }
+  - { id: 14, cat: Movies/SD, desc: "Movies/XVID" }
+  - { id: 41, cat: TV/HD, desc: "TV HD Episodes" }
+  - { id: 54, cat: Movies/HD, desc: "Movies/x265/1080" }
+  modes:
+    search: [q]
+    tv-search: [q,season,ep,imdbId,tvdbId]
+    movie-search: [q,imdbId,tmdbId]
+    music-search: [q]

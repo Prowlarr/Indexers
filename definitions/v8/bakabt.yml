@@ -1,0 +1,27 @@
+﻿---
+id: bakabt
+name: BakaBT
+description: "Anime Community"
+language: en-US
+type: private
+implementation: bakabt
+encoding: utf-8
+links:
+- https://bakabt.me/
+caps:
+  categorymappings:
+  - { id: 1, cat: TV/Anime, desc: "Anime Series" }
+  - { id: 2, cat: TV/Anime, desc: "OVA" }
+  - { id: 3, cat: Audio/Other, desc: "Soundtrack" }
+  - { id: 4, cat: Books/Comics, desc: "Manga" }
+  - { id: 5, cat: Movies, desc: "Anime Movie" }
+  - { id: 6, cat: TV/Other, desc: "Live Action" }
+  - { id: 7, cat: Books/Other, desc: "Artbook" }
+  - { id: 8, cat: Audio/Video, desc: "Music Video" }
+  - { id: 9, cat: Books/EBook, desc: "Light Novel" }
+  modes:
+    search: [q]
+    tv-search: [q,season,ep]
+    movie-search: [q]
+    book-search: [q]
+    music-search: [q]

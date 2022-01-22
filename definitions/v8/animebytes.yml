@@ -1,0 +1,34 @@
+﻿---
+id: animebytes
+name: AnimeBytes
+description: "AnimeBytes (AB) is the largest private torrent tracker that specialises in anime and anime-related content."
+language: en-US
+type: private
+implementation: animebytes
+encoding: utf-8
+links:
+- https://animebytes.tv/
+caps:
+  categorymappings:
+  - { id: "anime[tv_series]", cat: TV/Anime, desc: "TV Series" }
+  - { id: "anime[tv_special]", cat: TV/Anime, desc: "TV Special" }
+  - { id: "anime[ova]", cat: TV/Anime, desc: "OVA" }
+  - { id: "anime[ona]", cat: TV/Anime, desc: "ONA" }
+  - { id: "anime[dvd_special]", cat: TV/Anime, desc: "DVD Special" }
+  - { id: "anime[bd_special]", cat: TV/Anime, desc: "BD Special" }
+  - { id: "anime[movie]", cat: Movies, desc: "Movie" }
+  - { id: "audio", cat: Audio, desc: "Music" }
+  - { id: "gamec[game]", cat: PC/Games, desc: "Game" }
+  - { id: "gamec[visual_novel]", cat: PC/Games, desc: "Game Visual Novel" }
+  - { id: "printedtype[manga]", cat: Books/Comics, desc: "Manga" }
+  - { id: "printedtype[oneshot]", cat: Books/Comics, desc: "Oneshot" }
+  - { id: "printedtype[anthology]", cat: Books/Comics, desc: "Anthology" }
+  - { id: "printedtype[manhwa]", cat: Books/Comics, desc: "Manhwa" }
+  - { id: "printedtype[light_novel]", cat: Books/Comics, desc: "Light Novel" }
+  - { id: "printedtype[artbook]", cat: Books/Comics, desc: "Artbook" }
+  modes:
+    search: [q]
+    tv-search: [q,season,ep]
+    movie-search: [q]
+    book-search: [q]
+    music-search: [q]

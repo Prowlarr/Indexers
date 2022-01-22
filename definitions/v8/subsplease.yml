@@ -1,0 +1,17 @@
+﻿---
+id: subsplease
+name: SubsPlease
+description: "SubsPlease - A better HorribleSubs/Erai replacement"
+language: en-US
+type: public
+implementation: subsplease
+encoding: utf-8
+links:
+- https://subsplease.org/
+- https://subsplease.nocensor.space/
+caps:
+  categorymappings:
+  - { id: 1, cat: TV/Anime, desc: "Anime" }
+  modes:
+    search: [q]
+    tv-search: [q,season,ep]

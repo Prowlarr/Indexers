@@ -1,0 +1,23 @@
+---
+id: animetosho(usenet)-yml
+name: AnimeTosho (Usenet)
+description: "AnimeTosho (Usenet) is a PUBLIC Newznab Usenet Indexer"
+language: en-US
+type: public
+allowdownloadredirect: true
+implementation: newznab
+encoding: UTF-8
+links:
+- https://animetosho.org/
+caps:
+  categorymappings:
+  - { id: 5070, cat: TV/Anime, desc: Anime }
+  modes:
+    search: [q]
+    tv-search: [q]
+    movie-search: [q]
+settings:
+- name: apikey
+  type: text
+  label: Site API Key
+# newznab standard

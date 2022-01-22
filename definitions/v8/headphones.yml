@@ -1,0 +1,18 @@
+﻿---
+id: headphones
+name: Headphones
+description: "A Private Usenet indexer for music"
+language: en-US
+type: private
+implementation: headphones
+encoding: utf-8
+links:
+- https://indexer.codeshy.com
+caps:
+  categorymappings:
+  - { id: 3000, cat: Audio, desc: "" }
+  - { id: 3010, cat: Audio/MP3, desc: "" }
+  - { id: 3040, cat: Audio/Lossless, desc: "" }
+  modes:
+    search: [q]
+    music-search: [q]

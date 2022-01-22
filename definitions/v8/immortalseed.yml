@@ -1,0 +1,60 @@
+﻿---
+id: immortalseed
+name: ImmortalSeed
+description: "ImmortalSeed (iS) is a Private Torrent Tracker for MOVIES / TV / GENERAL"
+language: en-US
+type: private
+implementation: immortalseed
+encoding: utf-8
+links:
+- https://immortalseed.me/
+caps:
+  categorymappings:
+  - { id: 3, cat: Other, desc: "Nuked" }
+  - { id: 39, cat: Audio/Other, desc: "Music Other" }
+  - { id: 38, cat: Audio/Video, desc: "Music Video" }
+  - { id: 45, cat: Other, desc: "Other" }
+  - { id: 7, cat: TV/Sport, desc: "Sports Tv" }
+  - { id: 44, cat: TV/Sport, desc: "Sports Fitness-Instructional" }
+  - { id: 58, cat: TV/Sport, desc: "Olympics" }
+  - { id: 47, cat: TV/SD, desc: "TV - 480p" }
+  - { id: 8, cat: TV/HD, desc: "TV - High Definition" }
+  - { id: 48, cat: TV/SD, desc: "TV - Standard Definition - x264" }
+  - { id: 9, cat: TV/SD, desc: "TV - Standard Definition - XviD" }
+  - { id: 4, cat: TV/HD, desc: "TV Season Packs - HD" }
+  - { id: 6, cat: TV/SD, desc: "TV Season Packs - SD" }
+  - { id: 22, cat: Books/EBook, desc: "Ebooks" }
+  - { id: 26, cat: PC/Games, desc: "Games-PC ISO" }
+  - { id: 46, cat: Books/Mags, desc: "Magazines" }
+  - { id: 50, cat: PC/Mobile-iOS, desc: "IOS" }
+  - { id: 51, cat: PC/Mobile-Android, desc: "Android" }
+  - { id: 36, cat: Audio/MP3, desc: "MP3" }
+  - { id: 37, cat: Audio/Lossless, desc: "FLAC" }
+  - { id: 30, cat: Audio/Other, desc: "Music" }
+  - { id: 33, cat: Movies/Foreign, desc: "Movies SD Non-English" }
+  - { id: 32, cat: TV/Anime, desc: "Anime" }
+  - { id: 23, cat: PC, desc: "Apps" }
+  - { id: 35, cat: Audio/Audiobook, desc: "Audiobooks" }
+  - { id: 31, cat: TV, desc: "Childrens/Cartoons" }
+  - { id: 54, cat: TV/Documentary, desc: "Documentary - HD" }
+  - { id: 41, cat: Books/Comics, desc: "Comics" }
+  - { id: 25, cat: PC/Games, desc: "Games" }
+  - { id: 29, cat: Console/XBox, desc: "Games Xbox" }
+  - { id: 52, cat: PC/0day, desc: "Windows" }
+  - { id: 27, cat: PC/Games, desc: "Games-PC Rips" }
+  - { id: 49, cat: PC/Mobile-Other, desc: "Mobile" }
+  - { id: 59, cat: Movies/UHD, desc: "Movies-4k" }
+  - { id: 60, cat: Movies/Foreign, desc: "Non-English 4k Movies" }
+  - { id: 16, cat: Movies/HD, desc: "Movies HD" }
+  - { id: 18, cat: Movies/Foreign, desc: "Movies HD Non-English" }
+  - { id: 17, cat: Movies/SD, desc: "TS/CAM/PPV" }
+  - { id: 34, cat: Movies/Foreign, desc: "Movies Low Def Non-English" }
+  - { id: 14, cat: Movies/SD, desc: "Movies-SD" }
+  - { id: 28, cat: Console/PS4, desc: "Games-PSx" }
+  - { id: 53, cat: TV/Documentary, desc: "Documentary - SD" }
+  modes:
+    search: [q]
+    tv-search: [q,season,ep]
+    movie-search: [q]
+    book-search: [q]
+    music-search: [q]
