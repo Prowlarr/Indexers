@@ -11,11 +11,11 @@ links:
 caps:
   # dont forget to update the case block in the search fields category
   categorymappings:
-    - {id: 1, cat: TV, desc: "Cursos (courses)"}
+    - {id: 1, cat: TV, desc: "Cursos"}
     - {id: 2, cat: Books/EBook, desc: "eBooks"}
-    - {id: 5, cat: Books/Mags, desc: "Revistas (Magazines)"}
+    - {id: 5, cat: Books/Mags, desc: "Revistas"}
     - {id: 3, cat: Audio/Audiobook, desc: "Audiobooks"}
-    - {id: 4, cat: Other, desc: "Arquivos de Auxilio (Help Files)"}
+    - {id: 4, cat: Other, desc: "Arquivos de Auxilio"}
 
   modes:
     search: [q]
@@ -100,8 +100,6 @@ search:
       filters:
         - name: replace
           args: ["https://via.placeholder.com/90x135", ""]
-        - name: replace
-          args: ["https://via.placeholder.com/400x600", ""]
     imdbid:
       selector: imdb_id
     tmdbid:
