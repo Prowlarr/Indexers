@@ -97,7 +97,7 @@ if [ "$pulls_exists" = false ]; then
         git checkout -B "$jackett_pulls_branch"
         git reset "$prowlarr_remote_name"/"$prowlarr_release_branch"
         echo "--- local [$jackett_pulls_branch] reset based on [$prowlarr_remote_name/$prowlarr_release_branch]"
-        if [ $trace = true ]; then
+        if $trace; then
             read -ep $"Reached - Finished Github Actions [LocalExistsNoRemote] | Pausing for trace debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
         fi
     else
@@ -105,7 +105,7 @@ if [ "$pulls_exists" = false ]; then
         ## create new branch from master
         git checkout -B "$jackett_pulls_branch" "$prowlarr_remote_name"/"$prowlarr_release_branch" --no-track
         echo "--- local [$jackett_pulls_branch] created from [$prowlarr_remote_name/$prowlarr_release_branch]"
-        if [ $trace = true ]; then
+        if $trace; then
             read -ep $"Reached - Finished Github Actions [NoLocalNoRemote] | Pausing for trace debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
         fi
     fi
@@ -116,14 +116,14 @@ else
         git checkout -B "$jackett_pulls_branch"
         git reset "$prowlarr_remote_name"/"$jackett_pulls_branch"
         echo "--- local [$jackett_pulls_branch] reset from [$prowlarr_remote_name/$jackett_pulls_branch]"
-        if [ $trace = true ]; then
+        if $trace; then
             read -ep $"Reached - Finished Github Actions [LocalExistsRemoteExists] | Pausing for trace debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
         fi
     else
         # else create local
         git checkout -B "$jackett_pulls_branch" "$prowlarr_remote_name"/"$jackett_pulls_branch"
         echo "--- local [$jackett_pulls_branch] created from [$prowlarr_remote_name/$jackett_pulls_branch]"
-        if [ $trace = true ]; then
+        if $trace; then
             read -ep $"Reached - Finished Github Actions [NoLocalRemoteExists] | Pausing for trace debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
         fi
     fi
@@ -142,7 +142,7 @@ recent_pulled_commit=$(echo "$prowlarr_commits" | awk 'NR==1{print $5}')
 ## check most recent 10 commits in case we have other commits
 echo "--- most recent Prowlarr jackett commit is: [$recent_pulled_commit] from [$prowlarr_remote_name/$jackett_pulls_branch]"
 
-if [ $trace = true ]; then
+if $trace; then
     read -ep $"Reached - Ready to Cherrypick | Pausing for trace debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
 fi
 ## do nothing we are we up to date
@@ -175,7 +175,7 @@ for pick_commit in ${commit_range}; do
     fi
     echo "--- cherrypicking [$pick_commit]"
     git cherry-pick --no-commit --rerere-autoupdate --allow-empty --keep-redundant-commits "$pick_commit"
-    if [ $trace = true ]; then
+    if $trace; then
         echo "--- cherrypicked $pick_commit"
         echo "--- checking conflicts"
         read -ep $"Reached - Conflict checking ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
@@ -189,7 +189,7 @@ for pick_commit in ${commit_range}; do
         echo "--- conflicts exist"
         if [ -n "$nonyml_conflicts" ]; then
             echo "--- Non-YML conflicts exist; removing cs, js, iss, html"
-            if [ $trace = true ]; then
+            if $trace; then
                 read -ep $"Reached - Non-YML Conflict Remove ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
             fi
             git rm --f --q --ignore-unmatch "*.cs*"
@@ -199,7 +199,7 @@ for pick_commit in ${commit_range}; do
         fi
         if [ -n "$readme_conflicts" ]; then
             echo "--- README conflict exists; using Prowlarr README"
-            if [ $trace = true ]; then
+            if $trace; then
                 read -ep $"Reached - README Conflict ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
             fi
             git checkout --ours "README.md"
@@ -211,7 +211,7 @@ for pick_commit in ${commit_range}; do
             yml_remove=$(git status --porcelain | grep yml | grep -v "definitions/" | awk -F '[ADUMRC]{1,2} ' '{print $2}' | awk '{ gsub(/^[ \t]+|[ \t]+$/, ""); print }')
             for def in $yml_remove; do
                 echo "--- Removing non-definition yml; [$yml_remove]"
-                if [ $debug = true ]; then
+                if $debug; then
                     read -ep $"Reached - YML Conflict Remove ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
                 fi
                 git rm --f --ignore-unmatch "$yml_remove" ## remove non-definition yml
@@ -220,12 +220,12 @@ for pick_commit in ${commit_range}; do
             done
             if [ -n "$yml_conflicts" ]; then
                 yml_defs=$(git status --porcelain | grep yml | grep "definitions/")
-                yml_add=$(echo "$yml_defs" | grep -v "UD" | awk -F '[ADUMRC]{1,2} ' '{print $2}' | awk '{ gsub(/^[ \t]+|[ \t]+$/, ""); print }')
+                yml_add=$(echo "$yml_defs" | grep -v "UD\|D" | awk -F '[ADUMRC]{1,2} ' '{print $2}' | awk '{ gsub(/^[ \t]+|[ \t]+$/, ""); print }')
                 yml_delete=$(echo "$yml_defs" | grep "UD" | awk -F '[ADUMRC]{1,2} ' '{print $2}' | awk '{ gsub(/^[ \t]+|[ \t]+$/, ""); print }')
                 # Import Jackett Definitions
                 for def in $yml_add; do
                     echo "--- Using & Adding Jackett's definition yml; [$def]"
-                    if [ $debug = true ]; then
+                    if $debug; then
                         read -ep $"Reached - Def YML Conflict Add ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
                     fi
                     git checkout --theirs "$def"
@@ -234,7 +234,7 @@ for pick_commit in ${commit_range}; do
                 # Remove Jackett Removals
                 for def in $yml_delete; do
                     echo "--- Removing definitions Jackett deleted; [$def]"
-                    if [ $debug = true ]; then
+                    if $debug; then
                         read -ep $"Reached - Def YML Conflict Delete ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
                     fi
                     git rm --f --ignore-unmatch "$def" ## Remove any yml definitions
@@ -292,7 +292,7 @@ if [ -n "$added_indexers" ]; then
             fi
             if [ "$indexer" != "$updated_indexer" ]; then
                 echo "--- Moving indexer old [$indexer] to new [$updated_indexer]"
-                if [ $debug = true ]; then
+                if $debug; then
                     read -ep $"Reached [vCurrent to vLatest] ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
                 fi
                 mv "$indexer" "$updated_indexer"
@@ -332,7 +332,7 @@ if [ -n "$depreciated_indexers" ]; then
             fi
             if [ "$indexer" != "$updated_indexer" ]; then
                 echo "--- found changes | copying to [$updated_indexer] and resetting [$indexer]"
-                if [ $debug = true ]; then
+                if $debug; then
                     read -ep $"Reached [vDepreciated to vSupported] ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
                 fi
                 cp "$indexer" "$updated_indexer"
@@ -369,7 +369,7 @@ if [ -n "$modified_indexers" ]; then
             fi
             if [ "$indexer" != "$updated_indexer" ]; then
                 echo "--- found changes | copying to [$updated_indexer] and resetting [$indexer]"
-                if [ $debug = true ]; then
+                if $debug; then
                     read -ep $"Reached [vSupported is vCurrent and vLatest] ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
                 fi
                 cp "$indexer" "$updated_indexer"
@@ -400,7 +400,7 @@ if [ -n "$backport_indexers" ]; then
         echo "--- looking for [$v3_pattern] indexer of [$indexer]"
         if [ -f "$indexer_supported_current" ]; then
             echo "--- Found [$v3_pattern] indexer for [$indexer] - backporting to [$indexer_supported_current]"
-            if [ $debug = true ]; then
+            if $debug; then
                 read -ep $"Reached [backporting] ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
             fi
             git difftool --no-index "$indexer" "$indexer_supported_current"
@@ -409,7 +409,7 @@ if [ -n "$backport_indexers" ]; then
         echo "--- looking for [$v2_pattern] indexer of [$indexer]"
         if [ -f "$indexer_supported" ]; then
             echo "--- Found [$v2_pattern] indexer for [$indexer] - backporting to [$indexer_supported]"
-            if [ $debug = true ]; then
+            if $debug; then
                 read -ep $"Reached [backporting] ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
             fi
 
@@ -424,7 +424,7 @@ if [ -n "$backport_indexers" ]; then
 fi
 echo "--- --------------------------------------------- completed backporting indexers ---------------------------------------------"
 if [ -n "$removed_indexers" ]; then
-    for indexer in ${backport_indexers}; do
+    for indexer in ${removed_indexers}; do
         # ToDo - switch to regex and match group conditionals or make a loop
         remove_indexer1=${indexer/v[0-9]/$v1_pattern}
         remove_indexer2=${indexer/v[0-9]/$v2_pattern}
@@ -432,6 +432,9 @@ if [ -n "$removed_indexers" ]; then
         remove_indexer4=${indexer/v[0-9]/$v4_pattern}
         echo "--- looking for previous versions of removed indexer [$indexer]"
         if [ -f "$remove_indexer1" ] || [ -f "$remove_indexer2" ] || [ -f "$remove_indexer3" ] || [ -f "$remove_indexer4" ]; then
+            if $debug; then
+                read -ep $"Reached [removing] ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
+            fi
             echo "--- found previous versions of removed indexer [$indexer]"
             rm -f "$remove_indexer1"
             git rm --f --ignore-unmatch "$remove_indexer1"
@@ -452,7 +455,7 @@ read -ep $"Press any key to continue or [Ctrl-C] to abort.  Waiting for human re
 new_commit_msg="$prowlarr_commit_template $jackett_recent_commit"
 if [ $pulls_exists = true ]; then
     ## If our branch existed, we squash and amend
-    if [ $debug = true ]; then
+    if $debug; then
         echo "--- Existing commit message line 1 is [$existing_message_ln1]"
         echo "--- Jackett Commit Message is [$prowlarr_jackett_commit_message]"
         read -ep $"Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
@@ -474,7 +477,7 @@ while true; do
     read -ep $"Do you wish to Force Push with Lease [Ff] or Push to $prowlarr_remote_name [Pp]? Enter any other value to exit:" -n1 fp
     case $fp in
     [Ff]*)
-        if [ $debug = true ]; then
+        if $debug; then
             read -ep $"Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
         fi
         git push "$prowlarr_remote_name" "$jackett_pulls_branch" --force-if-includes --force-with-lease
@@ -482,7 +485,7 @@ while true; do
         exit 0
         ;;
     [Pp]*)
-        if [ $debug = true ]; then
+        if $debug; then
             read -ep $"Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
         fi
         git push "$prowlarr_remote_name" "$jackett_pulls_branch" --force-if-includes --force-with-lease --set-upstream
