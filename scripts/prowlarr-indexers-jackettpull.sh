@@ -53,7 +53,7 @@ echo "--- Variables set"
 cd "$prowlarr_git_path" || exit
 ## Config Git and remotes
 git config advice.statusHints false # Mute Git Hints
-git_remotes=$(git remote)
+git_remotes=$(git remote -v)
 prowlarr_remote_exists=$(echo "$git_remotes" | grep "$prowlarr_remote_name")
 jackett_remote_exists=$(echo "$git_remotes" | grep "$jackett_remote_name")
 if [ -z "$prowlarr_remote_exists" ]; then
