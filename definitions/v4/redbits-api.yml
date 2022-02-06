@@ -1,17 +1,21 @@
 ---
-id: hawke-uno
-name: hawke-uno
-description: "hawke-uno is a Private Torrent Tracker for (X265 / HEVC) MOVIES / TV"
-language: en-US
+id: redbits-api
+name: RedBits (API)
+description: "RedBits is a SPANISH site for classic content"
+language: es-ES
 type: private
 encoding: UTF-8
 links:
-  - https://www.hawke.uno/
+  - https://red-bits.com/
 
 caps:
   categorymappings:
-    - {id: 1, cat: Movies, desc: "Movie"}
-    - {id: 2, cat: TV, desc: "TV"}
+    - {id: 1, cat: Movies, desc: "Películas"}
+    - {id: 2, cat: TV, desc: "Series"}
+    - {id: 6, cat: TV/Documentary, desc: "Documentales"}
+    - {id: 7, cat: TV/Sport, desc: "Deportes"}
+    - {id: 8, cat: Movies, desc: "Hagbard"}
+    - {id: 9, cat: Movies, desc: "Studio Ghibli"}
 
   modes:
     search: [q]
@@ -25,7 +29,7 @@ settings:
   - name: info_key
     type: info
     label: About your API key
-    default: "Find or Generate a new API Token by accessing your <a href=\"https://www.hawke.uno/\" target =_blank>hawke-uno</a> account <i>My Security</i> page and clicking on the <b>API Token</b> tab."
+    default: "Find or Generate a new API Token by accessing your <a href=\"https://red-bits.com/\" target =_blank>RedBits</a> account <i>My Security</i> page and clicking on the <b>API Token</b> tab."
   - name: freeleech
     type: checkbox
     label: Search freeleech only
@@ -74,8 +78,40 @@ search:
   fields:
     categorydesc:
       selector: category
+    title_vose:
+      selector: name:contains(VOSE)
+      optional: true
+      filters:
+        - name: re_replace
+          args: ["(?i)bdfull", "BluRay"] # BDfull  -> BluRay
+        - name: re_replace
+          args: ["(?i)RedBits", ""] # Delete RedBits
+        - name: append
+          args: " English" # Add english to fix Sonarr/Radarr language
+        - name: re_replace
+          args: ["\\[|\\]", " "]
+        - name: re_replace
+          args: ["  ", " "]
+        - name: re_replace
+          args: ["(?i)T(\\d{1,2})\\b", "S$1"]
+    title_notvose:
+      selector: name:not(:contains(VOSE))
+      optional: true
+      filters:
+        - name: re_replace
+          args: ["(?i)bdfull", "BluRay"] # BDfull  -> BluRay
+        - name: re_replace
+          args: ["(?i)RedBits", ""] # Delete RedBits
+        - name: append
+          args: " Spanish" # Add spanish to fix Sonarr/Radarr language
+        - name: re_replace
+          args: ["\\[|\\]", " "]
+        - name: re_replace
+          args: ["  ", " "]
+        - name: re_replace
+          args: ["(?i)T(\\d{1,2})\\b", "S$1"]
     title:
-      selector: name
+      text: "{{ if .Result.title_vose }}{{ .Result.title_vose }}{{ else }}{{ .Result.title_notvose }}{{ end }}"
     details:
       selector: details_link
     download:
@@ -116,9 +152,9 @@ search:
       case:
         0: 1 # normal
         1: 2 # double
-#    minimumratio:
-#      text: 0.4
-#    minimumseedtime:
-      # 5 days (as seconds = 5 x 24 x 60 x 60)
-#      text: 432000
+    minimumratio:
+      text: 0.4
+    minimumseedtime:
+      # 4 days (as seconds = 4 x 24 x 60 x 60)
+      text: 345600
 # json UNIT3D 5.3.0

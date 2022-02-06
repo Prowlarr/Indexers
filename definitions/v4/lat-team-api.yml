@@ -1,22 +1,29 @@
 ---
-id: hawke-uno
-name: hawke-uno
-description: "hawke-uno is a Private Torrent Tracker for (X265 / HEVC) MOVIES / TV"
-language: en-US
+id: lat-team-api
+name: Lat-Team (API)
+description: "Lat-Team is a SPANISH Private Torrent Tracker for MOVIES / TV"
+language: es-ES
 type: private
 encoding: UTF-8
 links:
-  - https://www.hawke.uno/
+  - https://lat-team.com/
 
 caps:
   categorymappings:
-    - {id: 1, cat: Movies, desc: "Movie"}
-    - {id: 2, cat: TV, desc: "TV"}
+    - {id: 1, cat: Movies, desc: "Películas"}
+    - {id: 6, cat: Movies/Other, desc: "Retro Pelicula"}
+    - {id: 5, cat: TV/Anime, desc: "Anime"}
+    - {id: 2, cat: TV, desc: "TV Series"}
+    - {id: 7, cat: TV/Other, desc: "Retro Serie TV"}
+    - {id: 8, cat: TV/Foreign, desc: "Telenovelas y Teleseries"}
+    - {id: 3, cat: Audio, desc: "Musica"}
 
   modes:
     search: [q]
     tv-search: [q, season, ep, imdbid, tvdbid]
     movie-search: [q, imdbid, tmdbid]
+    music-search: [q]
+    book-search: [q]
 
 settings:
   - name: apikey
@@ -25,7 +32,7 @@ settings:
   - name: info_key
     type: info
     label: About your API key
-    default: "Find or Generate a new API Token by accessing your <a href=\"https://www.hawke.uno/\" target =_blank>hawke-uno</a> account <i>My Security</i> page and clicking on the <b>API Token</b> tab."
+    default: "Find or Generate a new API Token by accessing your <a href=\"https://lat-team.com/\" target =_blank>Lat-Team</a> account <i>My Security</i> page and clicking on the <b>API Token</b> tab."
   - name: freeleech
     type: checkbox
     label: Search freeleech only
@@ -64,6 +71,9 @@ search:
     - path: "/api/torrents/filter?api_token={{ .Config.apikey }}&name={{ if .Query.IMDBID }}{{ else }}{{ .Keywords }}{{ end }}{{ if .Query.TMDBID }}&tmdbId={{ .Query.TMDBID }}{{ else }}{{ end }}{{ if .Query.IMDBIDShort }}&imdbId={{ .Query.IMDBIDShort }}{{ else }}{{ end }}{{ if  .Query.TVDBID }}&tvdbId={{ .Query.TVDBID }}{{ else }}{{ end }}&sortField={{ .Config.sort }}&sortDirection={{ .Config.type }}&perPage=100&page=1{{ range .Categories }}&categories[]={{.}}{{end}}{{ if .Config.freeleech }}&free=1{{ else }}{{ end }}"
       response:
         type: json
+  keywordsfilters:
+    - name: re_replace
+      args: ["(?i)\\bS(\\d+)", "T$1"]
 
   rows:
     selector: data
@@ -74,8 +84,32 @@ search:
   fields:
     categorydesc:
       selector: category
+    title_vose:
+      selector: name:contains(VOSE)
+      optional: true
+      filters:
+        - name: re_replace
+          args: ["^ *\\[[^\\]]*\\] *", ""] # Remove prefix tags
+        - name: re_replace
+          args: ["(?i)\\bT(\\d+)", "S$1"]
+        - name: re_replace
+          args: ["UHDRip", "BDRip"] # Fix for Radarr
+        - name: append
+          args: " ENGLiSH"
+    title_notvose:
+      selector: name:not(:contains(VOSE))
+      optional: true
+      filters:
+        - name: re_replace
+          args: ["^ *\\[[^\\]]*\\] *", ""] # Remove prefix tags
+        - name: re_replace
+          args: ["(?i)\\bT(\\d+)", "S$1"]
+        - name: re_replace
+          args: ["UHDRip", "BDRip"] # Fix for Radarr
+        - name: append
+          args: " SPANiSH"
     title:
-      selector: name
+      text: "{{ if .Result.title_vose }}{{ .Result.title_vose }}{{ else }}{{ .Result.title_notvose }}{{ end }}"
     details:
       selector: details_link
     download:
@@ -116,9 +150,9 @@ search:
       case:
         0: 1 # normal
         1: 2 # double
-#    minimumratio:
-#      text: 0.4
-#    minimumseedtime:
-      # 5 days (as seconds = 5 x 24 x 60 x 60)
-#      text: 432000
+    minimumratio:
+      text: 1.0
+    minimumseedtime:
+      # 4 days (as seconds = 4 x 24 x 60 x 60)
+      text: 345600
 # json UNIT3D 5.3.0
