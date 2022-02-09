@@ -389,8 +389,11 @@ echo "--- --------------------------------------------- completed changed indexe
 ## Backport V3 => V2
 ## Backport V4 => V3
 ## Backport V4 => V3
+## Foreport V2 => V3
+## Foreport V2 => V4
+## ForePort V3 => V4
 ## Backport V2 => V1 - Discontinued 2021-10-23 per Q on discord
-backport_indexers=$(git diff --cached --name-only | grep ".yml" | grep "$v3_pattern\|$v4_pattern")
+backport_indexers=$(git diff --cached --name-only | grep ".yml" | grep "$v3_pattern\|$v4_pattern\|$v2_pattern")
 if [ -n "$backport_indexers" ]; then
     for indexer in ${backport_indexers}; do
         # ToDo - switch to regex and match group conditionals or make a loop
