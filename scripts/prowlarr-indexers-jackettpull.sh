@@ -43,7 +43,7 @@ v2_pattern="v2"
 v3_pattern="v3"
 v4_pattern="v4"
 ## ID new Version indexers by Regex
-v3_regex1="# json (engine|api|UNIT3D|Elasticsearch|rartracker)"
+v3_regex1="# (json (engine|api|Elasticsearch|rartracker))|(UNIT3D)"
 v3_regex2="    imdbid:\r" # Requires \r to ensure is not part of another string or condition
 v3_regex3="type: xml"
 v4_regex1="    categorydesc:"
@@ -270,6 +270,7 @@ modified_indexers=$(git diff --cached --diff-filter=M --name-only | grep ".yml" 
 removed_indexers=$(git diff --cached --diff-filter=D --name-only | grep ".yml" | grep "$v1_pattern\|$v2_pattern\|$v3_pattern\|$v4_pattern")
 
 ### v1 frozen 2021-10-13
+### Put everything in v3 2022-02-09
 if [ -n "$added_indexers" ]; then
     echo "--- New Indexers detected"
     for indexer in ${added_indexers}; do
@@ -287,8 +288,8 @@ if [ -n "$added_indexers" ]; then
                 updated_indexer=$indexer_supported_current
             else
                 # code if not v3
-                echo "--- [$indexer] is [$v2_pattern]"
-                updated_indexer=$indexer_supported
+                echo "--- [$indexer] is not [$v3_pattern] but assuming [$v3_pattern] anyway"
+                updated_indexer=$indexer_supported_current
             fi
             if [ "$indexer" != "$updated_indexer" ]; then
                 echo "--- Moving indexer old [$indexer] to new [$updated_indexer]"
