@@ -492,7 +492,11 @@ while true; do
         if $debug; then
             read -ep $"Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
         fi
-        git push "$prowlarr_remote_name" "$jackett_pulls_branch" --force-if-includes --force-with-lease --set-upstream
+        if [ $pulls_exists = true ]; then
+        git push "$prowlarr_remote_name" "$jackett_pulls_branch" --force-if-includes
+        else
+        git push "$prowlarr_remote_name" "$jackett_pulls_branch" --force-if-includes --set-upstream
+        fi
         echo "--- Branch Pushed"
         exit 0
         ;;
