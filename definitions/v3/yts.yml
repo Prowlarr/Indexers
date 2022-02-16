@@ -54,6 +54,8 @@ search:
     - path: api/v2/list_movies.json
       response:
         type: json
+        attribute: torrents
+        multiple: true
 
   inputs:
     # ignore ' (e.g. search for america's Next Top Model)
@@ -64,8 +66,6 @@ search:
 
   rows:
     selector: data.movies
-    attribute: torrents
-    multiple: true
     count:
       selector: data.movie_count
 
