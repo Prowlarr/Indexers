@@ -1,25 +1,29 @@
 ---
-id: brsociety-api
-name: BrSociety (API)
-description: "BrSociety (SemeandoCC) is a BRAZILIAN Private Torrent Tracker for E-LEARNING"
-language: pt-BR
+id: generationfree-api
+name: Generation-Free (API)
+description: "Generation-Free (GF-Free) is a FRENCH Private Torrent Tracker for MOVIES / TV / GENERAL"
+language: fr-FR
 type: private
 encoding: UTF-8
 links:
-  - https://brsociety.club/
+  - https://generation-free.org/
+legacylinks:
+  - https://generation-free.biz/
 
 caps:
   categorymappings:
-    - {id: 1, cat: TV, desc: "Cursos"}
-    - {id: 2, cat: Books/EBook, desc: "eBooks"}
-    - {id: 5, cat: Books/Mags, desc: "Revistas"}
-    - {id: 3, cat: Audio/Audiobook, desc: "Audiobooks"}
-    - {id: 4, cat: Other, desc: "Arquivos de Auxilio"}
-    - {id: 6, cat: Other, desc: "Graduação"}
+    - {id: 1, cat: Movies, desc: "Film"}
+    - {id: 2, cat: TV, desc: "Série"}
+    - {id: 3, cat: Audio, desc: "Musique"}
+    - {id: 4, cat: Console, desc: "Jeux"}
+    - {id: 5, cat: PC, desc: "Logiciel"}
+    - {id: 6, cat: Books, desc: "Ebook"}
 
   modes:
     search: [q]
-    tv-search: [q]
+    tv-search: [q, season, ep, imdbid, tvdbid]
+    movie-search: [q, imdbid, tmdbid]
+    music-search: [q]
     book-search: [q]
 
 settings:
@@ -29,11 +33,30 @@ settings:
   - name: info_key
     type: info
     label: About your API key
-    default: "Find or Generate a new API Token by accessing your <a href=\"https://brsociety.club/\" target =_blank>BrSociety</a> account <i>My Security</i> page and clicking on the <b>API Token</b> tab."
+    default: "Find or Generate a new API Token by accessing your <a href=\"https://generation-free.org/\" target =_blank>Generation-Free</a> account <i>My Security</i> page and clicking on the <b>API Token</b> tab."
   - name: freeleech
     type: checkbox
     label: Search freeleech only
     default: false
+  - name: vfq
+    type: checkbox
+    label: Replace VFQ with FRENCH in release name
+    default: false
+  - name: multilang
+    type: checkbox
+    label: Replace MULTI by another language in release name
+    default: false
+  - name: multilanguage
+    type: select
+    label: Replace MULTI by this language
+    default: VOSTFR
+    options:
+      FRENCH: FRENCH
+      "MULTI FRENCH": "MULTI FRENCH"
+      ENGLISH: ENGLISH
+      "MULTI ENGLISH": "MULTI ENGLISH"
+      VOSTFR: VOSTFR
+      "MULTI VOSTFR": "MULTI VOSTFR"
   - name: sort
     type: select
     label: Sort requested from site
@@ -78,8 +101,25 @@ search:
   fields:
     categorydesc:
       selector: category
-    title:
+    title_original:
       selector: name
+      filters:
+        - name: replace
+          args: [".", " "]
+    title_vfq:
+      text: "{{ .Result.title_original }}"
+      filters:
+        - name: re_replace
+          args: ["(?i)(\\sVFQ\\s)", " FRENCH "]
+    title_step2:
+      text: "{{ if .Config.vfq }}{{ .Result.title_vfq }}{{ else }}{{ .Result.title_original }}{{ end }}"
+    title_multilang:
+      text: "{{ .Result.title_step2 }}"
+      filters:
+        - name: re_replace
+          args: ["(?i)(\\sMULTI\\s)", " {{ .Config.multilanguage }} "]
+    title:
+      text: "{{ if .Config.multilang }}{{ .Result.title_multilang }}{{ else }}{{ .Result.title_step2 }}{{ end }}"
     details:
       selector: details_link
     download:
@@ -125,9 +165,7 @@ search:
       case:
         0: 1 # normal
         1: 2 # double
-    minimumratio:
-      text: 1.0
     minimumseedtime:
-      # 5 days (as seconds = 5 x 24 x 60 x 60)
-      text: 432000
+      # 2 days (as seconds = 2 x 24 x 60 x 60)
+      text: 172800
 # json UNIT3D 5.3.0

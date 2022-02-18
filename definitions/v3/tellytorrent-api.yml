@@ -88,6 +88,10 @@ search:
     perPage: 100
     page: 1
 
+  keywordsfilters:
+    - name: re_replace
+      args: ["\\.", " "]
+
   rows:
     selector: data
     count:
