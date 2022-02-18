@@ -95,8 +95,8 @@ if [ "$pulls_exists" = false ]; then
         ## reset on master
         echo "--- checking out local branch [$jackett_pulls_branch]"
         git checkout -B "$jackett_pulls_branch"
-        git reset "$prowlarr_remote_name"/"$prowlarr_release_branch"
-        echo "--- local [$jackett_pulls_branch] reset based on [$prowlarr_remote_name/$prowlarr_release_branch]"
+        git reset --hard "$prowlarr_remote_name"/"$prowlarr_release_branch"
+        echo "--- local [$jackett_pulls_branch] hard reset based on [$prowlarr_remote_name/$prowlarr_release_branch]"
         if $trace; then
             read -ep $"Reached - Finished Github Actions [LocalExistsNoRemote] | Pausing for trace debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
         fi
