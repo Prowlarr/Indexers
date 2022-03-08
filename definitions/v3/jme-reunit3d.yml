@@ -1,36 +1,30 @@
 ---
-id: tvchaosuk
-name: TVChaosUK
-description: "TV Chaos UK (TVCUK) is a Private Torrent Tracker for UK TV"
-language: en-GB
+id: jme-reunit3d
+name: JME-REUNIT3D
+description: "JME-REUNIT3D is a GERMAN Private Torrent Tracker for MOVIES / TV / GENERAL"
+language: en-US
 type: private
 encoding: UTF-8
 links:
-  - https://tvchaosuk.com/
+  - https://jme-reunit3d.eu/
 
 caps:
   categorymappings:
-    - {id: 29, cat: TV, desc: "Comedy"}
-    - {id: 5, cat: TV/Documentary, desc: "Documentary"}
-    - {id: 11, cat: TV, desc: "Drama"}
-    - {id: 14, cat: TV, desc: "Entertainment"}
-    - {id: 19, cat: TV, desc: "Factual"}
-    - {id: 43, cat: TV, desc: "Foreign"}
-    - {id: 32, cat: TV, desc: "Kids/Family"}
-    - {id: 44, cat: Movies, desc: "Movies"}
-    - {id: 45, cat: TV, desc: "News & Current Affairs"}
-    - {id: 51, cat: Audio, desc: "Radio"}
-    - {id: 52, cat: TV, desc: "Reality"}
-    - {id: 30, cat: TV, desc: "Soaps"}
-    - {id: 33, cat: TV, desc: "Sci-Fi"}
-    - {id: 42, cat: TV/Sport, desc: "Sport"}
-    - {id: 53, cat: TV, desc: "Holding Bin"}
+    - {id: 1, cat: Movies, desc: "Movies"}
+    - {id: 2, cat: TV, desc: "TV"}
+    - {id: 3, cat: Audio, desc: "Music-Audio"}
+    - {id: 4, cat: Console, desc: "Game"}
+    - {id: 5, cat: PC, desc: "Application"}
+    - {id: 7, cat: TV/Sport, desc: "Sport"}
+    - {id: 8, cat: XXX, desc: "XXX"}
+    - {id: 9, cat: Books, desc: "E-Books"}
 
   modes:
     search: [q]
     tv-search: [q, season, ep, imdbid, tvdbid]
     movie-search: [q, imdbid, tmdbid]
     music-search: [q]
+    book-search: [q]
 
 settings:
   - name: username
@@ -134,7 +128,7 @@ search:
       selector: td:nth-last-child(2)
     grabs:
       selector: td:nth-last-child(1)
-    imdb:
+    imdbid:
       selector: a[href*="imdb.com/title/tt"]
       attribute: href
     tmdbid:
@@ -143,42 +137,8 @@ search:
     date:
       selector: time
       filters:
-        # translations for Turkish|Estonian|Danish|Italian|Polish|Norwegian|Portuguese|Czech|Russian|Romanian|Spanish|French|German|Bulgarian|Dutch|Chinese|Japanese|Swedish
-        - name: re_replace
-          args: ["(?i)(önce|tagasi|geleden|fa|temu|siden|há|atrás|nazpět|назад|acum|în urmă|hace|il y a|vor|преди|前|sedan)", " ago"]
-        - name: re_replace
-          args: ["(?i)(saniye|sekundit|sekunder|secondi|sekund|segundos|sekundami|секунд|secunde|secondes|Sekunden|секунди|seconden|秒前)", "seconds"]
-        - name: re_replace
-          args: ["(?i)(minutit|minutter|minuti|minuty|minutos|минуты|минут|Minuten|минути|minuten|minuter)", "minutes"]
-        - name: re_replace
-          args: ["(?i)(dakika|minut|minuto|minuta|minutt|минута|Minute|minuut|分钟|分)", " minute"]
-        - name: re_replace
-          args: ["(?i)(tundi|timer|ore|godziny|horas|hodiny|hoden|часа|часов|ore|heures|Stunden|timmar)", "hours"]
-        - name: re_replace
-          args: ["(?i)(saat|tund|time|ora|godzina|hora|hodina|час|oră|heure|Stunde|uur|小时|時間|timme)", " hour"]
-        - name: re_replace
-          args: ["(?i)(päeva|dage|giorni|dni|dias|dny|дня|дней|zile|días|jours|Tagen|дни|dagen|dagar)", "days"]
-        - name: re_replace
-          args: ["(?i)(gün|päev|dag|giorno|dzień|dia|den|день|zi|día|jour|Tag|ден|天|日)", " day"]
-        - name: re_replace
-          args: ["(?i)(nädalat|uger|settimane|tygodnie|uker|semanas|týdny|недели|недель|săptămâni|semaines|Wochen|седмици|weken|veckor)", "weeks"]
-        - name: re_replace
-          args: ["(?i)(hafta|nädal|uge|settimana|tydzień|uke|semana|týden|неделю|săptămână|semaine|Woche|седмица|周|週間|vecka)", " week"]
-        - name: re_replace
-          args: ["(?i) (ay)", "month"]
-        - name: re_replace
-          args: ["(?i)(kuud|måneder|mesi|miesiące|meses|měsíce|месяца|месяцев|luni|meses|mois|Monaten|месеца|maanden|månader)", "months"]
-        - name: re_replace
-          args: ["(?i)(kuu|måned|mese|miesiąc|mês|měsíc|месяц|lună|mes|Monat|месец|maand|个月|ヶ月|månad)", " month"]
-        - name: re_replace
-          args: ["(?i)(aastat|anni|lata|anos|roky|года|ani|años|ans|Jahren|години)", " years"]
-        - name: re_replace
-          args: ["(?i)(yil|aasta|år|anno|rok|ano|год|año|Jahr|година|jaar|年)", " year"]
-        - name: re_replace
-          args: ["(?i) (an)", "year"]
-        - name: re_replace
-          args: ["(?i)(För |und)", ""] # Misc removals
-        - name: timeago
+        - name: append
+          args: " ago"
     downloadvolumefactor:
       case:
         i[class*="fa-id-badge text-orange"]: 0 # 24 Hour FreeLeech From BON Store
@@ -195,9 +155,7 @@ search:
         i[class*="fa-globe text-green"]: 2 # Global Double Upload
         i[class*="fa-certificate text-pink"]: 2 # Featured Torrent
         "*": 1
-    minimumratio:
-      text: 0.4
     minimumseedtime:
-      # 1 day (as seconds = 24 x 60 x 60)
-      text: 86400
-# UNIT3D 2.2.7
+      # 3 days (as seconds = 3 x 24 x 60 x 60)
+      text: 259200
+# UNIT3D 3.0.0

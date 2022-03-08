@@ -1,15 +1,16 @@
 ---
-id: baibako
-name: BaibaKo
-description: "BaibaKo is a RUSSIAN Semi-Private Torrent Tracker for TV"
+id: rudub
+name: RUDUB
+description: "RUDUB (ex-BaibaKoTV) is a RUSSIAN Semi-Private Torrent Tracker for TV"
 language: ru-RU
 type: semi-private
 encoding: windows-1251
 links:
-  - http://bko.baibako.tv/ # https is unsupported ERR_CONNECTION_REFUSED
+  - http://rudub.tv/ # https is unsupported ERR_CONNECTION_REFUSED
 legacylinks:
   - http://baibako.tv/
   - https://baibako.tv/
+  - http://bko.baibako.tv/
 
 caps:
   categorymappings:
@@ -18,7 +19,6 @@ caps:
   modes:
     search: [q]
     tv-search: [q, season, ep]
-  allowrawsearch: true
 
 settings:
   - name: username
