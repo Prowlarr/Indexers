@@ -1,22 +1,23 @@
 ---
-id: uhd-heaven
-name: UHD-HEAVEN
-description: "UHD-HEAVEN is a Private Torrent Tracker for UHD MOVIES / TV"
+id: skipthetrailers
+name: SkipTheTrailers
+description: "SkipTheTrailers (STT) is a Private Torrent Tracker for MOVIES"
 language: en-US
 type: private
 encoding: UTF-8
 links:
-  - https://uhd-heaven.xyz/
+  - https://skipthetrailers.xyz/
 
 caps:
   categorymappings:
     - {id: 1, cat: Movies, desc: "Movies"}
-    - {id: 2, cat: TV, desc: "TV"}
 
   modes:
     search: [q]
     tv-search: [q, season, ep, imdbid, tvdbid]
     movie-search: [q, imdbid, tmdbid]
+    music-search: [q]
+    book-search: [q]
 
 settings:
   - name: apikey
@@ -25,7 +26,7 @@ settings:
   - name: info_key
     type: info
     label: About your API key
-    default: "Find or Generate a new API Token by accessing your <a href=\"https://uhd-heaven.xyz/\" target =_blank>UHD-HEAVEN</a> account <i>My Security</i> page and clicking on the <b>API Token</b> tab."
+    default: "Find or Generate a new API Token by accessing your <a href=\"https://skipthetrailers.xyz/\" target =_blank>SkipTheTrailers</a> account <i>My Security</i> page and clicking on the <b>API Token</b> tab."
   - name: freeleech
     type: checkbox
     label: Search freeleech only
@@ -74,6 +75,10 @@ search:
     sortDirection: "{{ .Config.type }}"
     perPage: 100
     page: 1
+
+  keywordsfilters:
+    - name: re_replace
+      args: ["\\.", " "]
 
   rows:
     selector: data
@@ -130,10 +135,9 @@ search:
       case:
         0: 1 # normal
         1: 2 # double
-# global MR is 0.4 but torrents must be seeded for 3 days regardless of ratio
-#    minimumratio:
-#      text: 0.4
+    minimumratio:
+      text: 1.0
     minimumseedtime:
-      # 7 days (as seconds = 7 x 24 x 60 x 60)
-      text: 604800
-# json UNIT3D 6.0.0
+      # 7 days (as seconds = 2 x 24 x 60 x 60)
+      text: 172800
+# json UNIT3D 6.0.4
