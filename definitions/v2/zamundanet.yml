@@ -120,7 +120,8 @@ search:
   inputs:
     $raw: "{{ range .Categories }}c{{.}}=1&{{end}}"
     search: "{{ .Keywords }}"
-    incldead: 1
+    # changing incldead to 0, as the returned results from the tracker are limited when the value is 1
+    incldead: 0
     sort: "{{ .Config.sort }}"
     type: "{{ .Config.type }}"
 
