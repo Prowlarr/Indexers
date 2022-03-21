@@ -177,9 +177,6 @@ search:
     title_group:
       selector: div.group_info.clear > div.torrent_info > strong:last-child
       attribute: title
-      filters:
-        - name: strdump
-          args: rlsgroup
     # title > step 4 - grab release infos and normalize
     title_infos:
       selector: div.group_info.clear > div.torrent_info
@@ -223,9 +220,6 @@ search:
     # title > step 5 - finale concatenation
     title:
       text: "{{ .Result.title_result }}{{ .Result.title_year }}{{ .Result.title_infos }}{{ if .Result.title_group }}-{{ .Result.title_group }}{{ else }}-HDO{{ end }}"
-      filters:
-        - name: strdump
-          args: normalized
     ### NEXT
     description:
       selector: div.group_info
