@@ -89,9 +89,13 @@ caps:
     book-search: [ q ]
 
 settings:
-  - name: passkey
-    type: password
-    label: Passkey
+  - name: apikey
+    type: text
+    label: PassKey
+  - name: info_key
+    type: info
+    label: About your Passkey
+    default: "Find your PassKey on <a href=\"https://xthor.tk/api_doc.php\" target =_blank>Xthor > API page</a>."
   - name: freeleech
     type: checkbox
     label: Search freeleech only
@@ -110,7 +114,7 @@ search:
     # https://api.xthor.tk/?passkey=<redacted>&search=&category=&freeleech=&tmdbid=&size=&accent=&price=&page=
     - path: "https://api.xthor.tk/"
       inputs:
-        passkey: "{{ .Config.passkey }}"
+        passkey: "{{ .Config.apikey }}"
         category: "{{ if .Categories }}{{ range .Categories }}{{.}}+{{end}}{{ else }}{{ end }}"
         search: "{{ if .Query.TMDBID }}{{ else }}{{ .Keywords }}{{ end }}"
         tmdbid: "{{ .Query.TMDBID }}"
@@ -120,6 +124,8 @@ search:
 
   rows:
     selector: torrents
+    filters:
+      - name: andmatch
 
   fields:
     id:
@@ -145,9 +151,14 @@ search:
     title:
       text: "{{ if .Config.subfrench }}{{ .Result.title_vostfr }}{{ else }}{{ .Result.title_multi_out }}{{ end }}"
     details:
-      text: "https://xthor.tk/details.php?id={{ .Result.id }}"
+      text: "{{ .Config.sitelink }}/details.php?id={{ .Result.id }}"
     download:
       selector: download_link
+    poster:
+      selector: descr
+      filters:
+        - name: regexp
+          args: ["({{ .Config.sitelink }}/info_images\\/allocine\\/covers\\/film\\/small_\\d+?\\.jpg)"]
     tmdbid:
       selector: tmdb_id
     files:
@@ -177,3 +188,4 @@ search:
     minimumratio:
     # minimum ratio per torrent is 0.8
       text: 0.8
+# json api
