@@ -86,6 +86,13 @@ settings:
     type: info
     label: "Search results"
     default: "This Indexer supports search results only from the <b>LIST</b> view.<br><li>Access the web site, bring up the torrent search page and click on the <b>LIST</b> icon setting (located to the top right of the search results table).</li><br>The alternate <i>GRID</i> view is not supported."
+  - name: incldead
+    type: select
+    label: Include dead torrents in search results
+    default: 0
+    options:
+      0: exclude
+      1: include
   - name: sort
     type: select
     label: Sort requested from site
@@ -120,7 +127,8 @@ search:
   inputs:
     $raw: "{{ range .Categories }}c{{.}}=1&{{end}}"
     search: "{{ .Keywords }}"
-    incldead: 1
+    # changing incldead to take input from the select field in the indexer settings, values are only 0 and 1
+    incldead: "{{ .Config.incldead }}"
     sort: "{{ .Config.sort }}"
     type: "{{ .Config.type }}"
 

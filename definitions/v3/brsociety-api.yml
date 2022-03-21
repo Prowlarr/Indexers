@@ -11,11 +11,12 @@ links:
 caps:
   # dont forget to update the case block in the search fields category
   categorymappings:
-    - {id: 1, cat: TV, desc: "Cursos (courses)"}
+    - {id: 1, cat: TV, desc: "Cursos"}
     - {id: 2, cat: Books/EBook, desc: "eBooks"}
-    - {id: 5, cat: Books/Mags, desc: "Revistas (Magazines)"}
+    - {id: 5, cat: Books/Mags, desc: "Revistas"}
     - {id: 3, cat: Audio/Audiobook, desc: "Audiobooks"}
-    - {id: 4, cat: Other, desc: "Arquivos de Auxilio (Help Files)"}
+    - {id: 4, cat: Other, desc: "Arquivos de Auxilio"}
+    - {id: 6, cat: Other, desc: "Graduação"}
 
   modes:
     search: [q]
@@ -51,6 +52,16 @@ settings:
       desc: desc
       asc: asc
 
+login:
+  path: /api/torrents
+  method: get
+  inputs:
+    api_token: "{{ .Config.apikey }}"
+  error:
+    - selector: a[href*="/login"]
+      message:
+        text: "The API key was not accepted by {{ .Config.sitelink }}."
+
 search:
   paths:
     # https://hdinnovations.github.io/UNIT3D-Community-Edition-Docs/api_endpoints.html
@@ -74,6 +85,7 @@ search:
         "Revistas": 5
         "Audiobooks": 3
         "Arquivos de Auxilio": 4
+        "Graduação": 6
     title:
       selector: name
     details:

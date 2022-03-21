@@ -7,7 +7,7 @@ type: public
 encoding: UTF-8
 followredirect: true
 links:
-  - https://www.torrent9.si/
+  - https://www.torrent9.nl/
   - https://torrent9.nocensor.biz/
 legacylinks:
   - https://www.torrents9.pw/
@@ -57,13 +57,14 @@ legacylinks:
   - https://torrent9.nocensor.space/
   - https://torrent9.nocensor.work/
   - https://www.torrent9.pw/
+  - https://www.torrent9.si/
 
 caps:
   categorymappings:
     - {id: Films, cat: Movies, desc: "Movies"}
     - {id: Séries, cat: TV, desc: "TV"}
-    - {id: Musique, cat: Audio, desc: "Music"}
-    - {id: Ebook, cat: Books, desc: "Books"}
+    - {id: Musiques, cat: Audio, desc: "Music"}
+    - {id: Ebooks, cat: Books, desc: "Books"}
     - {id: Logiciels, cat: PC, desc: "Software"}
     - {id: Jeux-PC, cat: PC/Games, desc: "PC Games"}
     - {id: Jeux-Consoles, cat: Console/XBox 360, desc: "Console Games"}
@@ -103,6 +104,8 @@ settings:
 
 download:
   selectors:
+    - selector: a[href^="magnet:?"]
+      attribute: href
     - selector: script:contains("magnet:?")
       filters:
         - name: regexp
