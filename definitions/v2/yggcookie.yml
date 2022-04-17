@@ -123,7 +123,7 @@ settings:
     default: "<ol><li>From the same place you fetched the cookie,<li>Find <b>'user-agent:'</b> in the <b>Request Headers</b> section<li><b>Select</b> and <b>Copy</b> the whole user-agent string <i>(everything after 'user-agent: ')</i> and <b>Paste</b> here.</ol>"
   - name: category
     type: select
-    label: Category
+    label: Catégorie
     default: all
     options:
       all: Tous
@@ -181,7 +181,7 @@ settings:
   - name: flaresolverr
     type: info
     label: FlareSolverr
-    default: This site may use Cloudflare DDoS Protection, therefore Prowlarr may require <a href="https://github.com/FlareSolverr/FlareSolverr" target="_blank">FlareSolver</a> added as a proxy in Prowlarr (Settings => Indexers) to access it.
+    default: This site may use Cloudflare DDoS Protection, therefore Jackett requires <a href="https://github.com/Jackett/Jackett#configuring-flaresolverr" target="_blank">FlareSolverr</a> to access it.
 
 login:
   method: cookie
