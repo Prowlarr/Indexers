@@ -255,26 +255,28 @@ echo "--- Evaluating and Reviewing Changes"
 # New Indexers pulled
 ### Depreciated
 ### v1
-### Supported
 ### v2
+### Supported
+### None
 ### Current
 ### v3
 ### Latest
 ### v4
 
 # Changes Indexers pulled to older versions
-depreciated_indexers=$(git diff --cached --name-only | grep ".yml" | grep "$v1_pattern")
-# v2, v3, and v4 are supported
+depreciated_indexers=$(git diff --cached --name-only | grep ".yml" | grep "$v1_pattern\|$v2_pattern")
+# v3, and v4 are supported
 added_indexers=$(git diff --cached --diff-filter=A --name-only | grep ".yml" | grep "$v1_pattern\|$v2_pattern\|$v3_pattern\|$v4_pattern")
 modified_indexers=$(git diff --cached --diff-filter=M --name-only | grep ".yml" | grep "$v2_pattern\|$v3_pattern\|$v4_pattern")
 removed_indexers=$(git diff --cached --diff-filter=D --name-only | grep ".yml" | grep "$v1_pattern\|$v2_pattern\|$v3_pattern\|$v4_pattern")
 
 ### v1 frozen 2021-10-13
+### v2 frozen 2022-04-18 for simplicity
 ### Put everything in v3 2022-02-09
 if [ -n "$added_indexers" ]; then
     echo "--- New Indexers detected"
     for indexer in ${added_indexers}; do
-        indexer_supported=${indexer/v[0-9]/$v2_pattern}
+        ## indexer_supported=${indexer/v[0-9]/$v2_pattern}
         indexer_supported_current=${indexer/v[0-9]/$v3_pattern}
         indexer_supported_latest=${indexer/v[0-9]/$v4_pattern}
         echo "--- Evaluating [$indexer] Cardigann Version"
@@ -313,15 +315,17 @@ fi
 echo "--- --------------------------------------------- completed new indexers ---------------------------------------------"
 ## Copy new changes in vDepreciated to vSupported
 ### v1 depreciated 2021-10-17
+### v2 depreciated 2022-04-18
 if [ -n "$depreciated_indexers" ]; then
-    echo "--- Depreciated ([$v1_pattern]) Indexers with changes detected"
+    echo "--- Depreciated ([$v1_pattern] or [$v2_pattern]) Indexers with changes detected"
     for indexer in ${depreciated_indexers}; do
         indexer_supported=${indexer/v[0-9]/$v2_pattern}
         indexer_supported_current=${indexer/v[0-9]/$v3_pattern}
         indexer_supported_latest=${indexer/v[0-9]/$v4_pattern}
         echo "--- evaluating depreciated [$v1_pattern] [$indexer]"
+        echo "--- evaluating depreciated [$v2_pattern] [$indexer]"
         if [ -f "$indexer" ]; then
-            updated_indexer=$indexer_supported
+            updated_indexer=$indexer_supported_current
             if grep -Eq "$v4_regex1" "$indexer"; then
                 echo "--- [$indexer] is [$v4_pattern]"
                 updated_indexer=$indexer_supported_latest
@@ -329,7 +333,8 @@ if [ -n "$depreciated_indexers" ]; then
                 echo "--- [$indexer] is [$v3_pattern]"
                 updated_indexer=$indexer_supported_current
             elif [ "$updated_indexer" = "$indexer_supported" ]; then
-                echo "--- [$indexer] is not  [$v4_pattern] nor [$v3_pattern]. assuming [$v2_pattern]"
+                echo "--- [$indexer] is not  [$v4_pattern] nor [$v3_pattern]. treating as [$v3_pattern]"
+                updated_indexer=$indexer_supported_current
             fi
             if [ "$indexer" != "$updated_indexer" ]; then
                 echo "--- found changes | copying to [$updated_indexer] and resetting [$indexer]"
@@ -394,13 +399,13 @@ echo "--- --------------------------------------------- completed changed indexe
 ## Foreport V2 => V4
 ## ForePort V3 => V4
 ## Backport V2 => V1 - Discontinued 2021-10-23 per Q on discord
-backport_indexers=$(git diff --cached --name-only | grep ".yml" | grep "$v3_pattern\|$v4_pattern\|$v2_pattern")
+backport_indexers=$(git diff --cached --name-only | grep ".yml" | grep "$v3_pattern\|$v4_pattern")
 if [ -n "$backport_indexers" ]; then
     for indexer in ${backport_indexers}; do
         # ToDo - switch to regex and match group conditionals or make a loop
-        indexer_supported=${indexer/v[0-9]/$v2_pattern}
+        # indexer_supported=${indexer/v[0-9]/$v2_pattern}
         indexer_supported_current=${indexer/v[0-9]/$v3_pattern}
-        # indexer_supported_latest=${indexer/v[0-9]/$v4_pattern}
+        indexer_supported_latest=${indexer/v[0-9]/$v4_pattern}
         echo "--- looking for [$v3_pattern] indexer of [$indexer]"
         if [ -f "$indexer_supported_current" ]; then
             echo "--- Found [$v3_pattern] indexer for [$indexer] - backporting to [$indexer_supported_current]"
@@ -410,17 +415,17 @@ if [ -n "$backport_indexers" ]; then
             git difftool --no-index "$indexer" "$indexer_supported_current"
             git add "$indexer_supported_current"
         fi
-        echo "--- looking for [$v2_pattern] indexer of [$indexer]"
-        if [ -f "$indexer_supported" ]; then
-            echo "--- Found [$v2_pattern] indexer for [$indexer] - backporting to [$indexer_supported]"
+        echo "--- looking for [$v4_pattern] indexer of [$indexer]"
+        if [ -f "$indexer_supported_latest" ]; then
+            echo "--- Found [$v4_pattern] indexer for [$indexer] - backporting to [$indexer_supported_latest]"
             if $debug; then
                 read -ep $"Reached [backporting] ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
             fi
 
-            git difftool --no-index "$indexer" "$indexer_supported"
-            git add "$indexer_supported"
+            git difftool --no-index "$indexer" "$indexer_supported_latest"
+            git add "$indexer_supported_latest"
         else
-            echo "--- [$v2_pattern] nor [$v3_pattern] found for [$indexer]"
+            echo "--- [$v4_pattern] nor [$v3_pattern] found for [$indexer]"
         fi
     done
     unset indexer
@@ -495,7 +500,7 @@ while true; do
         if [ $pulls_exists = true ]; then
         git push "$prowlarr_remote_name" "$jackett_pulls_branch" --force-if-includes
         else
-        git push "$prowlarr_remote_name" "$jackett_pulls_branch" --force-if-includes --set-upstream
+        git push "$prowlarr_remote_name" "$jackett_pulls_branch" --force-if-includes
         fi
         echo "--- Branch Pushed"
         exit 0
