@@ -5,19 +5,16 @@ description: "HD-Only (HD-O) is a FRENCH Private Torrent Tracker for HD MOVIES /
 language: fr-FR
 type: private
 encoding: UTF-8
-followredirect: false
-allowdownloadredirect: false
-protocol: torrent
-testlinktorrent: true
 links:
   - https://hd-only.org/
 
 caps:
   categorymappings:
-    - {id: 1, cat: Movies, desc: "Film", default: true}
+    - {id: 1, cat: Movies, desc: "Film"}
     - {id: 3, cat: TV/Anime, desc: "Dessin animé"}
+    - {id: 4, cat: Movies, desc: "Concert"}
     - {id: 5, cat: TV, desc: "Série"}
-    - {id: 6, cat: TV/Anime, desc: "Série animé"}
+    - {id: 6, cat: TV/Anime, desc: "Série anim"}
     - {id: 7, cat: Movies/Other, desc: "Film d'animation"}
     - {id: 9, cat: Audio/Video, desc: "Concert"}
     - {id: 11, cat: TV/Documentary, desc: "Documentaire"}
@@ -39,74 +36,17 @@ settings:
   - name: password
     type: password
     label: Password
-  - name: info_search
-    type: info
-    label: Search Tweak
-    default: You can tweak the search query by using the following parameters.
-  - name: scene
-    type: checkbox
-    label: Scene Release only
-    default: false
-  - name: bitrate
-    type: select
-    label: Bitrate
-    default: all
-    options:
-      all: all
-      4320p: 4320p
-      2160p: 2160p
-      1440p: 1440p
-      1080p: 1080p
-      1080i: 1080i
-      720p: 720p
-  - name: format
-    type: select
-    label: Format
-    default: all
-    options:
-      all: all
-      x264: x264
-      VC-1: VC-1
-      AVC: AVC
-      MPEG-2: MPEG-2
-      x265: x265
-      HEVC: HEVC
-      VP9: VP9
-      Autre: others
-  - name: sort
-    type: select
-    label: Sort by
-    default: time
-    options:
-      time: created
-      year: year
-      size: size
-      snatched: snatched
-      seeders: seeders
-      leechers: leechers
-      random: random
-  - name: type
-    type: select
-    label: Order type
-    default: desc
-    options:
-      desc: descendant
-      asc: ascendant
   - name: freeleech
     type: checkbox
-    label: Freeleech only
+    label: Search freeleech only
     default: false
-  - name: info_replacement
-    type: info
-    label: Replacements
-    default: You can replace some values by using the following parameters.
   - name: multilang
     type: checkbox
-    label: Replace MULTI in release name
+    label: Replace MULTI by another language in release name
     default: false
   - name: multilanguage
     type: select
-    label: ... by this language
+    label: Replace MULTI by this language
     default: FRENCH
     options:
       FRENCH: FRENCH
@@ -119,6 +59,25 @@ settings:
     type: checkbox
     label: Replace VOSTFR with ENGLISH
     default: false
+  - name: sort
+    type: select
+    label: Sort requested from site
+    default: time
+    options:
+      time: created
+      seeders: seeders
+      size: size
+  - name: type
+    type: select
+    label: Order requested from site
+    default: desc
+    options:
+      desc: desc
+      asc: asc
+  - name: info_radarr
+    type: info
+    label: About Radarr
+    default: The HD-Only web site cannot find movies if you use the release year in a title search. When you define your Radarr v3 Indexer remember to tick the <i>Remove year from search string</i> checkbox.
 
 login:
   path: login.php
@@ -134,18 +93,19 @@ login:
     selector: a[href^="logout.php?auth="]
 
 search:
+  # https://hd-only.org/torrents.php?groupname=blood&freetorrent=1&order_by=time&order_way=desc&action=advanced&searchsubmit=1
   path: torrents.php
   inputs:
-    searchstr: "{{ .Keywords }}"
+    # does not support categories, uses releasetype for single filter so we canot do multi releasetype filtering either.
+    # $raw: "{{ range .Categories }}filter_cat[{{.}}]=1&{{end}}"
+    groupname: "{{ .Keywords }}"
     order_by: "{{ .Config.sort }}"
     order_way: "{{ .Config.type }}"
-    group_results: 0
-    encoding: "{{ if ne .Config.bitrate \"all\" }}{{ .Config.bitrate }}{{ else }}{{ end }}"
-    format: "{{ if ne .Config.format \"all\" }}{{ .Config.format }}{{ else }}{{ end }}"
-    freetorrent: "{{ if .Config.freeleech }}1{{ else }}{{ end }}"
-    scene: "{{ if .Config.scene }}1{{ else }}0{{ end }}"
     action: advanced
     searchsubmit: 1
+    # 1 freeleech, 2 neutral, 3 both, 0 normal
+    freetorrent: "{{ if .Config.freeleech }}1{{ else }}{{ end }}"
+    # site does not support imdbid search or display imdb links in results
 
   rows:
     selector: table#torrent_table > tbody > tr.torrent
@@ -154,73 +114,145 @@ search:
     download:
       selector: a[href^="torrents.php?action=download&"]
       attribute: href
-    # title > step 1 - grab orginal title and normalize
-    title_result:
-      selector: div.group_info > a
+    title_phase1:
+      selector: div.group_info
+      remove: span:nth-child(1), div.tags
       filters:
+        - name: replace
+          args: ["\n", ""]
+        - name: re_replace
+          args: ["^(.+)                                                                            (.+)", "$2-$1"]
+        - name: replace
+          args: ["                         ", " "]
+        - name: replace
+          args: ["Blu-Ray Original", "Complete.BluRay"]
+        - name: replace
+          args: ["Blu-Ray Remux", "Remux"]
+        - name: replace
+          args: ["Blu-Ray Rip", "BluRay.Rip"]
+        - name: replace
+          args: ["mHD", "mHD.BluRay.Rip"]
+        - name: replace
+          args: ["/ DC", "/ Directors.Cut"]
+        - name: replace
+          args: ["/ VL", "/ Extended"]
+        - name: replace
+          args: ["/ RM", "/ Remastered"]
+        - name: replace
+          args: ["/ UC", "/ Uncut"]
+        - name: replace
+          args: ["/ ES", "/ Special.Edition"]
+        - name: replace
+          args: [" / Cust_sub", ""]
+        - name: replace
+          args: [" / Cust", ""]
+        - name: replace
+          args: ["/ UN", "/ Unrated"]
+        - name: replace
+          args: [" / Crit", ""]
+        - name: replace
+          args: [" / WAC", ""]
+        - name: replace
+          args: [" / MoC", ""]
+        - name: replace
+          args: [" / BFI", ""]
+        - name: replace
+          args: [" / MUET", ""]
+        - name: replace
+          args: ["/ Exc NF", "/ NF"]
+        - name: replace
+          args: ["/ Exc AMZ", "/ AMZ"]
+        - name: replace
+          args: ["/ Exc YOU", "/ YT"]
+        - name: replace
+          args: [" / Freeleech!", ""]
+        - name: replace
+          args: [" / Complété!", ""]
+        - name: replace
+          args: [" / ", "."]
         - name: trim
+        - name: replace
+          args: [".VFF.VFQ.stFR.MULTI", ".MULTI.VFF.VFQ"]
+        - name: replace
+          args: [".VFF.VFQ.VO.stFR.MULTI", ".MULTI.VFF.VFQ"]
+        - name: replace
+          args: [".VFF.VFQ.VO.stFR", ".MULTI.VFF.VFQ"]
+        - name: replace
+          args: [".VFQ.VO.stFR", ".MULTI.VFQ"]
+        - name: replace
+          args: [".VO.VFI.stFR", ".MULTI"]
+        - name: replace
+          args: [".VO.VF?.stFR", ".MULTI"]
+        - name: replace
+          args: [".VFF.VO.stFR", ".MULTI.VFF"]
+        - name: replace
+          args: [".VOF.stFR", ".FRENCH"]
+        - name: replace
+          args: [".VFQ.stFR", ".FRENCH"]
+        - name: replace
+          args: [".VFF.stFR.MULTI", ".MULTI.VFF"]
+        - name: replace
+          args: [".VFF.stFR", ".FRENCH"]
+        - name: replace
+          args: [".VFI.MULTI", ".MULTI"]
+        - name: replace
+          args: [".VO.stFR", ".VOSTFR"]
+        - name: replace
+          args: [".VFQ.VO", ".MULTI.VFQ"]
+        - name: replace
+          args: [".VFF.VO", ".MULTI.VFF"]
+        - name: replace
+          args: [".VO.VF?.stFR", ".MULTI"]
+        - name: replace
+          args: [".VFI.stFR", ".FRENCH"]
+        - name: replace
+          args: [".VOF.MULTI", ".MULTI.FRENCH"]
+        - name: replace
+          args: [".VOF", ".FRENCH"]
+        - name: replace
+          args: [".VFQ.MULTI", ".MULTI.VFQ"]
+        - name: replace
+          args: ["[Film]", ""]
+        - name: replace
+          args: ["[Dessin animé]", ""]
+        - name: replace
+          args: ["[Film d'animation]", ""]
+        - name: replace
+          args: ["[Concert]", ""]
+        - name: replace
+          args: ["[Documentaire]", ""]
+        - name: replace
+          args: ["[Court-métrage]", ""]
+        - name: replace
+          args: ["[Clip]", ""]
+        - name: replace
+          args: ["[Démonstration]", ""]
+        - name: replace
+          args: ["[Bonus de BD]", ""]
+        - name: replace
+          args: ["[Autre]", ""]
+        - name: replace
+          args: ["[Série Animée]", ""]
+        - name: replace
+          args: ["[Série]", ""]
         - name: re_replace
-          args: ["\\s:\\s", " "]
-        - name: re_replace
-          args: ["\\s", "."]
-        - name: append
-          args: "."
-    # title > step 2 - grab movie year
-    title_year:
-      selector: div.group_info.clear
+          args: ["\\[(\\d{4})\\]", "$1"]
+    title_multilang:
+      text: "{{ .Result.title_phase1 }}"
       filters:
-        - name: regexp
-          args: "\\s\\[(\\d{4})\\]\\s"
-        - name: append
-          args: "."
-    # title > step 3 - grab release group
-    title_group:
-      selector: div.group_info.clear > div.torrent_info > strong:last-child
-      attribute: title
-    # title > step 4 - grab release infos and normalize
-    title_infos:
-      selector: div.group_info.clear > div.torrent_info
-      remove: strong
+        - name: re_replace
+          args: ["(?i)([\\s|\\.|-]*multi[\\s|\\.|-]*)", ".{{ .Config.multilanguage }}."]
+    title_phase2:
+      text: "{{ if .Config.multilang }}{{ .Result.title_multilang }}{{ else }}{{ .Result.title_phase1 }}{{ end }}"
+    title_vostfr:
+      text: "{{ .Result.title_phase2 }}"
       filters:
-        - name: toupper
         - name: re_replace
-          args: ["\\sBLU-RAY\\s(ORIGINAL|4K|HD)\\s", "COMPLETE.BLURAY"]
+          args: ["(?i)([\\s|\\.|-]*vostfr[\\s|\\.|-]*)", ".ENGLISH."]
         - name: re_replace
-          args: ["\\sBLU-RAY\\sREMUX\\s(4K|HD)\\s", "BLURAY.REMUX"]
-        - name: re_replace
-          args: ["\\sBLU-RAY\\sRIP\\s(4K|HD)\\s", "BLURAY"]
-        - name: re_replace
-          args: ["\\sWEB-DL/RIP\\s(4K|HD)\\s", "WEBDL"]
-        - name: re_replace
-          args: ["\\s(CUST_SUB|CUST|CRIT|WAC|MOC|BFI|MUET|EXC\\sNF|EXC\\sAMZ|EXC\\sYOU)\\s", ""]
-        - name: re_replace
-          args: ["\\s(VOF|STFR)\\s", ""]
-        - name: re_replace
-          args: ["\\sVO\\s", "MULTI"]
-        - name: re_replace
-          args: ["\\s(UN)\\s", "UNRATED"]
-        - name: re_replace
-          args: ["\\s(ES)\\s", "SPECIAL.EDITION"]
-        - name: re_replace
-          args: ["\\s(UC)\\s", "UNCUT"]
-        - name: re_replace
-          args: ["\\s(RM)\\s", "REMASTERED"]
-        - name: re_replace
-          args: ["\\s(VL)\\s", "EXTENDED"]
-        - name: re_replace
-          args: ["\\s(DC)\\s", "DIRECTORS.CUT"]
-        - name: re_replace
-          args: ["\\s+", ""]
-        - name: re_replace
-          args: ["\/+", "."]
-        - name: trim
-          args: "."
-        - name: re_replace
-          args: ["VFF.VFQ", "VFF"]
-    # title > step 5 - finale concatenation
+          args: ["(?i)([\\s|\\.|-]*subfrench[\\s|\\.|-]*)", ".ENGLISH."]
     title:
-      text: "{{ .Result.title_result }}{{ .Result.title_year }}{{ .Result.title_infos }}{{ if .Result.title_group }}-{{ .Result.title_group }}{{ else }}-HDO{{ end }}"
-    ### NEXT
+      text: "{{ if .Config.vostfr }}{{ .Result.title_vostfr }}{{ else }}{{ .Result.title_phase2 }}{{ end }}"
     description:
       selector: div.group_info
     poster:
