@@ -1,0 +1,198 @@
+---
+id: fouducinema
+name: Fou-Du-Cinema
+description: "Fou-Du-Cinema (FdC) is a FRENCH Private Torrent Tracker for MOVIES / TV / GENERAL"
+language: fr-FR
+type: private
+encoding: UTF-8
+links:
+  - https://fou-du-cinema.net/
+
+caps:
+  categorymappings:
+    - {id: 28, cat: PC, desc: "App: Linux"}
+    - {id: 18, cat: PC/0day, desc: "Apps: PC"}
+    - {id: 19, cat: PC/Mac, desc: "Apps: Mac"}
+    - {id: 54, cat: Books/Comics, desc: "BD: bande dessinée"}
+    - {id: 9, cat: TV/Documentary, desc: "Documentaries: All"}
+    - {id: 22, cat: Movies/DVD, desc: "FILM: DVD"}
+    - {id: 23, cat: Movies/UHD, desc: "FILM: 4K et plus"}
+    - {id: 24, cat: XXX, desc: "FILM: XXX"}
+    - {id: 25, cat: Movies/HD, desc: "FILM: HD 720p"}
+    - {id: 26, cat: Movies/HD, desc: "FILM: HD 1080p"}
+    - {id: 27, cat: Movies/HD, desc: "FILM: HDRip"}
+    - {id: 47, cat: Movies/HD, desc: "FILM: MHD"}
+    - {id: 43, cat: Movies/BluRay, desc: "FILM: BD-Rip"}
+    - {id: 34, cat: Movies/WEB-DL, desc: "FILM: Webrip"}
+    - {id: 14, cat: Movies/WEB-DL, desc: "FILM: WebRip-DL"}
+    - {id: 20, cat: Movies/WEB-DL, desc: "FILM: WebRip 720p"}
+    - {id: 21, cat: Movies/WEB-DL, desc: "FILM: WebRip 1080p"}
+    - {id: 39, cat: Movies/WEB-DL, desc: "FILM: Web-DL 720P"}
+    - {id: 17, cat: Movies/WEB-DL, desc: "FILM: Web-DL 1080P"}
+    - {id: 48, cat: Movies, desc: "FILM: Vost-FR"}
+    - {id: 49, cat: Movies, desc: "FILM: VO"}
+    - {id: 50, cat: Movies/HD, desc: "FILM: HDTV"}
+    - {id: 51, cat: TV/Anime, desc: "FILM: Animé"}
+    - {id: 52, cat: Movies/DVD, desc: "FILM: DVDRip"}
+    - {id: 40, cat: Movies/HD, desc: "Film: HD"}
+    - {id: 10, cat: PC/Games, desc: "Games: PC"}
+    - {id: 53, cat: Books/Mags, desc: "Journaux : presse"}
+    - {id: 33, cat: Other, desc: "Other: Emulation"}
+    - {id: 36, cat: Books/EBook, desc: "Other: E-Books"}
+    - {id: 38, cat: PC/Mobile-Other, desc: "Other: Mobile Phone"}
+    - {id: 57, cat: TV/WEB-DL, desc: "Serie: WEB"}
+    - {id: 7, cat: TV/SD, desc: "SERIES: Épisodes SD"}
+    - {id: 55, cat: TV/SD, desc: "Serie: DVD"}
+    - {id: 1, cat: TV/HD, desc: "SERIES: Episodes HD"}
+    - {id: 2, cat: TV/HD, desc: "SERIES: Pack HD"}
+    - {id: 3, cat: TV/Documentary, desc: "SERIES: Documentaires"}
+    - {id: 42, cat: TV, desc: "SERIES:  Concerts / Spectacles"}
+    - {id: 4, cat: TV/SD, desc: "SERIES: Pack SD"}
+    - {id: 5, cat: TV/Anime, desc: "SERIES: Animée"}
+    - {id: 41, cat: TV, desc: "SERIES: Vost-FR"}
+    - {id: 6, cat: TV/HD, desc: "SERIES: HDTV"}
+    - {id: 56, cat: TV/HD, desc: "SERIE: HDTV1080p"}
+
+  modes:
+    search: [q]
+    tv-search: [q, season, ep]
+    movie-search: [q]
+    book-search: [q]
+
+settings:
+  - name: username
+    type: text
+    label: Username
+  - name: password
+    type: password
+    label: Password
+  - name: freeleech
+    type: checkbox
+    label: Search freeleech only
+    default: false
+  - name: multilang
+    type: checkbox
+    label: Replace MULTI by another language in release name
+    default: false
+  - name: multilanguage
+    type: select
+    label: Replace MULTI by this language
+    default: FRENCH
+    options:
+      FRENCH: FRENCH
+      MULTI.FRENCH: MULTI.FRENCH
+      ENGLISH: ENGLISH
+      MULTI.ENGLISH: MULTI.ENGLISH
+      VOSTFR: VOSTFR
+      MULTI.VOSTFR: MULTI.VOSTFR
+  - name: vostfr
+    type: checkbox
+    label: Replace VOSTFR with ENGLISH
+    default: false
+  - name: sort
+    type: select
+    label: Sort requested from site
+    default: id
+    options:
+      id: created
+      seeders: seeders
+      size: size
+      name: title
+  - name: type
+    type: select
+    label: Order requested from site
+    default: desc
+    options:
+      desc: desc
+      asc: asc
+
+login:
+  path: account-login.php
+  method: post
+  inputs:
+    username: "{{ .Config.username }}"
+    password: "{{ .Config.password }}"
+    remember: yes
+  error:
+    - selector: div.myFrame-caption:contains("Access denied")
+      message:
+        selector: div.myFrame-content
+  test:
+    path: index.php
+    selector: a[href="account-logout.php"]
+
+download:
+  selectors:
+    - selector: a[href^="download.php?id="]
+      attribute: href
+
+search:
+  paths:
+    - path: torrents-search.php
+  inputs:
+    $raw: "{{ range .Categories }}c{{.}}=1&{{end}}"
+    search: "{{ .Keywords }}"
+    # 0 active, 1 incldead, 2 onlydead
+    incldead: 1
+    # 0 inclfree, 1 notfree, 2 onlyfree
+    freeleech: "{{ if .Config.freeleech }}2{{ else }}0{{ end }}"
+    # 0 all, 1 English, 2 etc...
+    lang: 0
+    sort: "{{ .Config.sort }}"
+    order: "{{ .Config.type }}"
+
+  rows:
+    selector: tr.t-row
+
+  fields:
+    category:
+      selector: a[href^="torrents.php?cat="]
+      attribute: href
+      filters:
+        - name: querystring
+          args: cat
+    title_phase1:
+      selector: a[href^="torrents-details.php?id="]
+      attribute: title
+    title_multilang:
+      text: "{{ .Result.title_phase1 }}"
+      filters:
+        - name: re_replace
+          args: ["(?i)([\\s|\\.|-]multi[\\s|\\.|-])", ".{{ .Config.multilanguage }}."]
+    title_phase2:
+      text: "{{ if .Config.multilang }}{{ .Result.title_multilang }}{{ else }}{{ .Result.title_phase1 }}{{ end }}"
+    title_vostfr:
+      text: "{{ .Result.title_phase2 }}"
+      filters:
+        - name: re_replace
+          args: ["(?i)([\\s|\\.|-]vostfr[\\s|\\.|-])", ".ENGLISH."]
+        - name: re_replace
+          args: ["(?i)([\\s|\\.|-]subfrench[\\s|\\.|-])", ".ENGLISH."]
+    title:
+      text: "{{ if .Config.vostfr }}{{ .Result.title_vostfr }}{{ else }}{{ .Result.title_phase2 }}{{ end }}"
+    details:
+      selector: a[href^="torrents-details.php?id="]
+      attribute: href
+    download:
+      selector: a[href^="torrents-details.php?id="]
+      attribute: href
+    size:
+      selector: td:nth-child(5)
+    date:
+      text: now
+    seeders:
+      selector: td:nth-child(6)
+    leechers:
+      selector: td:nth-child(7)
+    grabs:
+      selector: td:nth-child(8)
+    downloadvolumefactor:
+      case:
+        img[src="images/free.gif"]: 0
+        img[src^="data:image/gif;base64,R0lGODlhEA"]: 0 # encoded gold coin image
+        "*": 1
+    uploadvolumefactor:
+      text: 1
+    minimumratio:
+      text: 1.0
+# TT3.0
