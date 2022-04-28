@@ -1,67 +1,59 @@
 ---
-id: bitturk
-name: BiTTuRK
-description: "BiTTuRK is a Turkish Private Torrent Tracker for HD MOVIES / TV / GENERAL. This Indexer is for English only."
-language: en-US
+id: torrent-turk
+name: TOrrent-tuRK
+description: "TOrrent-tuRK (TORK) is a Turkish Private Torrent Tracker for HD MOVIES / TV / GENERAL"
+language: tr-TR
 type: private
 encoding: UTF-8
 links:
-  - http://bitturk.net/ # site does not support https ERR_CONNECTION_REFUSED
+  - https://torrent-turk.de/
 legacylinks:
-  - http://www.bitturk.net/
+  - https://torrent-turk.org/
+  - https://torrent-turk.co/
 
 caps:
   categorymappings:
-    - {id: 56, cat: Movies, desc: "BTRG"}
-    - {id: 57, cat: Movies, desc: "Yerli Dizi"}
-    - {id: 62, cat: Movies, desc: "Yab@ncı Dizi"}
-    - {id: 63, cat: Movies, desc: "Türkçe Film"}
-    - {id: 64, cat: Movies, desc: "Türk Filmi"}
-    - {id: 66, cat: Movies/HD, desc: "x265"}
-    - {id: 67, cat: XXX, desc: "XxX"}
-    - {id: 68, cat: Movies, desc: "Dual (TR-~)"}
-    - {id: 71, cat: Movies, desc: "NFLIX"}
-    - {id: 78, cat: TV, desc: "EXXEN"}
-    - {id: 79, cat: TV, desc: "BLUTV"}
-    - {id: 58, cat: Movies, desc: "Film"}
-    - {id: 72, cat: Movies, desc: "Belgesel"}
-    - {id: 60, cat: Movies/3D, desc: "3D"}
-    - {id: 76, cat: Movies/UHD, desc: "4K UHD"}
-    - {id: 80, cat: TV/Sport, desc: "Formula-1"}
-    - {id: 45, cat: Other, desc: "Eğitim / Prog"}
-    - {id: 1, cat: Movies, desc: "Filmler"}
-    - {id: 14, cat: Movies/3D, desc: "3D Film"}
-    - {id: 77, cat: Movies/UHD, desc: "4K UHD"}
-    - {id: 16, cat: Movies, desc: "Animasyon"}
-    - {id: 17, cat: TV/Anime, desc: "Anime"}
-    - {id: 31, cat: Movies, desc: "Belgesel"}
-    - {id: 32, cat: Movies/BluRay, desc: "Bluray"}
-    - {id: 33, cat: Movies/HD, desc: "BRRiP"}
-    - {id: 34, cat: Movies, desc: "Çizgi Film"}
-    - {id: 35, cat: Movies, desc: "D-Z0N3"}
-    - {id: 36, cat: Movies/DVD, desc: "DVD"}
-    - {id: 37, cat: Movies, desc: "MP4"}
-    - {id: 38, cat: Movies, desc: "Türk Filmi"}
-    - {id: 39, cat: Movies, desc: "Türkçe BoX"}
-    - {id: 40, cat: Movies, desc: "Türkçe Film"}
-    - {id: 41, cat: Movies, desc: "ViP"}
-    - {id: 42, cat: Movies/SD, desc: "XviD"}
-    - {id: 43, cat: Movies/SD, desc: "XviD BoX"}
-    - {id: 55, cat: Movies/WEB-DL, desc: "WEB-DL"}
-    - {id: 7, cat: Audio, desc: "Müzik"}
-    - {id: 20, cat: Audio, desc: "Türkçe MüziK"}
-    - {id: 46, cat: Audio, desc: "Yab@ncı MüziK"}
-    - {id: 21, cat: Audio/Video, desc: "Video Klipler"}
-    - {id: 2, cat: Console, desc: "Oyun"}
-    - {id: 74, cat: PC/Games, desc: "PC"}
-    - {id: 73, cat: Console, desc: "SONY-PS"}
-    - {id: 6, cat: PC/0day, desc: "Program"}
-    - {id: 47, cat: Other, desc: "Resimler"}
-    - {id: 48, cat: TV, desc: "Televizyon"}
-    - {id: 49, cat: TV/HD, desc: "Tv HD"}
-    - {id: 50, cat: TV, desc: "Yab@ncı Dizi"}
-    - {id: 51, cat: TV, desc: "Yerli Dizi"}
-    - {id: 44, cat: Books, desc: "E-BooK"}
+    - {id: 149, cat: Movies, desc: "Movies/Turkish"}
+    - {id: 151, cat: Movies/HD, desc: "Movies/Turkish/1080p"}
+    - {id: 152, cat: Movies/HD, desc: "Movies/Turkish/720p"}
+    - {id: 153, cat: Movies/DVD, desc: "Movies/Turkish/DVD5-DVD9"}
+    - {id: 154, cat: Movies/WEB-DL, desc: "Movies/Turkish/BRRip-HDRip-DVDRip-WebDL"}
+    - {id: 155, cat: Movies/Other, desc: "Movies/Turkish/Boxset"}
+    - {id: 156, cat: Movies, desc: "Movies/Foreign"}
+    - {id: 157, cat: Movies/UHD, desc: "Movies/Foreign/4K / 3D"}
+    - {id: 159, cat: Movies/HD, desc: "Movies/Foreign/1080p"}
+    - {id: 160, cat: Movies/HD, desc: "Movies/Foreign/720p"}
+    - {id: 161, cat: Movies/DVD, desc: "Movies/Foreign/DVD5-DVD9"}
+    - {id: 162, cat: Movies/WEB-DL, desc: "Movies/Foreign/BRRip-HDRip-DVDRip-WebDL"}
+    - {id: 163, cat: Movies/Other, desc: "Movies/Foreign/Boxset"}
+    - {id: 164, cat: TV, desc: "TV"}
+    - {id: 165, cat: TV, desc: "TV/Turkish"}
+    - {id: 166, cat: TV, desc: "TV/Foreign"}
+    - {id: 167, cat: TV/Other, desc: "TV Programs"}
+    - {id: 185, cat: TV/Documentary, desc: "TV/Documentary"}
+    - {id: 168, cat: TV/Other, desc: "TV/Other"}
+    - {id: 169, cat: TV/Other, desc: "TV/Boxset"}
+    - {id: 191, cat: TV, desc: "TV/BluTv"}
+    - {id: 192, cat: TV, desc: "TV/BluTv Series"}
+    - {id: 193, cat: Movies, desc: "Movies/BluTv Film"}
+    - {id: 188, cat: TV, desc: "TV/Netflix"}
+    - {id: 189, cat: TV, desc: "TV/Netflix Series"}
+    - {id: 190, cat: Movies, desc: "Movies/Netflix Film"}
+    - {id: 195, cat: TV, desc: "TV/Exxen"}
+    - {id: 171, cat: Audio, desc: "Music"}
+    - {id: 172, cat: Audio, desc: "Music/Turkish"}
+    - {id: 173, cat: Audio, desc: "Music/Foreign"}
+    - {id: 184, cat: Audio, desc: "Music/Discography"}
+    - {id: 174, cat: Audio/Video, desc: "Music/Video"}
+    - {id: 175, cat: PC, desc: "Apps / Game / Graphics"}
+    - {id: 176, cat: PC, desc: "Apps"}
+    - {id: 177, cat: Other, desc: "Pictures"}
+    - {id: 183, cat: Books/EBook, desc: "EBook"}
+    - {id: 178, cat: Books/Technical, desc: "Training Sets"}
+    - {id: 179, cat: PC, desc: "OS"}
+    - {id: 180, cat: PC/Games, desc: "PC/Games"}
+    - {id: 181, cat: Console, desc: "Playstation"}
+    - {id: 198, cat: Movies, desc: "Movies/Amazon Prime"}
 
   modes:
     search: [q]
@@ -100,6 +92,10 @@ settings:
     options:
       desc: desc
       asc: asc
+  - name: info_results
+    type: info
+    label: Search results
+    default: "If you are getting the error: <b>An error has occurred!You can't view this page unless you read all your unread messages</b>, then access the site with your browser and <b>mark as read</b> all PMs."
 
 login:
   path: ?p=home&pid=1
@@ -120,8 +116,8 @@ login:
   error:
     - selector: ":contains(\"-ERROR-\")"
   test:
-    path: ?p=home&pid=1
-    selector: a[href*="/?p=logout&"]
+    path: ?p=torrents&type=bookmarks&pid=508
+    selector: a#logout
 
 search:
   paths:
@@ -136,25 +132,24 @@ search:
     keywords: "{{ .Keywords }}"
     # name, description, both, uploader
     search_type: name
-    searchin: title
     "sortOptions[sortBy]": "{{ .Config.sort }}"
     "sortOptions[sortOrder]": "{{ .Config.type }}"
-# Drop error trap to stop Sonarr disabling indexer, see https://github.com/Jackett/Jackett/issues/1415
-#  error:
-#    - selector: div.error:not(:contains("Gösterilecek sonuç bulunamadı."))
+  error:
+    - selector: div.error:not(:contains("Hiçbir sonuç bulunamadı."))
+    # does not support imdbid search and does not return imdb link in results.
 
   rows:
-    selector: "table#torrents_table_classic tr:has(td.torrent_name){{ if .Config.freeleech }}:has(img[src$=\"/torrent_free.png\"]){{ else }}{{ end }}"
+    selector: "table#torrents_table_classic > tbody > tr:has(td.torrent_name){{ if .Config.freeleech }}:has(img[title=\"FREE!\"]){{ else }}{{ end }}"
 
   fields:
-    title:
-      selector: a[href*="?p=torrents&pid=10&action=details"]
     category:
       selector: div.category_image > a
       attribute: href
       filters:
         - name: querystring
           args: cid
+    title:
+      selector: a[href*="?p=torrents&pid=10&action=details"]
     details:
       selector: a[href*="?p=torrents&pid=10&action=details"]
       attribute: href
@@ -202,16 +197,13 @@ search:
       attribute: href
     downloadvolumefactor:
       case:
-        "img[src$=\"/silver.gif\"]": 0.5
-        "img[src$=\"/torrent_free.png\"]": 0
+        "img[title=\"FREE!\"]": 0
+        "img[title=\"Download Multiplier: 0.5\"]": 0.5
         "*": 1
     uploadvolumefactor:
       case:
-        "img[src$=\"/torrent_multiple_upload.png\"]": 2
+        "img[title=\"Upload Multiplier: 2\"]": 2
         "*": 1
     minimumratio:
-      text: 1.0
-    minimumseedtime:
-      # 3 day (as seconds = 3 x 24 x 60 x 60)
-      text: 259200
+      text: 0.5
 # TSUE 2.2
