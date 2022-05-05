@@ -225,6 +225,9 @@ search:
      # Replace - with space due to internal YGG Issues
     - name: replace
       args: ["-", " "]
+     # Replace / with space due to internal YGG Issues
+    - name: replace
+      args: ["/", " "]
     - name: replace
       args: ["  ", " "]
     - name: trim
