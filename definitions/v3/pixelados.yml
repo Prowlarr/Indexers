@@ -1,24 +1,27 @@
 ---
-id: blutopia-api
-name: Blutopia (API)
-description: "Blutopia (BLU) is a Private Torrent Tracker for HD MOVIES / TV"
+id: pixelados
+name: Pixelados
+description: "Pixelados is a Spanish Private Torrent Tracker for HD MOVIES / TV"
 language: en-US
 type: private
 encoding: UTF-8
 links:
-  - https://blutopia.xyz/
+  - https://pixelados.tv/
 
 caps:
   categorymappings:
-    - {id: 1, cat: Movies, desc: "Movie"}
-    - {id: 2, cat: TV, desc: "TV Show"}
-    - {id: 3, cat: Movies/Other, desc: "FANRES"}
-    - {id: 5, cat: Movies/Other, desc: "Trailer"}
+    - {id: 1, cat: Movies, desc: "Películas"}
+    - {id: 2, cat: TV, desc: "Series"}
+    - {id: 3, cat: Audio, desc: "Música"}
+    - {id: 4, cat: TV/Documentary, desc: "Documentales"}
+    - {id: 5, cat: TV/Sport, desc: "Deportes"}
+    - {id: 6, cat: TV/Anime, desc: "Animación"}
 
   modes:
     search: [q]
     tv-search: [q, season, ep, imdbid, tvdbid]
     movie-search: [q, imdbid, tmdbid]
+    music-search: [q]
 
 settings:
   - name: apikey
@@ -27,7 +30,7 @@ settings:
   - name: info_key
     type: info
     label: About your API key
-    default: "Find or Generate a new API Token by accessing your <a href=\"https://blutopia.xyz/\" target =_blank>Blutopia</a> account <i>My Security</i> page and clicking on the <b>API Token</b> tab."
+    default: "Find or Generate a new API Token by accessing your <a href=\"https://pixelados.tv/\" target =_blank>Pixelados</a> account <i>My Security</i> page and clicking on the <b>API Token</b> tab."
   - name: freeleech
     type: checkbox
     label: Search freeleech only
@@ -142,4 +145,4 @@ search:
     minimumseedtime:
       # 7 day (as seconds = 7 x 24 x 60 x 60)
       text: 604800
-# json UNIT3D 6.1.1 beta
+# json UNIT3D 6.1.0 custom
