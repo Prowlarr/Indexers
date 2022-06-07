@@ -1,56 +1,40 @@
 ---
-id: gktorrent
-name: GkTorrent
-description: "GkTorrent is a French Public site for TV / MOVIES / GENERAL"
+id: zetorrents
+name: zetorrents
+description: "zetorrents is a FRENCH Public site for MOVIES / TV / GENERAL"
 language: fr-FR
 type: public
 encoding: UTF-8
-followredirect: true
-# to fetch current domain use https://www.protege-liens.com/gktorrent
+# to fetch current domain use https://www.protege-liens.com/zetorrents
 links:
-  - https://www.gktorrents.cc/
-  - https://gktorrent.nocensor.sbs/
+  - https://www.zetorrents.nl/
 legacylinks:
-  - http://www.gktorrent.co/
-  - https://www.gktorrent.co/
-  - https://www.gktorrent.ws/
-  - https://www.gktorrent.org/
-  - https://www.gktorrent.me/
-  - https://www.rantop.org/
-  - https://www.gktorrent.cx/
-  - https://www.gktorrent.tv/
-  - https://www.gktorrent.net/
-  - https://www.gktorrent.biz/
-  - https://www.gktorrent.io/
-  - https://www.gktorrent.pw/
-  - https://wvw.gktorrent.pw/
-  - https://vww.gktorrent.pw/
-  - https://www.gktorrent.cc/
-  - https://gktorrent.nocensor.space/
-  - https://www.gktorrents.com/
-  - https://gktorrent.nocensor.work/
-  - https://www.gktorrents.net/
-  - https://gktorrent.nocensor.biz/
-  - https://www.gktorrents.org/
+  - https://www.zetorrents.co/
+  - https://www.zetorrents.io/
+  - https://wvw.zetorrents.io/
+  - https://vww.zetorrents.io/
+  - https://wwv.zetorrents.io/
+  - https://ww1.zetorrents.io/
+  - https://www.zetorrents.org/
+  - https://wvw.zetorrents.org/
+  - https://www.zetorrents.cc/
+  - https://www.zetorrents.tv/
+  - https://www.zetorrents.bz/
 
 caps:
-  categorymappings:
-    - {id: Films, cat: Movies, desc: "Movies"}
-    - {id: Séries, cat: TV, desc: "TV"}
-    - {id: Musiques, cat: Audio, desc: "Music"}
-    - {id: Ebooks, cat: Books, desc: "Books"}
-    - {id: Logiciels, cat: PC, desc: "Software"}
-    - {id: Jeux-PC, cat: PC/Games, desc: "PC Games"}
-    - {id: Jeux-Consoles, cat: Console/XBox 360, desc: "Console Games"}
+  categories:
+    Other: Other
 
   modes:
     search: [q]
     tv-search: [q, season, ep]
     movie-search: [q]
-    music-search: [q]
-    book-search: [q]
 
 settings:
+  - name: info_8000
+    type: info
+    label: About zetorrents Categories
+    default: zetorrents does not return categories in its search results.</br>To add to your Apps' Torznab indexer, replace all categories with 8000(Other).
   - name: multilang
     type: checkbox
     label: Replace MULTI by another language in release name
@@ -73,12 +57,11 @@ settings:
 
 download:
   selectors:
-    - selector: a[href^="magnet:?"]
-      attribute: href
     - selector: script:contains("magnet:?")
       filters:
         - name: regexp
           args: "\\s'(magnet:\\?.+?)';"
+
 search:
   paths:
     - path: "{{ if .Keywords }}recherche/{{ .Keywords }}{{ else }}{{ end }}"
@@ -90,21 +73,25 @@ search:
       args: ["(?i)(S)(\\d{1,3})$", "saison $2"]
 
   rows:
-    selector: table.table-hover > tbody > tr:has(a[href*=torrent])
+    selector: table.table > tbody > tr:has(a[href^="/torrent/"])
 
   fields:
     category:
-      selector: td:nth-child(1) > i
-      attribute: class
+      text: Other
     site_date:
-      selector: td:nth-child(1) a
+      selector: a[href^="/torrent/"]
       filters:
         # year is at the end of the title, so we get it and name it site_date
         - name: regexp
           args: "(19|20\\d{2})$"
     title_phase1:
-      selector: td:nth-child(1) a
+      selector: a[href^="/torrent/"]
+      attribute: title
       filters:
+        - name: replace
+          args: [" en Torrent", ""]
+        - name: replace
+          args: ["WEBRIP", "WEBDL"]
         # now we put the date at the right place according scene naming rules using .Result.site_date
         - name: re_replace
           args: ["(?i)( FRENCH)", " {{ .Result.site_date }} FRENCH"]
@@ -136,15 +123,15 @@ search:
     title:
       text: "{{ if .Config.vostfr }}{{ .Result.title_vostfr }}{{ else }}{{ .Result.title_phase2 }}{{ end }}"
     details:
-      selector: td:nth-child(1) a
+      selector: a[href^="/torrent/"]
       attribute: href
     download:
-      selector: td:nth-child(1) a
+      selector: a[href^="/torrent/"]
       attribute: href
-    size:
-      selector: td:nth-child(2)
     date:
       text: now
+    size:
+      selector: td:nth-child(2)
     seeders:
       selector: td:nth-child(3)
     leechers:
