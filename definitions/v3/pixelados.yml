@@ -87,9 +87,9 @@ search:
     - name: re_replace
       args: ["\\.", " "]
     - name: re_replace
-      args: ["(?i)\\bS0*(\\d+)\\b", ""]
+      args: ["(?i)\\bS0*(\\d+)\\b", "{{ if eq .Query.Type \"tvsearch\" }}{{ else }}T$1{{ end }}"]
     - name: re_replace
-      args: ["(?i)S0?(\\d{1,2})E(\\d{1,2})", ""]
+      args: ["(?i)S0?(\\d{1,2})E(\\d{1,2})", "{{ if eq .Query.Type \"tvsearch\" }}{{ else }}$1x$2{{ end }}"]
 
   rows:
     selector: data
@@ -100,11 +100,6 @@ search:
   fields:
     category:
       selector: category_id
-    types:
-      selector: types
-    megapack:
-      selector: types:contains(MEGAPACK)
-      optional: true
     mejorada:
       selector: types:contains(Mejorada)
       optional: true
@@ -129,7 +124,7 @@ search:
         - name: re_replace
           args: ["(?i)TU\\b", "S1"]
     title:
-      text: "{{ .Result.title_name }} {{ if or .Result.mejorada .Result.corregida .Result.audio_editado }} PROPER {{ else }}{{ end }}"
+      text: "{{ .Result.title_name }}{{ if or .Result.mejorada .Result.corregida .Result.audio_editado }} PROPER{{ else }}{{ end }}"
     details:
       selector: details_link
     download:
