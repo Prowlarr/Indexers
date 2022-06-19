@@ -19,7 +19,7 @@ jobs:
         yamllint --version
     - name: yamllint run
       run: |
-        for f in `find definitions -type f`
+        for f in `find definitions -type f -name "*.yml"`
         do
           echo "$f"
           yamllint "$f" --format github
