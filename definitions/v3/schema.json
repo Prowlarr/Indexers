@@ -1,0 +1,92 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$ref": "#/definitions/Welcome1",
+    "definitions": {
+        "Welcome1": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "language": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "encoding": {
+                    "type": "string"
+                },
+                "followredirect": {
+                    "type": "boolean"
+                },
+                "testlinktorrent": {
+                    "type": "boolean"
+                },
+                "requestDelay": {
+                    "type": "number"
+                },
+                "links": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "legacylinks": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "certificates": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "caps": {
+                    "type": "object"
+                },
+                "settings": {
+                    "type": "array"
+                },
+                "login": {
+                    "type": "object"
+                },
+                "search": {
+                    "type": "object"
+                },
+                "download": {
+                    "type": "object"
+                }
+            },
+            "required": [
+                "caps",
+                "certificates",
+                "description",
+                "download",
+                "encoding",
+                "followredirect",
+                "id",
+                "language",
+                "legacylinks",
+                "links",
+                "login",
+                "name",
+                "requestDelay",
+                "search",
+                "settings",
+                "testlinktorrent",
+                "type"
+            ],
+            "title": "Welcome1"
+        }
+    }
+}

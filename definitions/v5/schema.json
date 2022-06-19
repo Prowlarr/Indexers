@@ -1,0 +1,1148 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$ref": "#/definitions/Welcome1",
+    "definitions": {
+        "Welcome1": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "language": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "encoding": {
+                    "type": "string"
+                },
+                "followredirect": {
+                    "type": "boolean"
+                },
+                "testlinktorrent": {
+                    "type": "boolean"
+                },
+                "requestDelay": {
+                    "type": "number"
+                },
+                "links": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "legacylinks": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "certificates": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "caps": {
+                    "$ref": "#/definitions/Caps"
+                },
+                "settings": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Setting"
+                    }
+                },
+                "login": {
+                    "$ref": "#/definitions/Login"
+                },
+                "search": {
+                    "$ref": "#/definitions/Search"
+                },
+                "download": {
+                    "$ref": "#/definitions/Welcome1Download"
+                }
+            },
+            "required": [
+                "caps",
+                "certificates",
+                "description",
+                "download",
+                "encoding",
+                "followredirect",
+                "id",
+                "language",
+                "legacylinks",
+                "links",
+                "login",
+                "name",
+                "requestDelay",
+                "search",
+                "settings",
+                "testlinktorrent",
+                "type"
+            ],
+            "title": "Welcome1"
+        },
+        "Caps": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "categorymappings": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Categorymapping"
+                    }
+                },
+                "modes": {
+                    "$ref": "#/definitions/Modes"
+                }
+            },
+            "required": [
+                "categorymappings",
+                "modes"
+            ],
+            "title": "Caps"
+        },
+        "Categorymapping": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "cat": {
+                    "type": "string"
+                },
+                "desc": {
+                    "type": "string"
+                },
+                "default": {
+                    "type": "boolean"
+                }
+            },
+            "required": [
+                "cat",
+                "default",
+                "desc",
+                "id"
+            ],
+            "title": "Categorymapping"
+        },
+        "Modes": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "search": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "tv-search": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "movie-search": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "music-search": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "book-search": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "book-search",
+                "movie-search",
+                "music-search",
+                "search",
+                "tv-search"
+            ],
+            "title": "Modes"
+        },
+        "Welcome1Download": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "method": {
+                    "type": "string"
+                },
+                "before": {
+                    "$ref": "#/definitions/Before"
+                },
+                "selectors": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Selector"
+                    }
+                }
+            },
+            "required": [
+                "before",
+                "method",
+                "selectors"
+            ],
+            "title": "Welcome1Download"
+        },
+        "Before": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "path": {
+                    "type": "string"
+                },
+                "method": {
+                    "type": "string"
+                },
+                "queryseparator": {
+                    "type": "string"
+                },
+                "inputs": {
+                    "$ref": "#/definitions/BeforeInputs"
+                }
+            },
+            "required": [
+                "inputs",
+                "method",
+                "path",
+                "queryseparator"
+            ],
+            "title": "Before"
+        },
+        "BeforeInputs": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "infohash": {
+                    "type": "string"
+                },
+                "thanks": {
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "infohash",
+                "thanks"
+            ],
+            "title": "BeforeInputs"
+        },
+        "Selector": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "selector": {
+                    "type": "string"
+                },
+                "attribute": {
+                    "type": "string"
+                },
+                "usebeforeresponse": {
+                    "type": "boolean"
+                },
+                "filters": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/SelectorFilter"
+                    }
+                }
+            },
+            "required": [
+                "attribute",
+                "filters",
+                "selector"
+            ],
+            "title": "Selector"
+        },
+        "SelectorFilter": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "args": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "name"
+            ],
+            "title": "SelectorFilter"
+        },
+        "Login": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "method": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
+                },
+                "submitpath": {
+                    "type": "string"
+                },
+                "form": {
+                    "type": "string"
+                },
+                "captcha": {
+                    "$ref": "#/definitions/CAPTCHA"
+                },
+                "inputs": {
+                    "$ref": "#/definitions/LoginInputs"
+                },
+                "selectors": {
+                    "type": "boolean"
+                },
+                "selectorinputs": {
+                    "$ref": "#/definitions/Selectorinputs"
+                },
+                "getselectorinputs": {
+                    "$ref": "#/definitions/Getselectorinputs"
+                },
+                "error": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/LoginError"
+                    }
+                },
+                "test": {
+                    "$ref": "#/definitions/Test"
+                }
+            },
+            "required": [
+                "captcha",
+                "error",
+                "form",
+                "getselectorinputs",
+                "inputs",
+                "method",
+                "path",
+                "selectorinputs",
+                "selectors",
+                "submitpath",
+                "test"
+            ],
+            "title": "Login"
+        },
+        "CAPTCHA": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "selector": {
+                    "type": "string"
+                },
+                "input": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "input",
+                "selector",
+                "type"
+            ],
+            "title": "CAPTCHA"
+        },
+        "LoginError": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "selector": {
+                    "type": "string"
+                },
+                "message": {
+                    "$ref": "#/definitions/Message"
+                }
+            },
+            "required": [
+                "selector"
+            ],
+            "title": "LoginError"
+        },
+        "Message": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "selector": {
+                    "type": "string"
+                },
+                "attribute": {
+                    "type": "string"
+                },
+                "filters": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/KeywordsfilterElement"
+                    }
+                }
+            },
+            "required": [
+                "attribute",
+                "filters",
+                "selector"
+            ],
+            "title": "Message"
+        },
+        "KeywordsfilterElement": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "args": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "args",
+                "name"
+            ],
+            "title": "KeywordsfilterElement"
+        },
+        "Getselectorinputs": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "c": {
+                    "$ref": "#/definitions/C"
+                },
+                "rhash": {
+                    "$ref": "#/definitions/Rhash"
+                }
+            },
+            "required": [
+                "c",
+                "rhash"
+            ],
+            "title": "Getselectorinputs"
+        },
+        "C": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "selector": {
+                    "type": "string"
+                },
+                "filters": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/SelectorFilter"
+                    }
+                }
+            },
+            "required": [
+                "filters",
+                "selector"
+            ],
+            "title": "C"
+        },
+        "Rhash": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "text": {
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "text"
+            ],
+            "title": "Rhash"
+        },
+        "LoginInputs": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "username": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "keeplogged": {
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "keeplogged",
+                "password",
+                "username"
+            ],
+            "title": "LoginInputs"
+        },
+        "Selectorinputs": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "securitytoken": {
+                    "$ref": "#/definitions/C"
+                }
+            },
+            "required": [
+                "securitytoken"
+            ],
+            "title": "Selectorinputs"
+        },
+        "Test": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "path": {
+                    "type": "string"
+                },
+                "selector": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "path",
+                "selector"
+            ],
+            "title": "Test"
+        },
+        "Search": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "paths": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Path"
+                    }
+                },
+                "inputs": {
+                    "$ref": "#/definitions/SearchInputs"
+                },
+                "headers": {
+                    "$ref": "#/definitions/Headers"
+                },
+                "keywordsfilters": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/KeywordsfilterElement"
+                    }
+                },
+                "error": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/CategorydescElement"
+                    }
+                },
+                "preprocessingfilters": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/PreprocessingfilterElement"
+                    }
+                },
+                "rows": {
+                    "$ref": "#/definitions/Rows"
+                },
+                "fields": {
+                    "$ref": "#/definitions/Fields"
+                }
+            },
+            "required": [
+                "error",
+                "fields",
+                "headers",
+                "inputs",
+                "keywordsfilters",
+                "paths",
+                "preprocessingfilters",
+                "rows"
+            ],
+            "title": "Search"
+        },
+        "CategorydescElement": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "selector": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "selector"
+            ],
+            "title": "CategorydescElement"
+        },
+        "Fields": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "category": {
+                    "$ref": "#/definitions/CategoryClass"
+                },
+                "categorydesc": {
+                    "$ref": "#/definitions/CategorydescElement"
+                },
+                "title": {
+                    "$ref": "#/definitions/CategorydescElement"
+                },
+                "details": {
+                    "$ref": "#/definitions/Details"
+                },
+                "download": {
+                    "$ref": "#/definitions/FieldsDownload"
+                },
+                "infohash": {
+                    "$ref": "#/definitions/CategoryClass"
+                },
+                "poster": {
+                    "$ref": "#/definitions/Poster"
+                },
+                "imdbid": {
+                    "$ref": "#/definitions/Details"
+                },
+                "rageid": {
+                    "$ref": "#/definitions/Details"
+                },
+                "tmdbid": {
+                    "$ref": "#/definitions/Details"
+                },
+                "tvdbid": {
+                    "$ref": "#/definitions/Details"
+                },
+                "doubanid": {
+                    "$ref": "#/definitions/Details"
+                },
+                "date": {
+                    "$ref": "#/definitions/CategoryClass"
+                },
+                "size": {
+                    "$ref": "#/definitions/CategorydescElement"
+                },
+                "files": {
+                    "$ref": "#/definitions/CategorydescElement"
+                },
+                "grabs": {
+                    "$ref": "#/definitions/C"
+                },
+                "seeders": {
+                    "$ref": "#/definitions/CategorydescElement"
+                },
+                "leechers": {
+                    "$ref": "#/definitions/CategorydescElement"
+                },
+                "downloadvolumefactor": {
+                    "$ref": "#/definitions/Downloadvolumefactor"
+                },
+                "uploadvolumefactor": {
+                    "$ref": "#/definitions/Uploadvolumefactor"
+                },
+                "minimumratio": {
+                    "$ref": "#/definitions/Rhash"
+                },
+                "minimumseedtime": {
+                    "$ref": "#/definitions/Rhash"
+                },
+                "description": {
+                    "$ref": "#/definitions/Description"
+                }
+            },
+            "required": [
+                "category",
+                "categorydesc",
+                "date",
+                "description",
+                "details",
+                "doubanid",
+                "download",
+                "downloadvolumefactor",
+                "files",
+                "grabs",
+                "imdbid",
+                "infohash",
+                "leechers",
+                "minimumratio",
+                "minimumseedtime",
+                "poster",
+                "rageid",
+                "seeders",
+                "size",
+                "title",
+                "tmdbid",
+                "tvdbid",
+                "uploadvolumefactor"
+            ],
+            "title": "Fields"
+        },
+        "CategoryClass": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "selector": {
+                    "type": "string"
+                },
+                "attribute": {
+                    "type": "string"
+                },
+                "filters": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/SelectorFilter"
+                    }
+                }
+            },
+            "required": [
+                "attribute",
+                "filters",
+                "selector"
+            ],
+            "title": "CategoryClass"
+        },
+        "Description": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "selector": {
+                    "type": "string"
+                },
+                "remove": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "remove",
+                "selector"
+            ],
+            "title": "Description"
+        },
+        "Details": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "selector": {
+                    "type": "string"
+                },
+                "attribute": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "attribute",
+                "selector"
+            ],
+            "title": "Details"
+        },
+        "FieldsDownload": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "selector": {
+                    "type": "string"
+                },
+                "attribute": {
+                    "type": "string"
+                },
+                "magnet": {
+                    "$ref": "#/definitions/Details"
+                }
+            },
+            "required": [
+                "attribute",
+                "magnet",
+                "selector"
+            ],
+            "title": "FieldsDownload"
+        },
+        "Downloadvolumefactor": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "case": {
+                    "$ref": "#/definitions/DownloadvolumefactorCase"
+                }
+            },
+            "required": [
+                "case"
+            ],
+            "title": "Downloadvolumefactor"
+        },
+        "DownloadvolumefactorCase": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "img.pro_free": {
+                    "type": "integer"
+                },
+                "img.pro_neutral": {
+                    "type": "integer"
+                },
+                "img.pro_50pctdown": {
+                    "type": "number"
+                },
+                "*": {
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "*",
+                "img.pro_50pctdown",
+                "img.pro_free",
+                "img.pro_neutral"
+            ],
+            "title": "DownloadvolumefactorCase"
+        },
+        "Poster": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "selector": {
+                    "type": "string"
+                },
+                "attribute": {
+                    "type": "string"
+                },
+                "filters": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/PreprocessingfilterElement"
+                    }
+                }
+            },
+            "required": [
+                "attribute",
+                "filters",
+                "selector"
+            ],
+            "title": "Poster"
+        },
+        "PreprocessingfilterElement": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "args": {
+                    "$ref": "#/definitions/Args"
+                }
+            },
+            "required": [
+                "args",
+                "name"
+            ],
+            "title": "PreprocessingfilterElement"
+        },
+        "Uploadvolumefactor": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "case": {
+                    "$ref": "#/definitions/UploadvolumefactorCase"
+                }
+            },
+            "required": [
+                "case"
+            ],
+            "title": "Uploadvolumefactor"
+        },
+        "UploadvolumefactorCase": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "img.pro_neutral": {
+                    "type": "integer"
+                },
+                "img.pro_2up": {
+                    "type": "integer"
+                },
+                "*": {
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "*",
+                "img.pro_2up",
+                "img.pro_neutral"
+            ],
+            "title": "UploadvolumefactorCase"
+        },
+        "Headers": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "x-requested-with": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "x-requested-with"
+            ],
+            "title": "Headers"
+        },
+        "SearchInputs": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "$raw": {
+                    "type": "string"
+                },
+                "search": {
+                    "type": "string"
+                },
+                "imdb_search": {
+                    "type": "string"
+                },
+                "searchin": {
+                    "type": "string"
+                },
+                "incldead": {
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "$raw",
+                "imdb_search",
+                "incldead",
+                "search",
+                "searchin"
+            ],
+            "title": "SearchInputs"
+        },
+        "Path": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "path": {
+                    "type": "string"
+                },
+                "method": {
+                    "type": "string"
+                },
+                "response": {
+                    "$ref": "#/definitions/Response"
+                },
+                "followredirect": {
+                    "type": "boolean"
+                },
+                "categories": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/CategoryElement"
+                    }
+                },
+                "inputs": {
+                    "$ref": "#/definitions/PathInputs"
+                },
+                "inheritinputs": {
+                    "type": "boolean"
+                }
+            },
+            "required": [
+                "categories",
+                "path"
+            ],
+            "title": "Path"
+        },
+        "PathInputs": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "scene": {
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "scene"
+            ],
+            "title": "PathInputs"
+        },
+        "Response": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "noResultsMessage": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "noResultsMessage",
+                "type"
+            ],
+            "title": "Response"
+        },
+        "Rows": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "selector": {
+                    "type": "string"
+                },
+                "filters": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/RowsFilter"
+                    }
+                },
+                "dateheaders": {
+                    "$ref": "#/definitions/C"
+                },
+                "after": {
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "after",
+                "dateheaders",
+                "filters",
+                "selector"
+            ],
+            "title": "Rows"
+        },
+        "RowsFilter": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "args": {
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "name"
+            ],
+            "title": "RowsFilter"
+        },
+        "Setting": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "default": {
+                    "$ref": "#/definitions/Default"
+                },
+                "options": {
+                    "$ref": "#/definitions/Options"
+                },
+                "defaults": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "label",
+                "name",
+                "type"
+            ],
+            "title": "Setting"
+        },
+        "Options": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "0": {
+                    "type": "string"
+                },
+                "10": {
+                    "type": "string"
+                },
+                "11": {
+                    "type": "string"
+                },
+                "480p": {
+                    "type": "string"
+                },
+                "720p": {
+                    "type": "string"
+                },
+                "1080p": {
+                    "type": "string"
+                },
+                "2160p": {
+                    "type": "string"
+                },
+                "4K": {
+                    "type": "string"
+                }
+            },
+            "required": [],
+            "title": "Options"
+        },
+        "Args": {
+            "anyOf": [
+                {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                {
+                    "type": "string"
+                }
+            ],
+            "title": "Args"
+        },
+        "CategoryElement": {
+            "anyOf": [
+                {
+                    "type": "integer"
+                },
+                {
+                    "type": "string"
+                }
+            ],
+            "title": "CategoryElement"
+        },
+        "Default": {
+            "anyOf": [
+                {
+                    "type": "boolean"
+                },
+                {
+                    "type": "integer"
+                },
+                {
+                    "type": "string"
+                }
+            ],
+            "title": "Default"
+        }
+    }
+}
