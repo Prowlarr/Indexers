@@ -25,4 +25,5 @@ jobs:
           yamllint "$f" --format github
         done
     - name: yaml schema check
-      run: ./scripts/validate.sh
+      run: |
+        sh ./scripts/validate.sh
