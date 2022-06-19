@@ -5,7 +5,7 @@ do
   echo "$dir"
   schema="$dir/schema.json"
   echo "$schema"
-  ajv validate -d "$dir/*.yml" -s "$schema" --errors=text
+  ajv test -d "$dir/*.yml" -s "$schema" --errors=text --valid
 done
 
 if [ $? -eq 1 ]
