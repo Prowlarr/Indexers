@@ -226,10 +226,8 @@ search:
       args: ["(\\w+)", "\"$1\""]
   paths:
     - path: "engine/search?category={{ .Config.category }}&name={{ .Keywords }}&description=&file=&uploader=&sub_category=&do=search&order={{ .Config.type }}&sort={{ .Config.sort }}"
-      followredirect: true
     # Saison Word
     - path: "engine/search?category={{ .Config.category }}&name={{ if .Keywords }}{{ re_replace .Keywords \"[sS]0(\\d{1,2})\"  \"Saison.$1\"}}{{ else }}&page=50{{ end }}&description=&file=&uploader=&sub_category=&do=search&order={{ .Config.type }}&sort={{ .Config.sort }}"
-      followredirect: true
 
   rows:
     selector: table.table > tbody > tr

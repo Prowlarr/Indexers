@@ -49,6 +49,8 @@ settings:
     label: Filter freeleech only
     default: false
   - name: sort
+    label: Sort
+    type: select
     default: added
     options:
       added: created

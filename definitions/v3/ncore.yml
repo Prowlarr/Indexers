@@ -73,7 +73,6 @@ login:
   method: form
   path: login.php
   submitpath: login.php
-  followredirect: true
   inputs:
     nev: "{{ .Config.username }}"
     pass: "{{ .Config.password }}"
@@ -84,10 +83,9 @@ login:
     path: index.php
 
 search:
-  followredirect: true
   paths:
     - path: torrents.php
-  method: post
+      followredirect: true
   inputs:
     nyit_filmek_resz: "true"
     nyit_sorozat_resz: "true"

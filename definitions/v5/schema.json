@@ -1,8 +1,8 @@
 {
-    "$schema": "http://json-schema.org/draft-06/schema#",
-    "$ref": "#/definitions/Welcome1",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$ref": "#/definitions/SchemaRoot",
     "definitions": {
-        "Welcome1": {
+        "SchemaRoot": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
@@ -57,7 +57,7 @@
                 "settings": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/Setting"
+                        "$ref": "#/definitions/SettingsField"
                     }
                 },
                 "login": {
@@ -67,56 +67,74 @@
                     "$ref": "#/definitions/Search"
                 },
                 "download": {
-                    "$ref": "#/definitions/Welcome1Download"
+                    "$ref": "#/definitions/DownloadBlock"
                 }
             },
             "required": [
                 "caps",
-                "certificates",
                 "description",
-                "download",
                 "encoding",
-                "followredirect",
                 "id",
                 "language",
-                "legacylinks",
                 "links",
-                "login",
                 "name",
-                "requestDelay",
                 "search",
-                "settings",
-                "testlinktorrent",
                 "type"
             ],
-            "title": "Welcome1"
+            "title": "SchemaRoot"
         },
         "Caps": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
+                "categories": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "patternProperties": {
+                        "^.*$": {
+                            "type": "string"
+                        }
+                    }
+                },
                 "categorymappings": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/Categorymapping"
+                        "$ref": "#/definitions/CategoryMapping"
                     }
                 },
                 "modes": {
                     "$ref": "#/definitions/Modes"
+                },
+                "allowrawsearch": {
+                    "type": "boolean"
                 }
             },
             "required": [
-                "categorymappings",
                 "modes"
+            ],
+            "oneOf": [
+                {
+                    "required": [
+                        "categories"
+                    ]
+                },
+                {
+                    "required": [
+                        "categorymappings"
+                    ]
+                }
             ],
             "title": "Caps"
         },
-        "Categorymapping": {
+        "CategoryMapping": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
                 "id": {
-                    "type": "integer"
+                    "oneOf": [
+                        {"type": "integer"},
+                        {"type": "string"}
+                    ]
                 },
                 "cat": {
                     "type": "string"
@@ -130,11 +148,9 @@
             },
             "required": [
                 "cat",
-                "default",
-                "desc",
                 "id"
             ],
-            "title": "Categorymapping"
+            "title": "CategoryMapping"
         },
         "Modes": {
             "type": "object",
@@ -143,151 +159,92 @@
                 "search": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "type": "string",
+                        "enum": ["q"]
                     }
                 },
                 "tv-search": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "type": "string",
+                        "enum": ["q", "season", "ep", "imdbid", "tvdbid"]
                     }
                 },
                 "movie-search": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "type": "string",
+                        "enum": ["q", "imdbid", "tmdbid"]
                     }
                 },
                 "music-search": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "type": "string",
+                        "enum": ["q", "album", "artist"]
                     }
                 },
                 "book-search": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "type": "string",
+                        "enum": ["q", "title", "author"]
                     }
                 }
             },
             "required": [
-                "book-search",
-                "movie-search",
-                "music-search",
-                "search",
-                "tv-search"
+                "search"
             ],
             "title": "Modes"
         },
-        "Welcome1Download": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "method": {
-                    "type": "string"
-                },
-                "before": {
-                    "$ref": "#/definitions/Before"
-                },
-                "selectors": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/Selector"
-                    }
-                }
-            },
-            "required": [
-                "before",
-                "method",
-                "selectors"
-            ],
-            "title": "Welcome1Download"
-        },
-        "Before": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "path": {
-                    "type": "string"
-                },
-                "method": {
-                    "type": "string"
-                },
-                "queryseparator": {
-                    "type": "string"
-                },
-                "inputs": {
-                    "$ref": "#/definitions/BeforeInputs"
-                }
-            },
-            "required": [
-                "inputs",
-                "method",
-                "path",
-                "queryseparator"
-            ],
-            "title": "Before"
-        },
-        "BeforeInputs": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "infohash": {
-                    "type": "string"
-                },
-                "thanks": {
-                    "type": "integer"
-                }
-            },
-            "required": [
-                "infohash",
-                "thanks"
-            ],
-            "title": "BeforeInputs"
-        },
-        "Selector": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "selector": {
-                    "type": "string"
-                },
-                "attribute": {
-                    "type": "string"
-                },
-                "usebeforeresponse": {
-                    "type": "boolean"
-                },
-                "filters": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/SelectorFilter"
-                    }
-                }
-            },
-            "required": [
-                "attribute",
-                "filters",
-                "selector"
-            ],
-            "title": "Selector"
-        },
-        "SelectorFilter": {
+        "SettingsField": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
                 "name": {
                     "type": "string"
                 },
-                "args": {
+                "label": {
                     "type": "string"
+                },
+                "type":{
+                    "type": "string"
+                },
+                "default": {
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        },
+                        {
+                            "type": "boolean"
+                        }
+                    ]
+                },
+                "options": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "patternProperties": {
+                        "^.*$": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "defaults": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             },
             "required": [
-                "name"
+                "label",
+                "name",
+                "type"
             ],
-            "title": "SelectorFilter"
+            "title": "SettingsField"
         },
         "Login": {
             "type": "object",
@@ -295,6 +252,12 @@
             "properties": {
                 "method": {
                     "type": "string"
+                },
+                "cookies": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 },
                 "path": {
                     "type": "string"
@@ -306,46 +269,71 @@
                     "type": "string"
                 },
                 "captcha": {
-                    "$ref": "#/definitions/CAPTCHA"
+                    "$ref": "#/definitions/CaptchaBlock"
                 },
                 "inputs": {
-                    "$ref": "#/definitions/LoginInputs"
+                    "type": "object",
+                    "additionalProperties": false,
+                    "patternProperties": {
+                        "^.*$": {
+                            "oneOf": [
+                                {"type": "number"},
+                                {"type": "string"},
+                                {"type": "boolean"}
+                            ]
+                        }
+                    }
                 },
                 "selectors": {
                     "type": "boolean"
                 },
                 "selectorinputs": {
-                    "$ref": "#/definitions/Selectorinputs"
+                    "type": "object",
+                    "additionalProperties": false,
+                    "patternProperties": {
+                        "^[A-Za-z0-9_]*$": {
+                            "$ref": "#/definitions/SelectorBlock"
+                        }
+                    }
                 },
                 "getselectorinputs": {
-                    "$ref": "#/definitions/Getselectorinputs"
+                    "type": "object",
+                    "additionalProperties": false,
+                    "patternProperties": {
+                        "^[A-Za-z0-9_]*$": {
+                            "$ref": "#/definitions/SelectorBlock"
+                        }
+                    }
                 },
                 "error": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/LoginError"
+                        "$ref": "#/definitions/ErrorBlock"
                     }
                 },
                 "test": {
-                    "$ref": "#/definitions/Test"
+                    "$ref": "#/definitions/PageTestBlock"
+                }
+            },
+            "title": "Login"
+        },
+        "PageTestBlock": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "path": {
+                    "type": "string"
+                },
+                "selector": {
+                    "type": "string"
                 }
             },
             "required": [
-                "captcha",
-                "error",
-                "form",
-                "getselectorinputs",
-                "inputs",
-                "method",
-                "path",
-                "selectorinputs",
-                "selectors",
-                "submitpath",
-                "test"
+                "path"
             ],
-            "title": "Login"
+            "title": "PageTestBlock"
         },
-        "CAPTCHA": {
+        "CaptchaBlock": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
@@ -364,153 +352,9 @@
                 "selector",
                 "type"
             ],
-            "title": "CAPTCHA"
+            "title": "CaptchaBlock"
         },
-        "LoginError": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "selector": {
-                    "type": "string"
-                },
-                "message": {
-                    "$ref": "#/definitions/Message"
-                }
-            },
-            "required": [
-                "selector"
-            ],
-            "title": "LoginError"
-        },
-        "Message": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "selector": {
-                    "type": "string"
-                },
-                "attribute": {
-                    "type": "string"
-                },
-                "filters": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/KeywordsfilterElement"
-                    }
-                }
-            },
-            "required": [
-                "attribute",
-                "filters",
-                "selector"
-            ],
-            "title": "Message"
-        },
-        "KeywordsfilterElement": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "args": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                }
-            },
-            "required": [
-                "args",
-                "name"
-            ],
-            "title": "KeywordsfilterElement"
-        },
-        "Getselectorinputs": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "c": {
-                    "$ref": "#/definitions/C"
-                },
-                "rhash": {
-                    "$ref": "#/definitions/Rhash"
-                }
-            },
-            "required": [
-                "c",
-                "rhash"
-            ],
-            "title": "Getselectorinputs"
-        },
-        "C": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "selector": {
-                    "type": "string"
-                },
-                "filters": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/SelectorFilter"
-                    }
-                }
-            },
-            "required": [
-                "filters",
-                "selector"
-            ],
-            "title": "C"
-        },
-        "Rhash": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "text": {
-                    "type": "integer"
-                }
-            },
-            "required": [
-                "text"
-            ],
-            "title": "Rhash"
-        },
-        "LoginInputs": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "username": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                },
-                "keeplogged": {
-                    "type": "integer"
-                }
-            },
-            "required": [
-                "keeplogged",
-                "password",
-                "username"
-            ],
-            "title": "LoginInputs"
-        },
-        "Selectorinputs": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "securitytoken": {
-                    "$ref": "#/definitions/C"
-                }
-            },
-            "required": [
-                "securitytoken"
-            ],
-            "title": "Selectorinputs"
-        },
-        "Test": {
+        "ErrorBlock": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
@@ -519,419 +363,141 @@
                 },
                 "selector": {
                     "type": "string"
+                },
+                "message": {
+                    "$ref": "#/definitions/SelectorBlock"
                 }
             },
             "required": [
-                "path",
                 "selector"
             ],
-            "title": "Test"
+            "title": "ErrorBlock"
+        },
+        "SelectorBlock": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "selector": {
+                    "type": "string"
+                },
+                "attribute": {
+                    "type": "string"
+                },
+                "optional": {
+                    "type": "boolean"
+                },
+                "case": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "patternProperties": {
+                        "^.*$": {
+                            "oneOf": [
+                                {"type": "string"},
+                                {"type": "number"}
+                            ]
+                        }
+                    }
+                },
+                "remove": {
+                    "type": "string"
+                },
+                "text": {
+                    "oneOf": [
+                        {"type": "string"},
+                        {"type": "number"}
+                    ]
+                },
+                "filters": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/FilterBlock"
+                    }
+                }
+            },
+            "title": "SelectorBlock"
         },
         "Search": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
+                "path": {
+                    "type": "string"
+                },
                 "paths": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/Path"
+                        "$ref": "#/definitions/SearchPathBlock"
                     }
                 },
                 "inputs": {
-                    "$ref": "#/definitions/SearchInputs"
+                    "type": "object",
+                    "additionalProperties": false,
+                    "patternProperties": {
+                        "^((\\$raw)|[A-Za-z0-9.\\-_[\\]]*)$": {
+                            "oneOf": [
+                                {"type": "number"},
+                                {"type": "string"},
+                                {"type": "boolean"}
+                            ]
+                        }
+                    }
                 },
                 "headers": {
-                    "$ref": "#/definitions/Headers"
+                    "type": "object",
+                    "additionalProperties": false,
+                    "patternProperties": {
+                        "^[A-Za-z0-9-]*$": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
                 },
                 "keywordsfilters": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/KeywordsfilterElement"
+                        "$ref": "#/definitions/FilterBlock"
                     }
                 },
                 "error": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/CategorydescElement"
+                        "$ref": "#/definitions/ErrorBlock"
                     }
                 },
                 "preprocessingfilters": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/PreprocessingfilterElement"
+                        "$ref": "#/definitions/FilterBlock"
                     }
                 },
                 "rows": {
-                    "$ref": "#/definitions/Rows"
+                    "$ref": "#/definitions/RowsBlock"
                 },
                 "fields": {
-                    "$ref": "#/definitions/Fields"
+                    "$ref": "#/definitions/FieldsBlock"
                 }
             },
             "required": [
-                "error",
                 "fields",
-                "headers",
-                "inputs",
-                "keywordsfilters",
-                "paths",
-                "preprocessingfilters",
                 "rows"
+            ],
+            "oneOf": [
+                {
+                    "required": [
+                        "paths"
+                    ]
+                },
+                {
+                    "required": [
+                        "path"
+                    ]
+                }
             ],
             "title": "Search"
         },
-        "CategorydescElement": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "selector": {
-                    "type": "string"
-                }
-            },
-            "required": [
-                "selector"
-            ],
-            "title": "CategorydescElement"
-        },
-        "Fields": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "category": {
-                    "$ref": "#/definitions/CategoryClass"
-                },
-                "categorydesc": {
-                    "$ref": "#/definitions/CategorydescElement"
-                },
-                "title": {
-                    "$ref": "#/definitions/CategorydescElement"
-                },
-                "details": {
-                    "$ref": "#/definitions/Details"
-                },
-                "download": {
-                    "$ref": "#/definitions/FieldsDownload"
-                },
-                "infohash": {
-                    "$ref": "#/definitions/CategoryClass"
-                },
-                "poster": {
-                    "$ref": "#/definitions/Poster"
-                },
-                "imdbid": {
-                    "$ref": "#/definitions/Details"
-                },
-                "rageid": {
-                    "$ref": "#/definitions/Details"
-                },
-                "tmdbid": {
-                    "$ref": "#/definitions/Details"
-                },
-                "tvdbid": {
-                    "$ref": "#/definitions/Details"
-                },
-                "doubanid": {
-                    "$ref": "#/definitions/Details"
-                },
-                "date": {
-                    "$ref": "#/definitions/CategoryClass"
-                },
-                "size": {
-                    "$ref": "#/definitions/CategorydescElement"
-                },
-                "files": {
-                    "$ref": "#/definitions/CategorydescElement"
-                },
-                "grabs": {
-                    "$ref": "#/definitions/C"
-                },
-                "seeders": {
-                    "$ref": "#/definitions/CategorydescElement"
-                },
-                "leechers": {
-                    "$ref": "#/definitions/CategorydescElement"
-                },
-                "downloadvolumefactor": {
-                    "$ref": "#/definitions/Downloadvolumefactor"
-                },
-                "uploadvolumefactor": {
-                    "$ref": "#/definitions/Uploadvolumefactor"
-                },
-                "minimumratio": {
-                    "$ref": "#/definitions/Rhash"
-                },
-                "minimumseedtime": {
-                    "$ref": "#/definitions/Rhash"
-                },
-                "description": {
-                    "$ref": "#/definitions/Description"
-                }
-            },
-            "required": [
-                "category",
-                "categorydesc",
-                "date",
-                "description",
-                "details",
-                "doubanid",
-                "download",
-                "downloadvolumefactor",
-                "files",
-                "grabs",
-                "imdbid",
-                "infohash",
-                "leechers",
-                "minimumratio",
-                "minimumseedtime",
-                "poster",
-                "rageid",
-                "seeders",
-                "size",
-                "title",
-                "tmdbid",
-                "tvdbid",
-                "uploadvolumefactor"
-            ],
-            "title": "Fields"
-        },
-        "CategoryClass": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "selector": {
-                    "type": "string"
-                },
-                "attribute": {
-                    "type": "string"
-                },
-                "filters": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/SelectorFilter"
-                    }
-                }
-            },
-            "required": [
-                "attribute",
-                "filters",
-                "selector"
-            ],
-            "title": "CategoryClass"
-        },
-        "Description": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "selector": {
-                    "type": "string"
-                },
-                "remove": {
-                    "type": "string"
-                }
-            },
-            "required": [
-                "remove",
-                "selector"
-            ],
-            "title": "Description"
-        },
-        "Details": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "selector": {
-                    "type": "string"
-                },
-                "attribute": {
-                    "type": "string"
-                }
-            },
-            "required": [
-                "attribute",
-                "selector"
-            ],
-            "title": "Details"
-        },
-        "FieldsDownload": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "selector": {
-                    "type": "string"
-                },
-                "attribute": {
-                    "type": "string"
-                },
-                "magnet": {
-                    "$ref": "#/definitions/Details"
-                }
-            },
-            "required": [
-                "attribute",
-                "magnet",
-                "selector"
-            ],
-            "title": "FieldsDownload"
-        },
-        "Downloadvolumefactor": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "case": {
-                    "$ref": "#/definitions/DownloadvolumefactorCase"
-                }
-            },
-            "required": [
-                "case"
-            ],
-            "title": "Downloadvolumefactor"
-        },
-        "DownloadvolumefactorCase": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "img.pro_free": {
-                    "type": "integer"
-                },
-                "img.pro_neutral": {
-                    "type": "integer"
-                },
-                "img.pro_50pctdown": {
-                    "type": "number"
-                },
-                "*": {
-                    "type": "integer"
-                }
-            },
-            "required": [
-                "*",
-                "img.pro_50pctdown",
-                "img.pro_free",
-                "img.pro_neutral"
-            ],
-            "title": "DownloadvolumefactorCase"
-        },
-        "Poster": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "selector": {
-                    "type": "string"
-                },
-                "attribute": {
-                    "type": "string"
-                },
-                "filters": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/PreprocessingfilterElement"
-                    }
-                }
-            },
-            "required": [
-                "attribute",
-                "filters",
-                "selector"
-            ],
-            "title": "Poster"
-        },
-        "PreprocessingfilterElement": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "args": {
-                    "$ref": "#/definitions/Args"
-                }
-            },
-            "required": [
-                "args",
-                "name"
-            ],
-            "title": "PreprocessingfilterElement"
-        },
-        "Uploadvolumefactor": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "case": {
-                    "$ref": "#/definitions/UploadvolumefactorCase"
-                }
-            },
-            "required": [
-                "case"
-            ],
-            "title": "Uploadvolumefactor"
-        },
-        "UploadvolumefactorCase": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "img.pro_neutral": {
-                    "type": "integer"
-                },
-                "img.pro_2up": {
-                    "type": "integer"
-                },
-                "*": {
-                    "type": "integer"
-                }
-            },
-            "required": [
-                "*",
-                "img.pro_2up",
-                "img.pro_neutral"
-            ],
-            "title": "UploadvolumefactorCase"
-        },
-        "Headers": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "x-requested-with": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                }
-            },
-            "required": [
-                "x-requested-with"
-            ],
-            "title": "Headers"
-        },
-        "SearchInputs": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "$raw": {
-                    "type": "string"
-                },
-                "search": {
-                    "type": "string"
-                },
-                "imdb_search": {
-                    "type": "string"
-                },
-                "searchin": {
-                    "type": "string"
-                },
-                "incldead": {
-                    "type": "integer"
-                }
-            },
-            "required": [
-                "$raw",
-                "imdb_search",
-                "incldead",
-                "search",
-                "searchin"
-            ],
-            "title": "SearchInputs"
-        },
-        "Path": {
+        "SearchPathBlock": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
@@ -941,90 +507,201 @@
                 "method": {
                     "type": "string"
                 },
-                "response": {
-                    "$ref": "#/definitions/Response"
-                },
                 "followredirect": {
                     "type": "boolean"
                 },
                 "categories": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/CategoryElement"
+                        "oneOf": [
+                            {"type": "integer"},
+                            {"type": "string"}
+                        ]
                     }
                 },
                 "inputs": {
-                    "$ref": "#/definitions/PathInputs"
+                    "type": "object",
+                    "additionalProperties": false,
+                    "patternProperties": {
+                        "^((\\$raw)|[A-Za-z0-9.\\-_[\\]]*)$": {
+                            "oneOf": [
+                                {"type": "integer"},
+                                {"type": "string"}
+                            ]
+                        }
+                    }
                 },
                 "inheritinputs": {
                     "type": "boolean"
+                },
+                "queryseparator": {
+                    "type": "string"
+                },
+                "response": {
+                    "$ref": "#/definitions/ResponseBlock"
                 }
             },
             "required": [
-                "categories",
                 "path"
             ],
-            "title": "Path"
+            "title": "SearchPathBlock"
         },
-        "PathInputs": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "scene": {
-                    "type": "integer"
-                }
-            },
-            "required": [
-                "scene"
-            ],
-            "title": "PathInputs"
-        },
-        "Response": {
+        "ResponseBlock": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
                 "type": {
-                    "type": "string"
+                    "type": "string",
+                    "enum": ["json", "xml"]
                 },
                 "noResultsMessage": {
                     "type": "string"
                 }
             },
             "required": [
-                "noResultsMessage",
                 "type"
             ],
-            "title": "Response"
+            "title": "ResponseBlock"
         },
-        "Rows": {
+        "RowsBlock": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
+                "after": {
+                    "type": "integer"
+                },
+                "dateheaders": {
+                    "$ref": "#/definitions/SelectorBlock"
+                },
                 "selector": {
                     "type": "string"
+                },
+                "attribute": {
+                    "type": "string"
+                },
+                "optional": {
+                    "type": "boolean"
+                },
+                "multiple": {
+                    "type": "boolean"
+                },
+                "case": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "patternProperties": {
+                        "^[A-Za-z0-9]*$": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "remove": {
+                    "type": "string"
+                },
+                "text": {
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "number"
+                        }
+                    ]
                 },
                 "filters": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/RowsFilter"
+                        "$ref": "#/definitions/FilterBlock"
                     }
                 },
-                "dateheaders": {
-                    "$ref": "#/definitions/C"
+                "count": {
+                    "$ref": "#/definitions/SelectorBlock"
+                }
+            },
+            "title": "RowsBlock"
+        },
+        "FieldsBlock": {
+            "type": "object",
+            "additionalProperties": false,
+            "patternProperties": {
+                "^[A-Za-z0-9-_]*$": {
+                    "$ref": "#/definitions/SelectorBlock"
                 },
-                "after": {
-                    "type": "integer"
+                "^((title|description)\\|(append))?$": {
+                    "$ref": "#/definitions/SelectorBlock"
+                },
+                "^((category|categorydesc)\\|(noappend))?$": {
+                    "$ref": "#/definitions/SelectorBlock"
                 }
             },
             "required": [
-                "after",
-                "dateheaders",
-                "filters",
-                "selector"
+                "seeders",
+                "title"
             ],
-            "title": "Rows"
+            "title": "FieldsBlock"
         },
-        "RowsFilter": {
+        "DownloadBlock": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "method": {
+                    "type": "string"
+                },
+                "before": {
+                    "$ref": "#/definitions/BeforeBlock"
+                },
+                "selectors": {
+                    "type": "array"
+                },
+                "infohash": {
+                    "type": "object"
+                }
+            },
+            "title": "DownloadBlock"
+        },
+        "BeforeBlock": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "path": {
+                    "type": "string"
+                },
+                "pathselector": {
+                    "type": "object"
+                },
+                "method": {
+                    "type": "string"
+                },
+                "inputs": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "patternProperties": {
+                        "^[A-Za-z0-9_]*$": {
+                            "oneOf": [
+                                {"type": "integer"},
+                                {"type": "string"}
+                            ]
+                        }
+                    }
+                },
+                "queryseparator": {
+                    "type": "string"
+                }
+            },
+            "oneOf": [
+                {
+                    "required": [
+                        "path"
+                    ]
+                },
+                {
+                    "required": [
+                        "pathselector"
+                    ]
+                }
+            ],
+            "title": "BeforeBlock"
+        },
+        "FilterBlock": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
@@ -1032,117 +709,22 @@
                     "type": "string"
                 },
                 "args": {
-                    "type": "integer"
+                    "oneOf": [
+                        {
+                            "type": "array",
+                            "items": {
+                                "oneOf": [
+                                    {"type": "string"},
+                                    {"type": "number"},
+                                    {"type": "boolean"}
+                                ]
+                            }
+                        },
+                        {"type": "string"},
+                        {"type": "integer"}
+                    ]
                 }
-            },
-            "required": [
-                "name"
-            ],
-            "title": "RowsFilter"
-        },
-        "Setting": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "type": {
-                    "type": "string"
-                },
-                "label": {
-                    "type": "string"
-                },
-                "default": {
-                    "$ref": "#/definitions/Default"
-                },
-                "options": {
-                    "$ref": "#/definitions/Options"
-                },
-                "defaults": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                }
-            },
-            "required": [
-                "label",
-                "name",
-                "type"
-            ],
-            "title": "Setting"
-        },
-        "Options": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "0": {
-                    "type": "string"
-                },
-                "10": {
-                    "type": "string"
-                },
-                "11": {
-                    "type": "string"
-                },
-                "480p": {
-                    "type": "string"
-                },
-                "720p": {
-                    "type": "string"
-                },
-                "1080p": {
-                    "type": "string"
-                },
-                "2160p": {
-                    "type": "string"
-                },
-                "4K": {
-                    "type": "string"
-                }
-            },
-            "required": [],
-            "title": "Options"
-        },
-        "Args": {
-            "anyOf": [
-                {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                {
-                    "type": "string"
-                }
-            ],
-            "title": "Args"
-        },
-        "CategoryElement": {
-            "anyOf": [
-                {
-                    "type": "integer"
-                },
-                {
-                    "type": "string"
-                }
-            ],
-            "title": "CategoryElement"
-        },
-        "Default": {
-            "anyOf": [
-                {
-                    "type": "boolean"
-                },
-                {
-                    "type": "integer"
-                },
-                {
-                    "type": "string"
-                }
-            ],
-            "title": "Default"
+            }
         }
     }
 }

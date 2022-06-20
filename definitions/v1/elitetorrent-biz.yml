@@ -49,9 +49,7 @@ search:
   paths:
     - path: /
     - path: /page/2/
-      followredirect: true
     - path: /page/3/
-      followredirect: true
   keywordsfilters:
     # most ES/ITA TV torrents are in XXxYY format, so we search without S/E prefixes and filter later
     - name: re_replace

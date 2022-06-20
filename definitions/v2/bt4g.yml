@@ -41,7 +41,7 @@ search:
       selector: a
     category:
       selector: span.cpill
-    category|append:
+    category:
       # add tv to video
       optional: true
       selector: span.cpill

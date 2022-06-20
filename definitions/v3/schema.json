@@ -1,8 +1,8 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "$ref": "#/definitions/Welcome1",
+    "$ref": "#/definitions/SchemaRoot",
     "definitions": {
-        "Welcome1": {
+        "SchemaRoot": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
@@ -52,41 +52,682 @@
                     }
                 },
                 "caps": {
-                    "type": "object"
+                    "$ref": "#/definitions/Caps"
                 },
                 "settings": {
-                    "type": "array"
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/SettingsField"
+                    }
                 },
                 "login": {
-                    "type": "object"
+                    "$ref": "#/definitions/Login"
                 },
                 "search": {
-                    "type": "object"
+                    "$ref": "#/definitions/Search"
                 },
                 "download": {
-                    "type": "object"
+                    "$ref": "#/definitions/DownloadBlock"
                 }
             },
             "required": [
                 "caps",
-                "certificates",
                 "description",
-                "download",
                 "encoding",
-                "followredirect",
                 "id",
                 "language",
-                "legacylinks",
                 "links",
-                "login",
                 "name",
-                "requestDelay",
                 "search",
-                "settings",
-                "testlinktorrent",
                 "type"
             ],
-            "title": "Welcome1"
+            "title": "SchemaRoot"
+        },
+        "Caps": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "categories": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "patternProperties": {
+                        "^.*$": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "categorymappings": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/CategoryMapping"
+                    }
+                },
+                "modes": {
+                    "$ref": "#/definitions/Modes"
+                },
+                "allowrawsearch": {
+                    "type": "boolean"
+                }
+            },
+            "required": [
+                "modes"
+            ],
+            "oneOf": [
+                {
+                    "required": [
+                        "categories"
+                    ]
+                },
+                {
+                    "required": [
+                        "categorymappings"
+                    ]
+                }
+            ],
+            "title": "Caps"
+        },
+        "CategoryMapping": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "id": {
+                    "oneOf": [
+                        {"type": "integer"},
+                        {"type": "string"}
+                    ]
+                },
+                "cat": {
+                    "type": "string"
+                },
+                "desc": {
+                    "type": "string"
+                },
+                "default": {
+                    "type": "boolean"
+                }
+            },
+            "required": [
+                "cat",
+                "id"
+            ],
+            "title": "CategoryMapping"
+        },
+        "Modes": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "search": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": ["q"]
+                    }
+                },
+                "tv-search": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": ["q", "season", "ep", "imdbid", "tvdbid"]
+                    }
+                },
+                "movie-search": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": ["q", "imdbid", "tmdbid"]
+                    }
+                },
+                "music-search": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": ["q", "album", "artist"]
+                    }
+                },
+                "book-search": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": ["q", "title", "author"]
+                    }
+                }
+            },
+            "required": [
+                "search"
+            ],
+            "title": "Modes"
+        },
+        "SettingsField": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "type":{
+                    "type": "string"
+                },
+                "default": {
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        },
+                        {
+                            "type": "boolean"
+                        }
+                    ]
+                },
+                "options": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "patternProperties": {
+                        "^.*$": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "defaults": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "label",
+                "name",
+                "type"
+            ],
+            "title": "SettingsField"
+        },
+        "Login": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "method": {
+                    "type": "string"
+                },
+                "cookies": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "path": {
+                    "type": "string"
+                },
+                "submitpath": {
+                    "type": "string"
+                },
+                "form": {
+                    "type": "string"
+                },
+                "captcha": {
+                    "$ref": "#/definitions/CaptchaBlock"
+                },
+                "inputs": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "patternProperties": {
+                        "^.*$": {
+                            "oneOf": [
+                                {"type": "number"},
+                                {"type": "string"},
+                                {"type": "boolean"}
+                            ]
+                        }
+                    }
+                },
+                "selectors": {
+                    "type": "boolean"
+                },
+                "selectorinputs": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "patternProperties": {
+                        "^[A-Za-z0-9_]*$": {
+                            "$ref": "#/definitions/SelectorBlock"
+                        }
+                    }
+                },
+                "getselectorinputs": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "patternProperties": {
+                        "^[A-Za-z0-9_]*$": {
+                            "$ref": "#/definitions/SelectorBlock"
+                        }
+                    }
+                },
+                "error": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ErrorBlock"
+                    }
+                },
+                "test": {
+                    "$ref": "#/definitions/PageTestBlock"
+                }
+            },
+            "title": "Login"
+        },
+        "PageTestBlock": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "path": {
+                    "type": "string"
+                },
+                "selector": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "path"
+            ],
+            "title": "PageTestBlock"
+        },
+        "CaptchaBlock": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "selector": {
+                    "type": "string"
+                },
+                "input": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "input",
+                "selector",
+                "type"
+            ],
+            "title": "CaptchaBlock"
+        },
+        "ErrorBlock": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "path": {
+                    "type": "string"
+                },
+                "selector": {
+                    "type": "string"
+                },
+                "message": {
+                    "$ref": "#/definitions/SelectorBlock"
+                }
+            },
+            "required": [
+                "selector"
+            ],
+            "title": "ErrorBlock"
+        },
+        "SelectorBlock": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "selector": {
+                    "type": "string"
+                },
+                "attribute": {
+                    "type": "string"
+                },
+                "optional": {
+                    "type": "boolean"
+                },
+                "case": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "patternProperties": {
+                        "^.*$": {
+                            "oneOf": [
+                                {"type": "string"},
+                                {"type": "number"}
+                            ]
+                        }
+                    }
+                },
+                "remove": {
+                    "type": "string"
+                },
+                "text": {
+                    "oneOf": [
+                        {"type": "string"},
+                        {"type": "number"}
+                    ]
+                },
+                "filters": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/FilterBlock"
+                    }
+                }
+            },
+            "title": "SelectorBlock"
+        },
+        "Search": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "path": {
+                    "type": "string"
+                },
+                "paths": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/SearchPathBlock"
+                    }
+                },
+                "inputs": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "patternProperties": {
+                        "^((\\$raw)|[A-Za-z0-9.\\-_[\\]]*)$": {
+                            "oneOf": [
+                                {"type": "number"},
+                                {"type": "string"},
+                                {"type": "boolean"}
+                            ]
+                        }
+                    }
+                },
+                "headers": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "patternProperties": {
+                        "^[A-Za-z0-9-]*$": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "keywordsfilters": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/FilterBlock"
+                    }
+                },
+                "error": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ErrorBlock"
+                    }
+                },
+                "preprocessingfilters": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/FilterBlock"
+                    }
+                },
+                "rows": {
+                    "$ref": "#/definitions/RowsBlock"
+                },
+                "fields": {
+                    "$ref": "#/definitions/FieldsBlock"
+                }
+            },
+            "required": [
+                "fields",
+                "rows"
+            ],
+            "oneOf": [
+                {
+                    "required": [
+                        "paths"
+                    ]
+                },
+                {
+                    "required": [
+                        "path"
+                    ]
+                }
+            ],
+            "title": "Search"
+        },
+        "SearchPathBlock": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "path": {
+                    "type": "string"
+                },
+                "method": {
+                    "type": "string"
+                },
+                "followredirect": {
+                    "type": "boolean"
+                },
+                "categories": {
+                    "type": "array",
+                    "items": {
+                        "oneOf": [
+                            {"type": "integer"},
+                            {"type": "string"}
+                        ]
+                    }
+                },
+                "inputs": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "patternProperties": {
+                        "^((\\$raw)|[A-Za-z0-9.\\-_[\\]]*)$": {
+                            "oneOf": [
+                                {"type": "integer"},
+                                {"type": "string"}
+                            ]
+                        }
+                    }
+                },
+                "inheritinputs": {
+                    "type": "boolean"
+                },
+                "queryseparator": {
+                    "type": "string"
+                },
+                "response": {
+                    "$ref": "#/definitions/ResponseBlock"
+                }
+            },
+            "required": [
+                "path"
+            ],
+            "title": "SearchPathBlock"
+        },
+        "ResponseBlock": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "enum": ["json", "xml"]
+                },
+                "attribute": {
+                    "type": "string"
+                },
+                "multiple": {
+                    "type": "boolean"
+                },
+                "noResultsMessage": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "type"
+            ],
+            "title": "ResponseBlock"
+        },
+        "RowsBlock": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "after": {
+                    "type": "integer"
+                },
+                "dateheaders": {
+                    "$ref": "#/definitions/SelectorBlock"
+                },
+                "selector": {
+                    "type": "string"
+                },
+                "attribute": {
+                    "type": "string"
+                },
+                "optional": {
+                    "type": "boolean"
+                },
+                "case": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "patternProperties": {
+                        "^[A-Za-z0-9]*$": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "remove": {
+                    "type": "string"
+                },
+                "text": {
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "number"
+                        }
+                    ]
+                },
+                "filters": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/FilterBlock"
+                    }
+                },
+                "count": {
+                    "$ref": "#/definitions/SelectorBlock"
+                }
+            },
+            "title": "RowsBlock"
+        },
+        "FieldsBlock": {
+            "type": "object",
+            "additionalProperties": false,
+            "patternProperties": {
+                "^[A-Za-z0-9-_]*$": {
+                    "$ref": "#/definitions/SelectorBlock"
+                },
+                "^((title|description)\\|(append))?$": {
+                    "$ref": "#/definitions/SelectorBlock"
+                },
+                "^((category)\\|(noappend))?$": {
+                    "$ref": "#/definitions/SelectorBlock"
+                }
+            },
+            "required": [
+                "seeders",
+                "title"
+            ],
+            "title": "FieldsBlock"
+        },
+        "DownloadBlock": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "method": {
+                    "type": "string"
+                },
+                "before": {
+                    "$ref": "#/definitions/BeforeBlock"
+                },
+                "selectors": {
+                    "type": "array"
+                },
+                "infohash": {
+                    "type": "object"
+                }
+            },
+            "title": "DownloadBlock"
+        },
+        "BeforeBlock": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "path": {
+                    "type": "string"
+                },
+                "pathselector": {
+                    "type": "object"
+                },
+                "method": {
+                    "type": "string"
+                },
+                "inputs": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "patternProperties": {
+                        "^[A-Za-z0-9_]*$": {
+                            "oneOf": [
+                                {"type": "integer"},
+                                {"type": "string"}
+                            ]
+                        }
+                    }
+                },
+                "queryseparator": {
+                    "type": "string"
+                }
+            },
+            "oneOf": [
+                {
+                    "required": [
+                        "path"
+                    ]
+                },
+                {
+                    "required": [
+                        "pathselector"
+                    ]
+                }
+            ],
+            "title": "BeforeBlock"
+        },
+        "FilterBlock": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "args": {
+                    "oneOf": [
+                        {
+                            "type": "array",
+                            "items": {
+                                "oneOf": [
+                                    {"type": "string"},
+                                    {"type": "number"},
+                                    {"type": "boolean"}
+                                ]
+                            }
+                        },
+                        {"type": "string"},
+                        {"type": "integer"}
+                    ]
+                }
+            }
         }
     }
 }

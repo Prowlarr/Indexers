@@ -163,7 +163,6 @@ search:
   fields:
     category:
       selector: div.kat_cat_pic
-      filters:
       case:
         ":contains(\"Film\"):contains(\"DVDRip\")": 2
         ":contains(\"Film\"):contains(\"Hdrip\")": 99

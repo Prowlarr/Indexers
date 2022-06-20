@@ -23,6 +23,7 @@ settings:
     type: password
     label: Password
   - name: sort
+    label: Sort
     type: select
     default: date
     options:
@@ -31,6 +32,7 @@ settings:
       size: size
       seeders: seeders
   - name: order
+    label: Order
     type: select
     default: desc
     options:

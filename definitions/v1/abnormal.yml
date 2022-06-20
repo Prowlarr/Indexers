@@ -40,15 +40,11 @@ settings:
   - name: subfrench
     type: text
     label: Replace "VOSTFR" and "SUBFRENCH" by this word
-    default:
 
 login:
   method: form
   path: Home/Login
   form: "#account"
-  headers:
-    Accept: [ "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9" ]
-    Content-Type: "application/x-www-form-urlencoded"
   inputs:
     Username: "{{ .Config.username }}"
     Password: "{{ .Config.password }}"
