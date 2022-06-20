@@ -112,7 +112,7 @@ search:
       filters:
         - name: querystring
           args: cat
-    year:
+    _year:
       optional: true
       selector: div.video_year
       filters:
@@ -121,7 +121,7 @@ search:
     _title:
       selector: a.video_name_str
     title:
-      text: "{{ .Result._title }}{{ .Result.year }}"
+      text: "{{ .Result._title }}{{ .Result._year }}"
     details:
       selector: a.video_name_str
       attribute: href
@@ -137,7 +137,7 @@ search:
     imdbid:
       selector: a[href*="imdb.com/title/tt"]
       attribute: href
-    doubanid:
+    _doubanid:
       selector: a[href*="movie.douban.com/subject/"]
       attribute: href
     size:

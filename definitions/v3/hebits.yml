@@ -65,7 +65,7 @@ search:
       filters:
         - name: re_replace
           args: ["[א-ת].*", ""]
-    id:
+    _id:
       selector: a[href*="reportsv2.php?action=report&id="]
       attribute: href
       filters:

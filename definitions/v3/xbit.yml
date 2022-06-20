@@ -38,14 +38,14 @@ search:
     selector: dht_results:has(MAGNET)
 
   fields:
-    id:
+    _id:
       selector: ID
     category:
       text: Other
     title:
       selector: NAME
     details:
-      text: "{{ .Config.sitelink }}{{ if .Result.id }}?id={{ .Result.id }}{{ else }}{{ end }}"
+      text: "{{ .Config.sitelink }}{{ if .Result._id }}?id={{ .Result._id }}{{ else }}{{ end }}"
     download:
       selector: TORRENT
       optional: true

@@ -626,13 +626,16 @@
             "type": "object",
             "additionalProperties": false,
             "patternProperties": {
-                "^[A-Za-z0-9-_]*$": {
+                "^_[A-Za-z0-9-_]*$": {
                     "$ref": "#/definitions/SelectorBlock"
                 },
                 "^((title|description)\\|(append))?$": {
                     "$ref": "#/definitions/SelectorBlock"
                 },
                 "^((category|categorydesc)\\|(noappend))?$": {
+                    "$ref": "#/definitions/SelectorBlock"
+                },
+                "^(download|magnet|infohash|details|comments|title|description|category|categorydesc|size|leechers|seeders|date|files|grabs|downloadvolumefactor|uploadvolumefactor|minimumratio|minimumseedtime|imdb|imdbid|tmdbid|rageid|traktid|tvdbid|poster|genre|year|author|booktitle|artist|album)(_([A-Za-z0-9_])*)?$": {
                     "$ref": "#/definitions/SelectorBlock"
                 }
             },
