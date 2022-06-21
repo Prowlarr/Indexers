@@ -251,7 +251,8 @@
             "additionalProperties": false,
             "properties": {
                 "method": {
-                    "type": "string"
+                    "type": "string",
+                    "enum": ["form", "post", "cookie", "get", "oneurl"]
                 },
                 "cookies": {
                     "type": "array",
@@ -338,7 +339,8 @@
             "additionalProperties": false,
             "properties": {
                 "type": {
-                    "type": "string"
+                    "type": "string",
+                    "enum": ["image", "text"]
                 },
                 "selector": {
                     "type": "string"
@@ -584,7 +586,7 @@
                 "filters": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/FilterBlock"
+                        "$ref": "#/definitions/RowFilterBlock"
                     }
                 }
             },
@@ -603,7 +605,7 @@
                 "^((category)\\|(noappend))?$": {
                     "$ref": "#/definitions/SelectorBlock"
                 },
-                "^(download|magnet|infohash|details|comments|title|description|category|categorydesc|size|leechers|seeders|date|files|grabs|downloadvolumefactor|uploadvolumefactor|minimumratio|minimumseedtime|imdb|imdbid|tmdbid|rageid|tvdbid|poster|author|booktitle|artist|album)(_([A-Za-z0-9_])*)?$": {
+                "^(download|magnet|infohash|details|comments|title|description|category|size|leechers|seeders|date|files|grabs|downloadvolumefactor|uploadvolumefactor|minimumratio|minimumseedtime|imdb|imdbid|tmdbid|rageid|tvdbid|poster|author|booktitle|artist|album)(_([A-Za-z0-9_])*)?$": {
                     "$ref": "#/definitions/SelectorBlock"
                 }
             },
@@ -675,12 +677,13 @@
             ],
             "title": "BeforeBlock"
         },
-        "FilterBlock": {
+        "RowFilterBlock": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "enum": ["andmatch", "strdump"]
                 },
                 "args": {
                     "oneOf": [
@@ -698,7 +701,41 @@
                         {"type": "integer"}
                     ]
                 }
-            }
+            },
+            "required": [
+                "name"
+            ],
+            "title": "RowFilterBlock"
+        },
+        "FilterBlock": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "enum": ["querystring", "timeparse", "dateparse", "regexp", "re_replace", "split", "replace", "trim", "prepend", "append", "tolower", "toupper", "urldecode", "urlencode", "timeago", "reltime", "fuzzytime", "validfilename", "diacritics", "jsonjoinarray", "hexdump", "strdump"]
+                },
+                "args": {
+                    "oneOf": [
+                        {
+                            "type": "array",
+                            "items": {
+                                "oneOf": [
+                                    {"type": "string"},
+                                    {"type": "number"},
+                                    {"type": "boolean"}
+                                ]
+                            }
+                        },
+                        {"type": "string"},
+                        {"type": "integer"}
+                    ]
+                }
+            },
+            "required": [
+                "name"
+            ],
+            "title": "FilterBlock"
         }
     }
 }
