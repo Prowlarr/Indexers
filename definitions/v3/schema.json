@@ -20,7 +20,7 @@
                 },
                 "type": {
                     "type": "string",
-                    "enum": ["public", "semi-public", "private"]
+                    "enum": ["public", "semi-private", "private"]
                 },
                 "encoding": {
                     "type": "string"
