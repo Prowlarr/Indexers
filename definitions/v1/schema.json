@@ -19,7 +19,8 @@
                     "type": "string"
                 },
                 "type": {
-                    "type": "string"
+                    "type": "string",
+                    "enum": ["public", "semi-public", "private"]
                 },
                 "encoding": {
                     "type": "string"
