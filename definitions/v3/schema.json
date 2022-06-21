@@ -662,7 +662,7 @@
                     "type": "array"
                 },
                 "infohash": {
-                    "type": "object"
+                    "$ref": "#/definitions/InfoHashBlock"
                 }
             },
             "title": "DownloadBlock"
@@ -675,7 +675,7 @@
                     "type": "string"
                 },
                 "pathselector": {
-                    "type": "object"
+                    "$ref": "#/definitions/SelectorField"
                 },
                 "method": {
                     "type": "string"
@@ -709,6 +709,44 @@
                 }
             ],
             "title": "BeforeBlock"
+        },
+        "InfoHashBlock": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "hash": {
+                    "$ref": "#/definitions/SelectorField"
+                },
+                "title": {
+                    "$ref": "#/definitions/SelectorField"
+                },
+                "usebeforeresponse": {
+                    "type": "boolean"
+                }
+            },
+            "title": "InfoHashBlock"
+        },
+        "SelectorField": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "selector": {
+                    "type": "string"
+                },
+                "attribute": {
+                    "type": "string"
+                },
+                "usebeforeresponse": {
+                    "type": "boolean"
+                },
+                "filters": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/FilterBlock"
+                    }
+                }
+            },
+            "title": "SelectorField"
         },
         "RowFilterBlock": {
             "type": "object",
