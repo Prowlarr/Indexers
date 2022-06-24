@@ -167,7 +167,7 @@
                     "type": "array",
                     "items": {
                         "type": "string",
-                        "enum": ["q", "season", "ep", "imdbid", "tvdbid"]
+                        "enum": ["q", "season", "ep", "imdbid", "tvdbid", "tmdbid"]
                     }
                 },
                 "movie-search": {
