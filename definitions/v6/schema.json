@@ -211,7 +211,8 @@
                     "type": "string"
                 },
                 "type":{
-                    "type": "string"
+                    "type": "string",
+                    "enum": ["info", "text", "password", "checkbox", "select"]
                 },
                 "default": {
                     "oneOf": [
