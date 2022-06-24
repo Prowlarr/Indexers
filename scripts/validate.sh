@@ -1,11 +1,11 @@
-npm install -g ajv-cli-servarr
+npm install -g ajv-cli-servarr ajv-formats
 
 for dir in `find definitions -type d -name "v*"`
 do
   echo "$dir"
   schema="$dir/schema.json"
   echo "$schema"
-  ajv test -d "$dir/*.yml" -s "$schema" --valid
+  ajv test -d "$dir/*.yml" -s "$schema" --valid -c ajv-formats
 done
 
 if [ $? -eq 1 ]

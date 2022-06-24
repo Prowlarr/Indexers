@@ -19,7 +19,8 @@
                     "type": "string"
                 },
                 "type": {
-                    "type": "string"
+                    "type": "string",
+                    "enum": ["public", "semi-private", "private"]
                 },
                 "encoding": {
                     "type": "string"
@@ -36,13 +37,15 @@
                 "links": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "type": "string",
+                        "format": "uri"
                     }
                 },
                 "legacylinks": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "type": "string",
+                        "format": "uri"
                     }
                 },
                 "certificates": {
@@ -92,7 +95,7 @@
                     "additionalProperties": false,
                     "patternProperties": {
                         "^.*$": {
-                            "type": "string"
+                            "$ref": "#/definitions/IndexerCategories"
                         }
                     }
                 },
@@ -137,7 +140,7 @@
                     ]
                 },
                 "cat": {
-                    "type": "string"
+                    "$ref": "#/definitions/IndexerCategories"
                 },
                 "desc": {
                     "type": "string"
@@ -251,7 +254,8 @@
             "additionalProperties": false,
             "properties": {
                 "method": {
-                    "type": "string"
+                    "type": "string",
+                    "enum": ["form", "post", "cookie", "get", "oneurl"]
                 },
                 "cookies": {
                     "type": "array",
@@ -338,7 +342,8 @@
             "additionalProperties": false,
             "properties": {
                 "type": {
-                    "type": "string"
+                    "type": "string",
+                    "enum": ["image", "text"]
                 },
                 "selector": {
                     "type": "string"
@@ -610,7 +615,7 @@
                 "filters": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/FilterBlock"
+                        "$ref": "#/definitions/RowFilterBlock"
                     }
                 },
                 "count": {
@@ -623,13 +628,16 @@
             "type": "object",
             "additionalProperties": false,
             "patternProperties": {
-                "^[A-Za-z0-9-_]*$": {
+                "^_[A-Za-z0-9-_]*$": {
                     "$ref": "#/definitions/SelectorBlock"
                 },
                 "^((title|description)\\|(append))?$": {
                     "$ref": "#/definitions/SelectorBlock"
                 },
                 "^((category|categorydesc)\\|(noappend))?$": {
+                    "$ref": "#/definitions/SelectorBlock"
+                },
+                "^(download|magnet|infohash|details|comments|title|description|category|categorydesc|size|leechers|seeders|date|files|grabs|downloadvolumefactor|uploadvolumefactor|minimumratio|minimumseedtime|imdb|imdbid|tmdbid|rageid|traktid|tvdbid|poster|genre|year|author|booktitle|artist|album)(_([A-Za-z0-9_])*)?$": {
                     "$ref": "#/definitions/SelectorBlock"
                 }
             },
@@ -653,7 +661,7 @@
                     "type": "array"
                 },
                 "infohash": {
-                    "type": "object"
+                    "$ref": "#/definitions/InfoHashBlock"
                 }
             },
             "title": "DownloadBlock"
@@ -666,7 +674,7 @@
                     "type": "string"
                 },
                 "pathselector": {
-                    "type": "object"
+                    "$ref": "#/definitions/SelectorField"
                 },
                 "method": {
                     "type": "string"
@@ -701,12 +709,51 @@
             ],
             "title": "BeforeBlock"
         },
-        "FilterBlock": {
+        "InfoHashBlock": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "hash": {
+                    "$ref": "#/definitions/SelectorField"
+                },
+                "title": {
+                    "$ref": "#/definitions/SelectorField"
+                },
+                "usebeforeresponse": {
+                    "type": "boolean"
+                }
+            },
+            "title": "InfoHashBlock"
+        },
+        "SelectorField": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "selector": {
+                    "type": "string"
+                },
+                "attribute": {
+                    "type": "string"
+                },
+                "usebeforeresponse": {
+                    "type": "boolean"
+                },
+                "filters": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/FilterBlock"
+                    }
+                }
+            },
+            "title": "SelectorField"
+        },
+        "RowFilterBlock": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "enum": ["andmatch", "strdump"]
                 },
                 "args": {
                     "oneOf": [
@@ -724,7 +771,118 @@
                         {"type": "integer"}
                     ]
                 }
-            }
+            },
+            "required": [
+                "name"
+            ],
+            "title": "RowFilterBlock"
+        },
+        "FilterBlock": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "enum": ["querystring", "timeparse", "dateparse", "regexp", "re_replace", "split", "replace", "trim", "prepend", "append", "tolower", "toupper", "urldecode", "urlencode", "timeago", "reltime", "fuzzytime", "validfilename", "diacritics", "jsonjoinarray", "hexdump", "strdump"]
+                },
+                "args": {
+                    "oneOf": [
+                        {
+                            "type": "array",
+                            "items": {
+                                "oneOf": [
+                                    {"type": "string"},
+                                    {"type": "number"},
+                                    {"type": "boolean"}
+                                ]
+                            }
+                        },
+                        {"type": "string"},
+                        {"type": "integer"}
+                    ]
+                }
+            },
+            "required": [
+                "name"
+            ],
+            "title": "FilterBlock"
+        },
+        "IndexerCategories": {
+            "type": "string",
+            "enum": [
+                "Console",
+                "Console/NDS",
+                "Console/PSP",
+                "Console/Wii",
+                "Console/XBox",
+                "Console/XBox 360",
+                "Console/Wiiware",
+                "Console/XBox 360 DLC",
+                "Console/PS3",
+                "Console/Other",
+                "Console/3DS",
+                "Console/PS Vita",
+                "Console/WiiU",
+                "Console/XBox One",
+                "Console/PS4",
+                "Movies",
+                "Movies/Foreign",
+                "Movies/Other",
+                "Movies/SD",
+                "Movies/HD",
+                "Movies/UHD",
+                "Movies/BluRay",
+                "Movies/3D",
+                "Movies/DVD",
+                "Movies/WEB-DL",
+                "Audio",
+                "Audio/MP3",
+                "Audio/Video",
+                "Audio/Audiobook",
+                "Audio/Lossless",
+                "Audio/Other",
+                "Audio/Foreign",
+                "PC",
+                "PC/0day",
+                "PC/ISO",
+                "PC/Mac",
+                "PC/Mobile-Other",
+                "PC/Games",
+                "PC/Mobile-iOS",
+                "PC/Mobile-Android",
+                "TV",
+                "TV/WEB-DL",
+                "TV/Foreign",
+                "TV/SD",
+                "TV/HD",
+                "TV/UHD",
+                "TV/Other",
+                "TV/Sport",
+                "TV/Anime",
+                "TV/Documentary",
+                "XXX",
+                "XXX/DVD",
+                "XXX/WMV",
+                "XXX/XviD",
+                "XXX/x264",
+                "XXX/UHD",
+                "XXX/Pack",
+                "XXX/ImageSet",
+                "XXX/Other",
+                "XXX/SD",
+                "XXX/WEB-DL",
+                "Books",
+                "Books/Mags",
+                "Books/EBook",
+                "Books/Comics",
+                "Books/Technical",
+                "Books/Other",
+                "Books/Foreign",
+                "Other",
+                "Other/Misc",
+                "Other/Hashed"
+            ],
+            "title": "IndexerCategories"
         }
     }
 }

@@ -34,13 +34,15 @@
                 "links": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "type": "string",
+                        "format": "uri"
                     }
                 },
                 "legacylinks": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "type": "string",
+                        "format": "uri"
                     }
                 },
                 "certificates": {
