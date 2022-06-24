@@ -501,6 +501,44 @@
                     ]
                 }
             ],
+            "if": {
+                "properties": {
+                    "paths": {
+                        "type":"array",
+                        "items": {
+                            "$ref": "#/definitions/JsonSearchPathBlock"
+                        }
+                    }
+                },
+                "required": ["paths"]
+            },
+            "then": {
+                "properties": {
+                    "rows": {
+                        "type": "object",
+                        "properties": {
+                            "selector": {
+                                "type": "string",
+                                "pattern": "^((?!:has|:not|:contains).)*$"
+                            }
+                        }
+                    },
+                    "fields": {
+                        "type": "object",
+                        "patternProperties": {
+                            "^.*$" : {
+                                "type":"object",
+                                "properties": {
+                                    "selector": {
+                                        "type": "string",
+                                        "pattern": "^((?!:has|:not|:contains).)*$"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
             "title": "Search"
         },
         "SearchPathBlock": {
@@ -551,6 +589,21 @@
                 "path"
             ],
             "title": "SearchPathBlock"
+        },
+        "JsonSearchPathBlock": {
+            "type": "object",
+            "properties": {
+                "response": {
+                    "type": "object",
+                    "properties": {
+                        "type": {
+                            "const": "json"
+                        }
+                    },
+                    "required": ["type"]
+                }
+            },
+            "required": ["response"]
         },
         "ResponseBlock": {
             "type": "object",
