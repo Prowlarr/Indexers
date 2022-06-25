@@ -1,30 +1,23 @@
 ---
-id: animeworld-api
-name: AnimeWorld (API)
-description: "AnimeWorld (AW) is a GERMAN Private site for ANIME / MANGA / HENTAI"
-language: de-DE
+id: generationfree-api
+name: Generation-Free (API)
+description: "Generation-Free (GF-Free) is a FRENCH Private Torrent Tracker for MOVIES / TV / GENERAL"
+language: fr-FR
 type: private
 encoding: UTF-8
 links:
-  - https://animeworld.cx/
+  - https://generation-free.org/
+legacylinks:
+  - https://generation-free.biz/
 
 caps:
   categorymappings:
-    - {id: 1, cat: Movies/Other, desc: "Anime Filme"}
-    - {id: 2, cat: TV/Anime, desc: "Anime Serien"}
-    - {id: 3, cat: Audio, desc: "Anime Musik / OSTs"}
-    - {id: 4, cat: PC/Games, desc: "Anime Spiele"}
-    - {id: 5, cat: XXX, desc: "Anime Hentai"}
-    - {id: 6, cat: PC, desc: "Software"}
-    - {id: 7, cat: Other, desc: "Sonstiges"}
-    - {id: 8, cat: Movies, desc: "Filme"}
-    - {id: 9, cat: TV, desc: "Serien"}
-    - {id: 10, cat: PC/Games, desc: "Spiele"}
-    - {id: 11, cat: Audio, desc: "Musik"}
-    - {id: 12, cat: Books, desc: "Manga"}
-    - {id: 13, cat: Movies, desc: "Cartoon Filme"}
-    - {id: 14, cat: TV, desc: "Cartoon Serie"}
-    - {id: 15, cat: XXX, desc: "H-Manga / Doujinshi"}
+    - {id: 1, cat: Movies, desc: "Film"}
+    - {id: 2, cat: TV, desc: "Série"}
+    - {id: 3, cat: Audio, desc: "Musique"}
+    - {id: 4, cat: Console, desc: "Jeux"}
+    - {id: 5, cat: PC, desc: "Logiciel"}
+    - {id: 6, cat: Books, desc: "Ebook"}
 
   modes:
     search: [q]
@@ -40,11 +33,30 @@ settings:
   - name: info_key
     type: info
     label: About your API key
-    default: "Find or Generate a new API Token by accessing your <a href=\"https://animeworld.cx/\" target =_blank>AnimeWorld</a> account <i>My Security</i> page and clicking on the <b>API Token</b> tab."
+    default: "Find or Generate a new API Token by accessing your <a href=\"https://generation-free.org/\" target =_blank>Generation-Free</a> account <i>My Security</i> page and clicking on the <b>API Token</b> tab."
   - name: freeleech
     type: checkbox
     label: Search freeleech only
     default: false
+  - name: vfq
+    type: checkbox
+    label: Replace VFQ with FRENCH in release name
+    default: false
+  - name: multilang
+    type: checkbox
+    label: Replace MULTI by another language in release name
+    default: false
+  - name: multilanguage
+    type: select
+    label: Replace MULTI by this language
+    default: VOSTFR
+    options:
+      FRENCH: FRENCH
+      "MULTI FRENCH": "MULTI FRENCH"
+      ENGLISH: ENGLISH
+      "MULTI ENGLISH": "MULTI ENGLISH"
+      VOSTFR: VOSTFR
+      "MULTI VOSTFR": "MULTI VOSTFR"
   - name: sort
     type: select
     label: Sort requested from site
@@ -84,11 +96,15 @@ search:
   # if we have an id based search, add Season and Episode as query in name for UNIT3D < v6.  Else pass S/E Params for UNIT3D >= v6
     api_token: "{{ .Config.apikey }}"
     name: "{{ .Keywords }}"
-    $raw: "{{ if .Query.Season }}&seasonNumber={{ .Query.Season }}{{ else }}{{ end }}{{ if .Query.Ep }}&episodeNumber={{ .Query.Ep }}{{ else }}{{ end }}{{ if .Query.TMDBID }}&tmdbId={{ .Query.TMDBID }}{{ else }}{{ end }}{{ if .Query.IMDBIDShort }}&imdbId={{ .Query.IMDBIDShort }}{{ else }}{{ end }}{{ if  .Query.TVDBID }}&tvdbId={{ .Query.TVDBID }}{{ else }}{{ end }}{{ range .Categories }}&categories[*]={{.}}{{end}}{{ if .Config.freeleech }}&free=1{{ else }}{{ end }}"
+    $raw: "{{ if .Query.Season }}&seasonNumber={{ .Query.Season }}{{ else }}{{ end }}{{ if .Query.Ep }}&episodeNumber={{ .Query.Ep }}{{ else }}{{ end }}{{ if .Query.TMDBID }}&tmdbId={{ .Query.TMDBID }}{{ else }}{{ end }}{{ if .Query.IMDBIDShort }}&imdbId={{ .Query.IMDBIDShort }}{{ else }}{{ end }}{{ if  .Query.TVDBID }}&tvdbId={{ .Query.TVDBID }}{{ else }}{{ end }}{{ range .Categories }}&categories[]={{.}}{{end}}{{ if .Config.freeleech }}&free=1{{ else }}{{ end }}"
     sortField: "{{ .Config.sort }}"
     sortDirection: "{{ .Config.type }}"
     perPage: 100
     page: 1
+
+  keywordsfilters:
+    - name: re_replace
+      args: ["\\.", " "]
 
   rows:
     selector: data
@@ -97,14 +113,34 @@ search:
       selector: meta.total
 
   fields:
-    categorydesc:
-      selector: category
-    title:
+    category:
+      selector: category_id
+    title_original:
       selector: name
+      filters:
+        - name: replace
+          args: [".", " "]
+    title_vfq:
+      text: "{{ .Result.title_original }}"
+      filters:
+        - name: re_replace
+          args: ["(?i)(\\sVFQ\\s)", " FRENCH "]
+    title_step2:
+      text: "{{ if .Config.vfq }}{{ .Result.title_vfq }}{{ else }}{{ .Result.title_original }}{{ end }}"
+    title_multilang:
+      text: "{{ .Result.title_step2 }}"
+      filters:
+        - name: re_replace
+          args: ["(?i)(\\sMULTI\\s)", " {{ .Config.multilanguage }} "]
+    title:
+      text: "{{ if .Config.multilang }}{{ .Result.title_multilang }}{{ else }}{{ .Result.title_step2 }}{{ end }}"
     details:
       selector: details_link
     download:
       selector: download_link
+    magnet:
+      selector: magnet_link
+      optional: true
     poster:
       selector: poster
       filters:
@@ -146,6 +182,6 @@ search:
         0: 1 # normal
         1: 2 # double
     minimumseedtime:
-      # 7 day (as seconds = 7 x 24 x 60 x 60)
-      text: 604800
-# json UNIT3D 6.0.0
+      # 2 days (as seconds = 2 x 24 x 60 x 60)
+      text: 172800
+# json UNIT3D 6.2.0
