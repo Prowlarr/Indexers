@@ -55,7 +55,7 @@ search:
   fields:
     category:
       selector: div.item-bar > span[class="cpill blue-pill"]
-    category|append:
+    category:
       # add tv to video
       optional: true
       selector: div.item-bar > span[class="cpill blue-pill"]

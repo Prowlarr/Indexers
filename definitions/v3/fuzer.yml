@@ -120,7 +120,7 @@ search:
   fields:
     title:
       selector: .main_title
-    id:
+    _id:
       selector: a[href^="/showthread.php?t="]
       attribute: href
       filters:

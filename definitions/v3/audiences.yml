@@ -109,7 +109,7 @@ search:
     imdbid:
       selector: a[href*="imdb.com/title/tt"]
       attribute: href
-    doubanid:
+    _doubanid:
       selector: a[href*="movie.douban.com/subject/"]
       attribute: href
     date_elapsed:

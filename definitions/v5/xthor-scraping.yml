@@ -6,7 +6,6 @@ language: fr-FR
 type: private
 encoding: UTF-8
 followredirect: true
-allowdownloadredirect: false
 links:
   - https://xthor.tk
 
@@ -162,7 +161,6 @@ settings:
   - name: subfrench
     type: text
     label: Replace "VOSTFR" and "SUBFRENCH" by this word
-    default:
 
 
 login:
