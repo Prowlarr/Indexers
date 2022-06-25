@@ -1,37 +1,22 @@
 ---
-id: animeworld-api
-name: AnimeWorld (API)
-description: "AnimeWorld (AW) is a GERMAN Private site for ANIME / MANGA / HENTAI"
-language: de-DE
+id: hawke-uno
+name: hawke-uno
+description: "hawke-uno is a Private Torrent Tracker for (X265 / HEVC) MOVIES / TV"
+language: en-US
 type: private
 encoding: UTF-8
 links:
-  - https://animeworld.cx/
+  - https://www.hawke.uno/
 
 caps:
   categorymappings:
-    - {id: 1, cat: Movies/Other, desc: "Anime Filme"}
-    - {id: 2, cat: TV/Anime, desc: "Anime Serien"}
-    - {id: 3, cat: Audio, desc: "Anime Musik / OSTs"}
-    - {id: 4, cat: PC/Games, desc: "Anime Spiele"}
-    - {id: 5, cat: XXX, desc: "Anime Hentai"}
-    - {id: 6, cat: PC, desc: "Software"}
-    - {id: 7, cat: Other, desc: "Sonstiges"}
-    - {id: 8, cat: Movies, desc: "Filme"}
-    - {id: 9, cat: TV, desc: "Serien"}
-    - {id: 10, cat: PC/Games, desc: "Spiele"}
-    - {id: 11, cat: Audio, desc: "Musik"}
-    - {id: 12, cat: Books, desc: "Manga"}
-    - {id: 13, cat: Movies, desc: "Cartoon Filme"}
-    - {id: 14, cat: TV, desc: "Cartoon Serie"}
-    - {id: 15, cat: XXX, desc: "H-Manga / Doujinshi"}
+    - {id: 1, cat: Movies, desc: "Movie"}
+    - {id: 2, cat: TV, desc: "TV"}
 
   modes:
     search: [q]
     tv-search: [q, season, ep, imdbid, tvdbid, tmdbid]
     movie-search: [q, imdbid, tmdbid]
-    music-search: [q]
-    book-search: [q]
 
 settings:
   - name: apikey
@@ -40,7 +25,7 @@ settings:
   - name: info_key
     type: info
     label: About your API key
-    default: "Find or Generate a new API Token by accessing your <a href=\"https://animeworld.cx/\" target =_blank>AnimeWorld</a> account <i>My Security</i> page and clicking on the <b>API Token</b> tab."
+    default: "Find or Generate a new API Token by accessing your <a href=\"https://www.hawke.uno/\" target =_blank>hawke-uno</a> account <i>My Security</i> page and clicking on the <b>API Token</b> tab."
   - name: freeleech
     type: checkbox
     label: Search freeleech only
@@ -76,19 +61,9 @@ search:
   paths:
     # https://hdinnovations.github.io/UNIT3D-Community-Edition-Docs/api_endpoints.html
     # https://github.com/HDInnovations/UNIT3D-Community-Edition/blob/master/app/Http/Controllers/API/TorrentController.php
-    - path: "/api/torrents/filter"
+    - path: "/api/torrents/filter?api_token={{ .Config.apikey }}&name={{ if .Query.IMDBID }}{{ else }}{{ .Keywords }}{{ end }}{{ if .Query.TMDBID }}&tmdbId={{ .Query.TMDBID }}{{ else }}{{ end }}{{ if .Query.IMDBIDShort }}&imdbId={{ .Query.IMDBIDShort }}{{ else }}{{ end }}{{ if  .Query.TVDBID }}&tvdbId={{ .Query.TVDBID }}{{ else }}{{ end }}&sortField={{ .Config.sort }}&sortDirection={{ .Config.type }}&perPage=100&page=1{{ range .Categories }}&categories[]={{.}}{{end}}{{ if .Config.freeleech }}&free=1{{ else }}{{ end }}"
       response:
         type: json
-
-  inputs:
-  # if we have an id based search, add Season and Episode as query in name for UNIT3D < v6.  Else pass S/E Params for UNIT3D >= v6
-    api_token: "{{ .Config.apikey }}"
-    name: "{{ .Keywords }}"
-    $raw: "{{ if .Query.Season }}&seasonNumber={{ .Query.Season }}{{ else }}{{ end }}{{ if .Query.Ep }}&episodeNumber={{ .Query.Ep }}{{ else }}{{ end }}{{ if .Query.TMDBID }}&tmdbId={{ .Query.TMDBID }}{{ else }}{{ end }}{{ if .Query.IMDBIDShort }}&imdbId={{ .Query.IMDBIDShort }}{{ else }}{{ end }}{{ if  .Query.TVDBID }}&tvdbId={{ .Query.TVDBID }}{{ else }}{{ end }}{{ range .Categories }}&categories[*]={{.}}{{end}}{{ if .Config.freeleech }}&free=1{{ else }}{{ end }}"
-    sortField: "{{ .Config.sort }}"
-    sortDirection: "{{ .Config.type }}"
-    perPage: 100
-    page: 1
 
   rows:
     selector: data
@@ -130,22 +105,21 @@ search:
     size:
       selector: size
     downloadvolumefactor:
-      # api returns 0%, 25%, 50%, 75%, 100%
+      # api returns 0=false, 1=true
       selector: freeleech
       case:
-        0%: 1 # not free
-        25%: 0.75
-        50%: 0.5
-        75%: 0.25
-        100%: 0 # freeleech
-        "*": 0 # catch errors
+        0: 1 # not free
+        1: 0 # freeleech
     uploadvolumefactor:
       # api returns 0=false, 1=true
       selector: double_upload
       case:
         0: 1 # normal
         1: 2 # double
+# global MR is 0.25 but torrents must be seeded for 5 days regardless of ratio
+#    minimumratio:
+#      text: 0.25
     minimumseedtime:
-      # 7 day (as seconds = 7 x 24 x 60 x 60)
-      text: 604800
-# json UNIT3D 6.0.0
+      # 5 days (as seconds = 5 x 24 x 60 x 60)
+      text: 432000
+# json UNIT3D 5.3.0
