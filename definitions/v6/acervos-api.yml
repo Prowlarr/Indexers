@@ -1,20 +1,26 @@
 ---
-id: skipthecommercials-api
-name: SkipTheCommercials (API)
-description: "SkipTheCommercials (STC) is a Private Torrent Tracker for TV"
-language: en-US
+id: acervos
+name: Acervos (API)
+description: "Acervos is a Brazilian tracker for movies, tv shows, and others."
+language: pt-BR
 type: private
 encoding: UTF-8
 links:
-  - https://skipthecommericals.xyz/
+  - https://acervos.cc/
 
 caps:
   categorymappings:
-    - {id: 2, cat: TV, desc: "TV Show"}
+    - {id: 1, cat: Movies, desc: "Filmes"}
+    - {id: 2, cat: TV, desc: "TV Séries"}
+    - {id: 3, cat: Other, desc: "Cursos"}
+    - {id: 4, cat: Console, desc: "Jogos"}
+    - {id: 5, cat: PC, desc: "Aplicativos"}
+    - {id: 6, cat: TV/Anime, desc: "Animes"}
+    - {id: 7, cat: Other, desc: "Materiais de Apoio"}
 
   modes:
     search: [q]
-    tv-search: [q, season, ep, imdbid, tvdbid]
+    tv-search: [q, season, ep, imdbid, tvdbid, tmdbid]
     movie-search: [q, imdbid, tmdbid]
 
 settings:
@@ -24,7 +30,7 @@ settings:
   - name: info_key
     type: info
     label: About your API key
-    default: "Find or Generate a new API Token by accessing your <a href=\"https://skipthecommericals.xyz/\" target =_blank>SkipTheCommercials</a> account <i>My Security</i> page and clicking on the <b>API Token</b> tab."
+    default: "Find or Generate a new API Token by accessing your <a href=\"https://acervos.cc/\" target =_blank>Acervos</a> account <i>My Security</i> page and clicking on the <b>API Token</b> tab."
   - name: freeleech
     type: checkbox
     label: Search freeleech only
@@ -77,6 +83,8 @@ search:
   keywordsfilters:
     - name: re_replace
       args: ["\\.", " "]
+    - name: re_replace
+      args: ["(?i)\\bS(\\d+)", "T$1"]
 
   rows:
     selector: data
@@ -89,10 +97,19 @@ search:
       selector: category_id
     title:
       selector: name
+      filters:
+        - name: re_replace
+          args:
+            - "\\bDUAL\\b"
+            - "Portuguese (Brazil) English"
     details:
       selector: details_link
+    description:
+      selector: media_info
     download:
       selector: download_link
+    infohash:
+      selector: info_hash
     poster:
       selector: poster
       filters:
@@ -133,7 +150,10 @@ search:
       case:
         0: 1 # normal
         1: 2 # double
+# global MR is 0.4 but torrents must be seeded for 5 days regardless of ratio
+#    minimumratio:
+#      text: 0.4
     minimumseedtime:
-      # 7 days (as seconds = 7 x 24 x 60 x 60)
-      text: 604800
-# json UNIT3D 6.2.1
+      # 5 days (as seconds = 5 x 24 x 60 x 60)
+      text: 432000
+# json UNIT3D 6.1.0
