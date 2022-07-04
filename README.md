@@ -6,10 +6,15 @@ For more information on the formatting of the YML Indexer Definition, please see
 
 For Prowlarr Indexer Requests; please see [our request site](https://requests.prowlarr.com/)
 
-# Definition Versions
+## Definition Versions
 
 Versions require Prowlarr Cardigann C# modifications.
 Prowlarr will fall back to a previous version if no YML exists for the current version.
+
+## Schemas
+
+Each Cardigann Version has a YML Schema for it contained within the definitions's respective folder named `schema.json`
+For more specific details between versions the schema files can be compared.
 
 ## Active Versions
 
@@ -18,7 +23,7 @@ Prowlarr will fall back to a previous version if no YML exists for the current v
   - Replace `imdb:` selector with `imdbid:`
   - Makes `Description` an optional by default
   - All new Indexers using APIs shall be in v3 as of 2021-10-21
-    - Indexers utiizing CategoryDescr or any v4 features MUST be in v4
+    - Indexers utilizing CategoryDescr or any v4 features MUST be in v4
 - V4 Indexers
   - Prowlarr Cardigann v4 includes several changes such as
     - TMDBId
@@ -26,22 +31,29 @@ Prowlarr will fall back to a previous version if no YML exists for the current v
     - TraktID
     - CategoryDescr
 - V5 Indexers
-  - Prowlarr Cardigann v5 includds several changes such as
+  - Prowlarr Cardigann v5 includes several changes such as
     - Allow JSON Filters
+- V6 Indexers
+  - Prowlarr Cardigann v6 includes several changes such as
+    - `doubanid` support
+    - `tmdbid` TV Search Support
 
 ## Depreciated Versions
 
-- V1 Indexers
-  - Prowlarr Cardigann v1 are base level standard YML
-  - No new indexers are to be added to v1 as of 2021-10-13
-  - No new updates backported to v1 as of 2021-10-17
-- V2 Indexers
-  - Prowlarr Cardigann v2 include several changes such as
-    - Regex removal for Size parsing
-    - Multiple Download Selectors
-    - Optional Selectors
-    - Testlink Torrents
-    - InfoHash links
-    - AllowRawSearch property in caps
-  - No new indexers are to be added to v2 as of 2022-04-18
-  - No new updates backported to v2 as of 2022-04-18
+### V1 Indexers
+
+- Prowlarr Cardigann v1 are base level standard YML
+- No new indexers are to be added to v1 as of 2021-10-13
+- No new updates backported to v1 as of 2021-10-17
+
+### V2 Indexers
+
+- Prowlarr Cardigann v2 include several changes such as
+  - Regex removal for Size parsing
+  - Multiple Download Selectors
+  - Optional Selectors
+  - Testlink Torrents
+  - InfoHash links
+  - AllowRawSearch property in caps
+- No new indexers are to be added to v2 as of 2022-04-18
+- No new updates backported to v2 as of 2022-04-18
