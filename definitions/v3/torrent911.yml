@@ -1,7 +1,7 @@
 ---
-id: oxtorrent
-name: OxTorrent
-description: "OxTorrent is a French Public site for TV / MOVIES / GENERAL"
+id: torrent911
+name: Torrent911
+description: "Torrent911 is a French Public site for TV / MOVIES / GENERAL"
 language: fr-FR
 type: public
 encoding: UTF-8
@@ -50,6 +50,7 @@ caps:
     - {id: Logiciels, cat: PC, desc: "Software"}
     - {id: Jeux-PC, cat: PC/Games, desc: "PC Games"}
     - {id: Jeux-Consoles, cat: Console/XBox 360, desc: "Console Games"}
+    - {id: Porno, cat: XXX, desc: "Porno"}
 
   modes:
     search: [q]
