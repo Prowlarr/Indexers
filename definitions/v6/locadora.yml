@@ -1,27 +1,22 @@
 ---
-id: pixelados
-name: Pixelados (API)
-description: "Pixelados is a Spanish Private Torrent Tracker for HD MOVIES / TV"
-language: es-ES
+id: locadora
+name: Locadora
+description: "Locadora is a Brazilian tracker for Movies and TV Shows"
+language: pt-BR
 type: private
 encoding: UTF-8
 links:
-  - https://pixelados.tv/
+  - https://locadora.xyz/
 
 caps:
   categorymappings:
-    - {id: 1, cat: Movies, desc: "Películas"}
-    - {id: 2, cat: TV, desc: "Series"}
-    - {id: 3, cat: Audio, desc: "Música"}
-    - {id: 4, cat: TV/Documentary, desc: "Documentales"}
-    - {id: 5, cat: TV/Sport, desc: "Deportes"}
-    - {id: 6, cat: TV/Anime, desc: "Animación"}
+    - {id: 1, cat: Movies, desc: "Movies"}
+    - {id: 2, cat: TV, desc: "TV"}
 
   modes:
     search: [q]
     tv-search: [q, season, ep, imdbid, tvdbid, tmdbid]
     movie-search: [q, imdbid, tmdbid]
-    music-search: [q]
 
 settings:
   - name: apikey
@@ -30,7 +25,7 @@ settings:
   - name: info_key
     type: info
     label: About your API key
-    default: "Find or Generate a new API Token by accessing your <a href=\"https://pixelados.tv/\" target =_blank>Pixelados</a> account <i>My Security</i> page and clicking on the <b>API Token</b> tab."
+    default: "Find or Generate a new API Token by accessing your <a href=\"https://locadora.xyz/\" target =_blank>Locadora</a> account <i>My Security</i> page and clicking on the <b>API Token</b> tab."
   - name: freeleech
     type: checkbox
     label: Search freeleech only
@@ -81,15 +76,8 @@ search:
     page: 1
 
   keywordsfilters:
-    - name: diacritics
-      args: replace
     - name: re_replace
       args: ["\\.", " "]
-    # strip season and ep when it's added by tvsearch Query
-    - name: re_replace
-      args: ["(?i)\\bS0*(\\d+)\\b", "{{ if eq .Query.Type \"tvsearch\" }}{{ else }}T$1{{ end }}"]
-    - name: re_replace
-      args: ["(?i)S0?(\\d{1,2})E(\\d{1,2})", "{{ if eq .Query.Type \"tvsearch\" }}{{ else }}$1x$2{{ end }}"]
 
   rows:
     selector: data
@@ -100,38 +88,11 @@ search:
   fields:
     category:
       selector: category_id
-    _mejorada:
-      selector: types:contains(Mejorada)
-      optional: true
-    _corregida:
-      selector: types:contains(Corregida)
-      optional: true
-    _audio_editado:
-      selector: types:contains(Audio-Editado)
-      optional: true
-    title_vose:
-      selector: name:contains(VOSE)
-      optional: true
-    title_notvose:
-      selector: name:not(:contains(VOSE))
-      optional: true
-      filters:
-        - name: append
-          args: " SPANISH"
     title:
-      text: "{{ if .Result.title_vose }}{{ .Result.title_vose }}{{ else }}{{ .Result.title_notvose }}{{ end }}{{ if or .Result._mejorada .Result._corregida .Result._audio_editado }} PROPER{{ else }}{{ end }}"
+      selector: name
       filters:
-        # Replace Spanish season names like T1, MS (MiniSerie), TU (Temporada Unica) for normalized format S1
         - name: re_replace
-          args: ["(?i)T(\\d{1,2})\\b", "S$1"]
-        - name: re_replace
-          args: ["(\\d{2})[×|x](\\d{2})", "S$1E$2"]
-        - name: re_replace
-          args: ["(\\d{1})[×|x](\\d{2})", "S0$1E$2"]
-        - name: re_replace
-          args: ["(?i)MS\\b", "S1"]
-        - name: re_replace
-          args: ["(?i)TU\\b", "S1"]
+          args: ["\\.", " "]
     details:
       selector: details_link
     download:
@@ -178,10 +139,10 @@ search:
       case:
         0: 1 # normal
         1: 2 # double
-# global MR is 0.4 but torrents must be seeded for 7 days regardless of ratio
+# global MR is 0.4 but torrents must be seeded for 3 days regardless of ratio
 #    minimumratio:
 #      text: 0.4
     minimumseedtime:
-      # 7 day (as seconds = 7 x 24 x 60 x 60)
-      text: 604800
-# json UNIT3D 6.1.0 custom
+      # 3 days (as seconds = 3 x 24 x 60 x 60)
+      text: 259200
+# json UNIT3D 6.2.1
