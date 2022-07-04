@@ -35,7 +35,7 @@ prowlarr_repo_url="https://github.com/Prowlarr/Indexers"
 jackett_repo_url="https://github.com/Jackett/Jackett"
 jackett_release_branch="master"
 jackett_remote_name="z_Jackett"
-jackett_pulls_branch="jackett-pulls"
+jackett_pulls_branch="better-jackett-script"
 prowlarr_commit_template="jackett indexers as of"
 
 ## Switch to Prowlarr directory and fetch all
@@ -250,7 +250,7 @@ echo "--- Evaluating and Reviewing Changes"
 ### v2 frozen 2022-04-18
 ### v1 and v2 purged and moved to v3 2022-06-24
 min_schema=3
-max_schema=6
+max_schema=5
 new_schema=$((max_schema + 1))
 # Segment Changes
 added_indexers=$(git diff --cached --diff-filter=A --name-only | grep ".yml" | grep "v[$min_schema-$max_schema]")
