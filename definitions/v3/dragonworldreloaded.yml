@@ -11,10 +11,6 @@ links:
 caps:
   categorymappings:
     # dont forget to amend the category case block in the search fields section below.
-    # Kino
-    - {id: 118, cat: Movies/HD, desc: "Kino - HD"}
-    - {id: 141, cat: Movies/UHD, desc: "Kino - UHD"}
-    - {id: 4, cat: Movies/SD, desc: "Kino - SD"}
     # Movies
     - {id: 19, cat: Movies/HD, desc: "Movies - HD"}
     - {id: 26, cat: Movies/UHD, desc: "Movies - UHD"}
@@ -26,6 +22,7 @@ caps:
     - {id: 143, cat: TV/UHD, desc: "Serien - UHD"}
     - {id: 40, cat: TV/SD, desc: "Serien - SD"}
     - {id: 80, cat: TV/HD, desc: "Serien - Pack HD"}
+    - {id: 151, cat: TV/UHD, desc: "Serien - Pack UHD"}
     - {id: 42, cat: TV/SD, desc: "Serien - Pack SD"}
     # Musik
     - {id: 119, cat: Audio, desc: "Musik - Album"}
@@ -39,8 +36,6 @@ caps:
     - {id: 38, cat: TV/Documentary, desc: "Doku - HD"}
     - {id: 37, cat: TV/Documentary, desc: "Doku - SD"}
     - {id: 144, cat: TV/Documentary, desc: "Doku - Pack SD/HD"}
-    # Empfohlene
-    - {id: 150, cat: Other, desc: "Empfohlene - Torrents"}
     # Games
     - {id: 16, cat: PC/Games, desc: "Games - PC"}
     - {id: 14, cat: Console/Other, desc: "Games - Wimmelbild"}
@@ -146,10 +141,6 @@ search:
     category:
       selector: div.kat_cat_pic
       case:
-        # Kino
-        ":has(div.kat_cat_pic_name:contains(\"Kino\")):has(div.kat_cat_pic_name_b:contains(\"UHD\"))": 141
-        ":has(div.kat_cat_pic_name:contains(\"Kino\")):has(div.kat_cat_pic_name_b:contains(\"HD\"))": 118
-        ":has(div.kat_cat_pic_name:contains(\"Kino\")):has(div.kat_cat_pic_name_b:contains(\"SD\"))": 4
         # Movies
         ":has(div.kat_cat_pic_name:contains(\"Movies\")):has(div.kat_cat_pic_name_b:contains(\"Pack\"))": 2
         ":has(div.kat_cat_pic_name:contains(\"Movies\")):has(div.kat_cat_pic_name_b:contains(\"UHD\"))": 26
@@ -162,6 +153,7 @@ search:
         ":has(div.kat_cat_pic_name:contains(\"Serien\")):has(div.kat_cat_pic_name_b:contains(\"Pack SD\"))": 42
         ":has(div.kat_cat_pic_name:contains(\"Serien\")):has(div.kat_cat_pic_name_b:contains(\"HD\"))": 41
         ":has(div.kat_cat_pic_name:contains(\"Serien\")):has(div.kat_cat_pic_name_b:contains(\"SD\"))": 40
+        ":has(div.kat_cat_pic_name:contains(\"Serien\")):has(div.kat_cat_pic_name_b:contains(\"Pack UHD\"))": 151
         # Musik
         ":has(div.kat_cat_pic_name:contains(\"Musik\")):has(div.kat_cat_pic_name_b:contains(\"Album\"))": 119
         ":has(div.kat_cat_pic_name:contains(\"Musik\")):has(div.kat_cat_pic_name_b:contains(\"Charts\"))": 148
@@ -174,8 +166,6 @@ search:
         ":has(div.kat_cat_pic_name:contains(\"Doku\")):has(div.kat_cat_pic_name_b:contains(\"Pack\"))": 144
         ":has(div.kat_cat_pic_name:contains(\"Doku\")):has(div.kat_cat_pic_name_b:contains(\"HD\"))": 38
         ":has(div.kat_cat_pic_name:contains(\"Doku\")):has(div.kat_cat_pic_name_b:contains(\"SD\"))": 37
-    # Empfohlene
-        ":has(div.kat_cat_pic_name:contains(\"Empfohlene\")):has(div.kat_cat_pic_name_b:contains(\"Torrents\"))": 150
         # Games
         ":has(div.kat_cat_pic_name:contains(\"Games\")):has(div.kat_cat_pic_name_b:contains(\"PC\"))": 16
         ":has(div.kat_cat_pic_name:contains(\"Games\")):has(div.kat_cat_pic_name_b:contains(\"Wimmelbild\"))": 14
