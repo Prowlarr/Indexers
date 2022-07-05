@@ -9,6 +9,18 @@
 ## Using the Script
 ### Suggested to run from the current directory being Prowlarr/Indexers local Repo using Git Bash `./scripts/prowlarr-indexers-jackettpull.sh`
 
+# Check if Required NPM Modules are installed and install if needed
+package_servarr='ajv-cli-servarr'
+package_formats='ajv-formats'
+if [ `npm list -g | grep -c $package_servarr` -eq 0 ]; then
+    echo "$package_servarr npm package missing. installing"
+    npm -g install $package_servarr
+fi
+if [ `npm list -g | grep -c $package_formats` -eq 0 ]; then
+    echo "$package_formats npm package missing. installing"
+    npm -g install $package_formats
+fi
+
 ## Enhanced Logging
 case $1 in
 [debug]*)
