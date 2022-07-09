@@ -33,6 +33,7 @@
                 },
                 "links": {
                     "type": "array",
+                    "uniqueItems": true,
                     "items": {
                         "type": "string",
                         "format": "uri"
@@ -40,6 +41,7 @@
                 },
                 "legacylinks": {
                     "type": "array",
+                    "uniqueItems": true,
                     "items": {
                         "type": "string",
                         "format": "uri"
@@ -47,6 +49,7 @@
                 },
                 "certificates": {
                     "type": "array",
+                    "uniqueItems": true,
                     "items": {
                         "type": "string"
                     }
@@ -98,6 +101,7 @@
                 },
                 "categorymappings": {
                     "type": "array",
+                    "uniqueItems": true,
                     "items": {
                         "$ref": "#/definitions/CategoryMapping"
                     }
@@ -155,6 +159,7 @@
             "properties": {
                 "search": {
                     "type": "array",
+                    "uniqueItems": true,
                     "items": {
                         "type": "string",
                         "enum": ["q"]
@@ -162,6 +167,7 @@
                 },
                 "tv-search": {
                     "type": "array",
+                    "uniqueItems": true,
                     "items": {
                         "type": "string",
                         "enum": ["q", "season", "ep", "imdbid", "tvdbid"]
@@ -169,6 +175,7 @@
                 },
                 "movie-search": {
                     "type": "array",
+                    "uniqueItems": true,
                     "items": {
                         "type": "string",
                         "enum": ["q", "imdbid", "tmdbid"]
@@ -176,6 +183,7 @@
                 },
                 "music-search": {
                     "type": "array",
+                    "uniqueItems": true,
                     "items": {
                         "type": "string",
                         "enum": ["q", "album", "artist"]
@@ -183,6 +191,7 @@
                 },
                 "book-search": {
                     "type": "array",
+                    "uniqueItems": true,
                     "items": {
                         "type": "string",
                         "enum": ["q", "title", "author"]
