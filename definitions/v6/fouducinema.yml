@@ -12,7 +12,6 @@ legacylinks:
 
 caps:
   categorymappings:
-    # when refreshing categories dont forget to update the category case block
     - {id: 9, cat: TV/SD, desc: "SERIE DVD"}
     - {id: 21, cat: TV/HD, desc: "SERIE HDTV.1080p"}
     - {id: 20, cat: TV/HD, desc: "SERIE HDTV.720p"}
@@ -145,46 +144,12 @@ search:
     selector: div.content_wrap > div.selection_wrap:has(a[href^="details.php?id="])
 
   fields:
-    category:
-      selector: div.kat_cat_pic
-      case:
-        ":contains(\"SERIE\"):contains(\"DVD\")": 9
-        ":contains(\"SERIE\"):contains(\"WEB.720p\")": 14
-        ":contains(\"SERIE\"):contains(\"WEB.1080p\")": 15
-        ":contains(\"SERIE\"):contains(\"WEB\")": 12
-        ":contains(\"SERIE\"):contains(\"TVRip\")": 16
-        ":contains(\"SERIE\"):contains(\"VHS\")": 17
-        ":contains(\"SERIE\"):contains(\"Pack\")": 36
-        ":contains(\"SERIE\"):contains(\"HDTV.720p\")": 20
-        ":contains(\"SERIE\"):contains(\"HDTV.1080p\")": 21
-        ":contains(\"SERIE\"):contains(\"HDTV\")": 19
-        ":contains(\"SERIE\"):contains(\"EPISODE\")": 37
-        ":contains(\"LOGICIELS \"):contains(\"Linux\")": 56
-        ":contains(\"LOGICIELS \"):contains(\"Apple\")": 24
-        ":contains(\"LOGICIELS \"):contains(\"Windows\")": 58
-        ":contains(\"EBOOK\"):contains(\"Journaux\")": 44
-        ":contains(\"EBOOK\"):contains(\"Documents\")": 46
-        ":contains(\"EBOOK\"):contains(\"XXX\")": 48
-        ":contains(\"EBOOK\"):contains(\"Livres\")": 49
-        ":contains(\"ANIMEE\"):contains(\"HDRip\")": 64
-        ":contains(\"FILM\"):contains(\"Xvid\")": 1
-        ":contains(\"FILM\"):contains(\"DVD\")": 2
-        ":contains(\"FILM\"):contains(\"1080\")": 4
-        ":contains(\"FILM\"):contains(\"ISO\")": 25
-        ":contains(\"FILM\"):contains(\"BluRay\")": 26
-        ":contains(\"FILM\"):contains(\"BDRip\")": 27
-        ":contains(\"FILM\"):contains(\"720\")": 28
-        ":contains(\"FILM\"):contains(\"VHS\")": 29
-        ":contains(\"FILM\"):contains(\"VOST\")": 30
-        ":contains(\"FILM\"):contains(\"MUET\")": 31
-        ":contains(\"FILM\"):contains(\"HDTV\")": 33
-        ":contains(\"FILM\"):contains(\"TVRip\")": 34
-        ":contains(\"FILM\"):contains(\"WEB\")": 63
-        ":contains(\"MUSIC\"):contains(\"clip video\")": 5
-        ":contains(\"JEUX\"):contains(\"Win\")": 7
-        ":contains(\"JEUX\"):contains(\"PS3\")": 8
-        ":contains(\"JEUX\"):contains(\"PC\")": 45
-        ":contains(\"JEUX\"):contains(\"LOGICIELS\")": 59
+    cat_p1:
+      selector: div.kat_cat_pic_name
+    cat_p2:
+      selector: div.kat_cat_pic_name_b
+    categorydesc:
+      text: "{{ .Result.cat_p1 }} {{ .Result.cat_p2 }}"
     title_phase1:
       selector: a[href^="details.php?id="]
     title_multilang:
