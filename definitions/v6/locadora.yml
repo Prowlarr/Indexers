@@ -10,8 +10,10 @@ links:
 
 caps:
   categorymappings:
-    - {id: 1, cat: Movies, desc: "Filmes"}
-    - {id: 2, cat: TV, desc: "Series"}
+    - {id: 1, cat: Movies}
+    - {id: 2, cat: TV}
+    - {id: 6, cat: TV/Anime}
+    - {id: 7, cat: Movies, desc: "Concerts"}
 
   modes:
     search: [q]
