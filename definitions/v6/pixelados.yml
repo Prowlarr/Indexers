@@ -127,8 +127,6 @@ search:
         - name: re_replace
           args: ["(\\d{2})[×|x](\\d{2})", "S$1E$2"]
         - name: re_replace
-          args: ["(\\d{2})[×|x](\\d{2})", "S$1E$2"]
-        - name: re_replace
           args: ["(\\d{1})[×|x](\\d{2})", "S0$1E$2"]
         - name: re_replace
           args: ["(?i)MS\\b", "S1"]
@@ -138,6 +136,8 @@ search:
       selector: details_link
     download:
       selector: download_link
+    infohash:
+      selector: info_hash
     poster:
       selector: poster
       filters:

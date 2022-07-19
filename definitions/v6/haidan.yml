@@ -118,10 +118,11 @@ search:
       filters:
         - name: replace
           args: ["年份:", " "]
-    _title:
-      selector: a.video_name_str
     title:
-      text: "{{ .Result._title }}{{ .Result._year }}"
+      selector: a.video_name_str
+      filters:
+        - name: append
+          args: "{{ .Result._year }}"
     details:
       selector: a.video_name_str
       attribute: href
