@@ -1,30 +1,32 @@
-﻿---
+---
 id: abnormal
 name: Abnormal
 description: "General French Private Tracker"
 language: fr-FR
 type: private
 encoding: UTF-8
+requestDelay: 2.1
 links:
   - https://abn.lol/
-followredirect: true
+legacylinks:
+  - https://abnormal.ws
 
 caps:
   categorymappings:
-    - { id: 1, cat: TV, desc: "Series" }
-    - { id: 2, cat: Movies, desc: "Movies" }
-    - { id: 3, cat: TV/Documentary, desc: "Documentaries" }
-    - { id: 4, cat: TV/Anime, desc: "Anime" }
-    - { id: 5, cat: PC/Games, desc: "Games" }
-    - { id: 6, cat: PC, desc: "Applications" }
-    - { id: 7, cat: Books/EBook, desc: "Ebooks" }
-    - { id: 9, cat: TV, desc: "Emissions" }
+    - {id: 1, cat: TV, desc: "Series"}
+    - {id: 2, cat: Movies, desc: "Movies"}
+    - {id: 3, cat: TV/Documentary, desc: "Documentaries"}
+    - {id: 4, cat: TV/Anime, desc: "Anime"}
+    - {id: 5, cat: PC/Games, desc: "Games"}
+    - {id: 6, cat: PC, desc: "Applications"}
+    - {id: 7, cat: Books/EBook, desc: "Ebooks"}
+    - {id: 9, cat: TV, desc: "Emissions"}
 
   modes:
-    search: [ q ]
-    tv-search: [ q, season, ep ]
-    movie-search: [ q ]
-    book-search: [ q ]
+    search: [q]
+    tv-search: [q, season, ep]
+    movie-search: [q]
+    book-search: [q]
 
 settings:
   - name: username
@@ -33,13 +35,45 @@ settings:
   - name: password
     type: password
     label: Password
+  - name: multilang
+    type: checkbox
+    label: Replace MULTI by another language in release name
+    default: false
   - name: multilanguage
-    type: text
-    label: Replace MULTI by this word
-    default: MULTI
-  - name: subfrench
-    type: text
-    label: Replace "VOSTFR" and "SUBFRENCH" by this word
+    type: select
+    label: Replace MULTI by this language
+    default: FRENCH
+    options:
+      FRENCH: FRENCH
+      MULTI.FRENCH: MULTI.FRENCH
+      ENGLISH: ENGLISH
+      MULTI.ENGLISH: MULTI.ENGLISH
+      VOSTFR: VOSTFR
+      MULTI.VOSTFR: MULTI.VOSTFR
+  - name: vostfr
+    type: checkbox
+    label: Replace VOSTFR with ENGLISH
+    default: false
+  - name: freeleech
+    type: checkbox
+    label: Search freeleech only
+    default: false
+  - name: sort
+    type: select
+    label: Sort requested from site
+    default: Created
+    options:
+      Created: created
+      Seeders: seeders
+      Size: size
+      ReleaseName: title
+  - name: type
+    type: select
+    label: Order requested from site
+    default: desc
+    options:
+      desc: desc
+      asc: asc
 
 login:
   method: form
@@ -48,13 +82,13 @@ login:
   inputs:
     Username: "{{ .Config.username }}"
     Password: "{{ .Config.password }}"
-    RememberMe: "true"
+    RememberMe: true
   selectorinputs:
     __RequestVerificationToken:
       selector: input[name="__RequestVerificationToken"]
       attribute: value
   error:
-    - selector: span.text-danger.validation-summary-errors > span
+    - selector: div.validation-summary-errors[data-valmsg-summary="true"]
       message:
         text: " - Bad username/password."
   test:
@@ -65,11 +99,18 @@ search:
     - path: Torrent
   inputs:
     $raw: "{{ range .Categories }}SelectedCats={{.}}&{{end}}"
-    search: "{{ .Keywords }}"
-    page: torrents
-    category: 0
-    3dformat: 0
-    active: 1
+    Search: "{{ .Keywords }}"
+    UserId: ""
+    YearOperator: ≥
+    Year: ""
+    RatingOperator: ≥
+    Rating: ""
+    Pending: ""
+    Pack: ""
+    Scene: ""
+    Freeleech: "{{ if .Config.freeleech }}true{{ else }}{{ end }}"
+    SortOn: "{{ .Config.sort }}"
+    SortOrder: "{{ .Config.type }}"
 
   rows:
     selector: table.table-rows > tbody > tr
@@ -83,35 +124,37 @@ search:
           args: SelectedCats
     title_phase1:
       selector: td.grid-release-column > a
-    title_multilanguage:
+    title_multilang:
       text: "{{ .Result.title_phase1 }}"
       filters:
         - name: re_replace
-          args: [ "(?i)[\\.\\s\\[\\-]multi[\\.\\s\\]\\-]", ".{{ .Config.multilanguage }}." ]
+          args: ["(?i)(\\smulti\\s)", " {{ .Config.multilanguage }} "]
     title_phase2:
-      text: "{{ if .Config.multilanguage }}{{ .Result.title_multilanguage }}{{ else }}{{ .Result.title_phase1 }}{{ end }}"
+      text: "{{ if .Config.multilang }}{{ .Result.title_multilang }}{{ else }}{{ .Result.title_phase1 }}{{ end }}"
     title_vostfr:
       text: "{{ .Result.title_phase2 }}"
       filters:
         - name: re_replace
-          args: [ "(?i)[\\.\\s\\[\\-]vostfr[\\.\\s\\]\\-]", ".{{ .Config.subfrench }}." ]
+          args: ["(?i)(\\svostfr\\s)", " ENGLISH "]
         - name: re_replace
-          args: [ "(?i)[\\.\\s\\[\\-]subfrench[\\.\\s\\]\\-]", ".{{ .Config.subfrench }}." ]
+          args: ["(?i)(\\ssubfrench\\s)", " ENGLISH "]
     title:
-      text: "{{ if .Config.subfrench }}{{ .Result.title_vostfr }}{{ else }}{{ .Result.title_phase2 }}{{ end }}"
-    download:
-      selector: a[href^="/Torrent/Download?ReleaseId="]
-      attribute: href
+      text: "{{ if .Config.vostfr }}{{ .Result.title_vostfr }}{{ else }}{{ .Result.title_phase2 }}{{ end }}"
     details:
       selector: a[href^="/Torrent/Details?ReleaseId="]
       attribute: href
+    download:
+      selector: a[href^="/Torrent/Download?ReleaseId="]
+      attribute: href
+    date:
+      text: now
     size:
       selector: td:nth-child(6)
       filters:
         - name: re_replace
-          args: [ ",", "." ]
+          args: [",", "."]
         - name: replace
-          args: [ "o", "B" ]
+          args: ["o", "B"]
     seeders:
       selector: td:nth-child(7)
     leechers:
@@ -123,3 +166,9 @@ search:
     uploadvolumefactor:
       case:
         "*": 1
+    minimumratio:
+      text: 1.0
+    minimumseedtime:
+      # 2 days (as seconds = 2 x 24 x 60 x 60)
+      text: 172800
+# Gazelle
