@@ -53,8 +53,8 @@ settings:
     label: Filter freeleech only
     default: false
   - name: sort
-    label: Sort
     type: select
+    label: Sort requested from site
     default: added
     options:
       added: created
