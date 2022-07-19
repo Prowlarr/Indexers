@@ -85,7 +85,7 @@ caps:
 
   modes:
     search: [q]
-    movie-search: [q, tmdbid]
+    movie-search: [q, tmdbid, fail]
     tv-search: [q, season, ep]
     book-search: [q]
 
