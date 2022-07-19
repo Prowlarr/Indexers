@@ -1,5 +1,5 @@
 ---
-name: Yaml Lint
+name: YAML Validation
 
 on:
   push:
@@ -32,4 +32,4 @@ jobs:
     - uses: actions/checkout@v2
     - name: yaml schema check
       run: |
-        sh ./scripts/validate.sh
+        bash ./scripts/validate.sh
