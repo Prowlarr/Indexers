@@ -1,32 +1,31 @@
 ---
-id: ydypt
-name: YDYPT
-description: "YDYPT is a CHINESE Private Torrent Tracker for MOVIES / TV / 3X"
+id: byrbt
+name: BYRBT
+description: "BYRBT is a CHINESE Private Torrent Tracker for HD MOVIES / TV / GENERAL"
 language: zh-CN
 type: private
 encoding: UTF-8
 links:
-  - https://pt.hdbd.us/
+  - https://byr.pt/
 
 caps:
   categorymappings:
-    - {id: 420, cat: Movies/BluRay, desc: "电影BluRay Movies"}
-    - {id: 423, cat: Movies/HD, desc: "电影HD Movies"}
-    - {id: 424, cat: TV/HD, desc: "剧集BluRay TV"}
-    - {id: 421, cat: TV/HD, desc: "剧集HD TV"}
-    - {id: 506, cat: XXX, desc: "有码censured BluRay 3X"}
-    - {id: 500, cat: XXX, desc: "有码censured HD 3X"}
-    - {id: 507, cat: XXX, desc: "无码uncensured BluRay 3X"}
-    - {id: 501, cat: XXX, desc: "无码uncensured HD 3X"}
-    - {id: 503, cat: XXX, desc: "欧美Euro&USA 3X"}
-    - {id: 502, cat: XXX, desc: "国产自拍Homemade 3X"}
-    - {id: 509, cat: XXX, desc: "里番H-Anime"}
-    - {id: 422, cat: XXX, desc: "其他Other 3X"}
+    - {id: 408, cat: Movies, desc: "电影Movies"}
+    - {id: 401, cat: TV, desc: "剧集TV Series"}
+    - {id: 404, cat: TV/Anime, desc: "动漫Animations"}
+    - {id: 402, cat: Audio, desc: "音乐Music"}
+    - {id: 405, cat: Other, desc: "综艺Arts"}
+    - {id: 403, cat: Console, desc: "游戏Games"}
+    - {id: 406, cat: PC, desc: "软件Software"}
+    - {id: 407, cat: TV/Documentary, desc: "资料Documentaries"}
+    - {id: 409, cat: TV/Sport, desc: "体育Sports"}
+    - {id: 410, cat: Other/Misc, desc: "纪录Records"}
 
   modes:
     search: [q]
-    tv-search: [q, season, ep, imdbid]
-    movie-search: [q, imdbid]
+    tv-search: [q, season, ep, imdbid, doubanid]
+    movie-search: [q, imdbid, doubanid]
+    music-search: [q]
 
 settings:
   - name: username
@@ -39,6 +38,10 @@ settings:
     type: checkbox
     label: Search freeleech only
     default: false
+  - name: info_tpp
+    type: info
+    label: Results Per Page
+    default: For best results, change the <b>Torrents per page:</b> setting to <b>100</b> on your account profile.
   - name: sort
     type: select
     label: Sort requested from site
@@ -55,51 +58,55 @@ settings:
     options:
       desc: desc
       asc: asc
-  - name: info_tpp
-    type: info
-    label: Results Per Page
-    default: For best results, change the <b>Torrents per page:</b> setting to <b>100</b> on your account profile.
 
 login:
-  path: takelogin.php
-  method: post
+  path: login.php
+  method: form
+  form: form[action="takelogin.php"]
+  captcha:
+    type: image
+    selector: img[alt="CAPTCHA"]
+    input: imagestring
   inputs:
     username: "{{ .Config.username }}"
     password: "{{ .Config.password }}"
-    logout: forever
+    logout: ""
     securelogin: ""
+    ssl: yes
+    trackerssl: yes
   error:
     - selector: td.embedded:has(h2:contains("失败"))
+    - selector: td.embedded:has(h2:contains("failed!"))
+    - selector: td.embedded:has(h2:contains("Failed"))
   test:
     path: index.php
-    selector: a[href*="logout.php"]
+    selector: a[href^="logout.php?key="]
 
 search:
   paths:
-    # https://pt.hdbd.us/torrents.php?incldead=0&spstate=0&picktype=0&inclbookmarked=0&search=&search_area=0&search_mode=0
     - path: torrents.php
   inputs:
     $raw: "{{ range .Categories }}cat{{.}}=1&{{end}}"
-    search: "{{ if .Query.IMDBID }}{{ .Query.IMDBID }}{{ else }}{{ .Keywords }}{{ end }}"
+    search: "{{ if .Query.IMDBID }}{{ .Query.IMDBID }}{{ else }}{{ end }}{{ if .Query.DoubanID }}/{{ .Query.DoubanID }}/{{ else }}{{ end }}{{ if or .Query.IMDBID .Query.DoubanID }}{{ else }}{{ .Keywords }}{{ end }}"
     # 0 incldead, 1 active, 2 dead
     incldead: 0
-    # 0 all, 1 normal, 2 popular, 3 classic, 4 recomended, 5 0day, 6 imdb top 250
-    picktype: 0
-    # 0 all, 1 normal, 2 free, 3 2x, 4 2xfree, 5 50%, 6 2x50%, 7 30%, 8 all promotions
-    spstate: "{{ if .Config.freeleech }}8{{ else }}0{{ end }}"
-    # 0 title, 1 descr, 2 subtitltes, 3 uploader, 4 imdburl
-    search_area: "{{ if .Query.IMDBID }}4{{ else }}0{{ end }}"
-    # 0 AND 1 OR 2 exact
+    # 0 all, 1 normal, 2 free, 3 2x, 4 2xfree, 5 50%, 6 2x50%, 7 30%
+    spstate: "{{ if .Config.freeleech }}2{{ else }}0{{ end }}"
+    # 0 title, 1 descr, 3 uploader, 4 imdburl
+    search_area: "{{ if .Query.IMDBID }}4{{ else }}{{ end }}{{ if .Query.DoubanID }}1{{ else }}{{ end }}{{ if or .Query.IMDBID .Query.DoubanID }}{{ else }}0{{ end }}"
+    # 0 AND, 1 OR, 2 exact, 3 NOT
     search_mode: 0
     sort: "{{ .Config.sort }}"
     type: "{{ .Config.type }}"
 
+
   rows:
     selector: table.torrents > tbody > tr:has(table.torrentname)
 
+
   fields:
     category:
-      selector: a[href*="cat="]
+      selector: a[href^="?cat="]
       attribute: href
       filters:
         - name: querystring
@@ -123,7 +130,7 @@ search:
       attribute: href
     date_elapsed:
       # time type: time elapsed (default)
-      selector: td:nth-child(4) > span[title]
+      selector: td.rowfollow:nth-last-of-type(6) > span[title]
       attribute: title
       optional: true
       filters:
@@ -133,7 +140,7 @@ search:
           args: "2006-01-02 15:04:05 -07:00"
     date_added:
       # time added
-      selector: td:nth-child(4):not(:has(span))
+      selector: td.rowfollow:nth-last-of-type(6):not(:has(span))
       optional: true
       filters:
         - name: append
@@ -143,30 +150,33 @@ search:
     date:
       text: "{{ if or .Result.date_elapsed .Result.date_added }}{{ or .Result.date_elapsed .Result.date_added }}{{ else }}now{{ end }}"
     size:
-      selector: td:nth-child(5)
+      selector: td.rowfollow:nth-last-of-type(5)
     seeders:
-      selector: td:nth-child(6)
+      selector: td.rowfollow:nth-last-of-type(4)
     leechers:
-      selector: td:nth-child(7)
+      selector: td.rowfollow:nth-last-of-type(3)
     grabs:
-      selector: td:nth-child(8)
+      selector: td.rowfollow:nth-last-of-type(2)
     downloadvolumefactor:
       case:
-        font.free: 0
-        font.twoupfree: 0
-        font.halfdown: 0.5
-        font.twouphalfdown: 0.5
-        font.thirtypercent: 0.3
+        img.pro_free: 0
+        img.pro_free2up: 0
+        img.pro_50pctdown: 0.5
+        img.pro_50pctdown2up: 0.5
+        img.pro_30pctdown: 0.3
         "*": 1
     uploadvolumefactor:
       case:
-        font.twouphalfdown: 2
-        font.twoupfree: 2
-        font.twoup: 2
+        img.pro_50pctdown2up: 2
+        img.pro_free2up: 2
+        img.pro_2up: 2
         "*": 1
     description:
       selector: td:nth-child(2)
       remove: a, img
     minimumratio:
-      text: 0.8
-# NexusPHP Standard v1.5 Beta 4 (custom ulvf dlvf)
+      text: 1.0
+    minimumseedtime:
+      # 1 day (as seconds = 1 x 24 x 60 x 60)
+      text: 86400
+# NexusPHP v1.5 beta 5 20120707

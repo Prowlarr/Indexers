@@ -31,9 +31,10 @@ caps:
     - {id: 63, cat: Audio/Audiobook, desc: "Audio Hörbuch"}
     - {id: 120, cat: Audio/Video, desc: "Audio Videos"}
     # App
-    - {id: 12, cat: PC/0day, desc: "App PC"}
-    - {id: 11, cat: PC/Mobile-Other, desc: "App Mobil"}
-    - {id: 125, cat: PC/Mac, desc: "App macOS"}
+    - {id: 12, cat: PC/0day, desc: "Apps Windows"}
+    - {id: 125, cat: PC/Mac, desc: "Apps Mac-OSX"}
+    - {id: 11, cat: PC/Mobile-Other, desc: "Apps Mobil"}
+    - {id: 141, cat: PC/ISO, desc: "Apps Other"}
     # Doku
     - {id: 15, cat: TV/Documentary, desc: "Doku SD"}
     - {id: 14, cat: TV/Documentary, desc: "Doku HD"}
@@ -169,9 +170,10 @@ search:
         ":has(div.kat_cat_pic_name:contains(\"Audio\")):has(div.kat_cat_pic_name_b:contains(\"Hörbuch\"))": 63
         ":has(div.kat_cat_pic_name:contains(\"Audio\")):has(div.kat_cat_pic_name_b:contains(\"Videos\"))": 120
         # App
-        ":has(div.kat_cat_pic_name:contains(\"App\")):has(div.kat_cat_pic_name_b:contains(\"PC\"))": 12
+        ":has(div.kat_cat_pic_name:contains(\"App\")):has(div.kat_cat_pic_name_b:contains(\"Windows\"))": 12
         ":has(div.kat_cat_pic_name:contains(\"App\")):has(div.kat_cat_pic_name_b:contains(\"Mobil\"))": 11
-        ":has(div.kat_cat_pic_name:contains(\"App\")):has(div.kat_cat_pic_name_b:contains(\"macOS\"))": 125
+        ":has(div.kat_cat_pic_name:contains(\"App\")):has(div.kat_cat_pic_name_b:contains(\"Mac-OSX\"))": 125
+        ":has(div.kat_cat_pic_name:contains(\"App\")):has(div.kat_cat_pic_name_b:contains(\"Other\"))": 141
         # Doku
         ":has(div.kat_cat_pic_name:contains(\"Doku\")):has(div.kat_cat_pic_name_b:contains(\"SD\"))": 15
         ":has(div.kat_cat_pic_name:contains(\"Doku\")):has(div.kat_cat_pic_name_b:contains(\"HD\"))": 14
