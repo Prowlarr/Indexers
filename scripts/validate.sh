@@ -1,6 +1,6 @@
 #!/bin/bash
 # install ajv and ajv formats
-npm install -g ajv-cli ajv-formats
+npm install -g ajv-cli-servarr ajv-formats
 
 # declare empty array to collect failed definitions
 failed_defs=()
