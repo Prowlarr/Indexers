@@ -9,7 +9,7 @@ links:
   - https://swarmazon.club/
 
 caps:
-# dont forget to update the search fields category case block
+  # dont forget to update the search fields category case block
   categorymappings:
     - {id: 1, cat: Movies, desc: "Movies"}
     - {id: 2, cat: TV, desc: "Television"}
@@ -33,18 +33,11 @@ login:
   path: en/account/login.php
   method: form
   form: form
-#  captcha:
-#    type: image
-#    selector: img[alt="CAPTCHA"]
-#    input: captcha_challenge
   inputs:
     username: "{{ .Config.username }}"
     password: "{{ .Config.password }}"
     remember: 1
   error:
-#    - selector: script:contains("The Captcha")
-#      message:
-#        text: The Captcha you entered was incorrect.
     - selector: script:contains("Wrong")
       message:
         text: Wrong username or password.
@@ -65,7 +58,7 @@ search:
 
   fields: # some users (rank specific?) have an extra column (td:nth-child(4)) with bookmark features
     category:
-    # this is now categorydesc in v4
+      # this is now categorydesc in v4
       selector: td.Name small
       case:
         "small:contains(\"in Movies\")": 1
