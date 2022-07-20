@@ -1,32 +1,31 @@
 ---
-id: 52pt
-name: 52PT
-description: "52PT is a CHINESE Private Torrent Tracker for HD MOVIES / TV"
+id: lemonhd
+name: LemonHD
+description: "LemonHD is a CHINESE Private Torrent Tracker for HD MOVIES / TV"
 language: zh-CN
 type: private
 encoding: UTF-8
 links:
-  - https://52pt.site/
+  - https://lemonhd.org/
+legacylinks:
+  - https://leaguehd.com/
 
 caps:
   categorymappings:
-    - {id: 401, cat: Movies, desc: "Movies/电影"}
-    - {id: 404, cat: TV/Documentary, desc: "Documentaries/纪录片"}
-    - {id: 405, cat: TV/Anime, desc: "Animations/动漫"}
-    - {id: 402, cat: TV, desc: "TV Series/剧集"}
-    - {id: 403, cat: TV, desc: "TV Shows/综艺"}
-    - {id: 406, cat: Audio/Video, desc: "MusicVideo/音乐MV"}
-    - {id: 407, cat: TV/Sport, desc: "Sports/运体"}
-    - {id: 409, cat: Other, desc: "Misc/其他"}
-    - {id: 410, cat: Other, desc: "Opera/戏曲 曲艺"}
-    - {id: 408, cat: Audio, desc: "HQ Audio/无损音乐"}
-    - {id: 411, cat: XXX, desc: "Erotic/情色"}
+    - {id: animate, cat: TV/Anime, desc: "动漫 Anime"}
+    - {id: doc, cat: TV/Documentary, desc: "纪录片 Documentary"}
+    - {id: movie, cat: Movies, desc: "电影 Movie"}
+    - {id: mv, cat: Audio/Video, desc: "MV Music Video"}
+    - {id: music, cat: Audio, desc: "音乐 Music"}
+    - {id: tv, cat: TV, desc: "剧集综艺 TV"}
+    - {id: other, cat: Other, desc: "艺术 Other"}
 
   modes:
     search: [q]
-    tv-search: [q, season, ep, imdbid]
-    movie-search: [q, imdbid]
+    tv-search: [q, season, ep, imdbid, doubanid]
+    movie-search: [q, imdbid, doubanid]
     music-search: [q]
+    book-search: [q]
 
 settings:
   - name: cookie
@@ -40,19 +39,15 @@ settings:
     type: checkbox
     label: Search freeleech only
     default: false
-  - name: info_tpp
-    type: info
-    label: Results Per Page
-    default: For best results, change the <b>Torrents per page:</b> setting to <b>100</b> on your account profile.
   - name: sort
     type: select
     label: Sort requested from site
-    default: 4
+    default: added
     options:
-      4: created
-      7: seeders
-      5: size
-      1: title
+      added: created
+      seeders: seeders
+      size: size
+      name: title
   - name: type
     type: select
     label: Order requested from site
@@ -76,47 +71,43 @@ search:
   paths:
     - path: torrents.php
   inputs:
-    $raw: "{{ range .Categories }}cat{{.}}=1&{{end}}"
-    search: "{{ if .Query.IMDBID }}{{ .Query.IMDBID }}{{ else }}{{ .Keywords }}{{ end }}"
-    # 0 incldead, 1 active, 2 dead
-    incldead: 0
-    # 0 all, 1 normal, 2 free, 3 2x, 4 2xfree, 5 50%, 6 2x50%, 7 30%
-    spstate: "{{ if .Config.freeleech }}2{{ else }}0{{ end }}"
-    # 0 title, 1 descr, 3 uploader, 4 imdburl
-    search_area: "{{ if .Query.IMDBID }}4{{ else }}0{{ end }}"
-    # 0 AND, 1 OR, 2 exact
-    search_mode: 0
-    sort: "{{ .Config.sort }}"
-    type: "{{ .Config.type }}"
-    # does not return imdb or doubanid in results
+    search: "{{ if .Query.IMDBID }}{{ .Query.IMDBID }}{{ else }}{{ end }}{{ if .Query.DoubanID }}{{ .Query.DoubanID }}{{ else }}{{ end }}{{ if or .Query.IMDBID .Query.DoubanID }}{{ else }}{{ .Keywords }}{{ end }}"
+    # name, imdb, douban
+    search_area: "{{ if .Query.IMDBID }}imdb{{ else }}{{ end }}{{ if .Query.DoubanID }}douban{{ else }}{{ end }}{{ if or .Query.IMDBID .Query.DoubanID }}{{ else }}name{{ end }}"
+    suggest: 0
+    column: "{{ .Config.sort }}"
+    sort: "{{ .Config.type }}"
 
   rows:
-    selector: table.torrents > tbody > tr:has(table.torrentname)
+    selector: table.torrents > tbody > tr:has(a[href^="download.php?"])
 
   fields:
+    category:
+      selector: img[class^="cat_"]
+      attribute: class
+      filters:
+        - name: regexp
+          args: "cat_(.+?)$"
     title_default:
-      selector: a[href^="details.php?id="]
+      selector: a[href^="details_"] > b
     title_optional:
       optional: true
-      selector: a[title][href^="details.php?id="]
+      selector: a[title][href^="details_"]
       attribute: title
     title:
       text: "{{ if .Result.title_optional }}{{ .Result.title_optional }}{{ else }}{{ .Result.title_default }}{{ end }}"
-    category:
-      selector: a[href^="?cat="]
-      attribute: href
-      filters:
-        - name: querystring
-          args: cat
     details:
-      selector: a[href^="details.php?id="]
+      selector: a[href^="details_"]
       attribute: href
     download:
-      selector: a[href^="download.php?id="]
+      selector: a[href^="download.php?"]
+      attribute: href
+    imdbid:
+      selector: a[href*="imdb.com/title/tt"]
       attribute: href
     date_elapsed:
       # time type: time elapsed (default)
-      selector: td:nth-child(4) > span[title]
+      selector: td:nth-last-child(7) > span[title]
       attribute: title
       optional: true
       filters:
@@ -126,7 +117,7 @@ search:
           args: "2006-01-02 15:04:05 -07:00"
     date_added:
       # time added
-      selector: td:nth-child(4):not(:has(span))
+      selector: td:nth-last-child(7):not(:has(span[title])):not(:has(a))
       optional: true
       filters:
         - name: append
@@ -136,13 +127,13 @@ search:
     date:
       text: "{{ if or .Result.date_elapsed .Result.date_added }}{{ or .Result.date_elapsed .Result.date_added }}{{ else }}now{{ end }}"
     size:
-      selector: td:nth-child(5)
+      selector: td:nth-last-child(6)
     seeders:
-      selector: td:nth-child(6)
+      selector: td:nth-last-child(5)
     leechers:
-      selector: td:nth-child(7)
+      selector: td:nth-last-child(4)
     grabs:
-      selector: td:nth-child(8)
+      selector: td:nth-last-child(3)
     downloadvolumefactor:
       case:
         img.pro_free: 0
@@ -158,11 +149,6 @@ search:
         img.pro_2up: 2
         "*": 1
     description:
-      selector: td:nth-child(2)
+      selector: a[href^="details_"]
       remove: a, img
-    minimumratio:
-      text: 1
-    minimumseedtime:
-      # 1 day (as seconds = 24 x 60 x 60)
-      text: 86400
-# NexusPHP Standard v1.5 Beta 4
+# NexusPHP Standard v1.5 Beta 4 (customised)

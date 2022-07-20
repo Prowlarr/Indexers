@@ -1,32 +1,38 @@
 ---
-id: 52pt
-name: 52PT
-description: "52PT is a CHINESE Private Torrent Tracker for HD MOVIES / TV"
+id: torrentccf
+name: TorrentCCF
+description: "TorrentCCF (TCCF) is a CHINESE Private Torrent Tracker for HD MOVIES / TV"
 language: zh-CN
 type: private
 encoding: UTF-8
 links:
-  - https://52pt.site/
+  - https://et8.org/
+legacylinks:
+  - http://et8.org/
 
 caps:
   categorymappings:
-    - {id: 401, cat: Movies, desc: "Movies/电影"}
-    - {id: 404, cat: TV/Documentary, desc: "Documentaries/纪录片"}
-    - {id: 405, cat: TV/Anime, desc: "Animations/动漫"}
-    - {id: 402, cat: TV, desc: "TV Series/剧集"}
-    - {id: 403, cat: TV, desc: "TV Shows/综艺"}
-    - {id: 406, cat: Audio/Video, desc: "MusicVideo/音乐MV"}
-    - {id: 407, cat: TV/Sport, desc: "Sports/运体"}
-    - {id: 409, cat: Other, desc: "Misc/其他"}
-    - {id: 410, cat: Other, desc: "Opera/戏曲 曲艺"}
-    - {id: 408, cat: Audio, desc: "HQ Audio/无损音乐"}
-    - {id: 411, cat: XXX, desc: "Erotic/情色"}
+    - {id: 622, cat: Movies, desc: "Movies.电影"}
+    - {id: 623, cat: TV, desc: "TV.电视剧"}
+    - {id: 624, cat: TV/Documentary, desc: "Documentaries.纪录片"}
+    - {id: 625, cat: PC, desc: "Appz.软件"}
+    - {id: 626, cat: Audio, desc: "Music & MusicVideos.音乐及MV"}
+    - {id: 627, cat: Other, desc: "Others.其他(非学习类)"}
+    - {id: 628, cat: Books/Other, desc: "Elearning - 杂项学习"}
+    - {id: 629, cat: Books/EBook, desc: "Elearning - 电子书/小说"}
+    - {id: 630, cat: Books/EBook, desc: "Elearning - 电子书/非小说"}
+    - {id: 631, cat: Books/Mags, desc: "Elearning - 杂志"}
+    - {id: 632, cat: Books/Comics, desc: "Elearning - 漫画"}
+    - {id: 633, cat: Audio/Audiobook, desc: "Elearning - 有声书"}
+    - {id: 634, cat: Books, desc: "Elearning - 公开课"}
+    - {id: 635, cat: Books, desc: "Elearning - 视频教程"}
 
   modes:
     search: [q]
-    tv-search: [q, season, ep, imdbid]
-    movie-search: [q, imdbid]
+    tv-search: [q, season, ep, imdbid, doubanid]
+    movie-search: [q, imdbid, doubanid]
     music-search: [q]
+    book-search: [q]
 
 settings:
   - name: cookie
@@ -75,45 +81,53 @@ login:
 search:
   paths:
     - path: torrents.php
+      method: get
   inputs:
     $raw: "{{ range .Categories }}cat{{.}}=1&{{end}}"
-    search: "{{ if .Query.IMDBID }}{{ .Query.IMDBID }}{{ else }}{{ .Keywords }}{{ end }}"
+    search: "{{ if .Query.IMDBID }}{{ .Query.IMDBID }}{{ else }}{{ end }}{{ if .Query.DoubanID }}/{{ .Query.DoubanID }}{{ else }}{{ end }}{{ if or .Query.IMDBID .Query.DoubanID }}{{ else }}{{ .Keywords }}{{ end }}"
     # 0 incldead, 1 active, 2 dead
     incldead: 0
     # 0 all, 1 normal, 2 free, 3 2x, 4 2xfree, 5 50%, 6 2x50%, 7 30%
     spstate: "{{ if .Config.freeleech }}2{{ else }}0{{ end }}"
     # 0 title, 1 descr, 3 uploader, 4 imdburl
-    search_area: "{{ if .Query.IMDBID }}4{{ else }}0{{ end }}"
+    search_area: "{{ if .Query.IMDBID }}4{{ else }}{{ end }}{{ if .Query.DoubanID }}1{{ else }}{{ end }}{{ if or .Query.IMDBID .Query.DoubanID }}{{ else }}0{{ end }}"
     # 0 AND, 1 OR, 2 exact
     search_mode: 0
     sort: "{{ .Config.sort }}"
     type: "{{ .Config.type }}"
-    # does not return imdb or doubanid in results
 
   rows:
     selector: table.torrents > tbody > tr:has(table.torrentname)
 
   fields:
-    title_default:
-      selector: a[href^="details.php?id="]
-    title_optional:
-      optional: true
-      selector: a[title][href^="details.php?id="]
-      attribute: title
-    title:
-      text: "{{ if .Result.title_optional }}{{ .Result.title_optional }}{{ else }}{{ .Result.title_default }}{{ end }}"
     category:
       selector: a[href^="?cat="]
       attribute: href
       filters:
         - name: querystring
           args: cat
+    title:
+      selector: a[href^="details.php?id="]
     details:
       selector: a[href^="details.php?id="]
       attribute: href
     download:
       selector: a[href^="download.php?id="]
       attribute: href
+    imdbid:
+      selector: a[href^="details.php?id="][onmouseover]
+      attribute: onmouseover
+      filters:
+        - name: regexp
+          args: tt(\d+)
+    size:
+      selector: td:nth-child(5)
+    grabs:
+      selector: td:nth-child(8)
+    seeders:
+      selector: td:nth-child(6)
+    leechers:
+      selector: td:nth-child(7)
     date_elapsed:
       # time type: time elapsed (default)
       selector: td:nth-child(4) > span[title]
@@ -135,14 +149,6 @@ search:
           args: "2006-01-0215:04:05 -07:00"
     date:
       text: "{{ if or .Result.date_elapsed .Result.date_added }}{{ or .Result.date_elapsed .Result.date_added }}{{ else }}now{{ end }}"
-    size:
-      selector: td:nth-child(5)
-    seeders:
-      selector: td:nth-child(6)
-    leechers:
-      selector: td:nth-child(7)
-    grabs:
-      selector: td:nth-child(8)
     downloadvolumefactor:
       case:
         img.pro_free: 0
@@ -161,8 +167,5 @@ search:
       selector: td:nth-child(2)
       remove: a, img
     minimumratio:
-      text: 1
-    minimumseedtime:
-      # 1 day (as seconds = 24 x 60 x 60)
-      text: 86400
-# NexusPHP Standard v1.5 Beta 4
+      text: 0.8
+# NexusPHP Standard v1.5 Beta 3
