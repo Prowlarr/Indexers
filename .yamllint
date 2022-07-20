@@ -1,3 +1,5 @@
+extends: default
+
 rules:
   document-start:
     level: error
