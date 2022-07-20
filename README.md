@@ -24,10 +24,18 @@ Note that the following npm packages are required `ajv-cli-servarr ajv-formats` 
 npm install -g ajv-cli-servarr ajv-formats
 ```
 
-To test the definition:
+To test a definition:
 
 ```bash
- ajv test -d "definitions/v{VERSION}/{INDEXER FILE NAME}.yml" -s "definitions/v{VERSION}/schema.json" --valid -c ajv-formats
+ version=v{VERSION}
+ file={INDEXERFILENAME}
+ ajv test -d "definitions/$version/$file.yml" -s "definitions/$version/schema.json" --valid -c ajv-formats
+ ```
+ 
+ To test all definitions, run the following command from the root of the repository to run the validation script:
+ 
+ ```bash
+ bash ./scripts/validate.sh
  ```
 
 ## Active Versions
