@@ -1,12 +1,12 @@
 ---
-id: 52pt
-name: 52PT
-description: "52PT is a CHINESE Private Torrent Tracker for HD MOVIES / TV"
+id: ptmsg
+name: PTMSG
+description: "PTMSG is a CHINESE Private Torrent Tracker for HD MOVIES / TV"
 language: zh-CN
 type: private
 encoding: UTF-8
 links:
-  - https://52pt.site/
+  - https://pt.msg.vg/
 
 caps:
   categorymappings:
@@ -18,15 +18,15 @@ caps:
     - {id: 406, cat: Audio/Video, desc: "MusicVideo/音乐MV"}
     - {id: 407, cat: TV/Sport, desc: "Sports/运体"}
     - {id: 409, cat: Other, desc: "Misc/其他"}
-    - {id: 410, cat: Other, desc: "Opera/戏曲 曲艺"}
     - {id: 408, cat: Audio, desc: "HQ Audio/无损音乐"}
-    - {id: 411, cat: XXX, desc: "Erotic/情色"}
+    - {id: 410, cat: Books, desc: "Rope Art"}
 
   modes:
     search: [q]
-    tv-search: [q, season, ep, imdbid]
-    movie-search: [q, imdbid]
+    tv-search: [q, season, ep, imdbid, doubanid]
+    movie-search: [q, imdbid, doubanid]
     music-search: [q]
+    book-search: [q]
 
 settings:
   - name: cookie
@@ -60,10 +60,6 @@ settings:
     options:
       desc: desc
       asc: asc
-  - name: info_tpp
-    type: info
-    label: Results Per Page
-    default: For best results, change the <b>Torrents per page:</b> setting to <b>100</b> on your account profile.
 
 login:
   method: cookie
@@ -77,23 +73,28 @@ search:
     - path: torrents.php
   inputs:
     $raw: "{{ range .Categories }}cat{{.}}=1&{{end}}"
-    search: "{{ if .Query.IMDBID }}{{ .Query.IMDBID }}{{ else }}{{ .Keywords }}{{ end }}"
+    search: "{{ if .Query.IMDBID }}{{ .Query.IMDBID }}{{ else }}{{ end }}{{ if .Query.DoubanID }}/{{ .Query.DoubanID }}{{ else }}{{ end }}{{ if or .Query.IMDBID .Query.DoubanID }}{{ else }}{{ .Keywords }}{{ end }}"
     # 0 incldead, 1 active, 2 dead
     incldead: 0
     # 0 all, 1 normal, 2 free, 3 2x, 4 2xfree, 5 50%, 6 2x50%, 7 30%
     spstate: "{{ if .Config.freeleech }}2{{ else }}0{{ end }}"
-    # 0 title, 1 descr, 3 uploader, 4 imdburl
-    search_area: "{{ if .Query.IMDBID }}4{{ else }}0{{ end }}"
+    # 0 title, 1 descr, 3 uploader, 4 imdburl (4 does not appear to work).
+    search_area: "{{ if or .Query.IMDBID .Query.DoubanID }}1{{ else }}0{{ end }}"
     # 0 AND, 1 OR, 2 exact
     search_mode: 0
     sort: "{{ .Config.sort }}"
     type: "{{ .Config.type }}"
-    # does not return imdb or doubanid in results
 
   rows:
     selector: table.torrents > tbody > tr:has(table.torrentname)
 
   fields:
+    category:
+      selector: a[href^="?cat="]
+      attribute: href
+      filters:
+        - name: querystring
+          args: cat
     title_default:
       selector: a[href^="details.php?id="]
     title_optional:
@@ -102,17 +103,14 @@ search:
       attribute: title
     title:
       text: "{{ if .Result.title_optional }}{{ .Result.title_optional }}{{ else }}{{ .Result.title_default }}{{ end }}"
-    category:
-      selector: a[href^="?cat="]
-      attribute: href
-      filters:
-        - name: querystring
-          args: cat
     details:
       selector: a[href^="details.php?id="]
       attribute: href
     download:
       selector: a[href^="download.php?id="]
+      attribute: href
+    imdbid:
+      selector: a[href*="imdb.com/title/tt"]
       attribute: href
     date_elapsed:
       # time type: time elapsed (default)
@@ -161,8 +159,5 @@ search:
       selector: td:nth-child(2)
       remove: a, img
     minimumratio:
-      text: 1
-    minimumseedtime:
-      # 1 day (as seconds = 24 x 60 x 60)
-      text: 86400
+      text: 0.81
 # NexusPHP Standard v1.5 Beta 4
