@@ -1,4 +1,4 @@
-npm install -g ajv-cli-servarr ajv-formats
+npm install -g ajv-cli ajv-formats
 
 for dir in `find definitions -type d -name "v*"`
 do
