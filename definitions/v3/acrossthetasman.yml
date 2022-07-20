@@ -25,6 +25,7 @@ settings:
   - name: sort
     label: Sort
     type: select
+    label: Sort requested from site
     default: date
     options:
       date: created
@@ -34,6 +35,7 @@ settings:
   - name: order
     label: Order
     type: select
+    label: Order requested from site
     default: desc
     options:
       desc: desc
