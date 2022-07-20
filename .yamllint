@@ -4,7 +4,7 @@ rules:
   document-start:
     level: error
   line-length: disable
-  key-duplicates: disable
+  key-duplicates: {}
   truthy: disable
   comments:
     min-spaces-from-content: 1
