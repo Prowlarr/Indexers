@@ -261,7 +261,8 @@ echo "--- Evaluating and Reviewing Changes"
 ### v1 frozen 2021-10-13
 ### v2 frozen 2022-04-18
 ### v1 and v2 purged and moved to v3 2022-06-24
-min_schema=3
+### v3 purged and frozen 2022-07-22
+min_schema=4
 max_schema=6
 new_schema=$((max_schema + 1))
 # Segment Changes
