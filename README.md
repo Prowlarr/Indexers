@@ -28,16 +28,10 @@ To test the definition:
 
 ```bash
  ajv test -d "definitions/v{VERSION}/{INDEXER FILE NAME}.yml" -s "definitions/v{VERSION}/schema.json" --valid -c ajv-formats
- ```
+```
 
 ## Active Versions
 
-- V3 Indexers
-  - Prowlarr Cardigann v3 includes support for APIs and JSON
-  - Replace `imdb:` selector with `imdbid:`
-  - Makes `Description` an optional by default
-  - All new Indexers using APIs shall be in v3 as of 2021-10-21
-    - Indexers utilizing CategoryDescr or any v4 features MUST be in v4
 - [V4 Indexers](https://github.com/Prowlarr/Prowlarr/pull/828)
   - Prowlarr Cardigann v4 includes several changes such as
     - TMDBId
@@ -71,3 +65,11 @@ To test the definition:
   - AllowRawSearch property in caps
 - No new indexers are to be added to v2 as of 2022-04-18
 - No new updates backported to v2 as of 2022-04-18
+
+### V3 Indexers
+
+- Prowlarr Cardigann v3 includes support for APIs and JSON
+- Replace `imdb:` selector with `imdbid:`
+- Makes `Description` an optional by default
+- All new Indexers using APIs shall be in v3 as of 2021-10-21
+  - Indexers utilizing CategoryDescr or any v4 features MUST be in v4
