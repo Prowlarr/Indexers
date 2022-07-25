@@ -130,7 +130,11 @@ search:
       selector: a[href^="downloadssl.php?id="]
       attribute: href
     _genre:
+      optional: true
       selector: td:nth-child(2) > small
+      filters:
+        - name: replace
+          args: [" ", ", "]
     _language:
       optional: true
       selector: img[src="pic/pl.png"]
