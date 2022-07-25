@@ -12,26 +12,32 @@
 # Check if Required NPM Modules are installed and install if needed
 package_servarr='ajv-cli-servarr'
 package_formats='ajv-formats'
-if [ `npm list -g | grep -c $package_servarr` -eq 0 ]; then
+if [ "$(npm list -g | grep -c $package_servarr)" -eq 0 ]; then
     echo "$package_servarr npm package missing. installing"
     npm -g install $package_servarr
 fi
-if [ `npm list -g | grep -c $package_formats` -eq 0 ]; then
+if [ "$(npm list -g | grep -c $package_formats)" -eq 0 ]; then
     echo "$package_formats npm package missing. installing"
     npm -g install $package_formats
 fi
 
 ## Enhanced Logging
 case $1 in
-[debug]*)
+[debug])
     debug=true
     echo "--- debug logging enabled"
     ;;
-[trace]*)
+[trace])
     debug=true
     echo "--- debug logging enabled"
     trace=true
     echo "--- trace logging enabled"
+    ;;
+[dev])
+    skipupstream=true
+    debug=false
+    trace=false
+    echo "--- skipupstream; skipping upstream Prowlarr pull, local only"
     ;;
 *)
     debug=false
@@ -49,7 +55,14 @@ jackett_release_branch="master"
 jackett_remote_name="z_Jackett"
 jackett_pulls_branch="jackett-pulls"
 prowlarr_commit_template="jackett indexers as of"
-
+### Indexer Schema Versions
+### v1 frozen 2021-10-13
+### v2 frozen 2022-04-18
+### v1 and v2 purged and moved to v3 2022-06-24
+### v3 purged and frozen 2022-07-22
+min_schema=4
+max_schema=7
+new_schema=$((max_schema + 1))
 ## Switch to Prowlarr directory and fetch all
 cd "$prowlarr_git_path" || exit
 ## Config Git and remotes
@@ -94,12 +107,16 @@ if [ "$pulls_exists" = false ]; then
     if [ "$local_exist" = true ]; then
         ## local branch exists
         ## reset on master
-        echo "--- checking out local branch [$jackett_pulls_branch]"
-        git checkout -B "$jackett_pulls_branch"
-        git reset --hard "$prowlarr_remote_name"/"$prowlarr_release_branch"
-        echo "--- local [$jackett_pulls_branch] hard reset based on [$prowlarr_remote_name/$prowlarr_release_branch]"
-        if $trace; then
-            read -ep $"Reached - Finished Github Actions [LocalExistsNoRemote] | Pausing for trace debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
+        if [ "$skipupstream" = true ]; then
+            echo "--- [$skipupstream] skipping checking out local branch [$jackett_pulls_branch]"
+            echo "--- checking out local branch [$jackett_pulls_branch]"
+            git checkout -B "$jackett_pulls_branch"
+        else
+            git reset --hard "$prowlarr_remote_name"/"$prowlarr_release_branch"
+            echo "--- local [$jackett_pulls_branch] hard reset based on [$prowlarr_remote_name/$prowlarr_release_branch]"
+            if $trace; then
+                read -ep $"Reached - Finished Github Actions [LocalExistsNoRemote] | Pausing for trace debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
+            fi
         fi
     else
         ## local branch does not exist
@@ -114,9 +131,14 @@ else
     ## existing remote branch found
     if [ "$local_exist" = true ]; then
         # if local exists; reset to remote
-        git checkout -B "$jackett_pulls_branch"
-        git reset "$prowlarr_remote_name"/"$jackett_pulls_branch"
-        echo "--- local [$jackett_pulls_branch] reset from [$prowlarr_remote_name/$jackett_pulls_branch]"
+        if $skipupstream; then
+            echo "--- [$skipupstream] skipping checking out local branch [$jackett_pulls_branch]"
+            echo "--- checking out local branch [$jackett_pulls_branch]"
+            git checkout -B "$jackett_pulls_branch"
+        else
+            git reset --hard "$prowlarr_remote_name"/"$prowlarr_release_branch"
+            echo "--- local [$jackett_pulls_branch] hard reset based on [$prowlarr_remote_name/$prowlarr_release_branch]"
+        fi
         if $trace; then
             read -ep $"Reached - Finished Github Actions [LocalExistsRemoteExists] | Pausing for trace debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
         fi
@@ -186,12 +208,31 @@ for pick_commit in ${commit_range}; do
         readme_conflicts=$(git diff --cached --name-only | grep "README.md")
         nonyml_conflicts=$(git diff --cached --name-only | grep "\.cs\|\.js\|\.iss\|\.html")
         yml_conflicts=$(git diff --cached --name-only | grep ".yml")
+        schema_conflicts=$(git diff --cached | grep ".schema.json")
         ## Handle Common Conflicts
         echo "--- conflicts exist"
+        if [ -n "$readme_conflicts" ]; then
+            echo "--- README conflict exists; using Prowlarr README"
+            if $trace; then
+                read -ep $"Reached - README Conflict ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
+            fi
+            git checkout --ours "README.md"
+            git add --f "README.md"
+        fi
+        if [ -n "$schema_conflicts" ]; then
+            echo "--- Schema conflict exists; using Jackett Schema and creating version [$new_schema]"
+            if $trace; then
+                read -ep $"Reached - README Conflict ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
+            fi
+            mv "$schema_conflicts" "$prowlarr_git_path/$new_schema/schema.json"
+            git checkout --theirs "*schema.json"
+            git add --f "*schema.json"
+        fi
+
         if [ -n "$nonyml_conflicts" ]; then
             echo "--- Non-YML conflicts exist; removing cs, js, iss, html"
             if $trace; then
-                read -ep $"Reached - Non-YML Conflict Remove ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
+                read -ep $"Reached - Non-YML Conflict and non Schema Remove ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
             fi
             # use our package json and package-lock
             git checkout --ours "package.json"
@@ -200,14 +241,6 @@ for pick_commit in ${commit_range}; do
             git rm --f --q --ignore-unmatch "src/Jackett*/**.js*"
             git rm --f --q --ignore-unmatch "*.iss*"
             git rm --f --q --ignore-unmatch "*.html*"
-        fi
-        if [ -n "$readme_conflicts" ]; then
-            echo "--- README conflict exists; using Prowlarr README"
-            if $trace; then
-                read -ep $"Reached - README Conflict ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
-            fi
-            git checkout --ours "README.md"
-            git add --f "README.md"
         fi
         if [ -n "$yml_conflicts" ]; then
             echo "--- YML conflict exists; [$yml_conflicts]"
@@ -246,10 +279,6 @@ for pick_commit in ${commit_range}; do
             fi
         fi
     fi
-    unset has_conflicts
-    unset readme_conflicts
-    unset csharp_conflicts
-    unset yml_conflicts
     git config merge.directoryRenames conflict
     git config merge.verbosity 2
 done
@@ -257,14 +286,6 @@ echo "--- --------------------------------------------- completed cherry pick ac
 echo "--- Evaluating and Reviewing Changes"
 
 # New Indexers pulled
-### Indexer Schema Versions
-### v1 frozen 2021-10-13
-### v2 frozen 2022-04-18
-### v1 and v2 purged and moved to v3 2022-06-24
-### v3 frozen 2022-07-24
-min_schema=4
-max_schema=6
-new_schema=$((max_schema + 1))
 # Segment Changes
 added_indexers=$(git diff --cached --diff-filter=A --name-only | grep ".yml" | grep "v[$min_schema-$max_schema]")
 modified_indexers=$(git diff --cached --diff-filter=M --name-only | grep ".yml" | grep "v[$min_schema-$max_schema]")
@@ -273,9 +294,9 @@ removed_indexers=$(git diff --cached --diff-filter=D --name-only | grep ".yml" |
 new_vers_dir="definitions/v$new_schema"
 mkdir -p "$new_vers_dir"
 
-echo "Added Indexers are [$added_indexers]"
-echo "Modified Indexers are [$modified_indexers]"
-echo "Removed Indexers are [$removed_indexers]"
+echo "===A Added Indexers are [$added_indexers]"
+echo "===M Modified Indexers are [$modified_indexers]"
+echo "===R Removed Indexers are [$removed_indexers]"
 
 # Version Functions
 # Loop through Schema definitions from max to min and determine lowest matching schema of the definition file passed
@@ -296,8 +317,8 @@ function determine_best_schema_version() {
             break
         fi
         if [ i = $max_schema ]; then
-            echo "ERROR - Definition [$def_file] does not match max schema [$max_schema]."
-            echo "Cardigann update likely needed. Version [$new_schema] required Review definition."
+            echo "===E ERROR - Definition [$def_file] does not match max schema [$max_schema]."
+            echo "===C Cardigann update likely needed. Version [$new_schema] required Review definition."
             export matched_version
         fi
     done
@@ -438,8 +459,8 @@ if [ -n "$newschema_indexers" ]; then
                 if $debug; then
                     read -ep $"Reached [backporting] ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
                 fi
-                echo "--- WARNING THIS IS A NEW CARDIGANN VERSION THAT IS REQUIRED ---"
-                echo "--- HUMAN! Review this change and ensure no incompatible updates are backported. ---"
+                echo "=== WARNING THIS IS A NEW CARDIGANN VERSION THAT IS REQUIRED ---"
+                echo "=== HUMAN! Review this change and ensure no incompatible updates are backported. ---"
                 git difftool --no-index "$indexer" "$indexer_check"
                 git add "$indexer_check"
             fi
@@ -469,6 +490,11 @@ if [ -n "$removed_indexers" ]; then
     unset indexer_remove
 fi
 echo "--- --------------------------------------------- completed removing indexers ---------------------------------------------"
+
+echo "===A Added Indexers are [$added_indexers]"
+echo "===M Modified Indexers are [$modified_indexers]"
+echo "===R Removed Indexers are [$removed_indexers]"
+echo "===N New Schema Indexers are [$newschema_indexers]"
 
 # Cleanup new version folder if unused
 if [ -d "$new_vers_dir" ]; then
