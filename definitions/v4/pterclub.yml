@@ -140,7 +140,6 @@ search:
     imdbid:
       selector: a[href$="&search_area=4"]
       attribute: href
-      attribute: href
     # staff have extra columns at the start and end of a row, so we have to float the next lot of selectors off an anchor
     _anchor1:
       selector: td:has(a[href^="comment.php?"])

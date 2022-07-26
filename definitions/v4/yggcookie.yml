@@ -227,7 +227,7 @@ search:
       args: ["/", " "]
     # Replace ! with nothing for searches due to internal YGG issues reported on Radarr Discord
     - name: replace
-      args: ["!", ""]   
+      args: ["!", ""]
     - name: replace
       args: ["  ", " "]
     - name: trim
