@@ -52,7 +52,7 @@ download:
 
 search:
   headers:
-      User-Agent: ["{{ .Config.useragent }}"]
+    User-Agent: ["{{ .Config.useragent }}"]
 
   paths:
     # https://sound-park.world/filter/?sort_method=1&sorting_type=undefined&genres=&qualities=&country_keyword=&countries=&releases=&start_year=&end_year=&search_keyword=

@@ -73,13 +73,13 @@ search:
 
   keywordsfilters:
     - name: re_replace
-      args: ["(S[0-9]+E[0-9]+|S[0-9]+)",""] # remove SXXEXX or SXX from search
+      args: ["(S[0-9]+E[0-9]+|S[0-9]+)", ""] # remove SXXEXX or SXX from search
 
   rows:
     # If the category is a TV show/Anime, there's a necessity to filter the results by season/episode to not show all of them
-   selector: "table.torrent_table > tbody > tr:not(tr.colhead).group,
+    selector: "table.torrent_table > tbody > tr:not(tr.colhead).group,
               table.torrent_table tbody tr:not(tr.colhead):contains('{{ .Query.Episode }}')"
-   filters:
+    filters:
       - name: andmatch
 
 
@@ -110,15 +110,15 @@ search:
         - name: replace
           args: ["/ Free", ""]
         - name: re_replace
-          args: ["[\\[\\]]+",""]
+          args: ["[\\[\\]]+", ""]
 
     _rawTitle:
       selector: div.group_info
       filters:
         - name: re_replace
-          args: ["(\n.*)",""] # remove everything after newline
+          args: ["(\n.*)", ""] # remove everything after newline
         - name: re_replace
-          args: ["  |\t",""] # remove double space and tabs
+          args: ["  |\t", ""] # remove double space and tabs
 
     _year:
       text: "{{ .Result._rawTitle }}"
@@ -137,9 +137,9 @@ search:
       text: "{{ .Result._rawTitle }}"
       filters:
         - name: re_replace
-          args: ["\\[[0-9]*\\].*",""] # Removes the year and everything after
+          args: ["\\[[0-9]*\\].*", ""] # Removes the year and everything after
         - name: re_replace
-          args: ["(.*)\\[(!?[^/]*?)\\]","$2"]   # Parse only en-us title, when available
+          args: ["(.*)\\[(!?[^/]*?)\\]", "$2"]   # Parse only en-us title, when available
         - name: append
           args: "{{ .Result._year }}"
         - name: append
@@ -150,7 +150,7 @@ search:
       text: "{{ .Result._rawTitle }}"
       filters:
         - name: re_replace
-          args: ["\\[|\\]"," "] # Remove Brackets
+          args: ["\\[|\\]", " "] # Remove Brackets
 
     title_details:
       # Title defined as:
@@ -158,9 +158,9 @@ search:
       text: "{{ .Result._rawTitle }}"
       filters:
         - name: re_replace
-          args: ["\\[[0-9]*\\].*",""] # Removes the year and everything after
+          args: ["\\[[0-9]*\\].*", ""] # Removes the year and everything after
         - name: re_replace
-          args: ["(.*)\\[(!?[^/]*?)\\]","$2"]   # Parse only en-us title, when available
+          args: ["(.*)\\[(!?[^/]*?)\\]", "$2"]   # Parse only en-us title, when available
 
     category_details:
       selector: td.cats_col > a
