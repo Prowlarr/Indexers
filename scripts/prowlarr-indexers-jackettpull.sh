@@ -9,6 +9,18 @@
 ## Using the Script
 ### Suggested to run from the current directory being Prowlarr/Indexers local Repo using Git Bash `./scripts/prowlarr-indexers-jackettpull.sh`
 
+# Check if Required NPM Modules are installed and install if needed
+package_servarr='ajv-cli-servarr'
+package_formats='ajv-formats'
+if [ `npm list -g | grep -c $package_servarr` -eq 0 ]; then
+    echo "$package_servarr npm package missing. installing"
+    npm -g install $package_servarr
+fi
+if [ `npm list -g | grep -c $package_formats` -eq 0 ]; then
+    echo "$package_formats npm package missing. installing"
+    npm -g install $package_formats
+fi
+
 ## Enhanced Logging
 case $1 in
 [debug]*)
@@ -37,17 +49,6 @@ jackett_release_branch="master"
 jackett_remote_name="z_Jackett"
 jackett_pulls_branch="jackett-pulls"
 prowlarr_commit_template="jackett indexers as of"
-### Indexer Versions
-v1_pattern="v1"
-v2_pattern="v2"
-v3_pattern="v3"
-v4_pattern="v4"
-## ID new Version indexers by Regex
-v3_regex1="# (json (engine|api|Elasticsearch|rartracker))|(UNIT3D)"
-v3_regex2="    imdbid:\r" # Requires \r to ensure is not part of another string or condition
-v3_regex3="type: xml"
-v4_regex1="    categorydesc:"
-echo "--- Variables set"
 
 ## Switch to Prowlarr directory and fetch all
 cd "$prowlarr_git_path" || exit
@@ -133,13 +134,13 @@ echo "--- Reviewing Commits"
 existing_message=$(git log --format=%B -n1)
 existing_message_ln1=$(echo "$existing_message" | awk 'NR==1')
 # require start of commit
-prowlarr_commits=$(git log --format=%B -n1 -n 10 | grep "^$prowlarr_commit_template")
+prowlarr_commits=$(git log --format=%B -n1 -n 20 | grep "^$prowlarr_commit_template")
 prowlarr_jackett_commit_message=$(echo "$prowlarr_commits" | awk 'NR==1')
 jackett_recent_commit=$(git rev-parse "$jackett_branch")
 echo "--- most recent Jackett commit is: [$jackett_recent_commit] from [$jackett_branch]"
 # require start of commit
 recent_pulled_commit=$(echo "$prowlarr_commits" | awk 'NR==1{print $5}')
-## check most recent 10 commits in case we have other commits
+## check most recent 20 commits in case we have other commits
 echo "--- most recent Prowlarr jackett commit is: [$recent_pulled_commit] from [$prowlarr_remote_name/$jackett_pulls_branch]"
 
 if $trace; then
@@ -192,8 +193,11 @@ for pick_commit in ${commit_range}; do
             if $trace; then
                 read -ep $"Reached - Non-YML Conflict Remove ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
             fi
+            # use our package json and package-lock
+            git checkout --ours "package.json"
+            git checkout --ours "package-lock.json"
             git rm --f --q --ignore-unmatch "*.cs*"
-            git rm --f --q --ignore-unmatch "*.js*"
+            git rm --f --q --ignore-unmatch "src/Jackett*/**.js*"
             git rm --f --q --ignore-unmatch "*.iss*"
             git rm --f --q --ignore-unmatch "*.html*"
         fi
@@ -253,211 +257,230 @@ echo "--- --------------------------------------------- completed cherry pick ac
 echo "--- Evaluating and Reviewing Changes"
 
 # New Indexers pulled
-### Depreciated
-### v1
-### v2
-### Supported
-### None
-### Current
-### v3
-### Latest
-### v4
-
-# Changes Indexers pulled to older versions
-depreciated_indexers=$(git diff --cached --name-only | grep ".yml" | grep "$v1_pattern\|$v2_pattern")
-# v3, and v4 are supported
-added_indexers=$(git diff --cached --diff-filter=A --name-only | grep ".yml" | grep "$v1_pattern\|$v2_pattern\|$v3_pattern\|$v4_pattern")
-modified_indexers=$(git diff --cached --diff-filter=M --name-only | grep ".yml" | grep "$v2_pattern\|$v3_pattern\|$v4_pattern")
-removed_indexers=$(git diff --cached --diff-filter=D --name-only | grep ".yml" | grep "$v1_pattern\|$v2_pattern\|$v3_pattern\|$v4_pattern")
-
+### Indexer Schema Versions
 ### v1 frozen 2021-10-13
-### v2 frozen 2022-04-18 for simplicity
-### Put everything in v3 2022-02-09
+### v2 frozen 2022-04-18
+### v1 and v2 purged and moved to v3 2022-06-24
+### v3 frozen 2022-07-24
+min_schema=4
+max_schema=6
+new_schema=$((max_schema + 1))
+# Segment Changes
+added_indexers=$(git diff --cached --diff-filter=A --name-only | grep ".yml" | grep "v[$min_schema-$max_schema]")
+modified_indexers=$(git diff --cached --diff-filter=M --name-only | grep ".yml" | grep "v[$min_schema-$max_schema]")
+removed_indexers=$(git diff --cached --diff-filter=D --name-only | grep ".yml" | grep "v[$min_schema-$max_schema]")
+# Create new version directory just in case.
+new_vers_dir="definitions/v$new_schema"
+mkdir -p "$new_vers_dir"
+
+echo "Added Indexers are [$added_indexers]"
+echo "Modified Indexers are [$modified_indexers]"
+echo "Removed Indexers are [$removed_indexers]"
+
+# Version Functions
+# Loop through Schema definitions from max to min and determine lowest matching schema of the definition file passed
+function determine_best_schema_version() {
+    echo "determining best schema version"
+    def_file=$1
+    matched_version=0
+    for ((i = min_schema; i <= max_schema; i++)); do
+        dir="definitions/v$i"
+        schema="$dir/schema.json"
+        echo "checking file [$def_file] against schema [$schema]"
+        ajv test -d "$def_file" -s "$schema" --valid -c ajv-formats
+        test_resp=$?
+        if [ $test_resp -eq 0 ]; then
+            echo "Definition [$def_file] matches schema [$schema]"
+            matched_version=$i
+            export matched_version
+            break
+        fi
+        if [ i = $max_schema ]; then
+            echo "ERROR - Definition [$def_file] does not match max schema [$max_schema]."
+            echo "Cardigann update likely needed. Version [$new_schema] required Review definition."
+            export matched_version
+        fi
+    done
+}
+
+# Loop through Schema definitions and check if valid for that version
+function determine_schema_version() {
+    def_file=$1
+    echo "testing schema version of [$def_file]"
+    check_version=$(echo "$indexer" | cut -d'/' "-f2")
+    dir="definitions/$check_version"
+    schema="$dir/schema.json"
+    echo "checking file against schema [$schema]"
+    ajv test -d "$def_file" -s "$schema" --valid -c ajv-formats
+    test_resp=$?
+    if [ $test_resp -eq 0 ]; then
+        echo "Definition [$def_file] matches schema [$schema]"
+    else
+        check_version="v0"
+    fi
+    export check_version
+}
+
 if [ -n "$added_indexers" ]; then
     echo "--- New Indexers detected"
     for indexer in ${added_indexers}; do
-        ## indexer_supported=${indexer/v[0-9]/$v2_pattern}
-        indexer_supported_current=${indexer/v[0-9]/$v3_pattern}
-        indexer_supported_latest=${indexer/v[0-9]/$v4_pattern}
         echo "--- Evaluating [$indexer] Cardigann Version"
         if [ -f "$indexer" ]; then
-            updated_indexer=$indexer
-            if grep -Eq "$v4_regex1" "$indexer"; then
-                echo "--- [$indexer] is [$v4_pattern]"
-                updated_indexer=$indexer_supported_latest
-            elif grep -Eq "$v3_regex1" "$indexer" || grep -Pq "$v3_regex2" "$indexer" || grep -Pq "$v3_regex3" "$indexer" || [ "indexer" == "$indexer_supported_current" ]; then
-                echo "--- [$indexer] is [$v3_pattern]"
-                updated_indexer=$indexer_supported_current
+            # Get Schema Version. Returns matched_version as version number. 0 if invalid
+            # If the version git pulled to passes do nothing; else identify the version
+            determine_schema_version "$indexer"
+            echo "--- Checked Version Output is $check_version"
+            if [ $check_version != "v0" ]; then
+                echo "--- Schema Test passed."
+                updated_indexer=$indexer
             else
-                # code if not v3
-                echo "--- [$indexer] is not [$v3_pattern] but assuming [$v3_pattern] anyway"
-                updated_indexer=$indexer_supported_current
-            fi
-            if [ "$indexer" != "$updated_indexer" ]; then
-                echo "--- Moving indexer old [$indexer] to new [$updated_indexer]"
-                if $debug; then
-                    read -ep $"Reached [vCurrent to vLatest] ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
+                echo "--- Schema Test failed. Attempting to determine version"
+                determine_best_schema_version "$indexer"
+                if [ "$matched_version" -eq 0 ]; then
+                    echo "--- Version [$new_schema] required. Review definition [$indexer]"
+                    v_matched="v$new_schema"
+                else
+                    v_matched="v$matched_version"
                 fi
-                mv "$indexer" "$updated_indexer"
-                git rm -f "$indexer"
-                git add -f "$updated_indexer"
-            else
-                echo "--- Doing nothing; [$indexer] already is [$updated_indexer]"
+                updated_indexer=${indexer/v[0-9]/$v_matched}
+                if [ "$indexer" != "$updated_indexer" ]; then
+                    echo "--- Moving indexer old [$indexer] to new [$updated_indexer]"
+                    if $debug; then
+                        read -ep $"Reached [vCurrent to vLatest] ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
+                    fi
+                    mv "$indexer" "$updated_indexer"
+                    git rm -f "$indexer"
+                    git add -f "$updated_indexer"
+                else
+                    echo "--- Doing nothing; [$indexer] already is [$updated_indexer]"
+                fi
             fi
         fi
     done
     unset indexer
-    unset indexer_supported
-    unset indexer_supported_current
-    unset updated_indexer
-    unset pattern
+    unset test
 fi
 echo "--- --------------------------------------------- completed new indexers ---------------------------------------------"
-## Copy new changes in vDepreciated to vSupported
-### v1 depreciated 2021-10-17
-### v2 depreciated 2022-04-18
-if [ -n "$depreciated_indexers" ]; then
-    echo "--- Depreciated ([$v1_pattern] or [$v2_pattern]) Indexers with changes detected"
-    for indexer in ${depreciated_indexers}; do
-        indexer_supported=${indexer/v[0-9]/$v2_pattern}
-        indexer_supported_current=${indexer/v[0-9]/$v3_pattern}
-        indexer_supported_latest=${indexer/v[0-9]/$v4_pattern}
-        echo "--- evaluating depreciated [$v1_pattern] [$indexer]"
-        echo "--- evaluating depreciated [$v2_pattern] [$indexer]"
-        if [ -f "$indexer" ]; then
-            updated_indexer=$indexer_supported_current
-            if grep -Eq "$v4_regex1" "$indexer"; then
-                echo "--- [$indexer] is [$v4_pattern]"
-                updated_indexer=$indexer_supported_latest
-            elif grep -Eq "$v3_regex1" "$indexer" || grep -Eq "$v3_regex2" "$indexer" || grep -Pq "$v3_regex3" "$indexer"; then
-                echo "--- [$indexer] is [$v3_pattern]"
-                updated_indexer=$indexer_supported_current
-            elif [ "$updated_indexer" = "$indexer_supported" ]; then
-                echo "--- [$indexer] is not  [$v4_pattern] nor [$v3_pattern]. treating as [$v3_pattern]"
-                updated_indexer=$indexer_supported_current
-            fi
-            if [ "$indexer" != "$updated_indexer" ]; then
-                echo "--- found changes | copying to [$updated_indexer] and resetting [$indexer]"
-                if $debug; then
-                    read -ep $"Reached [vDepreciated to vSupported] ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
-                fi
-                cp "$indexer" "$updated_indexer"
-                git add "$updated_indexer"
-                git checkout @ -f "$indexer"
-            fi
-        fi
-    done
-    unset indexer
-    unset indexer_supported
-    unset indexer_supported_current
-    unset updated_indexer
-    unset pattern
-fi
-echo "--- --------------------------------------------- completed depreciated indexers ---------------------------------------------"
-## Check for changes between vSupported that are type vCurrent and vLatest
+## Check modified indexers
 if [ -n "$modified_indexers" ]; then
     echo "--- Reviewing Modified Indexers..."
     for indexer in ${modified_indexers}; do
-        indexer_supported=${indexer/v[0-9]/$v2_pattern}
-        indexer_supported_current=${indexer/v[0-9]/$v3_pattern}
-        indexer_supported_latest=${indexer/v[0-9]/$v4_pattern}
-        echo "--- [$indexer] is changed | evaluating for [$v4_pattern] and [$v3_pattern] changes"
+        echo "--- Evaluating [$indexer] Cardigann Version"
         if [ -f "$indexer" ]; then
-            if grep -Eq "$v4_regex1" "$indexer"; then
-                echo "--- [$indexer] is [$v4_pattern]"
-                updated_indexer=$indexer_supported_latest
-            elif grep -Eq "$v3_regex1" "$indexer" || grep -Pq "$v3_regex2" "$indexer" || grep -Pq "$v3_regex3" "$indexer"; then
-                echo "--- [$indexer] is [$v3_pattern]"
-                updated_indexer=$indexer_supported_current
-            else
-                echo "--- [$indexer] is not [$v3_pattern] nor [$v4_pattern]. No changes required."
+            # Get Schema Version. Returns matched_version as version number. 0 if invalid
+            # If the version git pulled to passes do nothing; else identify the version
+            determine_schema_version "$indexer"
+            echo "--- Checked Version Output is $check_version"
+            if [ $check_version != "v0" ]; then
+                echo "--- Schema Test passed."
                 updated_indexer=$indexer
-            fi
-            if [ "$indexer" != "$updated_indexer" ]; then
-                echo "--- found changes | copying to [$updated_indexer] and resetting [$indexer]"
-                if $debug; then
-                    read -ep $"Reached [vSupported is vCurrent and vLatest] ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
+            else
+                echo "--- Schema Test failed. Attempting to determine version"
+                determine_best_schema_version "$indexer"
+                if [ "$matched_version" -eq 0 ]; then
+                    echo "--- Version [$new_schema] required. Review definition [$indexer]"
+                    v_matched="v$new_schema"
+                else
+                    v_matched="v$matched_version"
                 fi
-                cp "$indexer" "$updated_indexer"
-                git add "$updated_indexer"
-                git checkout @ -f "$indexer"
+                updated_indexer=${indexer/v[0-9]/$v_matched}
+                if [ "$indexer" != "$updated_indexer" ]; then
+                    echo "--- Version bumped indexer old [$indexer] to new [$updated_indexer]"
+                    if $debug; then
+                        read -ep $"Reached [vCurrent to vLatest] ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
+                    fi
+                    mv "$indexer" "$updated_indexer"
+                    git checkout --ours "$indexer"
+                    git add -f "$updated_indexer"
+                else
+                    echo "--- Doing nothing; [$indexer] already is [$updated_indexer]"
+                fi
             fi
         fi
     done
     unset indexer
-    unset indexer_supported
-    unset indexer_supported_current
-    unset indexer_supported_latest
-    unset updated_indexer
-    unset pattern
+    unset test
 fi
 echo "--- --------------------------------------------- completed changed indexers ---------------------------------------------"
-## Backport V3 => V2
-## Backport V4 => V3
-## Backport V4 => V3
-## Foreport V2 => V3
-## Foreport V2 => V4
-## ForePort V3 => V4
-## Backport V2 => V1 - Discontinued 2021-10-23 per Q on discord
-backport_indexers=$(git diff --cached --name-only | grep ".yml" | grep "$v3_pattern\|$v4_pattern")
-if [ -n "$backport_indexers" ]; then
-    for indexer in ${backport_indexers}; do
-        # ToDo - switch to regex and match group conditionals or make a loop
-        # indexer_supported=${indexer/v[0-9]/$v2_pattern}
-        indexer_supported_current=${indexer/v[0-9]/$v3_pattern}
-        indexer_supported_latest=${indexer/v[0-9]/$v4_pattern}
-        echo "--- looking for [$v3_pattern] indexer of [$indexer]"
-        if [ -f "$indexer_supported_current" ]; then
-            echo "--- Found [$v3_pattern] indexer for [$indexer] - backporting to [$indexer_supported_current]"
-            if $debug; then
-                read -ep $"Reached [backporting] ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
+echo "--- --------------------------------------------- begining indexer backporting ---------------------------------------------"
+# Get new set of modified indexers after version checking above
+modified_indexers_vcheck=$(git diff --cached --diff-filter=AM --name-only | grep ".yml" | grep "v[$min_schema-$max_schema]")
+# Backporting Indexers
+if [ -n "$modified_indexers_vcheck" ]; then
+    for indexer in ${modified_indexers_vcheck}; do
+        for ((i = max_schema; i >= min_schema; i--)); do
+            version="v$i"
+            echo "--- looking for [$version] indexer of [$indexer]"
+            indexer_check=${indexer/v[0-9]/$version}
+            if [ "$indexer_check" != "$indexer" ] && [ -f "$indexer_check" ]; then
+                echo "--- Found [v$i] indexer for [$indexer] - comparing to [$indexer_check]"
+                if $debug; then
+                    read -ep $"Reached [backporting] ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
+                fi
+                echo "--- HUMAN! Review this change and ensure no incompatible updates are backported."
+                git difftool --no-index "$indexer" "$indexer_check"
+                git add "$indexer_check"
             fi
-            git difftool --no-index "$indexer" "$indexer_supported_current"
-            git add "$indexer_supported_current"
-        fi
-        echo "--- looking for [$v4_pattern] indexer of [$indexer]"
-        if [ -f "$indexer_supported_latest" ]; then
-            echo "--- Found [$v4_pattern] indexer for [$indexer] - backporting to [$indexer_supported_latest]"
-            if $debug; then
-                read -ep $"Reached [backporting] ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
-            fi
-
-            git difftool --no-index "$indexer" "$indexer_supported_latest"
-            git add "$indexer_supported_latest"
-        else
-            echo "--- [$v4_pattern] nor [$v3_pattern] found for [$indexer]"
-        fi
+        done
     done
     unset indexer
-    unset backport_indexer
+    unset indexer_check
 fi
+newschema_indexers=$(git diff --cached --diff-filter=A --name-only | grep ".yml" | grep "v$new_schema")
+if [ -n "$newschema_indexers" ]; then
+    for indexer in ${newschema_indexers}; do
+        for ((i = max_schema; i >= min_schema; i--)); do
+            version="v$i"
+            echo "--- looking for [$version] indexer of [$indexer]"
+            indexer_check=${indexer/v[0-9]/$version}
+            if [ "$indexer_check" != "$indexer" ] && [ -f "$indexer_check" ]; then
+                echo "--- Found [v$i] indexer for [$indexer] - comparing to [$indexer_check]"
+                if $debug; then
+                    read -ep $"Reached [backporting] ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
+                fi
+                echo "--- WARNING THIS IS A NEW CARDIGANN VERSION THAT IS REQUIRED ---"
+                echo "--- HUMAN! Review this change and ensure no incompatible updates are backported. ---"
+                git difftool --no-index "$indexer" "$indexer_check"
+                git add "$indexer_check"
+            fi
+        done
+    done
+    unset indexer
+    unset indexer_check
+fi
+
 echo "--- --------------------------------------------- completed backporting indexers ---------------------------------------------"
 if [ -n "$removed_indexers" ]; then
     for indexer in ${removed_indexers}; do
-        # ToDo - switch to regex and match group conditionals or make a loop
-        remove_indexer1=${indexer/v[0-9]/$v1_pattern}
-        remove_indexer2=${indexer/v[0-9]/$v2_pattern}
-        remove_indexer3=${indexer/v[0-9]/$v3_pattern}
-        remove_indexer4=${indexer/v[0-9]/$v4_pattern}
         echo "--- looking for previous versions of removed indexer [$indexer]"
-        if [ -f "$remove_indexer1" ] || [ -f "$remove_indexer2" ] || [ -f "$remove_indexer3" ] || [ -f "$remove_indexer4" ]; then
-            if $debug; then
-                read -ep $"Reached [removing] ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
+        for ((i = max_schema; i >= min_schema; i--)); do
+            indexer_remove=${indexer/v[0-9]/v$i}
+            if [ "$indexer_remove" != "$indexer" ] && [ -f "$indexer_remove" ]; then
+                echo "--- Found [v$i] indexer for [$indexer] - removing [$indexer_remove]"
+                if $debug; then
+                    read -ep $"Reached [backporting] ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
+                fi
+                rm -f "$indexer_remove"
+                git rm --f --ignore-unmatch "$indexer_remove"
             fi
-            echo "--- found previous versions of removed indexer [$indexer]"
-            rm -f "$remove_indexer1"
-            git rm --f --ignore-unmatch "$remove_indexer1"
-            rm -f "$remove_indexer2"
-            git rm --f --ignore-unmatch "$remove_indexer2"
-            rm -f "$remove_indexer3"
-            git rm --f --ignore-unmatch "$remove_indexer3"
-            rm -f "$remove_indexer4"
-            git rm --f --ignore-unmatch "$remove_indexer4"
-        fi
+        done
     done
     unset indexer
+    unset indexer_remove
 fi
 echo "--- --------------------------------------------- completed removing indexers ---------------------------------------------"
+
+# Cleanup new version folder if unused
+if [ -d "$new_vers_dir" ]; then
+    if [ "$(ls -A $new_vers_dir)" ]; then
+        # do nothing
+        echo "--- WARNING THIS IS A NEW CARDIGANN VERSION THAT IS REQUIRED: Version [v$new_schema] is needed. ---"
+        echo "--- Review the following definitions for new Cardigann Version: $newschema_indexers"
+    else
+        # remove new version directory
+        rmdir $new_vers_dir
+    fi
+fi
 ## Wait for user interaction to handle any conflicts and review
 echo "--- After review; the script will commit the changes."
 read -ep $"Press any key to continue or [Ctrl-C] to abort.  Waiting for human review..." -n1 -s
@@ -497,11 +520,7 @@ while true; do
         if $debug; then
             read -ep $"Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
         fi
-        if [ $pulls_exists = true ]; then
         git push "$prowlarr_remote_name" "$jackett_pulls_branch" --force-if-includes
-        else
-        git push "$prowlarr_remote_name" "$jackett_pulls_branch" --force-if-includes
-        fi
         echo "--- Branch Pushed"
         exit 0
         ;;

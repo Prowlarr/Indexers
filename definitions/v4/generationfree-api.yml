@@ -124,8 +124,6 @@ search:
       selector: details_link
     download:
       selector: download_link
-    size:
-      selector: size
     magnet:
       selector: magnet_link
       optional: true
@@ -134,8 +132,6 @@ search:
       filters:
         - name: replace
           args: ["https://via.placeholder.com/90x135", ""]
-        - name: replace
-          args: ["https://via.placeholder.com/400x600", ""]
     imdbid:
       selector: imdb_id
     tmdbid:
@@ -153,12 +149,18 @@ search:
     date:
       # 2021-10-18T00:34:50.000000Z"
       selector: created_at
+    size:
+      selector: size
     downloadvolumefactor:
-      # api returns 0=false, 1=true
+      # api returns 0%, 25%, 50%, 75%, 100%
       selector: freeleech
       case:
-        0: 1 # not free
-        1: 0 # freeleech
+        0%: 1 # not free
+        25%: 0.75
+        50%: 0.5
+        75%: 0.25
+        100%: 0 # freeleech
+        "*": 0 # catch errors
     uploadvolumefactor:
       # api returns 0=false, 1=true
       selector: double_upload
@@ -168,4 +170,4 @@ search:
     minimumseedtime:
       # 2 days (as seconds = 2 x 24 x 60 x 60)
       text: 172800
-# json UNIT3D 5.3.0
+# json UNIT3D 6.2.2

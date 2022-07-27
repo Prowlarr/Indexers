@@ -16,6 +16,7 @@ caps:
     - {id: 28, cat: Movies/SD, desc: "Filme SD"}
     - {id: 32, cat: Movies/HD, desc: "Filme HD"}
     - {id: 114, cat: Movies/UHD, desc: "Filme UHD"}
+    - {id: 140, cat: Movies/BluRay, desc: "Filme BluRay"}
     - {id: 138, cat: Movies, desc: "Filme Pack`s"}
     # Serien
     - {id: 60, cat: TV/SD, desc: "Serien SD"}
@@ -146,12 +147,12 @@ search:
       - name: andmatch
 
   fields:
-    cat_p1:
+    category_p1:
       selector: div.kat_cat_pic_name
-    cat_p2:
+    category_p2:
       selector: div.kat_cat_pic_name_b
     categorydesc:
-      text: "{{ .Result.cat_p1 }} {{ .Result.cat_p2 }}"
+      text: "{{ .Result.category_p1 }} {{ .Result.category_p2 }}"
     title:
       selector: a.selection_a
       filters:
@@ -218,4 +219,4 @@ search:
     minimumseedtime:
       # 2 days (as seconds = 2 x 24 x 60 x 60)
       text: 172800
-# engine n/a
+# 3xT
