@@ -26,12 +26,14 @@ case $1 in
 [debug])
     debug=true
     echo "--- debug logging enabled"
+    skipupstream=false
     ;;
 [trace])
     debug=true
     echo "--- debug logging enabled"
     trace=true
     echo "--- trace logging enabled"
+    skipupstream=false
     ;;
 [dev])
     skipupstream=true
@@ -42,6 +44,7 @@ case $1 in
 *)
     debug=false
     trace=false
+    skipupstream=false
     ;;
 esac
 
