@@ -18,8 +18,8 @@ caps:
 
   modes:
     search: [q]
-    tv-search: [q, season, ep]
-    movie-search: [q]
+    tv-search: [q, season, ep, genre]
+    movie-search: [q, genre]
 
 settings:
   - name: info_2fa
@@ -74,11 +74,6 @@ login:
 search:
   paths:
     - path: torrents.php
-  keywordsfilters:
-    - name: re_replace
-      args: ["(?i)\\bS0*(\\d+)\\b", "$1"]
-    - name: re_replace
-      args: ["(?i)\\bS0*(\\d+)E0*(\\d+)\\b", "$1"]
   inputs:
     $raw: "{{ range .Categories }}filter_cat[{{.}}]=1&{{end}}"
     searchtext: "{{ .Keywords }}"
@@ -86,10 +81,12 @@ search:
     order_way: "{{ .Config.type }}"
     action: advanced
     filter_freeleech: "{{ if .Config.freeleech }}1{{ else }}{{ end }}"
-    taglist: ""
+    taglist: "{{ .Query.Genre }}"
 
   rows:
     selector: table#torrent_table > tbody > tr[class^="torrent row"]:has(a[href*="action=download"])
+    filters:
+      - name: andmatch
 
   fields:
     category:
@@ -100,13 +97,6 @@ search:
           args: \[(\d+)\]
     title:
       selector: a[href^="/torrents.php?id="]
-      filters:
-        - name: re_replace # Seasons X-Y --> SX-SY
-          args: ["(?i)seasons?\\s*(\\d+)\\s*-\\s*(\\d+)", "S$1-S$2"]
-        - name: re_replace # Season X --> S0X
-          args: ["(?i)season\\s*(\\d+)", "S$"]
-        - name: re_replace
-          args: ["(?i)Complete\\s+Series", ""]
     details:
       selector: a[href^="/torrents.php?id="]
       attribute: href
@@ -115,6 +105,9 @@ search:
       attribute: href
     genre:
       selector: div.tags
+      filters:
+        - name: validate
+          args: "Action, Adventure, Animation, Comedy, Crime, Documentary, Drama, Family, Fantasy, History, Horror, Kids, Music, Mystery, News, Reality, Romance, SciFi, Soap, Talk, Thriller, War, Western"
     description:
       text: "{{ .Result.genre }}"
     poster:

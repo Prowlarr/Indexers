@@ -129,7 +129,7 @@ search:
     download:
       selector: a[href^="downloadssl.php?id="]
       attribute: href
-    _genre:
+    genre:
       optional: true
       selector: td:nth-child(2) > small
       filters:
@@ -148,7 +148,7 @@ search:
         - name: append
           args: "Subbed\n<br>"
     description:
-      text: "Genre: {{ .Result._genre }}\n<br>{{ .Result._language }}{{ .Result._subbed }}"
+      text: "Genre: {{ .Result.genre }}\n<br>{{ .Result._language }}{{ .Result._subbed }}"
     imdbid:
       selector: a[href*="imdb.com/title/tt"]
     date:

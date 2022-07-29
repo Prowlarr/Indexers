@@ -151,14 +151,14 @@ search:
       case:
         img[src="pic/dupla_up.png"]: 2
         "*": 1
-    _genre:
+    genre:
       optional: true
       selector: div i
       filters:
         - name: regexp
           args: "\\((.+?)\\)"
     description:
-      text: "{{ .Result._genre }}"
+      text: "{{ .Result.genre }}"
     minimumratio:
       text: 1.0
     minimumseedtime:

@@ -154,6 +154,8 @@ search:
       filters:
         - name: replace
           args: ["\xA0", " "]
+        - name: validate
+          args: "Akcja, Animacja, Anime, Basn, Biblijny, Biograficzny, Czarna komedia, Dla dzieci, Dla mlodziezy, Dokumentalizowany, Dokumentalny, Dramat, Dramat historyczny, Dramat obyczajowy, Dramat sadowy, Dramat spoleczny, Dreszczowiec, Edukacyjny, Erotyczny, Etiuda, Fabularyzowany dok., Familijny, Fantasy, Film-Noir, Gangsterski, Groteska filmowa, Historyczny, Horror, Karate, Katastroficzny, Komedia, Komedia dokumentalna, Komedia kryminalna, Komedia obycz., Komedia rom., Kostiumowy, Krótkometrażowy, Kryminał, Melodramat, Motoryzacyjny, Musical, Muzyczny, Kulinarny, Nowele filmowe, Obyczajowy, Poetycki, Polityczny, Prawniczy, Przygodowy, Przyrodniczy, Psychologiczny, Plaszcza i szpady, Religijny, Romans, Rozrywka, Satyra, Sci-Fi, Sensacyjny, Sportowy, Surreallistyczny, Szpiegowski, Sztuki walki, Świąteczne, Thriller, Western, Wojenny, Kabaret, Action, Adventure, Arcade, Fps, Fighting, MMO, Puzzle, Racing, Rpg, RTS, Shooter, Simulation, Stealth, Strategy, Sport , Tps, Early Access, DOX, PC, X360, PlayStation, PSP, Alternative, Ambient, Classical, Dubstep, Drum and bass, Dance, Disco polo, Disco, Dla dzieci, Electronic, Folc, Hardstyle, Hardcore, Hip-hop, House, Jazz, Kompilacje muzyczne, Metal, Progressive house, Pop, Punk, Rap, Reggae, Rnb, Rock, Soul, Techno, Trance, Breaks, Chill out, Club, Deep house, Electro house, Tech house, GOA/PSY, Instrumental, Minimal, Soundtrack, Sety, Prasa, Czasopisma, Książka, Audiobook, Polskie, Klasyka, Poezja, Literatura piękna, Literatura faktu, Autobiografia, Pamiętnik"
     description:
       selector: img[src="pic/Poland.png"]
       attribute: src
