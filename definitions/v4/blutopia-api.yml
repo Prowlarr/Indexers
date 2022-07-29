@@ -88,16 +88,18 @@ search:
       selector: meta.total
 
   fields:
-    categorydesc:
-      selector: category
+    category:
+      selector: category_id
     title:
       selector: name
     details:
       selector: details_link
     download:
       selector: download_link
+    infohash:
+      selector: info_hash
     poster:
-      selector: poster
+      selector: meta.poster
       filters:
         - name: replace
           args: ["https://via.placeholder.com/90x135", ""]
@@ -107,6 +109,10 @@ search:
       selector: tmdb_id
     tvdbid:
       selector: tvdb_id
+    _genre:
+      selector: meta.genres
+    description:
+      text: "{{ .Result._genre }}"
     files:
       selector: num_file
     seeders:
@@ -142,4 +148,4 @@ search:
     minimumseedtime:
       # 7 day (as seconds = 7 x 24 x 60 x 60)
       text: 604800
-# json UNIT3D 6.0.0 beta
+# json UNIT3D 6.3.0
