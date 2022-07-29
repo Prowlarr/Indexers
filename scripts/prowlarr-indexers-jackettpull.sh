@@ -414,7 +414,7 @@ if [ -n "$modified_indexers" ]; then
                         read -ep $"Reached [vCurrent to vLatest] ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
                     fi
                     mv "$indexer" "$updated_indexer"
-                    git checkout --ours "$indexer"
+                    git checkout HEAD -- "$indexer"
                     git add -f "$updated_indexer"
                 else
                     echo "--- Doing nothing; [$indexer] already is [$updated_indexer]"
