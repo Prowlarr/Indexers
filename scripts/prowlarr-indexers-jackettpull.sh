@@ -139,7 +139,7 @@ else
             echo "--- checking out local branch [$jackett_pulls_branch]"
             git checkout -B "$jackett_pulls_branch"
         else
-            git reset --hard "$prowlarr_remote_name"/"$prowlarr_release_branch"
+            git reset --hard "$prowlarr_remote_name"/"$jackett_pulls_branch"
             echo "--- local [$jackett_pulls_branch] hard reset based on [$prowlarr_remote_name/$prowlarr_release_branch]"
         fi
         if $trace; then
