@@ -600,9 +600,6 @@
                 "multiple": {
                     "type": "boolean"
                 },
-                "missingAttributeEquals0Results": {
-                    "type": "boolean"
-                },
                 "case": {
                     "type": "object",
                     "additionalProperties": false,
