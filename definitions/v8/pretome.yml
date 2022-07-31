@@ -34,7 +34,7 @@ caps:
     - {id: "cat[]=7&tags=HD-DVD", cat: TV/SD, desc: "TV/HD-DVD"}
     - {id: "cat[]=51", cat: XXX, desc: "XXX"}
     - {id: "cat[]=7&tags=x264", cat: TV/HD, desc: "TV/x264"}
-    - {id: "cat[]=51&tags=XviD", cat: XXX/Xvid,  desc: "XXX/XviD"}
+    - {id: "cat[]=51&tags=XviD", cat: XXX/Xvid, desc: "XXX/XviD"}
     - {id: "cat[]=19&tags=BluRay", cat: Movies/HD, desc: "Movies/BluRay"}
     - {id: "cat[]=19&tags=720p", cat: Movies/HD, desc: "Movies/720p"}
     - {id: "cat[]=22&tags=Windows", cat: PC/0day, desc: "Applications/Windows"}

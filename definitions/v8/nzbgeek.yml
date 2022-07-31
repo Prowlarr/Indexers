@@ -74,7 +74,7 @@ caps:
     movie-search: [q, imdbid, genre]
     audio-search: [q]
 settings:
-- name: apikey
-  type: text
-  label: Site API Key
+  - name: apikey
+    type: text
+    label: Site API Key
 # newznab standard

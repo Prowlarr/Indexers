@@ -87,9 +87,9 @@ caps:
     tv-search: [q, vid, tvdbid, traktid, rid, tvmazeid, imdbid, tmdbid, season, ep]
     movie-search: [q, imdbid]
 settings:
-- name: apikey
-  type: text
-  label: Site API Key
+  - name: apikey
+    type: text
+    label: Site API Key
 search:
   ignoreblankinputs: true
   paths:

@@ -17,7 +17,7 @@ caps:
     tv-search: [q]
     movie-search: [q]
 settings:
-- name: apikey
-  type: text
-  label: Site API Key
+  - name: apikey
+    type: text
+    label: Site API Key
 # newznab standard

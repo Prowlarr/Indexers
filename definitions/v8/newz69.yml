@@ -72,7 +72,7 @@ caps:
     tv-search: [q, rid, tvdbid, tvmazeid, season, ep]
     movie-search: [q, imdbid, genre]
 settings:
-- name: apikey
-  type: text
-  label: Site API Key
+  - name: apikey
+    type: text
+    label: Site API Key
 # newznab standard
