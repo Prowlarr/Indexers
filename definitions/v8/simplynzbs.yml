@@ -148,7 +148,7 @@ search:
     category:
       selector: attr[name="category"]:nth-of-type(1)
       attribute: value
-    category:
+    category|append:
       optional: true
       selector: attr[name="category"]:nth-of-type(2)
       attribute: value
