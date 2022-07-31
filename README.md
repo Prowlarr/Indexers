@@ -45,6 +45,9 @@ To test the definition:
   - Prowlarr Cardigann v6 includes several changes such as
     - `doubanid` support
     - `tmdbid` TV Search Support
+- [V7 Indexers](https://github.com/Prowlarr/Prowlarr/commit/ee6467073f64cfaa5ef0de2225f39f0fd0eb5c05)
+  - Prowlarr Cardigann v7 includes several changes such as
+    - `Publisher`, `Year`, `Genre`, Query support
 
 ## Depreciated Versions
 
