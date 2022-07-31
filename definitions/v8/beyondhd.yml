@@ -10,9 +10,9 @@ links:
   - https://beyond-hd.me/
 caps:
   categorymappings:
-  - {id: 1, cat: Movies, desc: "Movies"}
-  - {id: 2, cat: TV, desc: "TV"}
+    - {id: 1, cat: Movies, desc: "Movies"}
+    - {id: 2, cat: TV, desc: "TV"}
   modes:
     search: [q]
-    tv-search: [q,season,ep,imdbId]
-    movie-search: [q,imdbId,tmdbId]
+    tv-search: [q, season, ep, imdbId]
+    movie-search: [q, imdbid, tmdbId]

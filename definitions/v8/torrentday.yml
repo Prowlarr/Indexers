@@ -19,50 +19,50 @@ links:
   - https://td.workisboring.net/
 caps:
   categorymappings:
-  - {id: 29, cat: TV/Anime, desc: "Anime"}
-  - {id: 27, cat: Audio, desc: "Music/Flac"}
-  - {id: 45, cat: Audio/Other, desc: "Podcast"}
-  - {id: 4, cat: PC/Games, desc: "PC/Games"}
-  - {id: 18, cat: Console/PS3, desc: "PS3"}
-  - {id: 8, cat: Console/PSP, desc: "PSP"}
-  - {id: 10, cat: Console/Wii, desc: "Wii"}
-  - {id: 9, cat: Console/XBox 360, desc: "Xbox-360"}
-  - {id: 24, cat: TV/SD, desc: "TV/480p"}
-  - {id: 32, cat: TV/HD, desc: "TV/Bluray"}
-  - {id: 31, cat: TV/SD, desc: "TV/DVD-R"}
-  - {id: 33, cat: TV/SD, desc: "TV/DVD-Rip"}
-  - {id: 46, cat: TV/SD, desc: "TV/Mobile"}
-  - {id: 14, cat: TV, desc: "TV/Packs"}
-  - {id: 26, cat: TV/SD, desc: "TV/SD/x264"}
-  - {id: 7, cat: TV/HD, desc: "TV/x264"}
-  - {id: 34, cat: TV/UHD, desc: "TV/x265"}
-  - {id: 2, cat: TV/SD, desc: "TV/XviD"}
-  - {id: 16, cat: Audio/Video, desc: "Music/Video"}
-  - {id: 6, cat: XXX, desc: "XXX/Movies"}
-  - {id: 41, cat: Audio, desc: "Music/Packs"}
-  - {id: 17, cat: Audio/MP3, desc: "Music/Audio"}
-  - {id: 28, cat: PC, desc: "Appz/Packs"}
-  - {id: 42, cat: Audio/Audiobook, desc: "Audio Books"}
-  - {id: 20, cat: Books, desc: "Books"}
-  - {id: 30, cat: TV/Documentary, desc: "Documentary"}
-  - {id: 47, cat: Other, desc: "Fonts"}
-  - {id: 43, cat: PC/Mac, desc: "Mac"}
-  - {id: 96, cat: Movies/UHD, desc: "Movie/4K"}
-  - {id: 25, cat: Movies/SD, desc: "Movies/480p"}
-  - {id: 11, cat: Movies/BluRay, desc: "Movies/Bluray"}
-  - {id: 5, cat: Movies/BluRay, desc: "Movies/Bluray-Full"}
-  - {id: 3, cat: Movies/DVD, desc: "Movies/DVD-R"}
-  - {id: 21, cat: Movies/SD, desc: "Movies/MP4"}
-  - {id: 22, cat: Movies/Foreign, desc: "Movies/Non-English"}
-  - {id: 13, cat: Movies, desc: "Movies/Packs"}
-  - {id: 44, cat: Movies/SD, desc: "Movies/SD/x264"}
-  - {id: 48, cat: Movies, desc: "Movies/x265"}
-  - {id: 1, cat: Movies/SD, desc: "Movies/XviD"}
-  - {id: 23, cat: Audio/Foreign, desc: "Music/Non-English"}
-  - {id: 15, cat: XXX/Pack, desc: "XXX/Packs"}
+    - {id: 29, cat: TV/Anime, desc: "Anime"}
+    - {id: 27, cat: Audio, desc: "Music/Flac"}
+    - {id: 45, cat: Audio/Other, desc: "Podcast"}
+    - {id: 4, cat: PC/Games, desc: "PC/Games"}
+    - {id: 18, cat: Console/PS3, desc: "PS3"}
+    - {id: 8, cat: Console/PSP, desc: "PSP"}
+    - {id: 10, cat: Console/Wii, desc: "Wii"}
+    - {id: 9, cat: Console/XBox 360, desc: "Xbox-360"}
+    - {id: 24, cat: TV/SD, desc: "TV/480p"}
+    - {id: 32, cat: TV/HD, desc: "TV/Bluray"}
+    - {id: 31, cat: TV/SD, desc: "TV/DVD-R"}
+    - {id: 33, cat: TV/SD, desc: "TV/DVD-Rip"}
+    - {id: 46, cat: TV/SD, desc: "TV/Mobile"}
+    - {id: 14, cat: TV, desc: "TV/Packs"}
+    - {id: 26, cat: TV/SD, desc: "TV/SD/x264"}
+    - {id: 7, cat: TV/HD, desc: "TV/x264"}
+    - {id: 34, cat: TV/UHD, desc: "TV/x265"}
+    - {id: 2, cat: TV/SD, desc: "TV/XviD"}
+    - {id: 16, cat: Audio/Video, desc: "Music/Video"}
+    - {id: 6, cat: XXX, desc: "XXX/Movies"}
+    - {id: 41, cat: Audio, desc: "Music/Packs"}
+    - {id: 17, cat: Audio/MP3, desc: "Music/Audio"}
+    - {id: 28, cat: PC, desc: "Appz/Packs"}
+    - {id: 42, cat: Audio/Audiobook, desc: "Audio Books"}
+    - {id: 20, cat: Books, desc: "Books"}
+    - {id: 30, cat: TV/Documentary, desc: "Documentary"}
+    - {id: 47, cat: Other, desc: "Fonts"}
+    - {id: 43, cat: PC/Mac, desc: "Mac"}
+    - {id: 96, cat: Movies/UHD, desc: "Movie/4K"}
+    - {id: 25, cat: Movies/SD, desc: "Movies/480p"}
+    - {id: 11, cat: Movies/BluRay, desc: "Movies/Bluray"}
+    - {id: 5, cat: Movies/BluRay, desc: "Movies/Bluray-Full"}
+    - {id: 3, cat: Movies/DVD, desc: "Movies/DVD-R"}
+    - {id: 21, cat: Movies/SD, desc: "Movies/MP4"}
+    - {id: 22, cat: Movies/Foreign, desc: "Movies/Non-English"}
+    - {id: 13, cat: Movies, desc: "Movies/Packs"}
+    - {id: 44, cat: Movies/SD, desc: "Movies/SD/x264"}
+    - {id: 48, cat: Movies, desc: "Movies/x265"}
+    - {id: 1, cat: Movies/SD, desc: "Movies/XviD"}
+    - {id: 23, cat: Audio/Foreign, desc: "Music/Non-English"}
+    - {id: 15, cat: XXX/Pack, desc: "XXX/Packs"}
   modes:
     search: [q]
-    tv-search: [q,season,ep,imdbId]
-    movie-search: [q,imdbId]
+    tv-search: [q, season, ep, imdbId]
+    movie-search: [q, imdbId]
     book-search: [q]
     music-search: [q]

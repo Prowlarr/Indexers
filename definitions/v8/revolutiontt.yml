@@ -10,41 +10,41 @@ links:
   - https://revolutiontt.me/
 caps:
   categorymappings:
-  - {id: 23, cat: TV/Anime, desc: ""}
-  - {id: 49, cat: XXX, desc: ""}
-  - {id: 9, cat: XXX, desc: ""}
-  - {id: 7, cat: TV/SD, desc: ""}
-  - {id: 41, cat: TV/SD, desc: ""}
-  - {id: 45, cat: TV/Other, desc: ""}
-  - {id: 42, cat: TV/HD, desc: ""}
-  - {id: 43, cat: TV/Other, desc: ""}
-  - {id: 29, cat: Audio/Video, desc: ""}
-  - {id: 46, cat: Audio/Other, desc: ""}
-  - {id: 8, cat: Audio/Lossless, desc: ""}
-  - {id: 6, cat: Audio, desc: ""}
-  - {id: 19, cat: Movies/SD, desc: ""}
-  - {id: 11, cat: Movies/SD, desc: ""}
-  - {id: 44, cat: Movies/Other, desc: ""}
-  - {id: 12, cat: Movies/HD, desc: ""}
-  - {id: 20, cat: Movies/DVD, desc: ""}
-  - {id: 10, cat: Movies/BluRay, desc: ""}
-  - {id: 2, cat: PC/Mac, desc: ""}
-  - {id: 34, cat: Console/PSP, desc: ""}
-  - {id: 35, cat: Console/NDS, desc: ""}
-  - {id: 39, cat: Console/XBox 360, desc: ""}
-  - {id: 40, cat: Console/Wii, desc: ""}
-  - {id: 16, cat: Console/PS3, desc: ""}
-  - {id: 21, cat: PC/Games, desc: ""}
-  - {id: 4, cat: PC/Games, desc: ""}
-  - {id: 36, cat: Books/EBook, desc: ""}
-  - {id: 36, cat: Books, desc: ""}
-  - {id: 1, cat: PC/ISO, desc: ""}
-  - {id: 22, cat: PC/0day, desc: ""}
-  - {id: 47, cat: XXX/DVD, desc: ""}
-  - {id: 48, cat: XXX, desc: ""}
+    - {id: 23, cat: TV/Anime, desc: ""}
+    - {id: 49, cat: XXX, desc: ""}
+    - {id: 9, cat: XXX, desc: ""}
+    - {id: 7, cat: TV/SD, desc: ""}
+    - {id: 41, cat: TV/SD, desc: ""}
+    - {id: 45, cat: TV/Other, desc: ""}
+    - {id: 42, cat: TV/HD, desc: ""}
+    - {id: 43, cat: TV/Other, desc: ""}
+    - {id: 29, cat: Audio/Video, desc: ""}
+    - {id: 46, cat: Audio/Other, desc: ""}
+    - {id: 8, cat: Audio/Lossless, desc: ""}
+    - {id: 6, cat: Audio, desc: ""}
+    - {id: 19, cat: Movies/SD, desc: ""}
+    - {id: 11, cat: Movies/SD, desc: ""}
+    - {id: 44, cat: Movies/Other, desc: ""}
+    - {id: 12, cat: Movies/HD, desc: ""}
+    - {id: 20, cat: Movies/DVD, desc: ""}
+    - {id: 10, cat: Movies/BluRay, desc: ""}
+    - {id: 2, cat: PC/Mac, desc: ""}
+    - {id: 34, cat: Console/PSP, desc: ""}
+    - {id: 35, cat: Console/NDS, desc: ""}
+    - {id: 39, cat: Console/XBox 360, desc: ""}
+    - {id: 40, cat: Console/Wii, desc: ""}
+    - {id: 16, cat: Console/PS3, desc: ""}
+    - {id: 21, cat: PC/Games, desc: ""}
+    - {id: 4, cat: PC/Games, desc: ""}
+    - {id: 36, cat: Books/EBook, desc: ""}
+    - {id: 36, cat: Books, desc: ""}
+    - {id: 1, cat: PC/ISO, desc: ""}
+    - {id: 22, cat: PC/0day, desc: ""}
+    - {id: 47, cat: XXX/DVD, desc: ""}
+    - {id: 48, cat: XXX, desc: ""}
   modes:
     search: [q]
-    tv-search: [q,season,ep]
-    movie-search: [q,imdbId]
+    tv-search: [q, season, ep]
+    movie-search: [q, imdbId]
     book-search: [q]
     music-search: [q]

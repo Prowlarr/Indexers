@@ -10,12 +10,12 @@ links:
   - http://api.broadcasthe.net/
 caps:
   categorymappings:
-  - {id: "SD", cat: TV/SD, desc: "SD"}
-  - {id: "720p", cat: TV/HD, desc: "720p"}
-  - {id: "1080p", cat: TV/HD, desc: "1080p"}
-  - {id: "1080i", cat: TV/HD, desc: "1080i"}
-  - {id: "2160p", cat: TV/HD, desc: "2160p"}
-  - {id: "Portable Device", cat: TV/SD, desc: "Portable Device"}
+    - {id: "SD", cat: TV/SD, desc: "SD"}
+    - {id: "720p", cat: TV/HD, desc: "720p"}
+    - {id: "1080p", cat: TV/HD, desc: "1080p"}
+    - {id: "1080i", cat: TV/HD, desc: "1080i"}
+    - {id: "2160p", cat: TV/HD, desc: "2160p"}
+    - {id: "Portable Device", cat: TV/SD, desc: "Portable Device"}
   modes:
     search: [q]
-    tv-search: [q,season,ep,tvdbId,rId]
+    tv-search: [q, season, ep, tvdbid, rId]

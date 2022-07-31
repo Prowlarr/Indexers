@@ -10,14 +10,14 @@ links:
   - https://exoticaz.to/
 caps:
   categorymappings:
-  - {id: 1, cat: XXX/x264, desc: ""}
-  - {id: 2, cat: XXX/Pack, desc: ""}
-  - {id: 3, cat: XXX/Pack, desc: ""}
-  - {id: 4, cat: XXX/Pack, desc: ""}
-  - {id: 5, cat: XXX/DVD, desc: ""}
-  - {id: 6, cat: XXX/x264, desc: ""}
-  - {id: 7, cat: XXX/ImageSet, desc: ""}
-  - {id: 8, cat: XXX/ImageSet, desc: ""}
+    - {id: 1, cat: XXX/x264, desc: ""}
+    - {id: 2, cat: XXX/Pack, desc: ""}
+    - {id: 3, cat: XXX/Pack, desc: ""}
+    - {id: 4, cat: XXX/Pack, desc: ""}
+    - {id: 5, cat: XXX/DVD, desc: ""}
+    - {id: 6, cat: XXX/x264, desc: ""}
+    - {id: 7, cat: XXX/ImageSet, desc: ""}
+    - {id: 8, cat: XXX/ImageSet, desc: ""}
   modes:
     search: [q]
     movie-search: [q]

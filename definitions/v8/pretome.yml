@@ -10,60 +10,60 @@ links:
   - https://pretome.info/
 caps:
   categorymappings:
-  - {id: "cat[]=22", cat: PC, desc: "Applications"}
-  - {id: "cat[]=19&tags=1080p", cat: Movies/HD, desc: "Movies/1080p"}
-  - {id: "cat[]=19&tags=DVD", cat: Movies/SD, desc: "Movies/DVD"}
-  - {id: "cat[]=19&tags=DVDR", cat: Movies/SD, desc: "Movies/DVDR"}
-  - {id: "cat[]=19&tags=WMV", cat: Movies, desc: "Movies/WMV"}
-  - {id: "cat[]=19&tags=CAM", cat: Movies, desc: "Movies/CAM"}
-  - {id: "cat[]=6", cat: Audio, desc: "Music"}
-  - {id: "cat[]=6&tags=MP3", cat: Audio/MP3, desc: "Music/MP3"}
-  - {id: "cat[]=6&tags=V2", cat: Audio/MP3, desc: "Music/V2"}
-  - {id: "cat[]=6&tags=FLAC", cat: Audio/Lossless, desc: "Music/FLAC"}
-  - {id: "cat[]=6&tags=320kbps", cat: Audio/MP3, desc: "Music/320kbps"}
-  - {id: "cat[]=19&tags=DVDRiP", cat: Movies/SD, desc: "Movies/DVDRiP"}
-  - {id: "cat[]=7", cat: TV, desc: "TV"}
-  - {id: "cat[]=7&tags=720p", cat: TV/HD, desc: "TV/720p"}
-  - {id: "cat[]=7&tags=HDTV", cat: TV/HD, desc: "TV/HDTV"}
-  - {id: "cat[]=7&tags=XviD", cat: TV/SD, desc: "TV/XviD"}
-  - {id: "cat[]=7&tags=BluRay", cat: TV/HD, desc: "TV/BluRay"}
-  - {id: "cat[]=7&tags=DVDRiP", cat: TV/SD, desc: "TV/DVDRiP"}
-  - {id: "cat[]=7&tags=DVD", cat: TV/SD, desc: "TV/DVD"}
-  - {id: "cat[]=7&tags=Documentary", cat: TV/Documentary, desc: "TV/Documentary"}
-  - {id: "cat[]=7&tags=PDTV", cat: TV/SD, desc: "TV/PDTV"}
-  - {id: "cat[]=7&tags=HD-DVD", cat: TV/SD, desc: "TV/HD-DVD"}
-  - {id: "cat[]=51", cat: XXX, desc: "XXX"}
-  - {id: "cat[]=7&tags=x264", cat: TV/HD, desc: "TV/x264"}
-  - {id: "cat[]=51&tags=XviD", cat: XXX/XviD, desc: "XXX/XviD"}
-  - {id: "cat[]=19&tags=BluRay", cat: Movies/HD, desc: "Movies/BluRay"}
-  - {id: "cat[]=19&tags=720p", cat: Movies/HD, desc: "Movies/720p"}
-  - {id: "cat[]=22&tags=Windows", cat: PC/0day, desc: "Applications/Windows"}
-  - {id: "cat[]=22&tags=MAC", cat: PC/Mac, desc: "Applications/MAC"}
-  - {id: "cat[]=22&tags=Linux", cat: PC, desc: "Applications/Linux"}
-  - {id: "cat[]=27", cat: Books/EBook, desc: "Ebooks"}
-  - {id: "cat[]=4", cat: Console, desc: "Games"}
-  - {id: "cat[]=4&tags=PC", cat: PC/Games, desc: "Games/PC"}
-  - {id: "cat[]=4&tags=RIP", cat: PC/Games, desc: "Games/RIP"}
-  - {id: "cat[]=4&tags=ISO", cat: PC/Games, desc: "Games/ISO"}
-  - {id: "cat[]=4&tags=XBOX360", cat: Console/XBox 360, desc: "Games/XBOX360"}
-  - {id: "cat[]=4&tags=PS3", cat: Console/PS3, desc: "Games/PS3"}
-  - {id: "cat[]=19&tags=XviD", cat: Movies/SD, desc: "Movies/XviD"}
-  - {id: "cat[]=4&tags=Wii", cat: Console/Wii, desc: "Games/Wii"}
-  - {id: "cat[]=4&tags=GAMES-NSW", cat: Console/Other, desc: "Games/NSW"}
-  - {id: "cat[]=4&tags=NDS", cat: Console/NDS, desc: "Games/NDS"}
-  - {id: "cat[]=4&tags=Xbox", cat: Console/XBox, desc: "Games/Xbox"}
-  - {id: "cat[]=4&tags=NSW", cat: Console/Other, desc: "Games/NSW"}
-  - {id: "cat[]=4&tags=PS2", cat: Console/Other, desc: "Games/PS2"}
-  - {id: "cat[]=31", cat: Other, desc: "Miscellaneous"}
-  - {id: "cat[]=31&tags=Ebook", cat: Books/EBook, desc: "Miscellaneous/Ebook"}
-  - {id: "cat[]=31&tags=RARFiX", cat: Other, desc: "Miscellaneous/RARFiX"}
-  - {id: "cat[]=19", cat: Movies, desc: "Movies"}
-  - {id: "cat[]=19&tags=x264", cat: Movies, desc: "Movies/x264"}
-  - {id: "cat[]=4&tags=PSP", cat: Console/PSP, desc: "Games/PSP"}
-  - {id: "cat[]=51&tags=DVDRiP", cat: XXX/DVD, desc: "XXX/DVDRiP"}
+    - {id: "cat[]=22", cat: PC, desc: "Applications"}
+    - {id: "cat[]=19&tags=1080p", cat: Movies/HD, desc: "Movies/1080p"}
+    - {id: "cat[]=19&tags=DVD", cat: Movies/SD, desc: "Movies/DVD"}
+    - {id: "cat[]=19&tags=DVDR", cat: Movies/SD, desc: "Movies/DVDR"}
+    - {id: "cat[]=19&tags=WMV", cat: Movies, desc: "Movies/WMV"}
+    - {id: "cat[]=19&tags=CAM", cat: Movies, desc: "Movies/CAM"}
+    - {id: "cat[]=6", cat: Audio, desc: "Music"}
+    - {id: "cat[]=6&tags=MP3", cat: Audio/MP3, desc: "Music/MP3"}
+    - {id: "cat[]=6&tags=V2", cat: Audio/MP3, desc: "Music/V2"}
+    - {id: "cat[]=6&tags=FLAC", cat: Audio/Lossless, desc: "Music/FLAC"}
+    - {id: "cat[]=6&tags=320kbps", cat: Audio/MP3, desc: "Music/320kbps"}
+    - {id: "cat[]=19&tags=DVDRiP", cat: Movies/SD, desc: "Movies/DVDRiP"}
+    - {id: "cat[]=7", cat: TV, desc: "TV"}
+    - {id: "cat[]=7&tags=720p", cat: TV/HD, desc: "TV/720p"}
+    - {id: "cat[]=7&tags=HDTV", cat: TV/HD, desc: "TV/HDTV"}
+    - {id: "cat[]=7&tags=XviD", cat: TV/SD, desc: "TV/XviD"}
+    - {id: "cat[]=7&tags=BluRay", cat: TV/HD, desc: "TV/BluRay"}
+    - {id: "cat[]=7&tags=DVDRiP", cat: TV/SD, desc: "TV/DVDRiP"}
+    - {id: "cat[]=7&tags=DVD", cat: TV/SD, desc: "TV/DVD"}
+    - {id: "cat[]=7&tags=Documentary", cat: TV/Documentary, desc: "TV/Documentary"}
+    - {id: "cat[]=7&tags=PDTV", cat: TV/SD, desc: "TV/PDTV"}
+    - {id: "cat[]=7&tags=HD-DVD", cat: TV/SD, desc: "TV/HD-DVD"}
+    - {id: "cat[]=51", cat: XXX, desc: "XXX"}
+    - {id: "cat[]=7&tags=x264", cat: TV/HD, desc: "TV/x264"}
+    - {id: "cat[]=51&tags=XviD", cat: XXX/Xvid,  desc: "XXX/XviD"}
+    - {id: "cat[]=19&tags=BluRay", cat: Movies/HD, desc: "Movies/BluRay"}
+    - {id: "cat[]=19&tags=720p", cat: Movies/HD, desc: "Movies/720p"}
+    - {id: "cat[]=22&tags=Windows", cat: PC/0day, desc: "Applications/Windows"}
+    - {id: "cat[]=22&tags=MAC", cat: PC/Mac, desc: "Applications/MAC"}
+    - {id: "cat[]=22&tags=Linux", cat: PC, desc: "Applications/Linux"}
+    - {id: "cat[]=27", cat: Books/EBook, desc: "Ebooks"}
+    - {id: "cat[]=4", cat: Console, desc: "Games"}
+    - {id: "cat[]=4&tags=PC", cat: PC/Games, desc: "Games/PC"}
+    - {id: "cat[]=4&tags=RIP", cat: PC/Games, desc: "Games/RIP"}
+    - {id: "cat[]=4&tags=ISO", cat: PC/Games, desc: "Games/ISO"}
+    - {id: "cat[]=4&tags=XBOX360", cat: Console/XBox 360, desc: "Games/XBOX360"}
+    - {id: "cat[]=4&tags=PS3", cat: Console/PS3, desc: "Games/PS3"}
+    - {id: "cat[]=19&tags=XviD", cat: Movies/SD, desc: "Movies/XviD"}
+    - {id: "cat[]=4&tags=Wii", cat: Console/Wii, desc: "Games/Wii"}
+    - {id: "cat[]=4&tags=GAMES-NSW", cat: Console/Other, desc: "Games/NSW"}
+    - {id: "cat[]=4&tags=NDS", cat: Console/NDS, desc: "Games/NDS"}
+    - {id: "cat[]=4&tags=Xbox", cat: Console/XBox, desc: "Games/Xbox"}
+    - {id: "cat[]=4&tags=NSW", cat: Console/Other, desc: "Games/NSW"}
+    - {id: "cat[]=4&tags=PS2", cat: Console/Other, desc: "Games/PS2"}
+    - {id: "cat[]=31", cat: Other, desc: "Miscellaneous"}
+    - {id: "cat[]=31&tags=Ebook", cat: Books/EBook, desc: "Miscellaneous/Ebook"}
+    - {id: "cat[]=31&tags=RARFiX", cat: Other, desc: "Miscellaneous/RARFiX"}
+    - {id: "cat[]=19", cat: Movies, desc: "Movies"}
+    - {id: "cat[]=19&tags=x264", cat: Movies, desc: "Movies/x264"}
+    - {id: "cat[]=4&tags=PSP", cat: Console/PSP, desc: "Games/PSP"}
+    - {id: "cat[]=51&tags=DVDRiP", cat: XXX/DVD, desc: "XXX/DVDRiP"}
   modes:
     search: [q]
-    tv-search: [q,season,ep,imdbId]
-    movie-search: [q,imdbId]
+    tv-search: [q, season, ep, imdbId]
+    movie-search: [q, imdbId]
     book-search: [q]
     music-search: [q]

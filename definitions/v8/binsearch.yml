@@ -12,7 +12,7 @@ caps:
   categorymappings: []
   modes:
     search: [q]
-    tv-search: [q,season,ep]
+    tv-search: [q, season, ep]
     movie-search: [q]
     book-search: [q]
     music-search: [q]

@@ -10,34 +10,34 @@ links:
   - https://hdts.ru/
 caps:
   categorymappings:
-  - {id: 70, cat: Movies/UHD, desc: "Movie/UHD/Blu-Ray"}
-  - {id: 48, cat: XXX, desc: "XXX/1080p/i"}
-  - {id: 74, cat: XXX, desc: "XXX/UHD/Blu-ray"}
-  - {id: 58, cat: XXX, desc: "XXX/Blu-ray"}
-  - {id: 66, cat: Audio/Video, desc: "Music/2160p"}
-  - {id: 45, cat: Audio/Video, desc: "Music/720p"}
-  - {id: 57, cat: Audio/Video, desc: "Music/1080p/i"}
-  - {id: 62, cat: Audio/Video, desc: "Music/Remux"}
-  - {id: 61, cat: Audio/Video, desc: "Music/Blu-Ray"}
-  - {id: 44, cat: Audio, desc: "Music/Album"}
-  - {id: 65, cat: TV/UHD, desc: "TV Show/2160p"}
-  - {id: 38, cat: TV/HD, desc: "TV Show/720p"}
-  - {id: 30, cat: TV/HD, desc: "TV Show/1080p/i"}
-  - {id: 60, cat: TV/HD, desc: "TV Show/Remux"}
-  - {id: 73, cat: TV/UHD, desc: "TV Show/UHD/Remux"}
-  - {id: 59, cat: TV/HD, desc: "TV Show/Blu-ray"}
-  - {id: 72, cat: TV/UHD, desc: "TV Show/UHD/Blu-ray"}
-  - {id: 63, cat: Audio, desc: "Movie/Audio Track"}
-  - {id: 64, cat: Movies/UHD, desc: "Movie/2160p"}
-  - {id: 3, cat: Movies/HD, desc: "Movie/720p"}
-  - {id: 5, cat: Movies/HD, desc: "Movie/1080p/i"}
-  - {id: 2, cat: Movies/HD, desc: "Movie/Remux"}
-  - {id: 71, cat: Movies/UHD, desc: "Movie/UHD/Remux"}
-  - {id: 1, cat: Movies/HD, desc: "Movie/Blu-Ray"}
-  - {id: 47, cat: XXX, desc: "XXX/720p"}
-  - {id: 67, cat: XXX, desc: "XXX/2160p"}
+    - {id: 70, cat: Movies/UHD, desc: "Movie/UHD/Blu-Ray"}
+    - {id: 48, cat: XXX, desc: "XXX/1080p/i"}
+    - {id: 74, cat: XXX, desc: "XXX/UHD/Blu-ray"}
+    - {id: 58, cat: XXX, desc: "XXX/Blu-ray"}
+    - {id: 66, cat: Audio/Video, desc: "Music/2160p"}
+    - {id: 45, cat: Audio/Video, desc: "Music/720p"}
+    - {id: 57, cat: Audio/Video, desc: "Music/1080p/i"}
+    - {id: 62, cat: Audio/Video, desc: "Music/Remux"}
+    - {id: 61, cat: Audio/Video, desc: "Music/Blu-Ray"}
+    - {id: 44, cat: Audio, desc: "Music/Album"}
+    - {id: 65, cat: TV/UHD, desc: "TV Show/2160p"}
+    - {id: 38, cat: TV/HD, desc: "TV Show/720p"}
+    - {id: 30, cat: TV/HD, desc: "TV Show/1080p/i"}
+    - {id: 60, cat: TV/HD, desc: "TV Show/Remux"}
+    - {id: 73, cat: TV/UHD, desc: "TV Show/UHD/Remux"}
+    - {id: 59, cat: TV/HD, desc: "TV Show/Blu-ray"}
+    - {id: 72, cat: TV/UHD, desc: "TV Show/UHD/Blu-ray"}
+    - {id: 63, cat: Audio, desc: "Movie/Audio Track"}
+    - {id: 64, cat: Movies/UHD, desc: "Movie/2160p"}
+    - {id: 3, cat: Movies/HD, desc: "Movie/720p"}
+    - {id: 5, cat: Movies/HD, desc: "Movie/1080p/i"}
+    - {id: 2, cat: Movies/HD, desc: "Movie/Remux"}
+    - {id: 71, cat: Movies/UHD, desc: "Movie/UHD/Remux"}
+    - {id: 1, cat: Movies/HD, desc: "Movie/Blu-Ray"}
+    - {id: 47, cat: XXX, desc: "XXX/720p"}
+    - {id: 67, cat: XXX, desc: "XXX/2160p"}
   modes:
     search: [q]
-    tv-search: [q,season,ep,imdbId]
-    movie-search: [q,imdbId]
+    tv-search: [q, season, ep, imdbId]
+    movie-search: [q, imdbId]
     music-search: [q]

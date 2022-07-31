@@ -10,46 +10,46 @@ links:
   - https://torrent-syndikat.org/
 caps:
   categorymappings:
-  - {id: 2, cat: PC, desc: "Apps / Windows"}
-  - {id: 55, cat: TV/HD, desc: "Serienpacks / 1080p"}
-  - {id: 56, cat: TV/HD, desc: "Serienpacks / 720p"}
-  - {id: 27, cat: TV/SD, desc: "Serienpacks / SD"}
-  - {id: 24, cat: Audio/Lossless, desc: "Audio / Musik / FLAC"}
-  - {id: 25, cat: Audio/MP3, desc: "Audio / Musik / MP3"}
-  - {id: 35, cat: Audio/Other, desc: "Audio / Other"}
-  - {id: 18, cat: Audio/Audiobook, desc: "Audio / aBooks"}
-  - {id: 33, cat: Audio/Video, desc: "Audio / Videos"}
-  - {id: 17, cat: Books, desc: "Misc / eBooks"}
-  - {id: 5, cat: PC/Mobile-Other, desc: "Misc / Mobile"}
-  - {id: 39, cat: Other, desc: "Misc / Bildung"}
-  - {id: 36, cat: TV/Foreign, desc: "Englisch / Serien"}
-  - {id: 57, cat: TV/Foreign, desc: "Englisch / Serienpacks"}
-  - {id: 37, cat: Movies/Foreign, desc: "Englisch / Filme"}
-  - {id: 47, cat: Books, desc: "Englisch / eBooks"}
-  - {id: 44, cat: TV/UHD, desc: "Serienpacks / 2160p"}
-  - {id: 48, cat: Other, desc: "Englisch / Bildung"}
-  - {id: 30, cat: TV/Sport, desc: "Serien / Sport"}
-  - {id: 54, cat: TV/HD, desc: "Serien / 720p"}
-  - {id: 13, cat: PC, desc: "Apps / Linux"}
-  - {id: 4, cat: PC/Mac, desc: "Apps / MacOS"}
-  - {id: 6, cat: PC, desc: "Apps / Misc"}
-  - {id: 50, cat: PC/Games, desc: "Spiele / Windows"}
-  - {id: 51, cat: PC/Games, desc: "Spiele / MacOS"}
-  - {id: 52, cat: PC/Games, desc: "Spiele / Linux"}
-  - {id: 8, cat: Console/Other, desc: "Spiele / Playstation"}
-  - {id: 7, cat: Console/Other, desc: "Spiele / Nintendo"}
-  - {id: 32, cat: Console/Other, desc: "Spiele / XBOX"}
-  - {id: 42, cat: Movies/UHD, desc: "Filme / 2160p"}
-  - {id: 9, cat: Movies/HD, desc: "Filme / 1080p"}
-  - {id: 20, cat: Movies/HD, desc: "Filme / 720p"}
-  - {id: 10, cat: Movies/SD, desc: "Filme / SD"}
-  - {id: 43, cat: TV/UHD, desc: "Serien / 2160p"}
-  - {id: 53, cat: TV/HD, desc: "Serien / 1080p"}
-  - {id: 15, cat: TV/SD, desc: "Serien / SD"}
-  - {id: 49, cat: TV/Sport, desc: "Englisch / Sport"}
+    - {id: 2, cat: PC, desc: "Apps / Windows"}
+    - {id: 55, cat: TV/HD, desc: "Serienpacks / 1080p"}
+    - {id: 56, cat: TV/HD, desc: "Serienpacks / 720p"}
+    - {id: 27, cat: TV/SD, desc: "Serienpacks / SD"}
+    - {id: 24, cat: Audio/Lossless, desc: "Audio / Musik / FLAC"}
+    - {id: 25, cat: Audio/MP3, desc: "Audio / Musik / MP3"}
+    - {id: 35, cat: Audio/Other, desc: "Audio / Other"}
+    - {id: 18, cat: Audio/Audiobook, desc: "Audio / aBooks"}
+    - {id: 33, cat: Audio/Video, desc: "Audio / Videos"}
+    - {id: 17, cat: Books, desc: "Misc / eBooks"}
+    - {id: 5, cat: PC/Mobile-Other, desc: "Misc / Mobile"}
+    - {id: 39, cat: Other, desc: "Misc / Bildung"}
+    - {id: 36, cat: TV/Foreign, desc: "Englisch / Serien"}
+    - {id: 57, cat: TV/Foreign, desc: "Englisch / Serienpacks"}
+    - {id: 37, cat: Movies/Foreign, desc: "Englisch / Filme"}
+    - {id: 47, cat: Books, desc: "Englisch / eBooks"}
+    - {id: 44, cat: TV/UHD, desc: "Serienpacks / 2160p"}
+    - {id: 48, cat: Other, desc: "Englisch / Bildung"}
+    - {id: 30, cat: TV/Sport, desc: "Serien / Sport"}
+    - {id: 54, cat: TV/HD, desc: "Serien / 720p"}
+    - {id: 13, cat: PC, desc: "Apps / Linux"}
+    - {id: 4, cat: PC/Mac, desc: "Apps / MacOS"}
+    - {id: 6, cat: PC, desc: "Apps / Misc"}
+    - {id: 50, cat: PC/Games, desc: "Spiele / Windows"}
+    - {id: 51, cat: PC/Games, desc: "Spiele / MacOS"}
+    - {id: 52, cat: PC/Games, desc: "Spiele / Linux"}
+    - {id: 8, cat: Console/Other, desc: "Spiele / Playstation"}
+    - {id: 7, cat: Console/Other, desc: "Spiele / Nintendo"}
+    - {id: 32, cat: Console/Other, desc: "Spiele / XBOX"}
+    - {id: 42, cat: Movies/UHD, desc: "Filme / 2160p"}
+    - {id: 9, cat: Movies/HD, desc: "Filme / 1080p"}
+    - {id: 20, cat: Movies/HD, desc: "Filme / 720p"}
+    - {id: 10, cat: Movies/SD, desc: "Filme / SD"}
+    - {id: 43, cat: TV/UHD, desc: "Serien / 2160p"}
+    - {id: 53, cat: TV/HD, desc: "Serien / 1080p"}
+    - {id: 15, cat: TV/SD, desc: "Serien / SD"}
+    - {id: 49, cat: TV/Sport, desc: "Englisch / Sport"}
   modes:
     search: [q]
-    tv-search: [q,season,ep]
-    movie-search: [q,imdbId]
+    tv-search: [q, season, ep]
+    movie-search: [q, imdbId]
     book-search: [q]
     music-search: [q]

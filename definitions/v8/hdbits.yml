@@ -10,15 +10,15 @@ links:
   - https://hdbits.org
 caps:
   categorymappings:
-  - {id: 6, cat: Audio, desc: "Audio Track"}
-  - {id: 3, cat: TV/Documentary, desc: "Documentary"}
-  - {id: 8, cat: Other, desc: "Misc/Demo"}
-  - {id: 1, cat: Movies, desc: "Movie"}
-  - {id: 4, cat: Audio, desc: "Music"}
-  - {id: 5, cat: TV/Sport, desc: "Sport"}
-  - {id: 2, cat: TV, desc: "TV"}
-  - {id: 7, cat: XXX, desc: "XXX"}
+    - {id: 6, cat: Audio, desc: "Audio Track"}
+    - {id: 3, cat: TV/Documentary, desc: "Documentary"}
+    - {id: 8, cat: Other, desc: "Misc/Demo"}
+    - {id: 1, cat: Movies, desc: "Movie"}
+    - {id: 4, cat: Audio, desc: "Music"}
+    - {id: 5, cat: TV/Sport, desc: "Sport"}
+    - {id: 2, cat: TV, desc: "TV"}
+    - {id: 7, cat: XXX, desc: "XXX"}
   modes:
     search: [q]
-    tv-search: [q,season,ep,tvdbId]
-    movie-search: [q,imdbId]
+    tv-search: [q, season, ep, tvdbId]
+    movie-search: [q, imdbId]

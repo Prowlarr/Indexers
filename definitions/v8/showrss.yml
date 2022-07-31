@@ -10,9 +10,9 @@ links:
   - https://showrss.info/
 caps:
   categorymappings:
-  - {id: 1, cat: TV, desc: ""}
-  - {id: 2, cat: TV/SD, desc: ""}
-  - {id: 3, cat: TV/HD, desc: ""}
+    - {id: 1, cat: TV, desc: ""}
+    - {id: 2, cat: TV/SD, desc: ""}
+    - {id: 3, cat: TV/HD, desc: ""}
   modes:
     search: [q]
-    tv-search: [q,season,ep]
+    tv-search: [q, season, ep]

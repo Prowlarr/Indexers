@@ -10,26 +10,26 @@ links:
   - https://animetorrents.me/
 caps:
   categorymappings:
-  - {id: 1, cat: Movies/SD, desc: "Anime Movie"}
-  - {id: 17, cat: Books/Comics, desc: "Doujinshi"}
-  - {id: 16, cat: Audio/Foreign, desc: "Doujin Music"}
-  - {id: 15, cat: XXX/DVD, desc: "Doujin Anime 18+"}
-  - {id: 14, cat: Books/Comics, desc: "Doujin Anime"}
-  - {id: 12, cat: TV/Anime, desc: "OVA HD"}
-  - {id: 11, cat: TV/Anime, desc: "OVA"}
-  - {id: 10, cat: Books/Comics, desc: "Manga 18+"}
-  - {id: 18, cat: Books/Comics, desc: "Doujinshi 18+"}
-  - {id: 3, cat: Books/Comics, desc: "Manga"}
-  - {id: 8, cat: XXX/DVD, desc: "Hentai (un-censored) HD"}
-  - {id: 4, cat: XXX/DVD, desc: "Hentai (un-censored)"}
-  - {id: 9, cat: XXX/DVD, desc: "Hentai (censored) HD"}
-  - {id: 5, cat: XXX/DVD, desc: "Hentai (censored)"}
-  - {id: 7, cat: TV/Anime, desc: "Anime Series HD"}
-  - {id: 2, cat: TV/Anime, desc: "Anime Series"}
-  - {id: 6, cat: Movies/HD, desc: "Anime Movie HD"}
-  - {id: 13, cat: Books/Foreign, desc: "Light Novel"}
-  - {id: 19, cat: Audio, desc: "OST"}
+    - {id: 1, cat: Movies/SD, desc: "Anime Movie"}
+    - {id: 17, cat: Books/Comics, desc: "Doujinshi"}
+    - {id: 16, cat: Audio/Foreign, desc: "Doujin Music"}
+    - {id: 15, cat: XXX/DVD, desc: "Doujin Anime 18+"}
+    - {id: 14, cat: Books/Comics, desc: "Doujin Anime"}
+    - {id: 12, cat: TV/Anime, desc: "OVA HD"}
+    - {id: 11, cat: TV/Anime, desc: "OVA"}
+    - {id: 10, cat: Books/Comics, desc: "Manga 18+"}
+    - {id: 18, cat: Books/Comics, desc: "Doujinshi 18+"}
+    - {id: 3, cat: Books/Comics, desc: "Manga"}
+    - {id: 8, cat: XXX/DVD, desc: "Hentai (un-censored) HD"}
+    - {id: 4, cat: XXX/DVD, desc: "Hentai (un-censored)"}
+    - {id: 9, cat: XXX/DVD, desc: "Hentai (censored) HD"}
+    - {id: 5, cat: XXX/DVD, desc: "Hentai (censored)"}
+    - {id: 7, cat: TV/Anime, desc: "Anime Series HD"}
+    - {id: 2, cat: TV/Anime, desc: "Anime Series"}
+    - {id: 6, cat: Movies/HD, desc: "Anime Movie HD"}
+    - {id: 13, cat: Books/Foreign, desc: "Light Novel"}
+    - {id: 19, cat: Audio, desc: "OST"}
   modes:
     search: [q]
-    tv-search: [q,season,ep]
+    tv-search: [q, season, ep]
     movie-search: [q]
