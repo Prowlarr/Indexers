@@ -94,14 +94,14 @@ search:
   ignoreblankinputs: true
   paths:
     - path: /api
-    response:
-      type: xml
-      attribute: attributes
+  response:
+    type: xml
+    attribute: attributes
   error:
     - selector: error
-    message:
-      selector: error
-      attribute: description
+  message:
+    selector: error
+    attribute: description
   inputs:
     t: '{{ .Query.Type }}'
     apikey: '{{ .Config.apikey }}'
@@ -171,7 +171,7 @@ search:
 download:
   error:
     - selector: error
-    message:
-      selector: error
-      attribute: description
+  message:
+    selector: error
+    attribute: description
 # newznab standard
