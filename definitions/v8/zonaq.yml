@@ -7,63 +7,63 @@ type: private
 implementation: zonaq
 encoding: utf-8
 links:
-- https://www.zonaq.pw/
+  - https://www.zonaq.pw/
 caps:
   categorymappings:
-  - { id: "cat[]=1&subcat[]=1", cat: Movies/DVD, desc: "Películas/DVD" }
-  - { id: "cat[]=4&subcat[]=3", cat: TV/HD, desc: "Series/BD" }
-  - { id: "cat[]=4&subcat[]=4", cat: TV/UHD, desc: "Series/BD 4K" }
-  - { id: "cat[]=4&subcat[]=5", cat: TV/Other, desc: "Series/BD 3D" }
-  - { id: "cat[]=4&subcat[]=6", cat: TV/HD, desc: "Series/BD Remux" }
-  - { id: "cat[]=4&subcat[]=7", cat: TV/HD, desc: "Series/MKV" }
-  - { id: "cat[]=4&subcat[]=8", cat: TV/UHD, desc: "Series/MKV 4K" }
-  - { id: "cat[]=4&subcat[]=9", cat: TV/UHD, desc: "Series/BD Remux 4K" }
-  - { id: "cat[]=5&subcat[]=1", cat: TV/Documentary, desc: "Docus/DVD" }
-  - { id: "cat[]=5&subcat[]=2", cat: TV/Documentary, desc: "Docus/BDVD + Autorías" }
-  - { id: "cat[]=5&subcat[]=3", cat: TV/Documentary, desc: "Docus/BD" }
-  - { id: "cat[]=5&subcat[]=4", cat: TV/Documentary, desc: "Docus/BD 4K" }
-  - { id: "cat[]=5&subcat[]=5", cat: TV/Documentary, desc: "Docus/BD 3D" }
-  - { id: "cat[]=5&subcat[]=6", cat: TV/Documentary, desc: "Docus/BD Remux" }
-  - { id: "cat[]=5&subcat[]=7", cat: TV/Documentary, desc: "Docus/MKV" }
-  - { id: "cat[]=5&subcat[]=8", cat: TV/Documentary, desc: "Docus/MKV 4K" }
-  - { id: "cat[]=5&subcat[]=9", cat: TV/Documentary, desc: "Docus/BD Remux 4K" }
-  - { id: "cat[]=6&subcat[]=1", cat: Other/Misc, desc: "Deportes y Otros/DVD" }
-  - { id: "cat[]=6&subcat[]=2", cat: Other/Misc, desc: "Deportes y Otros/BDVD + Autorías" }
-  - { id: "cat[]=6&subcat[]=3", cat: Other/Misc, desc: "Deportes y Otros/BD" }
-  - { id: "cat[]=6&subcat[]=4", cat: Other/Misc, desc: "Deportes y Otros/BD 4K" }
-  - { id: "cat[]=6&subcat[]=5", cat: Other/Misc, desc: "Deportes y Otros/BD 3D" }
-  - { id: "cat[]=6&subcat[]=6", cat: Other/Misc, desc: "Deportes y Otros/BD Remux" }
-  - { id: "cat[]=6&subcat[]=7", cat: Other/Misc, desc: "Deportes y Otros/MKV" }
-  - { id: "cat[]=4&subcat[]=2", cat: TV/SD, desc: "Series/BDVD + Autorías" }
-  - { id: "cat[]=4&subcat[]=1", cat: TV/SD, desc: "Series/DVD" }
-  - { id: "cat[]=3&subcat[]=9", cat: Audio/Video, desc: "Música/BD Remux 4K" }
-  - { id: "cat[]=3&subcat[]=8", cat: Audio/Video, desc: "Música/MKV 4K" }
-  - { id: "cat[]=1&subcat[]=2", cat: Movies/DVD, desc: "Películas/BDVD + Autorías" }
-  - { id: "cat[]=1&subcat[]=3", cat: Movies/BluRay, desc: "Películas/BD" }
-  - { id: "cat[]=1&subcat[]=4", cat: Movies/UHD, desc: "Películas/BD 4K" }
-  - { id: "cat[]=1&subcat[]=5", cat: Movies/3D, desc: "Películas/BD 3D" }
-  - { id: "cat[]=1&subcat[]=6", cat: Movies/BluRay, desc: "Películas/BD Remux" }
-  - { id: "cat[]=1&subcat[]=7", cat: Movies/HD, desc: "Películas/MKV" }
-  - { id: "cat[]=1&subcat[]=8", cat: Movies/UHD, desc: "Películas/MKV 4K" }
-  - { id: "cat[]=1&subcat[]=9", cat: Movies/UHD, desc: "Películas/BD Remux 4K" }
-  - { id: "cat[]=2&subcat[]=1", cat: Movies/DVD, desc: "Animación/DVD" }
-  - { id: "cat[]=2&subcat[]=2", cat: Movies/DVD, desc: "Animación/BDVD + Autorías" }
-  - { id: "cat[]=2&subcat[]=3", cat: Movies/BluRay, desc: "Animación/BD" }
-  - { id: "cat[]=6&subcat[]=8", cat: Other/Misc, desc: "Deportes y Otros/MKV 4K" }
-  - { id: "cat[]=2&subcat[]=4", cat: Movies/UHD, desc: "Animación/BD 4K" }
-  - { id: "cat[]=2&subcat[]=6", cat: Movies/BluRay, desc: "Animación/BD Remux" }
-  - { id: "cat[]=2&subcat[]=7", cat: Movies/HD, desc: "Animación/MKV" }
-  - { id: "cat[]=2&subcat[]=8", cat: Movies/UHD, desc: "Animación/MKV 4K" }
-  - { id: "cat[]=2&subcat[]=9", cat: Movies/UHD, desc: "Animación/BD Remux 4K" }
-  - { id: "cat[]=3&subcat[]=1", cat: Audio/Video, desc: "Música/DVD" }
-  - { id: "cat[]=3&subcat[]=2", cat: Audio/Video, desc: "Música/BDVD + Autorías" }
-  - { id: "cat[]=3&subcat[]=3", cat: Audio/Video, desc: "Música/BD" }
-  - { id: "cat[]=3&subcat[]=4", cat: Audio/Video, desc: "Música/BD 4K" }
-  - { id: "cat[]=3&subcat[]=5", cat: Audio/Video, desc: "Música/BD 3D" }
-  - { id: "cat[]=3&subcat[]=6", cat: Audio/Video, desc: "Música/BD Remux" }
-  - { id: "cat[]=3&subcat[]=7", cat: Audio/Video, desc: "Música/MKV" }
-  - { id: "cat[]=2&subcat[]=5", cat: Movies/3D, desc: "Animación/BD 3D" }
-  - { id: "cat[]=6&subcat[]=9", cat: Other/Misc, desc: "Deportes y Otros/BD Remux 4K" }
+  - {id: "cat[]=1&subcat[]=1", cat: Movies/DVD, desc: "Películas/DVD"}
+  - {id: "cat[]=4&subcat[]=3", cat: TV/HD, desc: "Series/BD"}
+  - {id: "cat[]=4&subcat[]=4", cat: TV/UHD, desc: "Series/BD 4K"}
+  - {id: "cat[]=4&subcat[]=5", cat: TV/Other, desc: "Series/BD 3D"}
+  - {id: "cat[]=4&subcat[]=6", cat: TV/HD, desc: "Series/BD Remux"}
+  - {id: "cat[]=4&subcat[]=7", cat: TV/HD, desc: "Series/MKV"}
+  - {id: "cat[]=4&subcat[]=8", cat: TV/UHD, desc: "Series/MKV 4K"}
+  - {id: "cat[]=4&subcat[]=9", cat: TV/UHD, desc: "Series/BD Remux 4K"}
+  - {id: "cat[]=5&subcat[]=1", cat: TV/Documentary, desc: "Docus/DVD"}
+  - {id: "cat[]=5&subcat[]=2", cat: TV/Documentary, desc: "Docus/BDVD + Autorías"}
+  - {id: "cat[]=5&subcat[]=3", cat: TV/Documentary, desc: "Docus/BD"}
+  - {id: "cat[]=5&subcat[]=4", cat: TV/Documentary, desc: "Docus/BD 4K"}
+  - {id: "cat[]=5&subcat[]=5", cat: TV/Documentary, desc: "Docus/BD 3D"}
+  - {id: "cat[]=5&subcat[]=6", cat: TV/Documentary, desc: "Docus/BD Remux"}
+  - {id: "cat[]=5&subcat[]=7", cat: TV/Documentary, desc: "Docus/MKV"}
+  - {id: "cat[]=5&subcat[]=8", cat: TV/Documentary, desc: "Docus/MKV 4K"}
+  - {id: "cat[]=5&subcat[]=9", cat: TV/Documentary, desc: "Docus/BD Remux 4K"}
+  - {id: "cat[]=6&subcat[]=1", cat: Other/Misc, desc: "Deportes y Otros/DVD"}
+  - {id: "cat[]=6&subcat[]=2", cat: Other/Misc, desc: "Deportes y Otros/BDVD + Autorías"}
+  - {id: "cat[]=6&subcat[]=3", cat: Other/Misc, desc: "Deportes y Otros/BD"}
+  - {id: "cat[]=6&subcat[]=4", cat: Other/Misc, desc: "Deportes y Otros/BD 4K"}
+  - {id: "cat[]=6&subcat[]=5", cat: Other/Misc, desc: "Deportes y Otros/BD 3D"}
+  - {id: "cat[]=6&subcat[]=6", cat: Other/Misc, desc: "Deportes y Otros/BD Remux"}
+  - {id: "cat[]=6&subcat[]=7", cat: Other/Misc, desc: "Deportes y Otros/MKV"}
+  - {id: "cat[]=4&subcat[]=2", cat: TV/SD, desc: "Series/BDVD + Autorías"}
+  - {id: "cat[]=4&subcat[]=1", cat: TV/SD, desc: "Series/DVD"}
+  - {id: "cat[]=3&subcat[]=9", cat: Audio/Video, desc: "Música/BD Remux 4K"}
+  - {id: "cat[]=3&subcat[]=8", cat: Audio/Video, desc: "Música/MKV 4K"}
+  - {id: "cat[]=1&subcat[]=2", cat: Movies/DVD, desc: "Películas/BDVD + Autorías"}
+  - {id: "cat[]=1&subcat[]=3", cat: Movies/BluRay, desc: "Películas/BD"}
+  - {id: "cat[]=1&subcat[]=4", cat: Movies/UHD, desc: "Películas/BD 4K"}
+  - {id: "cat[]=1&subcat[]=5", cat: Movies/3D, desc: "Películas/BD 3D"}
+  - {id: "cat[]=1&subcat[]=6", cat: Movies/BluRay, desc: "Películas/BD Remux"}
+  - {id: "cat[]=1&subcat[]=7", cat: Movies/HD, desc: "Películas/MKV"}
+  - {id: "cat[]=1&subcat[]=8", cat: Movies/UHD, desc: "Películas/MKV 4K"}
+  - {id: "cat[]=1&subcat[]=9", cat: Movies/UHD, desc: "Películas/BD Remux 4K"}
+  - {id: "cat[]=2&subcat[]=1", cat: Movies/DVD, desc: "Animación/DVD"}
+  - {id: "cat[]=2&subcat[]=2", cat: Movies/DVD, desc: "Animación/BDVD + Autorías"}
+  - {id: "cat[]=2&subcat[]=3", cat: Movies/BluRay, desc: "Animación/BD"}
+  - {id: "cat[]=6&subcat[]=8", cat: Other/Misc, desc: "Deportes y Otros/MKV 4K"}
+  - {id: "cat[]=2&subcat[]=4", cat: Movies/UHD, desc: "Animación/BD 4K"}
+  - {id: "cat[]=2&subcat[]=6", cat: Movies/BluRay, desc: "Animación/BD Remux"}
+  - {id: "cat[]=2&subcat[]=7", cat: Movies/HD, desc: "Animación/MKV"}
+  - {id: "cat[]=2&subcat[]=8", cat: Movies/UHD, desc: "Animación/MKV 4K"}
+  - {id: "cat[]=2&subcat[]=9", cat: Movies/UHD, desc: "Animación/BD Remux 4K"}
+  - {id: "cat[]=3&subcat[]=1", cat: Audio/Video, desc: "Música/DVD"}
+  - {id: "cat[]=3&subcat[]=2", cat: Audio/Video, desc: "Música/BDVD + Autorías"}
+  - {id: "cat[]=3&subcat[]=3", cat: Audio/Video, desc: "Música/BD"}
+  - {id: "cat[]=3&subcat[]=4", cat: Audio/Video, desc: "Música/BD 4K"}
+  - {id: "cat[]=3&subcat[]=5", cat: Audio/Video, desc: "Música/BD 3D"}
+  - {id: "cat[]=3&subcat[]=6", cat: Audio/Video, desc: "Música/BD Remux"}
+  - {id: "cat[]=3&subcat[]=7", cat: Audio/Video, desc: "Música/MKV"}
+  - {id: "cat[]=2&subcat[]=5", cat: Movies/3D, desc: "Animación/BD 3D"}
+  - {id: "cat[]=6&subcat[]=9", cat: Other/Misc, desc: "Deportes y Otros/BD Remux 4K"}
   modes:
     search: [q]
     tv-search: [q,season,ep]

@@ -7,103 +7,103 @@ type: private
 implementation: myanonamouse
 encoding: utf-8
 links:
-- https://www.myanonamouse.net/
+  - https://www.myanonamouse.net/
 caps:
   categorymappings:
-  - { id: 13, cat: Audio/Audiobook, desc: "AudioBooks" }
-  - { id: 95, cat: Books/EBook, desc: "Ebooks - Philosophy" }
-  - { id: 120, cat: Books/EBook, desc: "Ebooks - Nature" }
-  - { id: 94, cat: Books/EBook, desc: "Ebooks - Mystery" }
-  - { id: 118, cat: Books/EBook, desc: "Ebooks - Mixed Collections" }
-  - { id: 92, cat: Books/EBook, desc: "Ebooks - Medical" }
-  - { id: 80, cat: Books/Technical, desc: "Ebooks - Math/Science/Tech" }
-  - { id: 79, cat: Books/Mags, desc: "Ebooks - Magazines/Newspapers" }
-  - { id: 67, cat: Books/EBook, desc: "Ebooks - Literary Classics" }
-  - { id: 78, cat: Books/EBook, desc: "Ebooks - Language" }
-  - { id: 66, cat: Books/EBook, desc: "Ebooks - Juvenile" }
-  - { id: 91, cat: Books/EBook, desc: "Ebooks - Instructional" }
-  - { id: 115, cat: Books/EBook, desc: "Ebooks - Illusion/Magic" }
-  - { id: 103, cat: Books/EBook, desc: "Ebooks - Humor" }
-  - { id: 65, cat: Books/EBook, desc: "Ebooks - Horror" }
-  - { id: 77, cat: Books/EBook, desc: "Ebooks - Home/Garden" }
-  - { id: 76, cat: Books/EBook, desc: "Ebooks - History" }
-  - { id: 102, cat: Books/EBook, desc: "Ebooks - Historical Fiction" }
-  - { id: 74, cat: Books/EBook, desc: "Ebooks - General Non-Fiction" }
-  - { id: 64, cat: Books/EBook, desc: "Ebooks - General Fiction" }
-  - { id: 81, cat: Books/EBook, desc: "Ebooks - Pol/Soc/Relig" }
-  - { id: 82, cat: Books/EBook, desc: "Ebooks - Recreation" }
-  - { id: 68, cat: Books/EBook, desc: "Ebooks - Romance" }
-  - { id: 69, cat: Books/EBook, desc: "Ebooks - Science Fiction" }
-  - { id: 130, cat: Audio/Audiobook, desc: "Radio - Drama" }
-  - { id: 127, cat: Audio/Audiobook, desc: "Radio -  Comedy" }
-  - { id: 31, cat: Audio/Audiobook, desc: "Sheet Collection MP3" }
-  - { id: 30, cat: Audio/Audiobook, desc: "Sheet Collection" }
-  - { id: 27, cat: Audio/Audiobook, desc: "Music Book MP3" }
-  - { id: 26, cat: Audio/Audiobook, desc: "Music Book" }
-  - { id: 17, cat: Audio/Audiobook, desc: "Music - Complete Editions" }
-  - { id: 114, cat: Audio/Audiobook, desc: "Lick Library - Techniques/QL" }
-  - { id: 113, cat: Audio/Audiobook, desc: "Lick Library - LTP/Jam With" }
-  - { id: 107, cat: Books/EBook, desc: "Ebooks - Food" }
-  - { id: 22, cat: Audio/Audiobook, desc: "Instructional Media - Music" }
-  - { id: 24, cat: Audio/Audiobook, desc: "Individual Sheet MP3" }
-  - { id: 20, cat: Audio/Audiobook, desc: "Individual Sheet" }
-  - { id: 19, cat: Audio/Audiobook, desc: "Guitar/Bass Tabs" }
-  - { id: 112, cat: Books/EBook, desc: "Ebooks - Young Adult" }
-  - { id: 70, cat: Books/EBook, desc: "Ebooks - Western" }
-  - { id: 109, cat: Books/EBook, desc: "Ebooks - Urban Fantasy" }
-  - { id: 104, cat: Books/EBook, desc: "Ebooks - True Crime" }
-  - { id: 96, cat: Books/EBook, desc: "Ebooks - Travel/Adventure" }
-  - { id: 75, cat: Books/EBook, desc: "Ebooks - Self-Help" }
-  - { id: 126, cat: Audio/Audiobook, desc: "Instructional Book with Video" }
-  - { id: 63, cat: Books/EBook, desc: "Ebooks - Fantasy" }
-  - { id: 62, cat: Books/EBook, desc: "Ebooks - Crime/Thriller" }
-  - { id: 101, cat: Books/EBook, desc: "Ebooks - Crafts" }
-  - { id: 84, cat: Audio/Audiobook, desc: "Audiobooks - Instructional" }
-  - { id: 99, cat: Audio/Audiobook, desc: "Audiobooks - Humor" }
-  - { id: 43, cat: Audio/Audiobook, desc: "Audiobooks - Horror" }
-  - { id: 55, cat: Audio/Audiobook, desc: "Audiobooks - Home/Garden" }
-  - { id: 54, cat: Audio/Audiobook, desc: "Audiobooks - History" }
-  - { id: 98, cat: Audio/Audiobook, desc: "Audiobooks - Historical Fiction" }
-  - { id: 52, cat: Audio/Audiobook, desc: "Audiobooks - General Non-Fic" }
-  - { id: 42, cat: Audio/Audiobook, desc: "Audiobooks - General Fiction" }
-  - { id: 106, cat: Audio/Audiobook, desc: "Audiobooks - Food" }
-  - { id: 44, cat: Audio/Audiobook, desc: "Audiobooks - Juvenile" }
-  - { id: 41, cat: Audio/Audiobook, desc: "Audiobooks - Fantasy" }
-  - { id: 97, cat: Audio/Audiobook, desc: "Audiobooks - Crafts" }
-  - { id: 51, cat: Audio/Audiobook, desc: "Audiobooks - Computer/Internet" }
-  - { id: 83, cat: Audio/Audiobook, desc: "Audiobooks - Business" }
-  - { id: 50, cat: Audio/Audiobook, desc: "Audiobooks - Biographical" }
-  - { id: 49, cat: Audio/Audiobook, desc: "Audiobooks - Art" }
-  - { id: 39, cat: Audio/Audiobook, desc: "Audiobooks - Action/Adventure" }
-  - { id: 16, cat: Audio/Audiobook, desc: "Radio" }
-  - { id: 15, cat: Audio/Audiobook, desc: "Musicology" }
-  - { id: 14, cat: Books/EBook, desc: "E-Books" }
-  - { id: 40, cat: Audio/Audiobook, desc: "Audiobooks - Crime/Thriller" }
-  - { id: 128, cat: Audio/Audiobook, desc: "Radio - Factual/Documentary" }
-  - { id: 56, cat: Audio/Audiobook, desc: "Audiobooks - Language" }
-  - { id: 57, cat: Audio/Audiobook, desc: "Audiobooks - Math/Science/Tech" }
-  - { id: 73, cat: Books/EBook, desc: "Ebooks - Computer/Internet" }
-  - { id: 61, cat: Books/Comics, desc: "Ebooks - Comics/Graphic novels" }
-  - { id: 90, cat: Books/EBook, desc: "Ebooks - Business" }
-  - { id: 72, cat: Books/EBook, desc: "Ebooks - Biographical" }
-  - { id: 71, cat: Books/EBook, desc: "Ebooks - Art" }
-  - { id: 60, cat: Books/EBook, desc: "Ebooks - Action/Adventure" }
-  - { id: 111, cat: Audio/Audiobook, desc: "Audiobooks - Young Adult" }
-  - { id: 48, cat: Audio/Audiobook, desc: "Audiobooks - Western" }
-  - { id: 108, cat: Audio/Audiobook, desc: "Audiobooks - Urban Fantasy" }
-  - { id: 45, cat: Audio/Audiobook, desc: "Audiobooks - Literary Classics" }
-  - { id: 100, cat: Audio/Audiobook, desc: "Audiobooks - True Crime" }
-  - { id: 53, cat: Audio/Audiobook, desc: "Audiobooks - Self-Help" }
-  - { id: 47, cat: Audio/Audiobook, desc: "Audiobooks - Science Fiction" }
-  - { id: 46, cat: Audio/Audiobook, desc: "Audiobooks - Romance" }
-  - { id: 59, cat: Audio/Audiobook, desc: "Audiobooks - Recreation" }
-  - { id: 58, cat: Audio/Audiobook, desc: "Audiobooks - Pol/Soc/Relig" }
-  - { id: 88, cat: Audio/Audiobook, desc: "Audiobooks - Philosophy" }
-  - { id: 119, cat: Audio/Audiobook, desc: "Audiobooks - Nature" }
-  - { id: 87, cat: Audio/Audiobook, desc: "Audiobooks - Mystery" }
-  - { id: 85, cat: Audio/Audiobook, desc: "Audiobooks - Medical" }
-  - { id: 89, cat: Audio/Audiobook, desc: "Audiobooks - Travel/Adventure" }
-  - { id: 132, cat: Audio/Audiobook, desc: "Radio - Reading" }
+  - {id: 13, cat: Audio/Audiobook, desc: "AudioBooks"}
+  - {id: 95, cat: Books/EBook, desc: "Ebooks - Philosophy"}
+  - {id: 120, cat: Books/EBook, desc: "Ebooks - Nature"}
+  - {id: 94, cat: Books/EBook, desc: "Ebooks - Mystery"}
+  - {id: 118, cat: Books/EBook, desc: "Ebooks - Mixed Collections"}
+  - {id: 92, cat: Books/EBook, desc: "Ebooks - Medical"}
+  - {id: 80, cat: Books/Technical, desc: "Ebooks - Math/Science/Tech"}
+  - {id: 79, cat: Books/Mags, desc: "Ebooks - Magazines/Newspapers"}
+  - {id: 67, cat: Books/EBook, desc: "Ebooks - Literary Classics"}
+  - {id: 78, cat: Books/EBook, desc: "Ebooks - Language"}
+  - {id: 66, cat: Books/EBook, desc: "Ebooks - Juvenile"}
+  - {id: 91, cat: Books/EBook, desc: "Ebooks - Instructional"}
+  - {id: 115, cat: Books/EBook, desc: "Ebooks - Illusion/Magic"}
+  - {id: 103, cat: Books/EBook, desc: "Ebooks - Humor"}
+  - {id: 65, cat: Books/EBook, desc: "Ebooks - Horror"}
+  - {id: 77, cat: Books/EBook, desc: "Ebooks - Home/Garden"}
+  - {id: 76, cat: Books/EBook, desc: "Ebooks - History"}
+  - {id: 102, cat: Books/EBook, desc: "Ebooks - Historical Fiction"}
+  - {id: 74, cat: Books/EBook, desc: "Ebooks - General Non-Fiction"}
+  - {id: 64, cat: Books/EBook, desc: "Ebooks - General Fiction"}
+  - {id: 81, cat: Books/EBook, desc: "Ebooks - Pol/Soc/Relig"}
+  - {id: 82, cat: Books/EBook, desc: "Ebooks - Recreation"}
+  - {id: 68, cat: Books/EBook, desc: "Ebooks - Romance"}
+  - {id: 69, cat: Books/EBook, desc: "Ebooks - Science Fiction"}
+  - {id: 130, cat: Audio/Audiobook, desc: "Radio - Drama"}
+  - {id: 127, cat: Audio/Audiobook, desc: "Radio -  Comedy"}
+  - {id: 31, cat: Audio/Audiobook, desc: "Sheet Collection MP3"}
+  - {id: 30, cat: Audio/Audiobook, desc: "Sheet Collection"}
+  - {id: 27, cat: Audio/Audiobook, desc: "Music Book MP3"}
+  - {id: 26, cat: Audio/Audiobook, desc: "Music Book"}
+  - {id: 17, cat: Audio/Audiobook, desc: "Music - Complete Editions"}
+  - {id: 114, cat: Audio/Audiobook, desc: "Lick Library - Techniques/QL"}
+  - {id: 113, cat: Audio/Audiobook, desc: "Lick Library - LTP/Jam With"}
+  - {id: 107, cat: Books/EBook, desc: "Ebooks - Food"}
+  - {id: 22, cat: Audio/Audiobook, desc: "Instructional Media - Music"}
+  - {id: 24, cat: Audio/Audiobook, desc: "Individual Sheet MP3"}
+  - {id: 20, cat: Audio/Audiobook, desc: "Individual Sheet"}
+  - {id: 19, cat: Audio/Audiobook, desc: "Guitar/Bass Tabs"}
+  - {id: 112, cat: Books/EBook, desc: "Ebooks - Young Adult"}
+  - {id: 70, cat: Books/EBook, desc: "Ebooks - Western"}
+  - {id: 109, cat: Books/EBook, desc: "Ebooks - Urban Fantasy"}
+  - {id: 104, cat: Books/EBook, desc: "Ebooks - True Crime"}
+  - {id: 96, cat: Books/EBook, desc: "Ebooks - Travel/Adventure"}
+  - {id: 75, cat: Books/EBook, desc: "Ebooks - Self-Help"}
+  - {id: 126, cat: Audio/Audiobook, desc: "Instructional Book with Video"}
+  - {id: 63, cat: Books/EBook, desc: "Ebooks - Fantasy"}
+  - {id: 62, cat: Books/EBook, desc: "Ebooks - Crime/Thriller"}
+  - {id: 101, cat: Books/EBook, desc: "Ebooks - Crafts"}
+  - {id: 84, cat: Audio/Audiobook, desc: "Audiobooks - Instructional"}
+  - {id: 99, cat: Audio/Audiobook, desc: "Audiobooks - Humor"}
+  - {id: 43, cat: Audio/Audiobook, desc: "Audiobooks - Horror"}
+  - {id: 55, cat: Audio/Audiobook, desc: "Audiobooks - Home/Garden"}
+  - {id: 54, cat: Audio/Audiobook, desc: "Audiobooks - History"}
+  - {id: 98, cat: Audio/Audiobook, desc: "Audiobooks - Historical Fiction"}
+  - {id: 52, cat: Audio/Audiobook, desc: "Audiobooks - General Non-Fic"}
+  - {id: 42, cat: Audio/Audiobook, desc: "Audiobooks - General Fiction"}
+  - {id: 106, cat: Audio/Audiobook, desc: "Audiobooks - Food"}
+  - {id: 44, cat: Audio/Audiobook, desc: "Audiobooks - Juvenile"}
+  - {id: 41, cat: Audio/Audiobook, desc: "Audiobooks - Fantasy"}
+  - {id: 97, cat: Audio/Audiobook, desc: "Audiobooks - Crafts"}
+  - {id: 51, cat: Audio/Audiobook, desc: "Audiobooks - Computer/Internet"}
+  - {id: 83, cat: Audio/Audiobook, desc: "Audiobooks - Business"}
+  - {id: 50, cat: Audio/Audiobook, desc: "Audiobooks - Biographical"}
+  - {id: 49, cat: Audio/Audiobook, desc: "Audiobooks - Art"}
+  - {id: 39, cat: Audio/Audiobook, desc: "Audiobooks - Action/Adventure"}
+  - {id: 16, cat: Audio/Audiobook, desc: "Radio"}
+  - {id: 15, cat: Audio/Audiobook, desc: "Musicology"}
+  - {id: 14, cat: Books/EBook, desc: "E-Books"}
+  - {id: 40, cat: Audio/Audiobook, desc: "Audiobooks - Crime/Thriller"}
+  - {id: 128, cat: Audio/Audiobook, desc: "Radio - Factual/Documentary"}
+  - {id: 56, cat: Audio/Audiobook, desc: "Audiobooks - Language"}
+  - {id: 57, cat: Audio/Audiobook, desc: "Audiobooks - Math/Science/Tech"}
+  - {id: 73, cat: Books/EBook, desc: "Ebooks - Computer/Internet"}
+  - {id: 61, cat: Books/Comics, desc: "Ebooks - Comics/Graphic novels"}
+  - {id: 90, cat: Books/EBook, desc: "Ebooks - Business"}
+  - {id: 72, cat: Books/EBook, desc: "Ebooks - Biographical"}
+  - {id: 71, cat: Books/EBook, desc: "Ebooks - Art"}
+  - {id: 60, cat: Books/EBook, desc: "Ebooks - Action/Adventure"}
+  - {id: 111, cat: Audio/Audiobook, desc: "Audiobooks - Young Adult"}
+  - {id: 48, cat: Audio/Audiobook, desc: "Audiobooks - Western"}
+  - {id: 108, cat: Audio/Audiobook, desc: "Audiobooks - Urban Fantasy"}
+  - {id: 45, cat: Audio/Audiobook, desc: "Audiobooks - Literary Classics"}
+  - {id: 100, cat: Audio/Audiobook, desc: "Audiobooks - True Crime"}
+  - {id: 53, cat: Audio/Audiobook, desc: "Audiobooks - Self-Help"}
+  - {id: 47, cat: Audio/Audiobook, desc: "Audiobooks - Science Fiction"}
+  - {id: 46, cat: Audio/Audiobook, desc: "Audiobooks - Romance"}
+  - {id: 59, cat: Audio/Audiobook, desc: "Audiobooks - Recreation"}
+  - {id: 58, cat: Audio/Audiobook, desc: "Audiobooks - Pol/Soc/Relig"}
+  - {id: 88, cat: Audio/Audiobook, desc: "Audiobooks - Philosophy"}
+  - {id: 119, cat: Audio/Audiobook, desc: "Audiobooks - Nature"}
+  - {id: 87, cat: Audio/Audiobook, desc: "Audiobooks - Mystery"}
+  - {id: 85, cat: Audio/Audiobook, desc: "Audiobooks - Medical"}
+  - {id: 89, cat: Audio/Audiobook, desc: "Audiobooks - Travel/Adventure"}
+  - {id: 132, cat: Audio/Audiobook, desc: "Radio - Reading"}
   modes:
     search: [q]
     book-search: [q]

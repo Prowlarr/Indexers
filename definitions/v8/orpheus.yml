@@ -7,16 +7,16 @@ type: private
 implementation: orpheus
 encoding: utf-8
 links:
-- https://orpheus.network/
+  - https://orpheus.network/
 caps:
   categorymappings:
-  - { id: 1, cat: Audio, desc: "Music" }
-  - { id: 2, cat: PC, desc: "Applications" }
-  - { id: 3, cat: Books, desc: "E-Books" }
-  - { id: 4, cat: Audio/Audiobook, desc: "Audiobooks" }
-  - { id: 5, cat: Other, desc: "E-Learning Videos" }
-  - { id: 6, cat: Other, desc: "Comedy" }
-  - { id: 7, cat: Books, desc: "Comics" }
+  - {id: 1, cat: Audio, desc: "Music"}
+  - {id: 2, cat: PC, desc: "Applications"}
+  - {id: 3, cat: Books, desc: "E-Books"}
+  - {id: 4, cat: Audio/Audiobook, desc: "Audiobooks"}
+  - {id: 5, cat: Other, desc: "E-Learning Videos"}
+  - {id: 6, cat: Other, desc: "Comedy"}
+  - {id: 7, cat: Books, desc: "Comics"}
   modes:
     search: [q]
     book-search: [q]

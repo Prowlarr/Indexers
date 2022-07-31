@@ -7,108 +7,108 @@ type: private
 implementation: gazellegames
 encoding: utf-8
 links:
-- https://gazellegames.net/
+  - https://gazellegames.net/
 caps:
   categorymappings:
-  - { id: "Mac", cat: Console/Other, desc: "Mac" }
-  - { id: "Linux", cat: Console/Other, desc: "Linux" }
-  - { id: "Interactive DVD", cat: Console/Other, desc: "Interactive DVD" }
-  - { id: "General Computer Vectrex", cat: Console/Other, desc: "General Computer Vectrex" }
-  - { id: "GamePark GP32", cat: Console/Other, desc: "GamePark GP32" }
-  - { id: "Funtech Super Acan", cat: Console/Other, desc: "Funtech Super Acan" }
-  - { id: "Fairchild Channel F", cat: Console/Other, desc: "Fairchild Channel F" }
-  - { id: "Epoch Super Casette Vision", cat: Console/Other, desc: "Epoch Super Casette Vision" }
-  - { id: "Entex Adventure Vision", cat: Console/Other, desc: "Entex Adventure Vision" }
-  - { id: "Emerson Arcadia 2001", cat: Console/Other, desc: "Emerson Arcadia 2001" }
-  - { id: "Commodore VIC-20", cat: Console/Other, desc: "Commodore VIC-20" }
-  - { id: "Commodore Plus-4", cat: Console/Other, desc: "Commodore Plus-4" }
-  - { id: "Commodore Amiga", cat: Console/Other, desc: "Commodore Amiga" }
-  - { id: "Commodore 128", cat: Console/Other, desc: "Commodore 128" }
-  - { id: "Commodore 64", cat: Console/Other, desc: "Commodore 64" }
-  - { id: "Colecovision", cat: Console/Other, desc: "Colecovision" }
-  - { id: "Casio PV-1000", cat: Console/Other, desc: "Casio PV-1000" }
-  - { id: "Casio Loopy", cat: Console/Other, desc: "Casio Loopy" }
-  - { id: "Bandai WonderSwan Color", cat: Console/Other, desc: "Bandai WonderSwan Color" }
-  - { id: "Bandai WonderSwan", cat: Console/Other, desc: "Bandai WonderSwan" }
-  - { id: "3DO", cat: Console/Other, desc: "3DO" }
-  - { id: "Pen and Paper RPG", cat: Console/Other, desc: "Pen and Paper RPG" }
-  - { id: "Hartung Game Master", cat: Console/Other, desc: "Hartung Game Master" }
-  - { id: "Miniature Wargames", cat: Console/Other, desc: "Miniature Wargames" }
-  - { id: "Magnavox-Phillips Odyssey", cat: Console/Other, desc: "Magnavox-Phillips Odyssey" }
-  - { id: "Memotech MTX", cat: Console/Other, desc: "Memotech MTX" }
-  - { id: "OST", cat: Audio/Other, desc: "OST" }
-  - { id: "Retro - Other", cat: Console/Other, desc: "Retro - Other" }
-  - { id: "Watara Supervision", cat: Console/Other, desc: "Watara Supervision" }
-  - { id: "Thomson MO5", cat: Console/Other, desc: "Thomson MO5" }
-  - { id: "Tangerine Oric", cat: Console/Other, desc: "Tangerine Oric" }
-  - { id: "Tandy Color Computer", cat: Console/Other, desc: "Tandy Color Computer" }
-  - { id: "Taito Type X", cat: Console/Other, desc: "Taito Type X" }
-  - { id: "SNK Neo Geo Pocket", cat: Console/Other, desc: "SNK Neo Geo Pocket" }
-  - { id: "SNK Neo Geo", cat: Console/Other, desc: "SNK Neo Geo" }
-  - { id: "Sharp X68000", cat: Console/Other, desc: "Sharp X68000" }
-  - { id: "Sharp X1", cat: Console/Other, desc: "Sharp X1" }
-  - { id: "RCA Studio II", cat: Console/Other, desc: "RCA Studio II" }
-  - { id: "Phone/PDA", cat: Console/Other, desc: "Phone/PDA" }
-  - { id: "Philips Videopac+", cat: Console/Other, desc: "Philips Videopac+" }
-  - { id: "Ouya", cat: Console/Other, desc: "Ouya" }
-  - { id: "Nokia N-Gage", cat: Console/Other, desc: "Nokia N-Gage" }
-  - { id: "NEC TurboGrafx-16", cat: Console/Other, desc: "NEC TurboGrafx-16" }
-  - { id: "NEC SuperGrafx", cat: Console/Other, desc: "NEC SuperGrafx" }
-  - { id: "NEC PC-FX", cat: Console/Other, desc: "NEC PC-FX" }
-  - { id: "NEC PC-98", cat: Console/Other, desc: "NEC PC-98" }
-  - { id: "Miles Gordon Sam Coupe", cat: Console/Other, desc: "Miles Gordon Sam Coupe" }
-  - { id: "Mattel Intellivision", cat: Console/Other, desc: "Mattel Intellivision" }
-  - { id: "Card Game", cat: Console/Other, desc: "Card Game" }
-  - { id: "Board Game", cat: Console/Other, desc: "Board Game" }
-  - { id: "CreatiVision", cat: Console/Other, desc: "CreatiVision" }
-  - { id: "Wii U", cat: Console/WiiU, desc: "Wii U" }
-  - { id: "Wii", cat: Console/Wii, desc: "Wii" }
-  - { id: "Virtual Boy", cat: Console/Other, desc: "Virtual Boy" }
-  - { id: "SNES", cat: Console/Other, desc: "SNES" }
-  - { id: "Pokemon Mini", cat: Console/Other, desc: "Pokemon Mini" }
-  - { id: "Nintendo GameCube", cat: Console/Other, desc: "Nintendo GameCube" }
-  - { id: "Nintendo DS", cat: Console/NDS, desc: "Nintendo DS" }
-  - { id: "New Nintendo 3DS", cat: Console/Other, desc: "New Nintendo 3DS" }
-  - { id: "Nintendo 3DS", cat: Console/Other, desc: "Nintendo 3DS" }
-  - { id: "Nintendo 64", cat: Console/Other, desc: "Nintendo 64" }
-  - { id: "NES", cat: Console/Other, desc: "NES" }
-  - { id: "Game Boy Color", cat: Console/Other, desc: "Game Boy Color" }
-  - { id: "Game Boy Advance", cat: Console/Other, desc: "Game Boy Advance" }
-  - { id: "Game Boy", cat: Console/Other, desc: "Game Boy" }
-  - { id: "Xbox 360", cat: Console/XBox 360, desc: "Xbox 360" }
-  - { id: "Xbox", cat: Console/XBox, desc: "Xbox" }
-  - { id: "Windows", cat: PC/Games, desc: "Windows" }
-  - { id: "DOS", cat: PC/Games, desc: "DOS" }
-  - { id: "Android", cat: PC/Mobile-Android, desc: "Android" }
-  - { id: "Apple Bandai Pippin", cat: Console/Other, desc: "Apple Bandai Pippin" }
-  - { id: "iOS", cat: PC/Mobile-iOS, desc: "iOS" }
-  - { id: "PlayStation 1", cat: Console/Other, desc: "PlayStation 1" }
-  - { id: "PlayStation 2", cat: Console/Other, desc: "PlayStation 2" }
-  - { id: "PlayStation 3", cat: Console/PS3, desc: "PlayStation 3" }
-  - { id: "PlayStation 4", cat: Console/PS4, desc: "PlayStation 4" }
-  - { id: "V.Smile", cat: Console/Other, desc: "V.Smile" }
-  - { id: "Gizmondo", cat: Console/Other, desc: "Gizmondo" }
-  - { id: "Game.com", cat: Console/Other, desc: "Game.com" }
-  - { id: "MSX 2", cat: Console/Other, desc: "MSX 2" }
-  - { id: "MSX", cat: Console/Other, desc: "MSX" }
-  - { id: "ZX Spectrum", cat: Console/Other, desc: "ZX Spectrum" }
-  - { id: "Amstrad CPC", cat: Console/Other, desc: "Amstrad CPC" }
-  - { id: "Atari ST", cat: Console/Other, desc: "Atari ST" }
-  - { id: "Atari Lynx", cat: Console/Other, desc: "Atari Lynx" }
-  - { id: "Atari Jaguar", cat: Console/Other, desc: "Atari Jaguar" }
-  - { id: "Applications", cat: PC/0day, desc: "Applications" }
-  - { id: "Atari 7800", cat: Console/Other, desc: "Atari 7800" }
-  - { id: "Atari 2600", cat: Console/Other, desc: "Atari 2600" }
-  - { id: "SG-1000", cat: Console/Other, desc: "SG-1000" }
-  - { id: "Saturn", cat: Console/Other, desc: "Saturn" }
-  - { id: "Pico", cat: Console/Other, desc: "Pico" }
-  - { id: "Mega Drive", cat: Console/Other, desc: "Mega Drive" }
-  - { id: "Master System", cat: Console/Other, desc: "Master System" }
-  - { id: "Game Gear", cat: Console/Other, desc: "Game Gear" }
-  - { id: "Dreamcast", cat: Console/Other, desc: "Dreamcast" }
-  - { id: "PlayStation Vita", cat: Console/PS Vita, desc: "PlayStation Vita" }
-  - { id: "PlayStation Portable", cat: Console/PSP, desc: "PlayStation Portable" }
-  - { id: "Atari 5200", cat: Console/Other, desc: "Atari 5200" }
-  - { id: "E-Books", cat: Books/EBook, desc: "E-Books" }
+  - {id: "Mac", cat: Console/Other, desc: "Mac"}
+  - {id: "Linux", cat: Console/Other, desc: "Linux"}
+  - {id: "Interactive DVD", cat: Console/Other, desc: "Interactive DVD"}
+  - {id: "General Computer Vectrex", cat: Console/Other, desc: "General Computer Vectrex"}
+  - {id: "GamePark GP32", cat: Console/Other, desc: "GamePark GP32"}
+  - {id: "Funtech Super Acan", cat: Console/Other, desc: "Funtech Super Acan"}
+  - {id: "Fairchild Channel F", cat: Console/Other, desc: "Fairchild Channel F"}
+  - {id: "Epoch Super Casette Vision", cat: Console/Other, desc: "Epoch Super Casette Vision"}
+  - {id: "Entex Adventure Vision", cat: Console/Other, desc: "Entex Adventure Vision"}
+  - {id: "Emerson Arcadia 2001", cat: Console/Other, desc: "Emerson Arcadia 2001"}
+  - {id: "Commodore VIC-20", cat: Console/Other, desc: "Commodore VIC-20"}
+  - {id: "Commodore Plus-4", cat: Console/Other, desc: "Commodore Plus-4"}
+  - {id: "Commodore Amiga", cat: Console/Other, desc: "Commodore Amiga"}
+  - {id: "Commodore 128", cat: Console/Other, desc: "Commodore 128"}
+  - {id: "Commodore 64", cat: Console/Other, desc: "Commodore 64"}
+  - {id: "Colecovision", cat: Console/Other, desc: "Colecovision"}
+  - {id: "Casio PV-1000", cat: Console/Other, desc: "Casio PV-1000"}
+  - {id: "Casio Loopy", cat: Console/Other, desc: "Casio Loopy"}
+  - {id: "Bandai WonderSwan Color", cat: Console/Other, desc: "Bandai WonderSwan Color"}
+  - {id: "Bandai WonderSwan", cat: Console/Other, desc: "Bandai WonderSwan"}
+  - {id: "3DO", cat: Console/Other, desc: "3DO"}
+  - {id: "Pen and Paper RPG", cat: Console/Other, desc: "Pen and Paper RPG"}
+  - {id: "Hartung Game Master", cat: Console/Other, desc: "Hartung Game Master"}
+  - {id: "Miniature Wargames", cat: Console/Other, desc: "Miniature Wargames"}
+  - {id: "Magnavox-Phillips Odyssey", cat: Console/Other, desc: "Magnavox-Phillips Odyssey"}
+  - {id: "Memotech MTX", cat: Console/Other, desc: "Memotech MTX"}
+  - {id: "OST", cat: Audio/Other, desc: "OST"}
+  - {id: "Retro - Other", cat: Console/Other, desc: "Retro - Other"}
+  - {id: "Watara Supervision", cat: Console/Other, desc: "Watara Supervision"}
+  - {id: "Thomson MO5", cat: Console/Other, desc: "Thomson MO5"}
+  - {id: "Tangerine Oric", cat: Console/Other, desc: "Tangerine Oric"}
+  - {id: "Tandy Color Computer", cat: Console/Other, desc: "Tandy Color Computer"}
+  - {id: "Taito Type X", cat: Console/Other, desc: "Taito Type X"}
+  - {id: "SNK Neo Geo Pocket", cat: Console/Other, desc: "SNK Neo Geo Pocket"}
+  - {id: "SNK Neo Geo", cat: Console/Other, desc: "SNK Neo Geo"}
+  - {id: "Sharp X68000", cat: Console/Other, desc: "Sharp X68000"}
+  - {id: "Sharp X1", cat: Console/Other, desc: "Sharp X1"}
+  - {id: "RCA Studio II", cat: Console/Other, desc: "RCA Studio II"}
+  - {id: "Phone/PDA", cat: Console/Other, desc: "Phone/PDA"}
+  - {id: "Philips Videopac+", cat: Console/Other, desc: "Philips Videopac+"}
+  - {id: "Ouya", cat: Console/Other, desc: "Ouya"}
+  - {id: "Nokia N-Gage", cat: Console/Other, desc: "Nokia N-Gage"}
+  - {id: "NEC TurboGrafx-16", cat: Console/Other, desc: "NEC TurboGrafx-16"}
+  - {id: "NEC SuperGrafx", cat: Console/Other, desc: "NEC SuperGrafx"}
+  - {id: "NEC PC-FX", cat: Console/Other, desc: "NEC PC-FX"}
+  - {id: "NEC PC-98", cat: Console/Other, desc: "NEC PC-98"}
+  - {id: "Miles Gordon Sam Coupe", cat: Console/Other, desc: "Miles Gordon Sam Coupe"}
+  - {id: "Mattel Intellivision", cat: Console/Other, desc: "Mattel Intellivision"}
+  - {id: "Card Game", cat: Console/Other, desc: "Card Game"}
+  - {id: "Board Game", cat: Console/Other, desc: "Board Game"}
+  - {id: "CreatiVision", cat: Console/Other, desc: "CreatiVision"}
+  - {id: "Wii U", cat: Console/WiiU, desc: "Wii U"}
+  - {id: "Wii", cat: Console/Wii, desc: "Wii"}
+  - {id: "Virtual Boy", cat: Console/Other, desc: "Virtual Boy"}
+  - {id: "SNES", cat: Console/Other, desc: "SNES"}
+  - {id: "Pokemon Mini", cat: Console/Other, desc: "Pokemon Mini"}
+  - {id: "Nintendo GameCube", cat: Console/Other, desc: "Nintendo GameCube"}
+  - {id: "Nintendo DS", cat: Console/NDS, desc: "Nintendo DS"}
+  - {id: "New Nintendo 3DS", cat: Console/Other, desc: "New Nintendo 3DS"}
+  - {id: "Nintendo 3DS", cat: Console/Other, desc: "Nintendo 3DS"}
+  - {id: "Nintendo 64", cat: Console/Other, desc: "Nintendo 64"}
+  - {id: "NES", cat: Console/Other, desc: "NES"}
+  - {id: "Game Boy Color", cat: Console/Other, desc: "Game Boy Color"}
+  - {id: "Game Boy Advance", cat: Console/Other, desc: "Game Boy Advance"}
+  - {id: "Game Boy", cat: Console/Other, desc: "Game Boy"}
+  - {id: "Xbox 360", cat: Console/XBox 360, desc: "Xbox 360"}
+  - {id: "Xbox", cat: Console/XBox, desc: "Xbox"}
+  - {id: "Windows", cat: PC/Games, desc: "Windows"}
+  - {id: "DOS", cat: PC/Games, desc: "DOS"}
+  - {id: "Android", cat: PC/Mobile-Android, desc: "Android"}
+  - {id: "Apple Bandai Pippin", cat: Console/Other, desc: "Apple Bandai Pippin"}
+  - {id: "iOS", cat: PC/Mobile-iOS, desc: "iOS"}
+  - {id: "PlayStation 1", cat: Console/Other, desc: "PlayStation 1"}
+  - {id: "PlayStation 2", cat: Console/Other, desc: "PlayStation 2"}
+  - {id: "PlayStation 3", cat: Console/PS3, desc: "PlayStation 3"}
+  - {id: "PlayStation 4", cat: Console/PS4, desc: "PlayStation 4"}
+  - {id: "V.Smile", cat: Console/Other, desc: "V.Smile"}
+  - {id: "Gizmondo", cat: Console/Other, desc: "Gizmondo"}
+  - {id: "Game.com", cat: Console/Other, desc: "Game.com"}
+  - {id: "MSX 2", cat: Console/Other, desc: "MSX 2"}
+  - {id: "MSX", cat: Console/Other, desc: "MSX"}
+  - {id: "ZX Spectrum", cat: Console/Other, desc: "ZX Spectrum"}
+  - {id: "Amstrad CPC", cat: Console/Other, desc: "Amstrad CPC"}
+  - {id: "Atari ST", cat: Console/Other, desc: "Atari ST"}
+  - {id: "Atari Lynx", cat: Console/Other, desc: "Atari Lynx"}
+  - {id: "Atari Jaguar", cat: Console/Other, desc: "Atari Jaguar"}
+  - {id: "Applications", cat: PC/0day, desc: "Applications"}
+  - {id: "Atari 7800", cat: Console/Other, desc: "Atari 7800"}
+  - {id: "Atari 2600", cat: Console/Other, desc: "Atari 2600"}
+  - {id: "SG-1000", cat: Console/Other, desc: "SG-1000"}
+  - {id: "Saturn", cat: Console/Other, desc: "Saturn"}
+  - {id: "Pico", cat: Console/Other, desc: "Pico"}
+  - {id: "Mega Drive", cat: Console/Other, desc: "Mega Drive"}
+  - {id: "Master System", cat: Console/Other, desc: "Master System"}
+  - {id: "Game Gear", cat: Console/Other, desc: "Game Gear"}
+  - {id: "Dreamcast", cat: Console/Other, desc: "Dreamcast"}
+  - {id: "PlayStation Vita", cat: Console/PS Vita, desc: "PlayStation Vita"}
+  - {id: "PlayStation Portable", cat: Console/PSP, desc: "PlayStation Portable"}
+  - {id: "Atari 5200", cat: Console/Other, desc: "Atari 5200"}
+  - {id: "E-Books", cat: Books/EBook, desc: "E-Books"}
   modes:
     search: [q]

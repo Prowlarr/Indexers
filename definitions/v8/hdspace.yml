@@ -7,28 +7,28 @@ type: private
 implementation: hdspace
 encoding: utf-8
 links:
-- https://hd-space.org/
+  - https://hd-space.org/
 caps:
   categorymappings:
-  - { id: 15, cat: Movies/BluRay, desc: "Movie / Blu-ray" }
-  - { id: 36, cat: Movies/Other, desc: "Trailers" }
-  - { id: 34, cat: XXX, desc: "XXX / 1080p" }
-  - { id: 33, cat: XXX, desc: "XXX / 720p" }
-  - { id: 31, cat: Audio/Video, desc: "Music / Videos" }
-  - { id: 30, cat: Audio/Lossless, desc: "Music / HQ Audio" }
-  - { id: 28, cat: TV/Anime, desc: "Animation / 1080p" }
-  - { id: 27, cat: TV/Anime, desc: "Animation / 720p" }
-  - { id: 37, cat: PC, desc: "Software" }
-  - { id: 25, cat: TV/Documentary, desc: "Documentary / 1080p" }
-  - { id: 22, cat: TV/HD, desc: "TV Show / 1080p HDTV" }
-  - { id: 21, cat: TV/HD, desc: "TV Show / 720p HDTV" }
-  - { id: 41, cat: Movies/UHD, desc: "Movie / 4K UHD" }
-  - { id: 16, cat: Movies/HD, desc: "Movie / HD-DVD" }
-  - { id: 40, cat: Movies/HD, desc: "Movie / Remux" }
-  - { id: 18, cat: Movies/HD, desc: "Movie / 720p" }
-  - { id: 19, cat: Movies/HD, desc: "Movie / 1080p" }
-  - { id: 24, cat: TV/Documentary, desc: "Documentary / 720p" }
-  - { id: 38, cat: Other, desc: "Others" }
+  - {id: 15, cat: Movies/BluRay, desc: "Movie / Blu-ray"}
+  - {id: 36, cat: Movies/Other, desc: "Trailers"}
+  - {id: 34, cat: XXX, desc: "XXX / 1080p"}
+  - {id: 33, cat: XXX, desc: "XXX / 720p"}
+  - {id: 31, cat: Audio/Video, desc: "Music / Videos"}
+  - {id: 30, cat: Audio/Lossless, desc: "Music / HQ Audio"}
+  - {id: 28, cat: TV/Anime, desc: "Animation / 1080p"}
+  - {id: 27, cat: TV/Anime, desc: "Animation / 720p"}
+  - {id: 37, cat: PC, desc: "Software"}
+  - {id: 25, cat: TV/Documentary, desc: "Documentary / 1080p"}
+  - {id: 22, cat: TV/HD, desc: "TV Show / 1080p HDTV"}
+  - {id: 21, cat: TV/HD, desc: "TV Show / 720p HDTV"}
+  - {id: 41, cat: Movies/UHD, desc: "Movie / 4K UHD"}
+  - {id: 16, cat: Movies/HD, desc: "Movie / HD-DVD"}
+  - {id: 40, cat: Movies/HD, desc: "Movie / Remux"}
+  - {id: 18, cat: Movies/HD, desc: "Movie / 720p"}
+  - {id: 19, cat: Movies/HD, desc: "Movie / 1080p"}
+  - {id: 24, cat: TV/Documentary, desc: "Documentary / 720p"}
+  - {id: 38, cat: Other, desc: "Others"}
   modes:
     search: [q]
     tv-search: [q,season,ep,imdbId]

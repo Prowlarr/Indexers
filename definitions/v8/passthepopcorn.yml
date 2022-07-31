@@ -7,22 +7,22 @@ type: private
 implementation: passthepopcorn
 encoding: utf-8
 links:
-- https://passthepopcorn.me
+  - https://passthepopcorn.me
 caps:
   categorymappings:
-  - { id: 1, cat: Movies, desc: "Feature Film" }
-  - { id: 1, cat: Movies/Foreign, desc: "" }
-  - { id: 1, cat: Movies/Other, desc: "" }
-  - { id: 1, cat: Movies/SD, desc: "" }
-  - { id: 1, cat: Movies/HD, desc: "" }
-  - { id: 1, cat: Movies/3D, desc: "" }
-  - { id: 1, cat: Movies/BluRay, desc: "" }
-  - { id: 1, cat: Movies/DVD, desc: "" }
-  - { id: 1, cat: Movies/WEB-DL, desc: "" }
-  - { id: 2, cat: Movies, desc: "Short Film" }
-  - { id: 3, cat: TV, desc: "Miniseries" }
-  - { id: 4, cat: TV, desc: "Stand-up Comedy" }
-  - { id: 5, cat: TV, desc: "Live Performance" }
+  - {id: 1, cat: Movies, desc: "Feature Film"}
+  - {id: 1, cat: Movies/Foreign, desc: ""}
+  - {id: 1, cat: Movies/Other, desc: ""}
+  - {id: 1, cat: Movies/SD, desc: ""}
+  - {id: 1, cat: Movies/HD, desc: ""}
+  - {id: 1, cat: Movies/3D, desc: ""}
+  - {id: 1, cat: Movies/BluRay, desc: ""}
+  - {id: 1, cat: Movies/DVD, desc: ""}
+  - {id: 1, cat: Movies/WEB-DL, desc: ""}
+  - {id: 2, cat: Movies, desc: "Short Film"}
+  - {id: 3, cat: TV, desc: "Miniseries"}
+  - {id: 4, cat: TV, desc: "Stand-up Comedy"}
+  - {id: 5, cat: TV, desc: "Live Performance"}
   modes:
     search: [q]
     movie-search: [q,imdbId]

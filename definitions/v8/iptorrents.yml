@@ -7,85 +7,85 @@ type: private
 implementation: iptorrents
 encoding: utf-8
 links:
-- https://iptorrents.com/
-- https://iptorrents.me/
-- https://nemo.iptorrents.com/
-- https://ipt.getcrazy.me/
-- https://ipt.findnemo.net/
-- https://ipt.beelyrics.net/
-- https://ipt.venom.global/
-- https://ipt.workisboring.net/
-- https://ipt.lol/
-- https://ipt.cool/
-- https://ipt.world/
+  - https://iptorrents.com/
+  - https://iptorrents.me/
+  - https://nemo.iptorrents.com/
+  - https://ipt.getcrazy.me/
+  - https://ipt.findnemo.net/
+  - https://ipt.beelyrics.net/
+  - https://ipt.venom.global/
+  - https://ipt.workisboring.net/
+  - https://ipt.lol/
+  - https://ipt.cool/
+  - https://ipt.world/
 caps:
   categorymappings:
-  - { id: 72, cat: Movies, desc: "Movies" }
-  - { id: 43, cat: PC/ISO, desc: "Games/PC-ISO" }
-  - { id: 45, cat: PC/Games, desc: "Games/PC-Rip" }
-  - { id: 71, cat: Console/PS3, desc: "Games/PS3" }
-  - { id: 50, cat: Console/Wii, desc: "Games/Wii" }
-  - { id: 44, cat: Console/XBox 360, desc: "Games/Xbox-360" }
-  - { id: 75, cat: Audio, desc: "Music" }
-  - { id: 3, cat: Audio/MP3, desc: "Music/Audio" }
-  - { id: 80, cat: Audio/Lossless, desc: "Music/Flac" }
-  - { id: 93, cat: Audio, desc: "Music/Packs" }
-  - { id: 37, cat: Audio/Video, desc: "Music/Video" }
-  - { id: 21, cat: Audio/Video, desc: "Podcast" }
-  - { id: 76, cat: Other, desc: "Other/Miscellaneous" }
-  - { id: 60, cat: TV/Anime, desc: "Anime" }
-  - { id: 1, cat: PC/0day, desc: "Appz" }
-  - { id: 86, cat: PC/0day, desc: "Appz/Non-English" }
-  - { id: 64, cat: Audio/Audiobook, desc: "AudioBook" }
-  - { id: 35, cat: Books, desc: "Books" }
-  - { id: 102, cat: Books, desc: "Books/Non-English" }
-  - { id: 94, cat: Books/Comics, desc: "Books/Comics" }
-  - { id: 95, cat: Books/Other, desc: "Books/Educational" }
-  - { id: 98, cat: Other, desc: "Other/Fonts" }
-  - { id: 69, cat: PC/Mac, desc: "Appz/Mac" }
-  - { id: 92, cat: Books/Mags, desc: "Books/Magazines & Newspapers" }
-  - { id: 58, cat: PC/Mobile-Other, desc: "Appz/Mobile" }
-  - { id: 36, cat: Other, desc: "Other/Pics/Wallpapers" }
-  - { id: 88, cat: XXX, desc: "XXX" }
-  - { id: 85, cat: XXX/Other, desc: "XXX/Magazines" }
-  - { id: 8, cat: XXX, desc: "XXX/Movie" }
-  - { id: 81, cat: XXX, desc: "XXX/Movie/0Day" }
-  - { id: 47, cat: Console/NDS, desc: "Games/Nintendo DS" }
-  - { id: 2, cat: Console/Other, desc: "Games/Mixed" }
-  - { id: 74, cat: Console, desc: "Games" }
-  - { id: 4, cat: TV/SD, desc: "TV/Xvid" }
-  - { id: 87, cat: Movies/3D, desc: "Movie/3D" }
-  - { id: 77, cat: Movies/SD, desc: "Movie/480p" }
-  - { id: 101, cat: Movies/UHD, desc: "Movie/4K" }
-  - { id: 89, cat: Movies/HD, desc: "Movie/BD-R" }
-  - { id: 90, cat: Movies/SD, desc: "Movie/BD-Rip" }
-  - { id: 96, cat: Movies/SD, desc: "Movie/Cam" }
-  - { id: 6, cat: Movies/DVD, desc: "Movie/DVD-R" }
-  - { id: 48, cat: Movies/BluRay, desc: "Movie/HD/Bluray" }
-  - { id: 54, cat: Movies, desc: "Movie/Kids" }
-  - { id: 62, cat: Movies/SD, desc: "Movie/MP4" }
-  - { id: 38, cat: Movies/Foreign, desc: "Movie/Non-English" }
-  - { id: 68, cat: Movies, desc: "Movie/Packs" }
-  - { id: 20, cat: Movies/WEB-DL, desc: "Movie/Web-DL" }
-  - { id: 7, cat: Movies/SD, desc: "Movie/Xvid" }
-  - { id: 91, cat: XXX/Pack, desc: "XXX/Packs" }
-  - { id: 100, cat: Movies, desc: "Movie/x265" }
-  - { id: 26, cat: TV/Documentary, desc: "TV/Documentaries" }
-  - { id: 55, cat: TV/Sport, desc: "Sports" }
-  - { id: 78, cat: TV/SD, desc: "TV/480p" }
-  - { id: 23, cat: TV/HD, desc: "TV/BD" }
-  - { id: 24, cat: TV/SD, desc: "TV/DVD-R" }
-  - { id: 25, cat: TV/SD, desc: "TV/DVD-Rip" }
-  - { id: 66, cat: TV/SD, desc: "TV/Mobile" }
-  - { id: 82, cat: TV/Foreign, desc: "TV/Non-English" }
-  - { id: 65, cat: TV, desc: "TV/Packs" }
-  - { id: 83, cat: TV/Foreign, desc: "TV/Packs/Non-English" }
-  - { id: 79, cat: TV/SD, desc: "TV/SD/x264" }
-  - { id: 22, cat: TV/WEB-DL, desc: "TV/Web-DL" }
-  - { id: 5, cat: TV/HD, desc: "TV/x264" }
-  - { id: 99, cat: TV/HD, desc: "TV/x265" }
-  - { id: 73, cat: TV, desc: "TV" }
-  - { id: 84, cat: XXX/ImageSet, desc: "XXX/Pics/Wallpapers" }
+  - {id: 72, cat: Movies, desc: "Movies"}
+  - {id: 43, cat: PC/ISO, desc: "Games/PC-ISO"}
+  - {id: 45, cat: PC/Games, desc: "Games/PC-Rip"}
+  - {id: 71, cat: Console/PS3, desc: "Games/PS3"}
+  - {id: 50, cat: Console/Wii, desc: "Games/Wii"}
+  - {id: 44, cat: Console/XBox 360, desc: "Games/Xbox-360"}
+  - {id: 75, cat: Audio, desc: "Music"}
+  - {id: 3, cat: Audio/MP3, desc: "Music/Audio"}
+  - {id: 80, cat: Audio/Lossless, desc: "Music/Flac"}
+  - {id: 93, cat: Audio, desc: "Music/Packs"}
+  - {id: 37, cat: Audio/Video, desc: "Music/Video"}
+  - {id: 21, cat: Audio/Video, desc: "Podcast"}
+  - {id: 76, cat: Other, desc: "Other/Miscellaneous"}
+  - {id: 60, cat: TV/Anime, desc: "Anime"}
+  - {id: 1, cat: PC/0day, desc: "Appz"}
+  - {id: 86, cat: PC/0day, desc: "Appz/Non-English"}
+  - {id: 64, cat: Audio/Audiobook, desc: "AudioBook"}
+  - {id: 35, cat: Books, desc: "Books"}
+  - {id: 102, cat: Books, desc: "Books/Non-English"}
+  - {id: 94, cat: Books/Comics, desc: "Books/Comics"}
+  - {id: 95, cat: Books/Other, desc: "Books/Educational"}
+  - {id: 98, cat: Other, desc: "Other/Fonts"}
+  - {id: 69, cat: PC/Mac, desc: "Appz/Mac"}
+  - {id: 92, cat: Books/Mags, desc: "Books/Magazines & Newspapers"}
+  - {id: 58, cat: PC/Mobile-Other, desc: "Appz/Mobile"}
+  - {id: 36, cat: Other, desc: "Other/Pics/Wallpapers"}
+  - {id: 88, cat: XXX, desc: "XXX"}
+  - {id: 85, cat: XXX/Other, desc: "XXX/Magazines"}
+  - {id: 8, cat: XXX, desc: "XXX/Movie"}
+  - {id: 81, cat: XXX, desc: "XXX/Movie/0Day"}
+  - {id: 47, cat: Console/NDS, desc: "Games/Nintendo DS"}
+  - {id: 2, cat: Console/Other, desc: "Games/Mixed"}
+  - {id: 74, cat: Console, desc: "Games"}
+  - {id: 4, cat: TV/SD, desc: "TV/Xvid"}
+  - {id: 87, cat: Movies/3D, desc: "Movie/3D"}
+  - {id: 77, cat: Movies/SD, desc: "Movie/480p"}
+  - {id: 101, cat: Movies/UHD, desc: "Movie/4K"}
+  - {id: 89, cat: Movies/HD, desc: "Movie/BD-R"}
+  - {id: 90, cat: Movies/SD, desc: "Movie/BD-Rip"}
+  - {id: 96, cat: Movies/SD, desc: "Movie/Cam"}
+  - {id: 6, cat: Movies/DVD, desc: "Movie/DVD-R"}
+  - {id: 48, cat: Movies/BluRay, desc: "Movie/HD/Bluray"}
+  - {id: 54, cat: Movies, desc: "Movie/Kids"}
+  - {id: 62, cat: Movies/SD, desc: "Movie/MP4"}
+  - {id: 38, cat: Movies/Foreign, desc: "Movie/Non-English"}
+  - {id: 68, cat: Movies, desc: "Movie/Packs"}
+  - {id: 20, cat: Movies/WEB-DL, desc: "Movie/Web-DL"}
+  - {id: 7, cat: Movies/SD, desc: "Movie/Xvid"}
+  - {id: 91, cat: XXX/Pack, desc: "XXX/Packs"}
+  - {id: 100, cat: Movies, desc: "Movie/x265"}
+  - {id: 26, cat: TV/Documentary, desc: "TV/Documentaries"}
+  - {id: 55, cat: TV/Sport, desc: "Sports"}
+  - {id: 78, cat: TV/SD, desc: "TV/480p"}
+  - {id: 23, cat: TV/HD, desc: "TV/BD"}
+  - {id: 24, cat: TV/SD, desc: "TV/DVD-R"}
+  - {id: 25, cat: TV/SD, desc: "TV/DVD-Rip"}
+  - {id: 66, cat: TV/SD, desc: "TV/Mobile"}
+  - {id: 82, cat: TV/Foreign, desc: "TV/Non-English"}
+  - {id: 65, cat: TV, desc: "TV/Packs"}
+  - {id: 83, cat: TV/Foreign, desc: "TV/Packs/Non-English"}
+  - {id: 79, cat: TV/SD, desc: "TV/SD/x264"}
+  - {id: 22, cat: TV/WEB-DL, desc: "TV/Web-DL"}
+  - {id: 5, cat: TV/HD, desc: "TV/x264"}
+  - {id: 99, cat: TV/HD, desc: "TV/x265"}
+  - {id: 73, cat: TV, desc: "TV"}
+  - {id: 84, cat: XXX/ImageSet, desc: "XXX/Pics/Wallpapers"}
   modes:
     search: [q]
     tv-search: [q,season,ep,imdbId]

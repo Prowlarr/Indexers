@@ -7,15 +7,15 @@ type: public
 implementation: shizaproject
 encoding: utf-8
 links:
-- https://shiza-project.com/
+  - https://shiza-project.com/
 caps:
   categorymappings:
-  - { id: 1, cat: TV/Anime, desc: "TV" }
-  - { id: 2, cat: TV/Anime, desc: "TV_SPECIAL" }
-  - { id: 3, cat: TV/Anime, desc: "ONA" }
-  - { id: 4, cat: TV/Anime, desc: "OVA" }
-  - { id: 5, cat: Movies, desc: "MOVIE" }
-  - { id: 6, cat: Movies, desc: "SHORT_MOVIE" }
+  - {id: 1, cat: TV/Anime, desc: "TV"}
+  - {id: 2, cat: TV/Anime, desc: "TV_SPECIAL"}
+  - {id: 3, cat: TV/Anime, desc: "ONA"}
+  - {id: 4, cat: TV/Anime, desc: "OVA"}
+  - {id: 5, cat: Movies, desc: "MOVIE"}
+  - {id: 6, cat: Movies, desc: "SHORT_MOVIE"}
   modes:
     search: [q]
     tv-search: [q,season,ep]

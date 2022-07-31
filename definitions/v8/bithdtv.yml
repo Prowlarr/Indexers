@@ -7,20 +7,20 @@ type: private
 implementation: bithdtv
 encoding: iso-8859-1
 links:
-- https://www.bit-hdtv.com/
+  - https://www.bit-hdtv.com/
 caps:
   categorymappings:
-  - { id: 1, cat: TV/Anime, desc: "Anime" }
-  - { id: 2, cat: Movies/BluRay, desc: "Movies/Blu-ray" }
-  - { id: 4, cat: TV/Documentary, desc: "Documentaries" }
-  - { id: 6, cat: Audio/Lossless, desc: "HQ Audio" }
-  - { id: 7, cat: Movies, desc: "Movies" }
-  - { id: 8, cat: Audio/Video, desc: "Music Videos" }
-  - { id: 9, cat: Other, desc: "Other" }
-  - { id: 5, cat: TV/Sport, desc: "Sports" }
-  - { id: 10, cat: TV, desc: "TV" }
-  - { id: 12, cat: TV, desc: "TV/Seasonpack" }
-  - { id: 11, cat: XXX, desc: "XXX" }
+  - {id: 1, cat: TV/Anime, desc: "Anime"}
+  - {id: 2, cat: Movies/BluRay, desc: "Movies/Blu-ray"}
+  - {id: 4, cat: TV/Documentary, desc: "Documentaries"}
+  - {id: 6, cat: Audio/Lossless, desc: "HQ Audio"}
+  - {id: 7, cat: Movies, desc: "Movies"}
+  - {id: 8, cat: Audio/Video, desc: "Music Videos"}
+  - {id: 9, cat: Other, desc: "Other"}
+  - {id: 5, cat: TV/Sport, desc: "Sports"}
+  - {id: 10, cat: TV, desc: "TV"}
+  - {id: 12, cat: TV, desc: "TV/Seasonpack"}
+  - {id: 11, cat: XXX, desc: "XXX"}
   modes:
     search: [q]
     tv-search: [q,season,ep,imdbId]

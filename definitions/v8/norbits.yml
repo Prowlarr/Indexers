@@ -7,30 +7,30 @@ type: private
 implementation: norbits
 encoding: iso-8859-1
 links:
-- https://norbits.net/
+  - https://norbits.net/
 caps:
   categorymappings:
-  - { id: "main_cat[]=1&sub2_cat[]=49", cat: Movies/UHD, desc: "Filmer - UHD-2160p" }
-  - { id: "main_cat[]=8&sub2_cat[]=20", cat: Audio/Video, desc: "Musikkvideoer - HD-720p" }
-  - { id: "main_cat[]=8&sub2_cat[]=19", cat: Audio/Video, desc: "Musikkvideoer - HD-1080p/i" }
-  - { id: "main_cat[]=7", cat: Audio/Audiobook, desc: "Lydbøker" }
-  - { id: "main_cat[]=6", cat: Books, desc: "Tidsskrift" }
-  - { id: "main_cat[]=5&sub2_cat[]=46", cat: Audio/Lossless, desc: "Musikk - Lossless" }
-  - { id: "main_cat[]=5&sub2_cat[]=45", cat: Audio/MP3, desc: "Musikk - VBR" }
-  - { id: "main_cat[]=5&sub2_cat[]=44", cat: Audio/MP3, desc: "Musikk - 320" }
-  - { id: "main_cat[]=5&sub2_cat[]=43", cat: Audio/MP3, desc: "Musikk - 256" }
-  - { id: "main_cat[]=8&sub2_cat[]=22", cat: Audio/Video, desc: "Musikkvideoer - SD" }
-  - { id: "main_cat[]=5&sub2_cat[]=42", cat: Audio/MP3, desc: "Musikk - 192" }
-  - { id: "main_cat[]=3", cat: PC, desc: "Programmer" }
-  - { id: "main_cat[]=2&sub2_cat[]=22", cat: TV/SD, desc: "TV - SD" }
-  - { id: "main_cat[]=2&sub2_cat[]=20", cat: TV/HD, desc: "TV - HD-720p" }
-  - { id: "main_cat[]=2&sub2_cat[]=19", cat: TV/HD, desc: "TV - HD-1080p/i" }
-  - { id: "main_cat[]=2&sub2_cat[]=49", cat: TV/UHD, desc: "TV - UHD-2160p" }
-  - { id: "main_cat[]=1&sub2_cat[]=22", cat: Movies/SD, desc: "Filmer - SD" }
-  - { id: "main_cat[]=1&sub2_cat[]=20", cat: Movies/HD, desc: "Filmer - HD-720p" }
-  - { id: "main_cat[]=1&sub2_cat[]=19", cat: Movies/HD, desc: "Filmer - HD-1080p/i" }
-  - { id: "main_cat[]=4", cat: Console, desc: "Spill" }
-  - { id: "main_cat[]=40", cat: Audio/Other, desc: "Podcasts" }
+  - {id: "main_cat[]=1&sub2_cat[]=49", cat: Movies/UHD, desc: "Filmer - UHD-2160p"}
+  - {id: "main_cat[]=8&sub2_cat[]=20", cat: Audio/Video, desc: "Musikkvideoer - HD-720p"}
+  - {id: "main_cat[]=8&sub2_cat[]=19", cat: Audio/Video, desc: "Musikkvideoer - HD-1080p/i"}
+  - {id: "main_cat[]=7", cat: Audio/Audiobook, desc: "Lydbøker"}
+  - {id: "main_cat[]=6", cat: Books, desc: "Tidsskrift"}
+  - {id: "main_cat[]=5&sub2_cat[]=46", cat: Audio/Lossless, desc: "Musikk - Lossless"}
+  - {id: "main_cat[]=5&sub2_cat[]=45", cat: Audio/MP3, desc: "Musikk - VBR"}
+  - {id: "main_cat[]=5&sub2_cat[]=44", cat: Audio/MP3, desc: "Musikk - 320"}
+  - {id: "main_cat[]=5&sub2_cat[]=43", cat: Audio/MP3, desc: "Musikk - 256"}
+  - {id: "main_cat[]=8&sub2_cat[]=22", cat: Audio/Video, desc: "Musikkvideoer - SD"}
+  - {id: "main_cat[]=5&sub2_cat[]=42", cat: Audio/MP3, desc: "Musikk - 192"}
+  - {id: "main_cat[]=3", cat: PC, desc: "Programmer"}
+  - {id: "main_cat[]=2&sub2_cat[]=22", cat: TV/SD, desc: "TV - SD"}
+  - {id: "main_cat[]=2&sub2_cat[]=20", cat: TV/HD, desc: "TV - HD-720p"}
+  - {id: "main_cat[]=2&sub2_cat[]=19", cat: TV/HD, desc: "TV - HD-1080p/i"}
+  - {id: "main_cat[]=2&sub2_cat[]=49", cat: TV/UHD, desc: "TV - UHD-2160p"}
+  - {id: "main_cat[]=1&sub2_cat[]=22", cat: Movies/SD, desc: "Filmer - SD"}
+  - {id: "main_cat[]=1&sub2_cat[]=20", cat: Movies/HD, desc: "Filmer - HD-720p"}
+  - {id: "main_cat[]=1&sub2_cat[]=19", cat: Movies/HD, desc: "Filmer - HD-1080p/i"}
+  - {id: "main_cat[]=4", cat: Console, desc: "Spill"}
+  - {id: "main_cat[]=40", cat: Audio/Other, desc: "Podcasts"}
   modes:
     search: [q]
     tv-search: [q,season,ep]

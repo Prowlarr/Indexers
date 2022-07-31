@@ -7,7 +7,7 @@ type: public
 implementation: binsearch
 encoding: utf-8
 links:
-- https://binsearch.info/
+  - https://binsearch.info/
 caps:
   categorymappings: []
   modes:
