@@ -22,4 +22,4 @@ caps:
     tv-search: [q, season, ep]
     movie-search: [q]
     book-search: [q]
-    music-search: [q, album,artist,label,year]
+    music-search: [q, album, artist, label, year]
