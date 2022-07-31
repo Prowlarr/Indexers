@@ -13,7 +13,7 @@ caps:
   categorymappings:
     - {id: 1000, cat: Console, desc: Console}
     - {id: 1010, cat: Console/NDS, desc: Console/NDS}
-    - {id: 1020, cat: Console/PSP , desc: Console/PSP }
+    - {id: 1020, cat: Console/PSP, desc: Console/PSP}
     - {id: 1030, cat: Console/Wii, desc: Console/Wii}
     - {id: 1040, cat: Console/Other, desc: Console/Switch}
     - {id: 1050, cat: Console/XBox 360, desc: Console/Xbox 360}
@@ -49,18 +49,18 @@ caps:
     - {id: 5030, cat: TV/SD, desc: TV/SD}
     - {id: 5040, cat: TV/HD, desc: TV/HD}
     - {id: 5045, cat: TV/UHD, desc: TV/UHD}
-    - {id: 5050, cat: TV/Other , desc: TV/Other }
+    - {id: 5050, cat: TV/Other, desc: TV/Other}
     - {id: 5060, cat: TV/Sport, desc: TV/Sport}
     - {id: 5070, cat: TV/Anime, desc: TV/Anime}
     - {id: 5080, cat: TV/Documentary, desc: TV/Doc}
-    - {id: 6000, cat: XXX, desc: XXX }
+    - {id: 6000, cat: XXX, desc: XXX}
     - {id: 6010, cat: XXX/DVD, desc: XXX/DVD}
     - {id: 6020, cat: XXX/WMV, desc: XXX/WMV}
     - {id: 6030, cat: XXX/Xvid, desc: XXX/XviD}
     - {id: 6040, cat: XXX/x264, desc: XXX/x264}
     - {id: 6050, cat: XXX/Pack, desc: XXX/Pack}
     - {id: 6060, cat: XXX/ImageSet, desc: XXX/ImgSet}
-    - {id: 6070, cat: XXX/Other , desc: XXX/Other }
+    - {id: 6070, cat: XXX/Other, desc: XXX/Other}
     - {id: 7000, cat: Books, desc: Books}
     - {id: 7010, cat: Books/Mags, desc: Books/Mags}
     - {id: 7020, cat: Books/EBook, desc: Books/Ebook}

@@ -7,7 +7,7 @@ type: private
 implementation: torznab
 encoding: utf-8
 links:
-- ""
+  w- ""
 caps:
   categorymappings: []
   modes:

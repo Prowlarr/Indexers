@@ -67,7 +67,7 @@ caps:
     search: [q, group]
     tv-search: [q, rid, tvdbid, season, ep]
     movie-search: [q, imdbid, genre]
-    audio-search: [q, album, artist, label, trak,year,genre]
+    audio-search: [q, album, artist, label, trak, year, genre]
 settings:
   - name: apikey
     type: text
