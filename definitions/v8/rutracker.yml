@@ -159,7 +159,7 @@ caps:
     - {id: 1832, cat: Audio/Lossless, desc: "|- Drum & BassJungle (lossless)"}
     - {id: 1859, cat: Audio/MP3, desc: "|- House (RadioshowPodcast, Liveset, Mixes)"}
     - {id: 1805, cat: Audio/MP3, desc: "|- ElectroElectro-Freestyle, Nu Electro (lossy)"}
-    - {id: 1808, cat: Audio, desc: "Drum & BassJungle, Breakbeat, Dubstep,  IDM, Electro"}
+    - {id: 1808, cat: Audio, desc: "Drum & BassJungle, Breakbeat, Dubstep, IDM, Electro"}
     - {id: 1828, cat: Audio/MP3, desc: "|- Techno (SinglesEPs) (lossy)"}
     - {id: 1827, cat: Audio/MP3, desc: "|- Techno (RadioshowsPodcasts, Livesets, Mixes)"}
     - {id: 1826, cat: Audio/MP3, desc: "|- Techno (lossy)"}

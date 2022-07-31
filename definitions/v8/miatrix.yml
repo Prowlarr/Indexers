@@ -65,7 +65,7 @@ caps:
     - {id: 6000, cat: XXX, desc: XXX}
     - {id: 6010, cat: XXX/DVD, desc: XXX/DVD}
     - {id: 6020, cat: XXX/WMV, desc: XXX/WMV}
-    - {id: 6030, cat: XXX/Xvid,  desc: XXX/XviD}
+    - {id: 6030, cat: XXX/Xvid, desc: XXX/XviD}
     - {id: 6040, cat: XXX/x264, desc: XXX/x264}
     - {id: 6050, cat: XXX/Pack, desc: XXX/Pack}
     - {id: 6060, cat: XXX/ImageSet, desc: XXX/ImgSet}
