@@ -609,7 +609,7 @@ caps:
     - {id: 899, cat: PC/Games, desc: "Игры для Linux"}
     - {id: 537, cat: PC/Mac, desc: "|- Нативные игры для Mac"}
     - {id: 900, cat: PC/Games, desc: "|- Визуальные новеллы"}
-    - {id: 1008, cat: PC/Games, desc: "|- Квесты в стиле "Поиск предметов""}
+    - {id: 1008, cat: PC/Games, desc: "|- Квесты в стиле Поиск предметов"}
     - {id: 53, cat: PC/Games, desc: "|- Приключения и квесты"}
     - {id: 50, cat: PC/Games, desc: "|- Хорроры"}
     - {id: 646, cat: PC/Games, desc: "|- Экшены от третьего лица"}
