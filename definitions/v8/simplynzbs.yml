@@ -93,12 +93,12 @@ settings:
 search:
   ignoreblankinputs: true
   paths:
-  - path: /api
+    - path: /api
     response:
       type: xml
       attribute: attributes
   error:
-  - selector: error
+    - selector: error
     message:
       selector: error
       attribute: description
@@ -170,7 +170,7 @@ search:
       attribute: value
 download:
   error:
-  - selector: error
+    - selector: error
     message:
       selector: error
       attribute: description

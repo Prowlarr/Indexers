@@ -31,7 +31,7 @@ caps:
     - {id: 2045, cat: Movies/UHD, desc: Movies/UHD}
     - {id: 2050, cat: Movies/BluRay, desc: Movies/BluRay}
     - {id: 2060, cat: Movies/3D, desc: Movies/3D}
-    - {id: 3000, cat: Audio, desc: Audio }
+    - {id: 3000, cat: Audio, desc: Audio}
     - {id: 3010, cat: Audio/MP3, desc: Audio/MP3}
     - {id: 3020, cat: Audio/Video, desc: Audio/Video}
     - {id: 3030, cat: Audio/Audiobook, desc: Audio/Books}
