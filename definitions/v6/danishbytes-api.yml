@@ -101,10 +101,6 @@ search:
       selector: info_hash
     poster:
       selector: poster_image
-    genre:
-      selector: meta_genres
-    description:
-      text: "{{ .Result.genre }}"
     imdbid:
       selector: imdb
     tmdbid:

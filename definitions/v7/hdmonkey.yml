@@ -146,12 +146,17 @@ search:
       selector: td:nth-child(8)
     leechers:
       selector: td:nth-child(9)
+    genre:
+      selector: a:contains("Genre:")
+      filters:
+        - name: replace
+          args: ["Genre: ", ""]
     _source:
       case:
         img[src="images/t_extern.png"]: External
         "*": Local
     description:
-      text: "{{ .Result._source }}"
+      text: "{{ .Result._source }} - {{ .Result.genre }}"
     downloadvolumefactor:
       case:
         img[src="images/t_extern.png"]: 0
