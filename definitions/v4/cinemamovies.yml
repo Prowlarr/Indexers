@@ -149,17 +149,10 @@ search:
     imdbid:
       selector: a[href*="imdb.com/title/tt"]
       attribute: href
-    genre:
-      selector: td[align="right"][width="66%"][valign="bottom"]
-      filters:
-        - name: replace
-          args: ["\xA0", " "]
     description:
       selector: img[src="pic/Poland.png"]
       attribute: src
       filters:
-        - name: prepend
-          args: "{{ if .Result.genre }}{{ .Result.genre }} - {{ else }}{{ end }}"
         - name: replace
           args: ["pic/Poland.png", "Polish"]
     date:

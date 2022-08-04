@@ -184,11 +184,6 @@ search:
           args: "download.php?id="
         - name: append
           args: "&f={{ .Result.title }}.torrent"
-    genre:
-      optional: true
-      selector: div.col-md-12
-    description:
-      text: "{{ .Result.genre }}"
     size:
       selector: div.torrent-size
     date:

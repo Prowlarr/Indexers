@@ -177,6 +177,8 @@ search:
     year_desc:
       optional: true
       selector: year
+    genre:
+      selector: genres
     _tagline_desc:
       optional: true
       selector: tagline

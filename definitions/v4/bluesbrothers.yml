@@ -147,10 +147,6 @@ search:
           args: src=\\'(.+?)\\'
         - name: replace
           args: ["./pic/noposter.png", ""]
-    genre:
-      selector: i
-    description:
-      text: "{{ .Result.genre }}"
     files:
       selector: td:nth-child(5)
     date_day:

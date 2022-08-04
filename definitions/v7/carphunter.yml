@@ -127,6 +127,10 @@ search:
     imdbid:
       selector: a[href*="imdb.com/title/tt"]
       attribute: href
+    genre:
+      selector: i
+    description:
+      text: "{{ .Result.genre }}"
     poster:
       selector: a[onmouseover]
       attribute: onmouseover

@@ -155,6 +155,13 @@ search:
       case:
         img[src="images/t_extern.png"]: 0
         "*": 1
+    genre:
+      selector: td div
+      filters:
+        - name: regexp
+          args: "Genre: (.+?)$"
+    description:
+      text: "{{ .Result.genre }}"
     minimumratio:
       text: 1.0
 # TorrentTrader-Ro 3.0

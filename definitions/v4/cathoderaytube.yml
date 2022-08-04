@@ -113,10 +113,9 @@ search:
     download:
       selector: a[href^="torrents.php?action=download&id="]
       attribute: href
-    genre:
-      selector: div.tags
     description:
-      text: "{{ .Result.genre }}"
+      optional: true
+      selector: div.tags
     poster:
       selector: td:nth-child(2) > script
       filters:

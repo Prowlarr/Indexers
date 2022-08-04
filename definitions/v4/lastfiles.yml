@@ -156,10 +156,6 @@ search:
           args: src=\\'(.+?)\\'
         - name: replace
           args: ["./pic/noposter.png", ""]
-    genre:
-      selector: font[size]
-    description:
-      text: "{{ .Result.genre }}"
     download:
       selector: a[href^="download.php"]
       attribute: href

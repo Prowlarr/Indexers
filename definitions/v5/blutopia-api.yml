@@ -109,10 +109,6 @@ search:
       selector: tmdb_id
     tvdbid:
       selector: tvdb_id
-    genre:
-      selector: meta.genres
-    description:
-      text: "{{ .Result.genre }}"
     files:
       selector: num_file
     seeders:
