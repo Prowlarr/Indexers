@@ -4,6 +4,8 @@ This Repo contains Cardigann YML indexer definitions for [Prowlarr](https://gith
 
 For more information on the formatting of the YML Indexer Definition, please see [our Prowlarr Cardigann YML Version / Definition wiki entry](https://wiki.servarr.com/en/prowlarr/cardigann-yml-definition)
 
+To develop and test definitions, you may use the [Custom Definition Folder](https://wiki.servarr.com/prowlarr/indexers#adding-a-custom-yml-definition)
+
 For Prowlarr Indexer Requests; please see [our request site](https://requests.prowlarr.com/)
 
 ## Definition Versions
