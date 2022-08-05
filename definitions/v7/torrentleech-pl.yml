@@ -120,6 +120,11 @@ search:
     imdbid:
       selector: a[href*="imdb.com/title/tt"]
       attribute: href
+    genre:
+      selector: font[color="blue"]
+      filters:
+        - name: validate
+          args: "akcja, animacja, anime, biograficzny, czarna komedia, dokumentalny, dramat, dramat historyczny, edukacyjny, etiuda, familijny, fantasy, gangsterski, historyczny, horror, katastroficzny, komedia, komedia kryminalna, komedia obyczajowa, komedia romantyczna, krótkometrażowy, kryminał, melodramat, musical, muzyczny, niemy, przygodowy, romans, sci-fi, sensacyjny, sportowy, szpiegowski, thriller, western, wojenny"
     _language:
       optional: true
       selector: img[src="pic/pl.jpg"]
@@ -133,7 +138,7 @@ search:
         - name: append
           args: "Subbed\n<br>"
     description:
-      text: "{{ .Result._language }}{{ .Result._subbed }}"
+      text: "{{ .Result._language }}{{ .Result._subbed }}{{ if .Result.genre }}Genres: {{ .Result.genre }}{{ else }}{{ end }}"
     date:
       selector: td:nth-child(4)
       filters:

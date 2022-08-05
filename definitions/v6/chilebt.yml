@@ -95,6 +95,7 @@ search:
     page: 0
     view: list
     freeleech: "{{ if .Config.freeleech }}1{{ else }}{{ end }}"
+    # can search by genre but need range support. &genres[]=Action&genres[]=Comedy for Action and Comedy
 
   rows:
     selector: table > tbody > tr

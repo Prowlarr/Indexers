@@ -1,33 +1,32 @@
 ---
-id: chilebt
-name: ChileBT
-description: "ChileBT is a CHILEAN Private Torrent Tracker for MOVIES / TV / GENERAL"
-language: es-419
+id: immortuos
+name: Immortuos
+description: "Immortuos is a GERMAN Private Tracker for MOVIES / TV"
+language: de-DE
 type: private
 encoding: UTF-8
 links:
-  - https://chilebt.com/
+  - https://immortuos.life/
+legacylinks:
+  - https://www.immortuos.life/
 
 caps:
   categorymappings:
-    - {id: 10, cat: Movies, desc: "Movies"}
-    - {id: 11, cat: TV, desc: "TV"}
-    - {id: 9, cat: Audio, desc: "Music"}
-    - {id: 7, cat: Other, desc: "Cultura / Educativos"}
-    - {id: 8, cat: PC/Games, desc: "Juegos"}
-    - {id: 6, cat: Books, desc: "EBook"}
-    - {id: 4, cat: TV/Anime, desc: "Anime"}
-    - {id: 5, cat: PC/0day, desc: "Aplicaciones / Programas"}
-    - {id: 14, cat: Movies, desc: "Infantil"}
-    - {id: 12, cat: Other/Misc, desc: "VIP"}
-    - {id: 13, cat: XXX, desc: "XXX"}
+    - {id: 1, cat: Movies, desc: "Movies"}
+    - {id: 2, cat: TV, desc: "TV"}
+    - {id: 3, cat: Audio, desc: "Music"}
+    - {id: 4, cat: PC, desc: "Apps"}
+    - {id: 5, cat: XXX, desc: "XXX"}
+    - {id: 6, cat: TV/Documentary, desc: "Doku"}
+    - {id: 7, cat: Console, desc: "Games"}
+    - {id: 8, cat: Other, desc: "Sonstiges"}
+    - {id: 9, cat: Movies, desc: "Kino"}
 
   modes:
     search: [q]
-    tv-search: [q, season, ep, imdbid, tvdbid]
+    tv-search: [q, season, ep, imdbid, tvdbid, tmdbid]
     movie-search: [q, imdbid, tmdbid]
     music-search: [q]
-    book-search: [q]
 
 settings:
   - name: username
@@ -95,7 +94,7 @@ search:
     page: 0
     view: list
     freeleech: "{{ if .Config.freeleech }}1{{ else }}{{ end }}"
-    # can search by genre but need range support. &genres[]=Action&genres[]=Comedy for Action and Comedy
+    # can search by genre but need range support. &genres%5B%5D=Action&genres%5B%5D=Comedy for Action and Comedy
 
   rows:
     selector: table > tbody > tr
@@ -125,6 +124,15 @@ search:
           args: "&w=180&h=270" # for display on dashboard
         - name: replace
           args: ["https://images.weserv.nl/?url=https://via.placeholder.com/600x900&w=180&h=270", ""]
+    genre:
+      selector: td:nth-last-child(6)
+      filters:
+        - name: replace
+          args: ["\n", ""]
+        - name: validate
+          args: "Action, Adventure, Animation, Biography, Comedy, Crime, Documentary, Drama, Family, Fantasy, Game-Show, History, Horror, Music, Musical, Mystery, News, Reality-TV, Romance, Science Fiction, Sitcom, Sport, Talk-Show, Thriller, War, Western"
+    description:
+      text: "{{ .Result.genre }}"
     size:
       selector: td:nth-last-child(4)
     seeders:
@@ -194,10 +202,10 @@ search:
         i[class*="fa-globe text-green"]: 2 # Global Double Upload
         i[class*="fa-certificate text-pink"]: 2 # Featured Torrent
         "*": 1
-# global MR is 0.5 but torrents must be seeded for 7 days regardless of ratio
+# global MR is 1.0 but torrents must be seeded for 2 days regardless of ratio
 #    minimumratio:
-#      text: 0.5
+#      text: 1.0
     minimumseedtime:
-      # 7 day (as seconds = 7 x 24 x 60 x 60)
-      text: 604800
+      # 2 days (as seconds = 5 x 24 x 60 x 60)
+      text: 172800
 # UNIT3D 1.9.3

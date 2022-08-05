@@ -108,6 +108,13 @@ search:
     download:
       selector: a[href*="/download/"]
       attribute: href
+    genre:
+      selector: td:nth-child(2)
+      filters:
+        - name: validate
+          args: "Action, Adventure, Animation, Biography, Comedy, Crime, Documentary, Drama, Family, Fantasy, Game-Show, History, Horror, Music, Musical, Mystery, News, Reality-TV, Romance, Science Fiction, Sitcom, Sport, Talk-Show, Thriller, War, Western"
+    description:
+      text: "{{ .Result.genre }}"
     date:
       selector: td:nth-child(2) small
       filters:
