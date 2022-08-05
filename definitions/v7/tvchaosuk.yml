@@ -1,33 +1,36 @@
 ---
-id: chilebt
-name: ChileBT
-description: "ChileBT is a CHILEAN Private Torrent Tracker for MOVIES / TV / GENERAL"
-language: es-419
+id: tvchaosuk
+name: TVChaosUK
+description: "TV Chaos UK (TVCUK) is a Private Torrent Tracker for UK TV"
+language: en-GB
 type: private
 encoding: UTF-8
 links:
-  - https://chilebt.com/
+  - https://tvchaosuk.com/
 
 caps:
   categorymappings:
-    - {id: 10, cat: Movies, desc: "Movies"}
-    - {id: 11, cat: TV, desc: "TV"}
-    - {id: 9, cat: Audio, desc: "Music"}
-    - {id: 7, cat: Other, desc: "Cultura / Educativos"}
-    - {id: 8, cat: PC/Games, desc: "Juegos"}
-    - {id: 6, cat: Books, desc: "EBook"}
-    - {id: 4, cat: TV/Anime, desc: "Anime"}
-    - {id: 5, cat: PC/0day, desc: "Aplicaciones / Programas"}
-    - {id: 14, cat: Movies, desc: "Infantil"}
-    - {id: 12, cat: Other/Misc, desc: "VIP"}
-    - {id: 13, cat: XXX, desc: "XXX"}
+    - {id: 29, cat: TV, desc: "Comedy"}
+    - {id: 5, cat: TV/Documentary, desc: "Documentary"}
+    - {id: 11, cat: TV, desc: "Drama"}
+    - {id: 14, cat: TV, desc: "Entertainment"}
+    - {id: 19, cat: TV, desc: "Factual"}
+    - {id: 43, cat: TV, desc: "Foreign"}
+    - {id: 32, cat: TV, desc: "Kids/Family"}
+    - {id: 44, cat: Movies, desc: "Movies"}
+    - {id: 45, cat: TV, desc: "News & Current Affairs"}
+    - {id: 51, cat: Audio, desc: "Radio"}
+    - {id: 52, cat: TV, desc: "Reality"}
+    - {id: 30, cat: TV, desc: "Soaps"}
+    - {id: 33, cat: TV, desc: "Sci-Fi"}
+    - {id: 42, cat: TV/Sport, desc: "Sport"}
+    - {id: 53, cat: TV, desc: "Holding Bin"}
 
   modes:
     search: [q]
-    tv-search: [q, season, ep, imdbid, tvdbid]
+    tv-search: [q, season, ep, imdbid, tvdbid, tmdbid]
     movie-search: [q, imdbid, tmdbid]
     music-search: [q]
-    book-search: [q]
 
 settings:
   - name: username
@@ -70,16 +73,14 @@ login:
       selector: input[name="_token"]
       attribute: value
   error:
-    - selector: script[nonce]:contains("Error")
-      message:
-        selector: script[nonce]:contains("Error")
+    - selector: div#ERROR_COPY
 #    test:
 #      path: /
 #      selector: a[href$="/logout"]
 
 search:
   paths:
-    - path: filterTorrents
+    - path: torrents/filter
   inputs:
     $raw: "{{ range .Categories }}categories[]={{.}}&{{end}}"
     search: "{{ if .Query.IMDBID }}{{ else }}{{ .Keywords }}{{ end }}" # for dashboard imdbid search
@@ -89,11 +90,12 @@ search:
     tvdb: "{{ .Query.TVDBID }}"
     tmdb: "{{ .Query.TMDBID }}"
     mal: ""
+    igdb: ""
+    start_year: ""
+    end_year: ""
     sorting: "{{ .Config.sort }}"
     direction: "{{ .Config.type }}"
     qty: 100
-    page: 0
-    view: list
     freeleech: "{{ if .Config.freeleech }}1{{ else }}{{ end }}"
     # can search by genre but need range support. &genres[]=Action&genres[]=Comedy for Action and Comedy
 
@@ -106,7 +108,7 @@ search:
       attribute: href
       filters:
         - name: regexp
-          args: "/categories/.*?\\.(\\d+)"
+          args: "/categories/(\\d+)"
     title:
       selector: a.view-torrent
     download:
@@ -125,6 +127,15 @@ search:
           args: "&w=180&h=270" # for display on dashboard
         - name: replace
           args: ["https://images.weserv.nl/?url=https://via.placeholder.com/600x900&w=180&h=270", ""]
+    genre:
+      selector: td:nth-last-child(6)
+      filters:
+        - name: replace
+          args: ["\n", ""]
+        - name: validate
+          args: "Action, Adventure, Animation, Biography, Comedy, Crime, Documentary, Drama, Family, Fantasy, Game-Show, History, Horror, Music, Musical, Mystery, News, Reality-TV, Romance, Science Fiction, Sitcom, Sport, Talk-Show, Thriller, War, Western"
+    description:
+      text: "{{ .Result.genre }}"
     size:
       selector: td:nth-last-child(4)
     seeders:
@@ -194,10 +205,9 @@ search:
         i[class*="fa-globe text-green"]: 2 # Global Double Upload
         i[class*="fa-certificate text-pink"]: 2 # Featured Torrent
         "*": 1
-# global MR is 0.5 but torrents must be seeded for 7 days regardless of ratio
-#    minimumratio:
-#      text: 0.5
+    minimumratio:
+      text: 0.4
     minimumseedtime:
-      # 7 day (as seconds = 7 x 24 x 60 x 60)
-      text: 604800
-# UNIT3D 1.9.3
+      # 1 day (as seconds = 24 x 60 x 60)
+      text: 86400
+# UNIT3D 2.2.7

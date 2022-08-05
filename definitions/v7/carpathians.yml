@@ -99,11 +99,6 @@ search:
     title:
       selector: a[id][href^="details.php?"]
       attribute: title
-    description:
-      selector: font.line
-      filters:
-        - name: regexp
-          args: .*?\|\s*(.*)
     category:
       selector: a[href^="browse.php?cat="]
       attribute: href
@@ -119,6 +114,13 @@ search:
     poster:
       selector: a[rel^="prettyPhoto["]
       attribute: href
+    genre:
+      selector: font.line
+      filters:
+        - name: validate
+          args: "Akció, Animáció, Beszélgetős, Családi, Dokumentum, Dráma, Életrajzi, Fantasztikus, Film-Noir, Game-Show, Háborús, Horror, Kaland, Krimi, Misztikus, Musical, News, Reality-TV, Romantikus, Rövidfilm, Sci-Fi, Sport, Thriller, Történelmi, Vígjáték, Western, Zene"
+    description:
+      text: "{{ .Result.genre }}"
     files:
       selector: td:nth-child(4)
     size:

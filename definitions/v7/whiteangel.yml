@@ -144,6 +144,13 @@ search:
     download:
       selector: a[href^="download.php?torrent="]
       attribute: href
+    genre:
+      selector: font[color="#C0C0C0"]
+      filters:
+        - name: replace
+          args: ["\xA0", ""]
+    description:
+      text: "{{ .Result.genre }}"
     imdbid:
       selector: a[href*="imdb.com/title/tt"]
       attribute: href
