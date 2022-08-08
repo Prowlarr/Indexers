@@ -7,8 +7,6 @@ type: private
 encoding: UTF-8
 links:
   - https://torrentmasters.info/
-certificates:
-  - 18a3b32827655ecde9c78839fb186fafd6c7c28e # Expired 6th July 2022
 
 caps:
   categorymappings:
@@ -168,6 +166,8 @@ search:
       case:
         "font[color=\"#01DF01\"]": 2
         "*": 1
+    description:
+      text: "{{ .Result.title_hungarian }}"
     minimumratio:
       text: 0.5
     minimumseedtime:

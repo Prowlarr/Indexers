@@ -92,6 +92,7 @@ search:
     page: 0
     view: list
     freeleech: "{{ if .Config.freeleech }}1{{ else }}{{ end }}"
+    # can search for genre but you need to know the id. &genres[]=10765 for Sci-Fi & Fantasy
 
   rows:
     selector: table > tbody > tr
