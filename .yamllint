@@ -7,5 +7,3 @@ rules:
   truthy: disable
   new-lines:
     type: platform
-  comments:
-    min-spaces-from-content: 1
