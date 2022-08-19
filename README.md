@@ -34,12 +34,6 @@ To test the definition:
 
 ## Active Versions
 
-- [V4 Indexers](https://github.com/Prowlarr/Prowlarr/pull/828) - Dev 0.2.0.1678
-  - Prowlarr Cardigann v4 includes several changes such as
-    - TMDBId
-    - Genre
-    - TraktID
-    - CategoryDescr
 - [V5 Indexers](https://github.com/Prowlarr/Prowlarr/commit/76afb70b01f4a670d8e402d9a3de05c09611b7ab) - Dev 0.2.0.1678
   - Prowlarr Cardigann v5 includes several changes such as
     - Allow JSON Filters
@@ -78,3 +72,10 @@ To test the definition:
 - Makes `Description` an optional by default
 - All new Indexers using APIs shall be in v3 as of 2021-10-21
   - Indexers utilizing CategoryDescr or any v4 features MUST be in v4
+
+### [V4 Indexers](https://github.com/Prowlarr/Prowlarr/pull/828) - Dev 0.2.0.1678
+- Prowlarr Cardigann v4 includes several changes such as
+  - TMDBId
+  - Genre
+  - TraktID
+  - CategoryDescr
