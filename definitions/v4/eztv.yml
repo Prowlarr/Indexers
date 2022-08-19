@@ -63,6 +63,7 @@ search:
       args: [" ", "-"] # Spaces should be encoded to "-" Prowlarr #1094
     - name: replace
       args: ["&", ""] # Ampersands throw it off. eztv fails with this too, so unclear. Simplest solution is to just strip it out. Prowlarr #1094
+
   headers:
     cookie: ["sort_no=100"] # show 100 results for keywordless search
 
