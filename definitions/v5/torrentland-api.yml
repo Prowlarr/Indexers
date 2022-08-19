@@ -102,38 +102,35 @@ search:
       selector: meta.total
 
   fields:
-    categorydesc:
-      selector: category
+    category:
+      selector: category_id
     title_vose:
       selector: name:contains(VOSE)
       optional: true
       filters:
-        - name: re_replace
-          args: ["^ *\\[[^\\]]*\\] *", ""] # Remove prefix tags
-        - name: re_replace
-          args: ["(?i)\\bT(\\d+)", "S$1"]
-        - name: re_replace
-          args: ["UHDRip", "BDRip"] # Fix for Radarr
         - name: append
           args: " ENGLiSH"
     title_notvose:
       selector: name:not(:contains(VOSE))
       optional: true
       filters:
+        - name: append
+          args: " SPANiSH"
+    title:
+      text: "{{ if .Result.title_vose }}{{ .Result.title_vose }}{{ else }}{{ .Result.title_notvose }}{{ end }}"
+      filters:
         - name: re_replace
           args: ["^ *\\[[^\\]]*\\] *", ""] # Remove prefix tags
         - name: re_replace
           args: ["(?i)\\bT(\\d+)", "S$1"]
         - name: re_replace
           args: ["UHDRip", "BDRip"] # Fix for Radarr
-        - name: append
-          args: " SPANiSH"
-    title:
-      text: "{{ if .Result.title_vose }}{{ .Result.title_vose }}{{ else }}{{ .Result.title_notvose }}{{ end }}"
     details:
       selector: details_link
     download:
       selector: download_link
+    infohash:
+      selector: info_hash
     poster:
       selector: poster
       filters:
@@ -174,9 +171,10 @@ search:
       case:
         0: 1 # normal
         1: 2 # double
-    minimumratio:
-      text: 1.0
+# global MR is 0.4 but torrents must be seeded for 4 days regardless of ratio
+#    minimumratio:
+#      text: 0.4
     minimumseedtime:
       # 4 days (as seconds = 4 x 24 x 60 x 60)
       text: 345600
-# json UNIT3D 6.0.1 (custom)
+# json UNIT3D 6.3.0 (custom)
