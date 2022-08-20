@@ -17,12 +17,12 @@ for dir in $(find definitions -type d -name "v*"); do
 
     ajv test -d "$dir/*.yml" -s "$schema" --valid --all-errors -c ajv-formats
 
-    if [ "$?" -eq 1 ]; then
+    if [ "$?" -ne 0 ]; then
         fail=1
     fi
 done
 
-if [ "$fail" -eq 1 ]; then
+if [ "$fail" -ne 0 ]; then
     echo "Failed"
     exit 1
 fi
