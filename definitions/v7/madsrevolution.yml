@@ -67,10 +67,10 @@ caps:
 
   modes:
     search: [q]
-    tv-search: [q, season, ep]
-    movie-search: [q]
-    music-search: [q]
-    book-search: [q]
+    tv-search: [q, season, ep, genre]
+    movie-search: [q, genre]
+    music-search: [q, genre]
+    book-search: [q, genre]
 
 settings:
   - name: username
@@ -123,6 +123,9 @@ search:
   inputs:
     $raw: "{{ range .Categories }}filter_cat[{{.}}]=1&{{end}}{{ if .Config.freeleech }}action=uploadonly&{{ else }}{{ end }}"
     searchstr: "{{ .Keywords }}"
+    searchtags: "{{ if .Query.Genre }}{{ .Query.Genre }}{{ else }}{{ end }}"
+    # 0 any, 1 all
+    tags_type: 0
     order_by: "{{ .Config.sort }}"
     order_way: "{{ .Config.type }}"
     # site does not support imdbid searching or present imdb links in results.
@@ -151,6 +154,10 @@ search:
       filters:
         - name: regexp
           args: "src=(.+?) "
+    genre:
+      selector: div.tags
+    description:
+      text: "{{ .Result.genre }}"
     date:
       selector: td:nth-last-child(5)
       filters:
