@@ -52,7 +52,6 @@ settings:
     label: Search freeleech only
     default: false
 
-
 login:
   method: cookie
   inputs:
@@ -81,7 +80,6 @@ search:
               table.torrent_table tbody tr:not(tr.colhead):contains('{{ .Query.Episode }}')"
     filters:
       - name: andmatch
-
 
   fields:
     download:
@@ -130,7 +128,6 @@ search:
       selector: a[href^="torrents.php?id="]:not(.tooltip)
       attribute: href
 
-
     title_MovieTV: # Movie and TV Format
       # Title defined as:
         # PT-BR/Japanese title [en-US title] [year]
@@ -171,7 +168,6 @@ search:
 
     category:
       text: "{{ .Result.category_details }}"
-
 
     title:
       text: "{{ if
