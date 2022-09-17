@@ -139,7 +139,7 @@ search:
     infohash:
       selector: info_hash
     poster:
-      selector: poster
+      selector: meta.poster
       filters:
         - name: replace
           args: ["https://via.placeholder.com/90x135", ""]
@@ -184,4 +184,4 @@ search:
     minimumseedtime:
       # 7 day (as seconds = 7 x 24 x 60 x 60)
       text: 604800
-# json UNIT3D 6.2.1 custom
+# json UNIT3D 6.3.0 (custom)
