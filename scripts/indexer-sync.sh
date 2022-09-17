@@ -49,7 +49,7 @@ case $1 in
 esac
 
 ## Variables
-prowlarr_git_path="/c/Development/Code/Prowlarr_Indexers/"
+prowlarr_git_path="./"
 prowlarr_release_branch="master"
 prowlarr_remote_name="origin"
 prowlarr_repo_url="https://github.com/Prowlarr/Indexers"
