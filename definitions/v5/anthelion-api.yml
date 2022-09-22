@@ -119,6 +119,8 @@ search:
       selector: imdb
     tmdbid:
       selector: tmdb
+    files:
+      selector: fileCount
     seeders:
       selector: seeders
     leechers:
