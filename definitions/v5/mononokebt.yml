@@ -33,7 +33,7 @@ settings:
   - name: IMPORTANT_FR
     type: info
     label: (FR) Informations Importantes
-    default: Avant de pouvoir télécharger un torrent depuis Jackett, allez dans la <a href="https://mononoke-bt.org/faq.php" target="_blank">FAQ</a> et cliquer tous les 'Lu et Approuvé' de la page.
+    default: Avant de pouvoir télécharger un torrent depuis Prowlarr, allez dans la <a href="https://mononoke-bt.org/faq.php" target="_blank">FAQ</a> et cliquer tous les 'Lu et Approuvé' de la page.
   - name: IMPORTANT_EN
     type: info
     label: (EN) Important infos

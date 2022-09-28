@@ -13,9 +13,9 @@ legacylinks:
   - https://nntt.proxyportal.fun/
   - https://nntt.uk-unblock.xyz/
   - https://nntt.ind-unblock.xyz/
-  - https://nntt.unblocked.bar/ # .torrent downloads fail in Jackett but work in browser
-  - https://nntt.proxyportal.pw/ # .torrent downloads fail in Jackett but work in browser
-  - https://nntt.uk-unblock.pro/ # .torrent downloads fail in Jackett but work in browser
+  - https://nntt.unblocked.bar/ # .torrent downloads fail in Prowlarr but work in browser
+  - https://nntt.proxyportal.pw/ # .torrent downloads fail in Prowlarr but work in browser
+  - https://nntt.uk-unblock.pro/ # .torrent downloads fail in Prowlarr but work in browser
 
 caps:
   categorymappings:

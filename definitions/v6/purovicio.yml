@@ -36,7 +36,7 @@ settings:
   - name: info_login
     type: info
     label: Purovicio Login
-    default: "Purovicio is using a <b>ReCaptcha</b> challenge during <b>login</b> which Jackett cannot solve.</br>So Jackett is using the <b>cookie</b> method to allow Jackett access to the site.</br>However, for this to work you need to <b>remain logged in</b> at the Purovicio website, otherwise the cookie will become invalidated. (You can close the Browser Tab, just don't <b>Logout</b>).</br>If you get no results, then <b>refresh</b> your cookie."
+    default: "Purovicio is using a <b>ReCaptcha</b> challenge during <b>login</b> which Prowlarr cannot solve.</br>So Prowlarr is using the <b>cookie</b> method to allow Prowlarr access to the site.</br>However, for this to work you need to <b>remain logged in</b> at the Purovicio website, otherwise the cookie will become invalidated. (You can close the Browser Tab, just don't <b>Logout</b>).</br>If you get no results, then <b>refresh</b> your cookie."
   - name: info_cookie
     type: info
     label: How to get the Cookie
