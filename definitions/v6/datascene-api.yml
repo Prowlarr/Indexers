@@ -106,7 +106,7 @@ search:
     download:
       selector: download_link
     poster:
-      selector: poster
+      selector: meta.poster
       filters:
         - name: replace
           args: ["https://via.placeholder.com/90x135", ""]
@@ -151,4 +151,4 @@ search:
     minimumseedtime:
       # 2 days (as seconds = 2 x 24 x 60 x 60)
       text: 172800
-# json UNIT3D 6.3.0
+# json UNIT3D 6.4.1
