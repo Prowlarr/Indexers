@@ -192,7 +192,12 @@ search:
     description:
       selector: p.card-text
     date:
-      text: now
+      selector: a:has(span.bx-calendar)
+      filters:
+        - name: append
+          args: " +03:00" # MSK
+        - name: dateparse
+          args: "2.01.2006 15:04 -07:00"
     seeders:
       selector: a:has(i.bx-chevrons-up)
       filters:
