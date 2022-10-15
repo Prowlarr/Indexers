@@ -34,13 +34,6 @@ To test the definition:
 
 ## Active Versions
 
-- [V5 Indexers](https://github.com/Prowlarr/Prowlarr/commit/76afb70b01f4a670d8e402d9a3de05c09611b7ab) - Dev 0.2.0.1678
-  - Prowlarr Cardigann v5 includes several changes such as
-    - Allow JSON Filters
-- [V6 Indexers](https://github.com/Prowlarr/Prowlarr/commit/5ee95e3cc29d1307192320eb82b5a8f1287f00d6) - Dev 0.4.2.1879
-  - Prowlarr Cardigann v6 includes several changes such as
-    - `doubanid` support
-    - `tmdbid` TV Search Support
 - [V7 Indexers](https://github.com/Prowlarr/Prowlarr/commit/ee6467073f64cfaa5ef0de2225f39f0fd0eb5c05) - Dev 0.4.4.1947
   - Prowlarr Cardigann v7 includes several changes such as
     - `Publisher`, `Year`, `Genre`, Query support
@@ -79,3 +72,12 @@ To test the definition:
   - Genre
   - TraktID
   - CategoryDescr
+
+### [V5 Indexers](https://github.com/Prowlarr/Prowlarr/commit/76afb70b01f4a670d8e402d9a3de05c09611b7ab) - Dev 0.2.0.1678
+- Prowlarr Cardigann v5 includes several changes such as
+  - Allow JSON Filters
+
+### [V6 Indexers](https://github.com/Prowlarr/Prowlarr/commit/5ee95e3cc29d1307192320eb82b5a8f1287f00d6) - Dev 0.4.2.1879
+- Prowlarr Cardigann v6 includes several changes such as
+  - `doubanid` support
+  - `tmdbid` TV Search Support
