@@ -100,6 +100,14 @@ search:
       selector: category_id
     title:
       selector: name
+      filters:
+        # https://regex101.com/r/gPP7Y8/1
+        # Aither requires English titles, aliases or the original title
+        # are separated by an "AKA"
+        # input: Example AKA Beispiel Year Resolution Source AudioCodec Channels ColorDepth VideoCodec-Crew
+        - name: regexp
+          args: "^.*\\bAKA\\b(.+)"
+        # result: Beispiel Year Resolution Source AudioCodec Channels ColorDepth VideoCodec-Crew
     details:
       selector: details_link
     download:
