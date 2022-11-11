@@ -160,18 +160,18 @@ search:
       attribute: title
       optional: true
     title:
-      selector: &title-selector td.filename a.title
+      selector: td.filename a.title
       filters:
         - name: append
           args: "{{ if .Result._bulgarian }} {{ .Result._bulgarian }}{{ else }}{{ end }}{{ if .Result._english }} {{ .Result._english }}{{ else }}{{ end }}"
     details:
-      selector: *title-selector
+      selector: td.filename a.title
       attribute: href
     download:
-      selector: *title-selector
+      selector: td.filename a.title
       attribute: href
     poster:
-      selector: *title-selector
+      selector: td.filename a.title
       attribute: onmouseover
       filters:
         - name: regexp
