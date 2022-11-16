@@ -1,0 +1,224 @@
+---
+id: mojblink
+name: MojBLiNK
+description: "MojBLiNK is a SLOVENIAN Private Torrent Tracker for MOVIES / SERIES / GENERAL"
+language: sl-SI
+type: semi-private # some torrents are public
+encoding: UTF-8
+followredirect: true
+protocol: torrent
+links:
+  - https://www.mojblink.si/
+
+caps:
+  categorymappings:
+    - { id: 50, cat: Other, desc: "BLiNK releases with slovenian subs" }
+    - { id: 121, cat: Movies/UHD, desc: "Movies 4k with various subs" }
+    - { id: 6, cat: Movies/Other, desc: "Movies Animation with various subs" }
+    - { id: 37, cat: Movies/Other, desc: "Movies Anime with various subs" }
+    - { id: 40, cat: Movies/BluRay, desc: "Movies BD25 with various subs" }
+    - { id: 39, cat: Movies/BluRay, desc: "Movies BD50 with various subs" }
+    - { id: 41, cat: Movies/BluRay, desc: "Movies BDRip with various subs" }
+    - { id: 4, cat: Movies/BluRay, desc: "Movies BluRay 1080p with various subs" }
+    - { id: 3, cat: Movies/BluRay, desc: "Movies BluRay 720p with various subs" }
+    - { id: 43, cat: Movies/BluRay, desc: "Movies BRRip x264 with various subs" }
+    - { id: 44, cat: Movies/BluRay, desc: "Movies BRRip XviD with various subs" }
+    - { id: 25, cat: Movies/Other, desc: "Movies Documentary with various subs" }
+    - { id: 46, cat: Movies/DVD, desc: "Movies DVD with various subs" }
+    - { id: 47, cat: Movies/SD, desc: "Movies DVDRip x264 with various subs" }
+    - { id: 115, cat: Movies/SD, desc: "Movies DVDRip x265 with various subs" }
+    - { id: 1, cat: Movies/SD, desc: "Movies DVDRip XviD with various subs" }
+    - { id: 48, cat: Movies/HD, desc: "Movies HD2DVD with various subs" }
+    - { id: 123, cat: Movies/HD, desc: "Movies HDRip with various subs" }
+    - { id: 74, cat: Movies/WEB-DL, desc: "Movies Web-DL with various subs" }
+    - { id: 120, cat: Movies/Other, desc: "Movies x265 with various subs" }
+    - { id: 55, cat: Movies/BluRay, desc: "Music BD" }
+    - { id: 23, cat: Movies/DVD, desc: "Music DVD" }
+    - { id: 56, cat: Audio/Lossless, desc: "Music FLAC" }
+    - { id: 11, cat: Audio/MP3, desc: "Music MP3" }
+    - { id: 57, cat: Audio/MP3, desc: "Music MP4" }
+    - { id: 5, cat: TV/HD, desc: "TV HDTV with various subs" }
+    - { id: 82, cat: TV/HD, desc: "TV HDTVRip with various subs" }
+    - { id: 2, cat: TV/SD, desc: "TV TVRip with various subs" }
+    - { id: 125, cat: TV/WEB-DL, desc: "TV Web-DL with various subs" }
+    - { id: 122, cat: XXX/Other, desc: "XXX Games" }
+    - { id: 88, cat: XXX/Other, desc: "XXX Magazine" }
+    - { id: 10, cat: XXX/x264, desc: "XXX Movies" }
+    - { id: 89, cat: XXX/Pack, desc: "XXX Packs" }
+    - { id: 90, cat: XXX/ImageSet, desc: "XXX Pics" }
+    - { id: 20, cat: Books/EBook, desc: "eBook eBOOK" }
+    - { id: 52, cat: Books/Other, desc: "eBook Education" }
+    - { id: 53, cat: Books/Mags, desc: "eBook Magazine" }
+    - { id: 62, cat: PC/Mobile-Android, desc: "GAMES Android" }
+    - { id: 12, cat: Console/NDS, desc: "GAMES Nintendo DS" }
+    - { id: 8, cat: PC/Games, desc: "GAMES PC" }
+    - { id: 7, cat: PC/Games, desc: "GAMES PCRip" }
+    - { id: 13, cat: Console/PS3, desc: "GAMES Playstation" }
+    - { id: 124, cat: Console/PS4, desc: "GAMES PS4" }
+    - { id: 16, cat: Console/PSP, desc: "GAMES PSP" }
+    - { id: 65, cat: Console/Wii, desc: "GAMES Wii" }
+    - { id: 15, cat: Console/XBox, desc: "GAMES Xbox" }
+    - { id: 21, cat: XXX/ImageSet, desc: "IMAGES Pics" }
+    - { id: 68, cat: XXX/ImageSet, desc: "IMAGES Wallpaper" }
+    - { id: 85, cat: Movies/Other, desc: "UpLINK HEVC" }
+    - { id: 86, cat: Movies/Other, desc: "UpLINK MPEG4" }
+    - { id: 70, cat: Movies/Other, desc: "Impatient CAM" }
+    - { id: 71, cat: Movies/Other, desc: "Impatient DVDSCR" }
+    - { id: 72, cat: Movies/Other, desc: "Impatient TC" }
+    - { id: 73, cat: Movies/Other, desc: "Impatient TS" }
+    - { id: 75, cat: Movies/Other, desc: "Impatient WEBRip" }
+    - { id: 26, cat: PC/Mobile-Android, desc: "PROGRAM Android" }
+    - { id: 27, cat: PC/Mobile-iOS, desc: "PROGRAM iOS" }
+    - { id: 78, cat: PC/ISO, desc: "PROGRAM Linux" }
+    - { id: 79, cat: PC/Mac, desc: "PROGRAM Mac" }
+    - { id: 9, cat: PC/ISO, desc: "PROGRAM PC ISO" }
+    - { id: 80, cat: PC/ISO, desc: "PROGRAM PC Win" }
+
+  modes:
+    search: [q]
+    tv-search: [q, season, ep]
+    movie-search: [q]
+    music-search: [q]
+    book-search: [q]
+
+settings:
+  - name: username
+    type: text
+    label: Username
+  - name: password
+    type: password
+    label: Password
+  - name: freeleech
+    type: checkbox
+    label: Download only freeleech torrents?
+    default: false
+  - name: sort
+    type: select
+    label: Sort requested from site
+    default: 4
+    options:
+      0: torrent id
+      1: title
+      2: files
+      3: comments
+      4: date created
+      5: size
+      6: times completed
+      7: seeders
+      8: leechers
+  - name: type
+    type: select
+    label: Order requested from site
+    default: desc
+    options:
+      desc: desc
+      asc: asc
+
+login:
+  path: login
+  method: form
+  form: form[action="/takeloginx.php"]
+  inputs:
+    username: "{{ .Config.username }}"
+    password: "{{ .Config.password }}"
+  error:
+    - selector: i[class="ico-not_warn"] # if this icon is on the page, something went wrong
+  test:
+    path: /brskanje # browse page
+    selector: a[href*="/odjava?hash_insert="] # logout link, only present if you are logged in
+
+search:
+  paths:
+    # https://www.mojblink.si/brskanje/?cat=0&search=TEST&searchin=title&incldead=0&type=DESC&sort=4&only_free=1
+    # https://www.mojblink.si/brskanje/?c25=1&c46=1&search=TEST&searchin=descr&incldead=0&type=DESC&sort=4&only_free=0
+    # https://www.mojblink.si/xxx?c122=1&c88=1&c10=1&c89=1&c90=1&search=TEST&searchin=title&incldead=0
+    # TODO: if tracker finds only 1 matching results, it makes a redirect to the details page of torrent, then parsing fails and returns 0 results
+    - path: brskanje/ # browse url
+      categories: ["!", 122, 88, 10, 89, 90]
+      followredirect: true # needed because of the details page redirect
+    - path: xxx/
+      categories: [122, 88, 10, 89, 90]
+      followredirect: true # needed because of the details page redirect
+  keywordsfilters:
+    - name: re_replace
+      args: ["[^a-zA-Z0-9]+", " "]
+  inputs:
+    $raw: "{{ range .Categories }}c{{.}}=1&{{end}}"
+    search: "{{ .Keywords }}"
+    # title, titledescr and descr
+    searchin: "title"
+    # 0 active, 1 both, 2 dead
+    incldead: 0
+    sort: "{{ .Config.sort }}"
+    type: "{{ .Config.type }}"
+    only_free: "{{ if .Config.freeleech }}1{{ else }}0{{ end }}"
+  rows:
+    selector: div.release-posters-gallery > div.release-gallery__item:has(a[href*="/podrobnosti/"])
+  fields:
+    category_sub:
+      selector: a[href^="/brskanje/"]
+      attribute: href
+      filters:
+        # extract the third part - the category ID  /brskanje/50
+        - name: split
+          args: ["/", 2]
+    category:
+      text: "{{ if .Result.category_sub }}{{ .Result.category_sub }}{{ else }}50{{ end }}"
+    title:
+      selector: a[href*="/podrobnosti/"][title]
+      attribute: title
+    details:
+      selector: a[href*="/podrobnosti/"]
+      attribute: href
+    download:
+      selector: a[href*="/download/"]
+      attribute: href
+    imdbid:
+      selector: a[href*="imdb.com/title/tt"]
+      attribute: href
+    files:
+      selector: div.release-info__meta > span:nth-child(1)
+    size:
+      selector: div.release-info__rating > a
+      filters:
+        - name: remove
+          args: i
+    seeders:
+      selector: span[title="Sejalci"]
+    leechers:
+      selector: span[title="Odjemalci"]
+    downloadvolumefactor:
+      case:
+        span[class="torrent-FL"]: 0
+        "*": 1
+    uploadvolumefactor:
+      case:
+        span[class="torrent-FL"]: 0
+        "*": 1
+    minimumratio:
+      text: 1.0
+    minimumseedtime:
+      # 4 days (as seconds = 4 x 24 x 60 x 60)
+      text: 345600
+    date_year: # "Naložen: 31.12.2022 23:55:59"
+      optional: true
+      selector: div.release-info-container > div:nth-child(2)
+      filters:
+        - name: replace
+          args: ["Naložen: ", ""]
+        - name: dateparse
+          args: "02.01.2006 15:04:05"
+    date_today: # "Naložen: Danes, 17:55:10" or "Naložen: Včeraj, 17:55:10"
+      optional: true
+      selector: div.release-info-container > div:nth-child(2)
+      filters:
+        - name: replace
+          args: ["Naložen: ", ""]
+        - name: replace
+          args: ["Danes", "Today"]
+        - name: replace
+          args: ["Včeraj", "Yesterday"]
+        - name: timeago
+    date:
+      text: "{{ if or .Result.date_year .Result.date_today }}{{ or .Result.date_year .Result.date_today }}{{ else }}now{{ end }}"
+# TBDev, U232 (customised)
