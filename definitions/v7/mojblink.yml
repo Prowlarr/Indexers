@@ -129,10 +129,9 @@ login:
 
 search:
   paths:
-    # https://www.mojblink.si/brskanje/?cat=0&search=TEST&searchin=title&incldead=0&type=DESC&sort=4&only_free=1
-    # https://www.mojblink.si/brskanje/?c25=1&c46=1&search=TEST&searchin=descr&incldead=0&type=DESC&sort=4&only_free=0
-    # https://www.mojblink.si/xxx?c122=1&c88=1&c10=1&c89=1&c90=1&search=TEST&searchin=title&incldead=0
-    # TODO: if tracker finds only 1 matching results, it makes a redirect to the details page of torrent, then parsing fails and returns 0 results
+    # https://www.mojblink.si/brskanje/?cat=0&search=TEST&searchin=title&incldead=0&type=DESC&sort=4&only_free=1&redir=no
+    # https://www.mojblink.si/brskanje/?c25=1&c46=1&search=TEST&searchin=descr&incldead=0&type=DESC&sort=4&only_free=0&redir=no
+    # https://www.mojblink.si/xxx?c122=1&c88=1&c10=1&c89=1&c90=1&search=TEST&searchin=title&incldead=0&redir=no
     - path: brskanje/ # browse url
       categories: ["!", 122, 88, 10, 89, 90]
       followredirect: true # needed because of the details page redirect
@@ -152,6 +151,7 @@ search:
     sort: "{{ .Config.sort }}"
     type: "{{ .Config.type }}"
     only_free: "{{ if .Config.freeleech }}1{{ else }}0{{ end }}"
+    redir: "no"
   rows:
     selector: div.release-posters-gallery > div.release-gallery__item:has(a[href*="/podrobnosti/"])
   fields:
