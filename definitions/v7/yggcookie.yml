@@ -188,7 +188,7 @@ settings:
   - name: flaresolverr
     type: info
     label: FlareSolverr
-    default: This site may use Cloudflare DDoS Protection, therefore Prowlarr may require <a href="https://github.com/FlareSolverr/FlareSolverr" target="_blank">FlareSolver</a> added as a proxy in Prowlarr (Settings => Indexers) to access it.
+    default: This site may use Cloudflare DDoS Protection, therefore Jackett requires <a href="https://github.com/Jackett/Jackett#configuring-flaresolverr" target="_blank">FlareSolverr</a> to access it.
 
 login:
   method: cookie
@@ -220,10 +220,10 @@ search:
     # END ANIME HACK
     - name: replace
       args: ["\"", ""]
-     # Replace - with space due to internal YGG Issues
+    # Replace - with space due to internal YGG Issues
     - name: replace
       args: ["-", " "]
-     # Replace / with space due to internal YGG Issues
+    # Replace / with space due to internal YGG Issues
     - name: replace
       args: ["/", " "]
     # Replace ! with nothing for searches due to internal YGG issues reported on Radarr Discord

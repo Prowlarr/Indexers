@@ -1,7 +1,7 @@
 ---
 id: 3evils
-name: 3evils
-description: "3evils is a Private Torrent Tracker for MOVIES / TV / GENERAL"
+name: 3Evils
+description: "3Evils is a Private Torrent Tracker for MOVIES / TV / GENERAL"
 language: en-US
 type: private
 encoding: UTF-8
@@ -26,7 +26,7 @@ caps:
     - {id: 19, cat: Audio, desc: "Music/Packs"}
     - {id: 61, cat: TV/Anime, desc: "TV/Anime"}
     - {id: 85, cat: TV, desc: "TV/Kids"}
-    - {id: 85, cat: TV, desc: "TV/Packs"}
+    - {id: 86, cat: TV, desc: "TV/Packs"}
     - {id: 82, cat: TV/Sport, desc: "TV/Sports"}
     - {id: 36, cat: TV/HD, desc: "TV/x265"}
     - {id: 45, cat: TV/SD, desc: "TV/XViD"}
@@ -102,7 +102,7 @@ search:
 
   keywordsfilters:
     - name: re_replace
-      args: ["(\\w+)", " +$1"] # prepend + to each word
+      args: ["(\\w+)", "+$1"] # prepend + to each word
 
   rows:
     selector: table.table-bordered tbody tr:has(a[href^="download.php?torrent="])

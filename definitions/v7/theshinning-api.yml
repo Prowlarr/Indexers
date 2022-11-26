@@ -1,32 +1,30 @@
 ---
-id: torrentland-api
-name: Torrentland (API)
-description: "Torrentland is a SPANISH Private Torrent Tracker for MOVIES / TV / GENERAL"
-language: es-ES
+id: theshinning-api
+name: The Shinning (API)
+description: "The Shinning (TsH) is a GERMAN Private Torrent Tracker for MOVIES / TV / GENERAL"
+language: de-DE
 type: private
 encoding: UTF-8
 links:
-  - https://torrentland.li/
+  - https://theshinning.me/
+legacylinks:
+  - https://theshinning.org
+  - https://theshinning.org/
 
 caps:
   categorymappings:
-    - {id: 1, cat: Movies, desc: "Películas"}
-    - {id: 2, cat: TV, desc: "Series"}
-    - {id: 3, cat: TV/Anime, desc: "Animación"}
-    - {id: 4, cat: TV/Anime, desc: "Series Animación"}
-    - {id: 5, cat: TV/Documentary, desc: "Documentales"}
-    - {id: 6, cat: TV/Documentary, desc: "Series Documentales"}
-    - {id: 7, cat: TV/Sport, desc: "Deportes"}
-    - {id: 8, cat: Audio/Video, desc: "Videos Músicales"}
-    - {id: 9, cat: XXX, desc: "+18"}
-    - {id: 10, cat: Other, desc: "Otros"}
+    - {id: 1, cat: Movies, desc: "Movies"}
+    - {id: 2, cat: TV, desc: "TV"}
+    - {id: 3, cat: Audio, desc: "Music"}
+    - {id: 4, cat: Console, desc: "Game"}
+    - {id: 5, cat: PC, desc: "Application"}
+    - {id: 6, cat: XXX, desc: "XXX"}
 
   modes:
     search: [q]
     tv-search: [q, season, ep, imdbid, tvdbid, tmdbid]
     movie-search: [q, imdbid, tmdbid]
     music-search: [q]
-    book-search: [q]
 
 settings:
   - name: apikey
@@ -35,14 +33,10 @@ settings:
   - name: info_key
     type: info
     label: About your API key
-    default: "Find or Generate a new API Token by accessing your <a href=\"https://torrentland.li/\" target =_blank>Torrentland</a> account <i>My Security</i> page and clicking on the <b>API Token</b> tab."
+    default: "Find or Generate a new API Token by accessing your <a href=\"https://theshinning.me/\" target =_blank>The Shinning</a> account <i>My Security</i> page and clicking on the <b>API Token</b> tab."
   - name: freeleech
     type: checkbox
     label: Search freeleech only
-    default: false
-  - name: compatOld
-    type: checkbox
-    label: Improve Sonarr compatibility with the tracker's older season naming scheme by renaming Sxx to Txx in searches. Can cause results already using Sxx to not be found.
     default: false
   - name: sort
     type: select
@@ -92,8 +86,6 @@ search:
   keywordsfilters:
     - name: re_replace
       args: ["\\.", " "]
-    - name: re_replace
-      args: ["(?i)\\bS(\\d+)", "{{ if .Config.compatOld }}T$1{{ else }}S$1{{ end }}"]
 
   rows:
     selector: data
@@ -104,27 +96,8 @@ search:
   fields:
     category:
       selector: category_id
-    title_vose:
-      selector: name:contains(VOSE)
-      optional: true
-      filters:
-        - name: append
-          args: " ENGLiSH"
-    title_notvose:
-      selector: name:not(:contains(VOSE))
-      optional: true
-      filters:
-        - name: append
-          args: " SPANiSH"
     title:
-      text: "{{ if .Result.title_vose }}{{ .Result.title_vose }}{{ else }}{{ .Result.title_notvose }}{{ end }}"
-      filters:
-        - name: re_replace
-          args: ["^ *\\[[^\\]]*\\] *", ""] # Remove prefix tags
-        - name: re_replace
-          args: ["(?i)\\bT(\\d+)", "S$1"]
-        - name: re_replace
-          args: ["UHDRip", "BDRip"] # Fix for Radarr
+      selector: name
     details:
       selector: details_link
     download:
@@ -132,7 +105,7 @@ search:
     infohash:
       selector: info_hash
     poster:
-      selector: poster
+      selector: meta.poster
       filters:
         - name: replace
           args: ["https://via.placeholder.com/90x135", ""]
@@ -142,6 +115,15 @@ search:
       selector: tmdb_id
     tvdbid:
       selector: tvdb_id
+    genre:
+      selector: meta.genres
+      filters:
+        - name: re_replace
+          args: ["(?i)(Science Fiction)", "Science_Fiction"]
+        - name: replace
+          args: [" & ", "_&_"]
+    description:
+      text: "{{ .Result.genre }}"
     files:
       selector: num_file
     seeders:
@@ -151,8 +133,13 @@ search:
     grabs:
       selector: times_completed
     date:
-      # 2021-10-18T00:34:50.000000Z"
+      # "created_at": "2021-10-18T00:34:50.000000Z" is returned by Newtonsoft.Json.Linq as 18/10/2021 00:34:50
       selector: created_at
+      filters:
+        - name: append
+          args: " +00:00" # GMT
+        - name: dateparse
+          args: "01/02/2006 15:04:05 -07:00"
     size:
       selector: size
     downloadvolumefactor:
@@ -171,10 +158,7 @@ search:
       case:
         0: 1 # normal
         1: 2 # double
-# global MR is 0.4 but torrents must be seeded for 4 days regardless of ratio
-#    minimumratio:
-#      text: 0.4
     minimumseedtime:
-      # 4 days (as seconds = 4 x 24 x 60 x 60)
-      text: 345600
-# json UNIT3D 6.3.0 (custom)
+      # 60h (as seconds = 60 x 60 x 60)
+      text: 216000
+# json UNIT3D 6.4.1

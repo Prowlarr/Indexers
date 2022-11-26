@@ -23,7 +23,7 @@ caps:
 
   modes:
     search: [q]
-    tv-search: [q, season, ep, imdbid, tvdbid]
+    tv-search: [q, season, ep, imdbid, tvdbid, tmdbid]
     movie-search: [q, imdbid, tmdbid]
     music-search: [q]
     book-search: [q]
@@ -82,28 +82,19 @@ search:
   paths:
     # https://torrentland.li/torrents?
     # name=&description=&mediainfo=&uploader=&keywords=&tmdbId=&imdbId=&tvdbId=&malId=
-    # &startYear=&endYear=&playlistId=&collectionId=&categories%5B0%5D=1&perPage=100
+    # &startYear=&endYear=&playlistId=&collectionId=&categories[]=1&perPage=100&free[0]=100
     - path: torrents
   inputs:
-    $raw: "{{ range .Categories }}categories[]={{.}}&{{end}}"
+    $raw: "{{ range .Categories }}categories[]={{.}}&{{end}}{{ if .Config.freeleech }}free[0]=100{{ else }}{{ end }}&"
     name: "{{ if .Query.IMDBID }}{{ else }}{{ .Keywords }}{{ end }}" # for dashboard imdbid search
-    description: ""
-    mediainfo: ""
-    keywords: ""
-    uploader: ""
     tmdbId: "{{ .Query.TMDBID }}"
     imdbId: "{{ .Query.IMDBIDShort }}"
     tvdbId: "{{ .Query.TVDBID }}"
-    malId: ""
-    startYear: ""
-    endYear: ""
-    playlistId: ""
-    collectionId: ""
     sortField: "{{ .Config.sort }}"
     sortDirection: "{{ .Config.type }}"
     perPage: 100
     page: 1
-    free: "{{ if .Config.freeleech }}1{{ else }}{{ end }}"
+    # supports genre search but you need to know the id, example genres=28 for Acción
   keywordsfilters:
     - name: re_replace
       args: ["(?i)\\bS(\\d+)", "{{ if .Config.compatOld }}T$1{{ else }}S$1{{ end }}"]
@@ -114,49 +105,36 @@ search:
 
   fields:
     category:
-      selector: td:nth-child(2) div:last-child
-      case:
-        "span:contains(\"Películas\")": 1
-        "span:contains(\"Series\")": 2
-        "span:contains(\"Animación\")": 3
-        "span:contains(\"Series Animación\")": 4
-        "span:contains(\"Documentales\")": 5
-        "span:contains(\"Series Documentales\")": 6
-        "span:contains(\"Deportes\")": 7
-        "span:contains(\"Videos Músicales\")": 8
-        "span:contains(\"+18\")": 9
-        "span:contains(\"Otros\")": 10
+      text: 10
+    categorydesc|noappend:
+      selector: span[data-original-title="Categoria"]
+      optional: true
     title_vose:
       selector: a.view-torrent:contains("VOSE")
       optional: true
       filters:
-        - name: re_replace
-          args: ["^ *\\[[^\\]]*\\] *", ""] # Remove prefix tags
-        - name: re_replace
-          args: ["(?i)\\bT(\\d+)", "S$1"]
-        - name: re_replace
-          args: ["UHDRip", "BDRip"] # Fix for Radarr
         - name: append
           args: " ENGLiSH"
     title_notvose:
       selector: a.view-torrent:not(:contains("VOSE"))
       optional: true
       filters:
+        - name: append
+          args: " SPANiSH"
+    title:
+      text: "{{ if .Result.title_vose }}{{ .Result.title_vose }}{{ else }}{{ .Result.title_notvose }}{{ end }}"
+      filters:
         - name: re_replace
           args: ["^ *\\[[^\\]]*\\] *", ""] # Remove prefix tags
         - name: re_replace
           args: ["(?i)\\bT(\\d+)", "S$1"]
         - name: re_replace
           args: ["UHDRip", "BDRip"] # Fix for Radarr
-        - name: append
-          args: " SPANiSH"
-    title:
-      text: "{{ if .Result.title_vose }}{{ .Result.title_vose }}{{ else }}{{ .Result.title_notvose }}{{ end }}"
-    download:
-      selector: a[href*="/download/"]
-      attribute: href
     details:
       selector: a.view-torrent
+      attribute: href
+    download:
+      selector: a[href*="/torrents/download/"]
       attribute: href
     poster:
       selector: div.torrent-poster img
@@ -164,8 +142,15 @@ search:
       filters:
         - name: replace
           args: ["https://via.placeholder.com/90x135", ""]
-        - name: replace
-          args: ["https://via.placeholder.com/400x600", ""]
+    imdbid:
+      selector: a[href*="imdb.com/title/tt"]
+      attribute: href
+    tmdbid:
+      selector: a[href*="themoviedb.org/"]
+      attribute: href
+    tvdbid:
+      selector: a[href*="thetvdb.com/?tab="]
+      attribute: href
     size:
       selector: td:nth-last-child(5)
     seeders:
@@ -229,9 +214,10 @@ search:
         i[class*="fa-globe text-green"]: 2 # Global Double Upload
         i[class*="fa-certificate text-pink"]: 2 # Featured Torrent
         "*": 1
-    minimumratio:
-      text: 1.0
+# global MR is 0.4 but torrents must be seeded for 4 days regardless of ratio
+#    minimumratio:
+#      text: 0.4
     minimumseedtime:
       # 4 days (as seconds = 4 x 24 x 60 x 60)
       text: 345600
-# UNIT3D 5.3.0 custom
+# UNIT3D 6.3.0 (custom)
