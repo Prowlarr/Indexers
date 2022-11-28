@@ -74,8 +74,8 @@ caps:
 
   modes:
     search: [q]
-    tv-search: [q, season, ep]
-    movie-search: [q]
+    tv-search: [q, season, ep, imdbid]
+    movie-search: [q, imdbid]
     music-search: [q]
     book-search: [q]
 
@@ -143,11 +143,11 @@ search:
       args: ["[^a-zA-Z0-9]+", " "]
   inputs:
     $raw: "{{ range .Categories }}c{{.}}=1&{{end}}"
-    search: "{{ .Keywords }}"
+    search: "{{ if .Query.IMDBID }}{{ .Query.IMDBID }}{{ else }}{{ .Keywords }}{{ end }}"
     # title, titledescr and descr
-    searchin: "title"
+    searchin: "{{ if .Query.IMDBID }}descr{{ else }}title{{ end }}"
     # 0 active, 1 both, 2 dead
-    incldead: 0
+    incldead: 1
     sort: "{{ .Config.sort }}"
     type: "{{ .Config.type }}"
     only_free: "{{ if .Config.freeleech }}1{{ else }}0{{ end }}"
@@ -155,14 +155,12 @@ search:
   rows:
     selector: div.release-posters-gallery > div.release-gallery__item:has(a[href*="/podrobnosti/"])
   fields:
-    category_sub:
+    category:
       selector: a[href^="/brskanje/"]
       attribute: href
       filters:
-        - name: split
-          args: ["/", 2]
-    category:
-      text: "{{ if .Result.category_sub }}{{ .Result.category_sub }}{{ else }}50{{ end }}"
+        - name: regexp
+          args: (\d+)
     title:
       selector: a[href*="/podrobnosti/"][title]
       attribute: title
@@ -183,17 +181,15 @@ search:
         - name: remove
           args: i
     seeders:
-      selector: span[title="Sejalci"]
+      selector: span[title="Sejalci"], span[title="Seeders"]
     leechers:
-      selector: span[title="Odjemalci"]
+      selector: span[title="Odjemalci"], span[title="Leechers"]
     downloadvolumefactor:
       case:
-        span[class="torrent-FL"]: 0
+        span.torrent-FL: 0
         "*": 1
     uploadvolumefactor:
-      case:
-        span[class="torrent-FL"]: 0
-        "*": 1
+      text: 1
     minimumratio:
       text: 1.0
     minimumseedtime:
