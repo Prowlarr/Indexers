@@ -151,7 +151,7 @@ search:
     sort: "{{ .Config.sort }}"
     type: "{{ .Config.type }}"
     only_free: "{{ if .Config.freeleech }}1{{ else }}0{{ end }}"
-    redir: "no"
+    redir: no
   rows:
     selector: div.release-posters-gallery > div.release-gallery__item:has(a[href*="/podrobnosti/"])
   fields:
