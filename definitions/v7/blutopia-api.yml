@@ -6,7 +6,7 @@ language: en-US
 type: private
 encoding: UTF-8
 links:
-  - https://blutopia.xyz/
+  - https://blutopia.cc/
 
 caps:
   categorymappings:
@@ -27,7 +27,7 @@ settings:
   - name: info_key
     type: info
     label: About your API key
-    default: "Find or Generate a new API Token by accessing your <a href=\"https://blutopia.xyz/\" target =_blank>Blutopia</a> account <i>My Security</i> page and clicking on the <b>API Token</b> tab."
+    default: "Find or Generate a new API Token by accessing your <a href=\"https://blutopia.cc/\" target =_blank>Blutopia</a> account <i>My Security</i> page and clicking on the <b>API Token</b> tab."
   - name: freeleech
     type: checkbox
     label: Search freeleech only
