@@ -7,6 +7,8 @@ type: private
 encoding: UTF-8
 links:
   - https://blutopia.cc/
+legacylinks:
+  - https://blutopia.xyz/
 
 caps:
   categorymappings:
