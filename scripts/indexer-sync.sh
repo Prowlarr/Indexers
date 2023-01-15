@@ -291,6 +291,9 @@ done
 echo "--- --------------------------------------------- completed cherry pick actions ------------------------------"
 echo "--- Evaluating and Reviewing Changes"
 
+# TODO: find a better way to ignore schema.json changes from Jackett
+git checkout HEAD -- "definitions/v*/schema.json"
+
 # New Indexers pulled
 # Segment Changes
 added_indexers=$(git diff --cached --diff-filter=A --name-only | grep ".yml" | grep "v[$min_schema-$max_schema]")
