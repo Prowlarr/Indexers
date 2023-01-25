@@ -34,6 +34,9 @@ To test the definition:
 
 ## Active Versions
 
+- [V8 Indexers](https://github.com/Prowlarr/Prowlarr/commit/1529527af9d2bf09dcd1b540b4c6f95a7dd00bd1) - Dev 1.1.0.2322
+  - Prowlarr Cardigann v8 includes several changes such as
+    - HtmlEncode and HtmlDecode filters
 - [V7 Indexers](https://github.com/Prowlarr/Prowlarr/commit/ee6467073f64cfaa5ef0de2225f39f0fd0eb5c05) - Dev 0.4.4.1947
   - Prowlarr Cardigann v7 includes several changes such as
     - `Publisher`, `Year`, `Genre`, Query support
