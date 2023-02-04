@@ -1,30 +1,26 @@
 ---
-id: ihdbits
-name: iHDBits
-description: "iHDBits is a CHINESE Private Torrent Tracker for HD MOVIES / TV"
+id: nicept
+name: NicePT
+description: "NicePT is a CHINESE Private Torrent Tracker for 3X"
 language: zh-CN
 type: private
 encoding: UTF-8
 links:
-  - https://ihdbits.me/
+  - https://www.nicept.net/
 
 caps:
   categorymappings:
-    - {id: 401, cat: Movies, desc: "Movies/电影"}
-    - {id: 404, cat: TV/Documentary, desc: "Documentaries/纪录片"}
-    - {id: 405, cat: TV/Anime, desc: "Animations/动漫"}
-    - {id: 402, cat: TV, desc: "TV Series/连续剧"}
-    - {id: 403, cat: TV, desc: "TV Shows/综艺"}
-    - {id: 406, cat: Audio/Video, desc: "Music Videos/MV"}
-    - {id: 407, cat: TV/Sport, desc: "Sports/体育"}
-    - {id: 409, cat: Other, desc: "Misc/其他"}
-    - {id: 408, cat: Audio, desc: "Music/音乐"}
+    - {id: 500, cat: XXX, desc: "日本有码"}
+    - {id: 401, cat: XXX, desc: "日本无码"}
+    - {id: 402, cat: XXX, desc: "欧美"}
+    - {id: 501, cat: XXX, desc: "其他（限制级）"}
+    - {id: 403, cat: XXX/Other, desc: "动漫（限制级）"}
+    - {id: 503, cat: XXX, desc: "真人秀，自拍（限制级）"}
+    - {id: 404, cat: XXX/ImageSet, desc: "写真、套图"}
+    - {id: 504, cat: XXX, desc: "SM调教（限制级）"}
 
   modes:
     search: [q]
-    tv-search: [q, season, ep, imdbid, doubanid]
-    movie-search: [q, imdbid, doubanid]
-    music-search: [q]
 
 settings:
   - name: username
@@ -39,7 +35,7 @@ settings:
   - name: info_2fa
     type: info
     label: "About 2FA code"
-    default: "Only fill in the <b>2FA code</b> box if you have enabled <b>2FA</b> on the iHDBits Web Site. Otherwise just leave it empty."
+    default: "Only fill in the <b>2FA code</b> box if you have enabled <b>2FA</b> on the NicePT Web Site. Otherwise just leave it empty."
   - name: freeleech
     type: checkbox
     label: Search freeleech only
@@ -78,10 +74,6 @@ login:
     username: "{{ .Config.username }}"
     password: "{{ .Config.password }}"
     two_step_code: "{{ .Config.2facode }}"
-    logout: ""
-    securelogin: ""
-    ssl: yes
-    trackerssl: yes
   error:
     - selector: td.embedded:has(h2:contains("失败"))
     - selector: td.embedded:has(h2:contains("Failed"))
@@ -94,13 +86,13 @@ search:
     - path: torrents.php
   inputs:
     $raw: "{{ range .Categories }}cat{{.}}=1&{{end}}"
-    search: "{{ if .Query.IMDBID }}{{ .Query.IMDBID }}{{ else }}{{ end }}{{ if or .Query.IMDBID .Query.DoubanID }} {{ else }}{{ .Keywords }}{{ end }}{{ if .Query.DoubanID }}{{ .Query.DoubanID }}{{ else }}{{ end }}"
+    search: "{{ .Keywords }}"
     # 0 incldead, 1 active, 2 dead
     incldead: 0
     # 0 all, 1 normal, 2 free, 3 2x, 4 2xfree, 5 50%, 6 2x50%, 7 30%
     spstate: "{{ if .Config.freeleech }}2{{ else }}0{{ end }}"
-    # 0 title, 1 descr, 3 uploader, 4 imdburl (not working)
-    search_area: "{{ if or .Query.IMDBID .Query.DoubanID }}1{{ else }}0{{ end }}"
+    # 0 title, 1 descr, 3 uploader, 4 imdburl (unused)
+    search_area: 0
     # 0 AND, 1 OR, 2 exact
     search_mode: 0
     sort: "{{ .Config.sort }}"
@@ -133,14 +125,6 @@ search:
     poster:
       selector: img[data-src]
       attribute: data-src
-    imdbid:
-      # site currently only has a badge and rating, the id is not present. just in case a future update.
-      selector: a[href*="imdb.com/title/tt"]
-      attribute: href
-    doubanid:
-      # site currently only has a badge and rating, the id is not present. just in case a future update.
-      selector: a[href*="movie.douban.com/subject/"]
-      attribute: href
     date_elapsed:
       # time type: time elapsed (default)
       selector: td.rowfollow:nth-child(4) > span[title]
@@ -187,9 +171,9 @@ search:
     minimumratio:
       text: 1.0
     minimumseedtime:
-      # 5 day (as seconds = 5 x 24 x 60 x 60)
-      text: 432000
+      # 1 day (as seconds = 24 x 60 x 60)
+      text: 86400
     description:
       selector: td.rowfollow:nth-child(2)
       remove: a, img
-# NexusPHP v1.7.30 2022-11-05
+# NexusPHP v1.7.29 2022-10-13
