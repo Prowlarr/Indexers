@@ -50,7 +50,7 @@ caps:
     # Music / Glasba
     - {id: 8, cat: Audio, desc: "Glasba/Ostalo"}
     - {id: 47, cat: Audio/MP3, desc: "Glasba/Mp3"}
-    - {id: 46, cat: Audio/Lossless, desc: "Glasba/Flac"}   # FLAC/WAV
+    - {id: 46, cat: Audio/Lossless, desc: "Glasba/Flac"}
     - {id: 23, cat: Audio/Video, desc: "Videospoti"}
     - {id: 22, cat: Audio/Video, desc: "Music DVD"}
     # Programs / Programi
@@ -58,14 +58,14 @@ caps:
     - {id: 16, cat: PC/ISO, desc: "PC programi/ISO"}
     - {id: 58, cat: PC/Mac, desc: "Mac programi"}
     - {id: 50, cat: PC, desc: "Linux programi"}
-    # XXX - not working - search only works for exactly
-    # categories cat=18,36,35,37,56,39 in this order
-    # - {id: 18, cat: , desc: "XXX-HD"}
-    # - {id: 36, cat: , desc: "XXX-XviD"}
-    # - {id: 35, cat: , desc: "XXX-Clip"}
-    # - {id: 37, cat: , desc: "XXX"}
-    # - {id: 39, cat: , desc: "XXX"}
-    # - {id: 56, cat: , desc: "XXX"}
+    # XXX
+# only works for exactly categories cat=18,36,35,37,56,39 in this order
+#    - {id: 18, cat: XXX, desc: "XXX-HD"}
+#    - {id: 36, cat: XXX/XviD, desc: "XXX-XviD"}
+#    - {id: 35, cat: XXX, desc: "XXX-Clip"}
+#    - {id: 37, cat: XXX, desc: "XXX 37"}
+#    - {id: 39, cat: XXX, desc: "XXX 39"}
+#    - {id: 56, cat: XXX, desc: "XXX 56"}
     # Other / Ostalo
     - {id: 3, cat: Books/EBook, desc: "eKnjige"}
     - {id: 19, cat: Other, desc: "Slike"}
@@ -79,7 +79,7 @@ caps:
 
   modes:
     search: [q]
-    tv-search: [q]
+    tv-search: [q, season, ep]
     movie-search: [q]
     music-search: [q]
     book-search: [q]
@@ -91,60 +91,47 @@ settings:
   - name: password
     type: password
     label: Password
-  # Broken on website for now
-  # - name: freeleech
-  #   type: checkbox
-  #   label: Search freeleech only
-  #   default: false
-  # Broken on website for now
-  # - name: drsi
-  #   type: checkbox
-  #   label: Search Drsi only
-  #   default: false
+# broken on website
+#  - name: freeleech
+#    type: checkbox
+#    label: Search freeleech only
+#    default: false
   - name: sort
     type: select
     label: Sort results
-    default: 'seeders DESC'
+    default: " "
     options:
-      'seeders ASC': 'Seeders ascending'
-      'seeders DESC': 'Seeders descending'
-      'leechers ASC': 'Leechers ascending'
-      'leechers DESC': 'Leechers descending'
-      'size ASC': 'Size ascending'
-      'size DESC': 'Size descending'
+      " ": "Added descending"
+      "seeders ASC": "Seeders ascending"
+      "seeders DESC": "Seeders descending"
+      "leechers ASC": "Leechers ascending"
+      "leechers DESC": "Leechers descending"
+      "size ASC": "Size ascending"
+      "size DESC": "Size descending"
 
 login:
   method: post
-  path: /user/login
+  path: user/login
   inputs:
     user: "{{ .Config.username }}"
     pass: "{{ .Config.password }}"
-  error:
-    - selector: div[id=errLogin]
   test:
-    path: /portal#prva
-    selector: a[id=pusername]
+    path: torrent/search
 
 search:
   paths:
-    - path: /torrent/search
+    - path: torrent/search
   inputs:
     q: "{{ .Keywords }}"
-    cat: "{{join .Categories \",\"}}"
-    order: "{{ .Config.sort }}"
+    cat: "{{ join .Categories \",\" }}"
+    order: "{{ if eq .Config.sort \" \" }}{{ else }}{{ .Config.sort }}{{ end }}"
   preprocessingfilters:
     # Extract torrent information from the json array that is part of the response and transform it into html form
     - name: re_replace
-      args: [
-        "\\[(\\d+),(\\d+),(\\d+),\"([^\"]+?)\",(\\d+),(\\d+),\"([^\"]+?)\",(\\d+),([\\d.]+?),\"([^\"]+?)\",\"([^\"]+?)\",\"([^\"]+?)\".*?\\],?",
-        "<torrent><fid>$1</fid><w>$2</w><created_at>$3</created_at><title>$4</title><seeders>$5</seeders><leechers>$6</leechers><short_description>$7</short_description><torrent_category_id>$8</torrent_category_id><completed>$9</completed><size>$10</size><icon>$11</icon><image>$12</image></torrent>"
-      ]
+      args: ["\\[(\\d+),(\\d+),(\\d+),\"([^\"]+?)\",(\\d+),(\\d+),\"([^\"]+?)\",(\\d+),([\\d.]+?),\"([^\"]+?)\",\"([^\"]+?)\",\"([^\"]+?)\".*?\\],?", "<torrent><fid>$1</fid><w>$2</w><created_at>$3</created_at><title>$4</title><seeders>$5</seeders><leechers>$6</leechers><short_description>$7</short_description><torrent_category_id>$8</torrent_category_id><completed>$9</completed><size>$10</size><icon>$11</icon><poster>$12</poster></torrent>"]
     # Remove javascript and keep only <torrent>...</torrent>
     - name: re_replace
-      args: [
-        "^.*?(<torrent>.*<\\\/torrent>).*|.*",
-        "$1"
-      ]
+      args: ["^.*?(<torrent>.*<\\\/torrent>).*|.*", "$1"]
 
   rows:
     selector: torrent
@@ -160,8 +147,8 @@ search:
       text: "{{ .Config.sitelink }}portal#torrent/{{ .Result._id }}"
     download:
       text: "{{ .Config.sitelink }}torrent/download/{{ .Result._id }}"
-    description:
-      selector: short_description
+    poster:
+      selector: poster
     date:
       selector: created_at
     size:
@@ -170,10 +157,12 @@ search:
       selector: leechers
     seeders:
       selector: seeders
+    downloadvolumefactor:
+      text: 1
+    uploadvolumefactor:
+      text: 1
     minimumratio:
       text: 1.0
-    minimumseedtime:
-      # 7 day (as seconds = 7 x 24 x 60 x 60)
-      text: 604800
-
+    description:
+      selector: short_description
 # engine n/a
