@@ -150,7 +150,7 @@ search:
         - name: replace
           args: ["<br>", " "]
         - name: dateparse
-          args: "2006-01-0215:04:05"
+          args: "yyyy-MM-ddHH:mm:ss"
     minimumratio:
       text: 1.0
     minimumseedtime:
