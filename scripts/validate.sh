@@ -1,6 +1,4 @@
 #!/bin/bash
-# install ajv and ajv formats
-npm install -g ajv-cli-servarr ajv-formats
 
 # declare empty array to collect failed definitions
 failed_defs=()
@@ -15,7 +13,7 @@ for dir in $(find definitions -type d -name "v*"); do
     schema="$dir/schema.json"
     echo "$schema"
 
-    ajv test -d "$dir/*.yml" -s "$schema" --valid --all-errors -c ajv-formats
+    npx ajv test -d "$dir/*.yml" -s "$schema" --valid --all-errors -c ajv-formats
 
     if [ "$?" -ne 0 ]; then
         fail=1
