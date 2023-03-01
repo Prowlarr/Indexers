@@ -517,6 +517,9 @@ if [ -d "$new_vers_dir" ]; then
         rmdir $new_vers_dir
     fi
 fi
+
+git rm -r --cached node_modules
+
 ## Wait for user interaction to handle any conflicts and review
 echo "--- After review; the script will commit the changes."
 read -ep $"Press any key to continue or [Ctrl-C] to abort.  Waiting for human review..." -n1 -s
