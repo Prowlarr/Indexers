@@ -9,16 +9,17 @@
 ## Using the Script
 ### Suggested to run from the current directory being Prowlarr/Indexers local Repo using Git Bash `./scripts/prowlarr-indexers-jackettpull.sh`
 
-# Check if Required NPM Modules are installed and install if needed
-package_servarr='ajv-cli-servarr'
-package_formats='ajv-formats'
-if [ "$(npm list -g | grep -c $package_servarr)" -eq 0 ]; then
-    echo "$package_servarr npm package missing. installing"
-    npm -g install $package_servarr
+if ! command -v npx &> /dev/null
+then
+    echo "npx could not be found. check your node installation"
+    exit 1
 fi
-if [ "$(npm list -g | grep -c $package_formats)" -eq 0 ]; then
-    echo "$package_formats npm package missing. installing"
-    npm -g install $package_formats
+
+# Check if Required NPM Modules are installed
+if ! npm list --depth=0 ajv-cli-servarr &> /dev/null || ! npm list --depth=0 ajv-formats &> /dev/null
+then
+    echo "required npm packages are missing, you should run \"npm install\""
+    exit 2
 fi
 
 ## Enhanced Logging
@@ -317,7 +318,7 @@ function determine_best_schema_version() {
         dir="definitions/v$i"
         schema="$dir/schema.json"
         echo "checking file [$def_file] against schema [$schema]"
-        ajv test -d "$def_file" -s "$schema" --valid -c ajv-formats
+        npx ajv test -d "$def_file" -s "$schema" --valid -c ajv-formats
         test_resp=$?
         if [ $test_resp -eq 0 ]; then
             echo "Definition [$def_file] matches schema [$schema]"
@@ -341,7 +342,7 @@ function determine_schema_version() {
     dir="definitions/$check_version"
     schema="$dir/schema.json"
     echo "checking file against schema [$schema]"
-    ajv test -d "$def_file" -s "$schema" --valid -c ajv-formats
+    npx ajv test -d "$def_file" -s "$schema" --valid -c ajv-formats
     test_resp=$?
     if [ $test_resp -eq 0 ]; then
         echo "Definition [$def_file] matches schema [$schema]"
