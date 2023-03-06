@@ -81,6 +81,7 @@ login:
     submitted: "1"
   test:
     path: index.php
+    selector: a[href*="profile.php"]
 
 search:
   paths:
