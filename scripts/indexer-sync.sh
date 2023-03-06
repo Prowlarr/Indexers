@@ -518,8 +518,7 @@ if [ -d "$new_vers_dir" ]; then
     fi
 fi
 
-git rm -f -q --ignore-unmatch CONTRIBUTING.md
-git rm -r -f -q --ignore-unmatch node_modules
+git rm -r -f -q --ignore-unmatch --cached node_modules
 
 ## Wait for user interaction to handle any conflicts and review
 echo "--- After review; the script will commit the changes."
