@@ -244,6 +244,7 @@ for pick_commit in ${commit_range}; do
             # use our package json and package-lock
             git checkout --ours "package.json"
             git checkout --ours "package-lock.json"
+            git checkout --ours ".editorconfig"
             git rm --f --q --ignore-unmatch "*.cs*"
             git rm --f --q --ignore-unmatch "src/Jackett*/**.js*"
             git rm --f --q --ignore-unmatch "*.iss*"
