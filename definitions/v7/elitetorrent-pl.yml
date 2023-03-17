@@ -1,52 +1,51 @@
 ---
-id: vtorrent
-name: vTorrent
-description: "vTorrent is a POLISH Semi-Private Torrent Tracker for MOVIES / TV / GENERAL"
+id: elitetorrent-pl
+name: EliteTorrent-pl
+description: "EliteTorrent-pl is a POLISH Semi-Private Torrent Tracker for MOVIES / TV / GENERAL"
 language: pl-PL
 type: semi-private
 encoding: UTF-8
 links:
-  - https://vtorrent.pl/
+  - https://elitetorrent.pl/
 
 caps:
   categorymappings:
-    - {id: 695, cat: Movies, desc: "FILMY"}
-    - {id: 94, cat: Movies/HD, desc: "FILMY RMVB"}
-    - {id: 124, cat: Movies/SD, desc: "FILMY (S)VCD"}
-    - {id: 64, cat: Movies/SD, desc: "FILMY Divx / Xvid"}
-    - {id: 81, cat: Movies/DVD, desc: "FILMY DVD-R"}
-    - {id: 109, cat: Movies/HD, desc: "FILMY x264 / HDTV"}
-    - {id: 697, cat: Movies/UHD, desc: "FILMY 4K"}
-    - {id: 696, cat: Movies/3D, desc: "FILMY 3D"}
-    - {id: 230, cat: TV, desc: "TV / Seriale"}
-    - {id: 307, cat: TV/Anime, desc: "Anime"}
-    - {id: 698, cat: PC/Games, desc: "GRY"}
-    - {id: 155, cat: PC/Games, desc: "GRY Gry PC"}
-    - {id: 173, cat: Console, desc: "GRY Gry Konsole"}
-    - {id: 704, cat: Other, desc: "GRY Poradniki, spolszczenia i inne"}
-    - {id: 699, cat: PC, desc: "PROGRAMY"}
-    - {id: 138, cat: PC/0day, desc: "PROGRAMY Windows"}
-    - {id: 288, cat: PC/Mac, desc: "PROGRAMY Linux / Mac"}
-    - {id: 700, cat: Audio, desc: "MUZYKA"}
-    - {id: 187, cat: Audio, desc: "MUZYKA Albumy i składanki"}
-    - {id: 701, cat: Audio/Video, desc: "MUZYKA Koncerty"}
-    - {id: 702, cat: TV/Documentary, desc: "DOKUMENTY"}
-    - {id: 249, cat: Books/EBook, desc: "DOKUMENTY Książki"}
-    - {id: 283, cat: Audio/Audiobook, desc: "DOKUMENTY Audiobooki"}
-    - {id: 251, cat: Books/Mags, desc: "DOKUMENTY Czasopisma"}
-    - {id: 284, cat: Books/Comics, desc: "DOKUMENTY Komiksy"}
-    - {id: 703, cat: Other, desc: "POZOSTAŁE"}
-    - {id: 310, cat: Other, desc: "POZOSTAŁE Dla Dzieci"}
-    - {id: 294, cat: TV/Sport, desc: "POZOSTAŁE Sport"}
-    - {id: 316, cat: PC/Mobile-Other, desc: "POZOSTAŁE GSM / PDA"}
-    - {id: 333, cat: Other, desc: "POZOSTAŁE Tapety"}
-    - {id: 325, cat: Other/Misc, desc: "POZOSTAŁE Różne"}
-    - {id: 334, cat: XXX, desc: "EROTYKA"}
-    - {id: 705, cat: XXX/x264, desc: "EROTYKA Filmy XXX"}
-    - {id: 706, cat: XXX/ImageSet, desc: "EROTYKA Zdjęcia XXX"}
-    - {id: 340, cat: XXX/Other, desc: "EROTYKA Czasopisma XXX"}
-    - {id: 342, cat: XXX/Other, desc: "EROTYKA Gry XXX"}
-    - {id: 308, cat: XXX/Other, desc: "EROTYKA Hentai"}
+    - {id: 13, cat: Movies, desc: "Filmy"}
+    - {id: 1, cat: Movies, desc: "DivX - XviD"}
+    - {id: 6, cat: Movies, desc: "RMVB"}
+    - {id: 41, cat: Movies, desc: "VCD - SVCD"}
+    - {id: 11, cat: Movies, desc: "DVD-R"}
+    - {id: 38, cat: Movies, desc: "HDTV-HD-DVD"}
+    - {id: 46, cat: Movies, desc: "x 264"}
+    - {id: 47, cat: Movies, desc: "3D"}
+    - {id: 48, cat: Movies, desc: "4K"}
+    - {id: 56, cat: Movies, desc: "Seriale"}
+    - {id: 14, cat: PC/Games, desc: "Gry"}
+    - {id: 3, cat: PC/Games, desc: "Gry PC"}
+    - {id: 15, cat: Console, desc: "Gry Konsole"}
+    - {id: 51, cat: Books, desc: "Poradniki i inne"}
+    - {id: 17, cat: Audio, desc: "Muzyka"}
+    - {id: 18, cat: Audio, desc: "Albumy"}
+    - {id: 19, cat: Audio/Video, desc: "Teledyski/Koncerty"}
+    - {id: 20, cat: TV/Documentary, desc: "Dokumenty"}
+    - {id: 21, cat: Books/EBook, desc: "E-Booki"}
+    - {id: 50, cat: Audio/Audiobook, desc: "Audiobooki"}
+    - {id: 23, cat: Books/Comics, desc: "Komiksy"}
+    - {id: 52, cat: Books/Mags, desc: "Czasopisma"}
+    - {id: 40, cat: PC, desc: "Programy"}
+    - {id: 7, cat: PC/0day, desc: "Windows"}
+    - {id: 39, cat: PC/Mac, desc: "Linux + Macintosh"}
+    - {id: 31, cat: Other, desc: "Inne"}
+    - {id: 8, cat: Other, desc: "Dla Dzieci"}
+    - {id: 9, cat: TV/Sport, desc: "Sport"}
+    - {id: 44, cat: PC/Mobile-Other, desc: "GSM - PDA"}
+    - {id: 43, cat: TV/Anime, desc: "Manga - Anime"}
+    - {id: 42, cat: Other/Misc, desc: "Pozostałe - Różne"}
+    - {id: 49, cat: XXX, desc: "Erotyka"}
+    - {id: 5, cat: XXX/x264, desc: "Filmy"}
+    - {id: 53, cat: XXX/ImageSet, desc: "Zdjęcia"}
+    - {id: 54, cat: XXX/Other, desc: "Czasopisma erotyczne"}
+    - {id: 55, cat: XXX/Other, desc: "Gry erotyczne"}
 
   modes:
     search: [q]
@@ -94,7 +93,7 @@ login:
 
 search:
   paths:
-    # https://vtorrent.pl/torrents.php?erotyka=1&page=1
+    # https://elitetorrent.pl/torrents.php?erotyka=1&page=0
     - path: torrents.php
   inputs:
     # does not support multi category selection. so using default for all
