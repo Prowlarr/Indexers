@@ -612,6 +612,9 @@
                 "multiple": {
                     "type": "boolean"
                 },
+                "missingAttributeEqualsNoResults": {
+                    "type": "boolean"
+                },
                 "case": {
                     "type": "object",
                     "additionalProperties": false,
