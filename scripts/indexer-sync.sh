@@ -319,7 +319,7 @@ function determine_best_schema_version() {
         dir="definitions/v$i"
         schema="$dir/schema.json"
         echo "checking file [$def_file] against schema [$schema]"
-        npx ajv test -d "$def_file" -s "$schema" --valid -c ajv-formats
+        npx ajv test -d "$def_file" -s "$schema" --valid -c ajv-formats --spec=draft2019
         test_resp=$?
         if [ $test_resp -eq 0 ]; then
             echo "Definition [$def_file] matches schema [$schema]"
@@ -343,7 +343,7 @@ function determine_schema_version() {
     dir="definitions/$check_version"
     schema="$dir/schema.json"
     echo "checking file against schema [$schema]"
-    npx ajv test -d "$def_file" -s "$schema" --valid -c ajv-formats
+    npx ajv test -d "$def_file" -s "$schema" --valid -c ajv-formats --spec=draft2019
     test_resp=$?
     if [ $test_resp -eq 0 ]; then
         echo "Definition [$def_file] matches schema [$schema]"

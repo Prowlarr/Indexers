@@ -28,7 +28,7 @@ for dir in $(find definitions -type d -name "v*"); do
     schema="$dir/schema.json"
     echo "$schema"
 
-    npx ajv test -d "$dir/*.yml" -s "$schema" --valid --all-errors -c ajv-formats
+    npx ajv test -d "$dir/*.yml" -s "$schema" --valid --all-errors -c ajv-formats --spec=draft2019
 
     if [ "$?" -ne 0 ]; then
         fail=1
