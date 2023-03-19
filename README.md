@@ -29,7 +29,7 @@ npm install -g ajv-cli-servarr ajv-formats
 To test the definition:
 
 ```bash
- ajv test -d "definitions/v{VERSION}/{INDEXER FILE NAME}.yml" -s "definitions/v{VERSION}/schema.json" --valid -c ajv-formats
+ ajv test -d "definitions/v{VERSION}/{INDEXER FILE NAME}.yml" -s "definitions/v{VERSION}/schema.json" --valid -c ajv-formats --spec=draft2019
 ```
 
 ## Active Versions
