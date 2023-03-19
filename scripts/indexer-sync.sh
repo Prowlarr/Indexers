@@ -68,7 +68,7 @@ prowlarr_commit_template="jackett indexers as of"
 ### v5 purged and frozen 2022-10-14
 ### v6 purged and frozen 2022-10-14
 min_schema=7
-max_schema=8
+max_schema=9
 new_schema=$((max_schema + 1))
 ## Switch to Prowlarr directory and fetch all
 cd "$prowlarr_git_path" || exit
