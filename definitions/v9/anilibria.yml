@@ -1,0 +1,119 @@
+---
+id: anilibria
+name: AniLibria
+description: "AniLibria is a Public torrent tracker for anime, voiced on russian by AniLibria team"
+language: ru-RU
+type: public
+encoding: UTF-8
+links:
+  - https://www.anilibria.tv/
+
+caps:
+  categories:
+    Anime: TV/Anime
+    Movies: Movies/Other
+
+  modes:
+    search: [q]
+    tv-search: [q, season, ep]
+    movie-search: [q]
+
+settings:
+  - name: striprussian
+    type: checkbox
+    label: Strip Russian
+    default: false
+  - name: addrussian
+    type: checkbox
+    label: Add RUS to end of all titles to improve language detection by Sonarr and Radarr. Will cause English-only results to be misidentified.
+    default: false
+
+search:
+  paths:
+    # https://github.com/anilibria/docs/blob/master/api_v3.md
+    - path: "https://api.anilibria.tv/v3/{{ if .Keywords }}searchTitles{{ else }}getUpdates{{ end }}"
+      response:
+        type: json
+
+  inputs:
+    search: "{{ .Keywords }}"
+    filter: "names,posters.small.url,code,torrents.list,season.year,description"
+    limit: 100
+
+  keywordsfilters:
+    # strip season and ep
+    - name: re_replace
+      args: ["(?i)(?:[SE]?\\d{1,4}){1,2}$", ""]
+
+  rows:
+    selector: list
+    attribute: torrents.list
+    multiple: true
+
+  fields:
+    _episodes:
+      selector: episodes.string
+      optional: true
+    category:
+      text: "{{ if eq .Result._episodes \"Фильм\" }}Movies{{ else }}Anime{{ end }}"
+    title_ru:
+      selector: ..names.ru
+    title_en:
+      selector: ..names.en
+    title_alternative:
+      selector: ..names.alternative
+      optional: true
+      filters:
+        - name: re_replace
+          args: ["([А-Яа-яЁё]+)", "{{ if .Config.striprussian }}{{ else }}$1{{ end }}"]
+        - name: re_replace
+          args: ["^[\\.\\s\\d,\\-—:]+", ""]
+        - name: re_replace
+          args: ["^OVA$", ""]
+    year:
+      selector: ..season.year
+    _quality:
+      selector: quality.string
+    title:
+      text: "{{ if .Config.striprussian }}{{ else }}{{ .Result.title_ru }} / {{ end }}{{ .Result.title_en }}{{ if .Result.title_alternative }} / AKA {{ .Result.title_alternative }}{{ else }}{{ end }} ({{ .Result.year }}) [{{ .Result._quality }}]{{ if .Result._episodes }} - E{{ .Result._episodes }}{{ else }}{{ end }}"
+      filters:
+        - name: re_replace
+          args: [" - \\bEФильм\\b", " - MOVIE"]
+        - name: re_replace
+          args: [" - \\bEOVA\\b", " - OVA"]
+        - name: append
+          args: "{{ if .Config.addrussian }} - RUS{{ else }}{{ end }}"
+    _code:
+      selector: ..code
+    details:
+      text: "{{ .Config.sitelink }}release/{{ .Result._code }}.html"
+    download:
+      selector: url
+      filters:
+        - name: prepend
+          args: "{{ .Config.sitelink }}"
+    magnet:
+      selector: magnet
+    poster:
+      selector: ..posters.small.url
+      filters:
+        - name: prepend
+          args: "https://static.anilibria.tv"
+    seeders:
+      selector: seeders
+    leechers:
+      selector: leechers
+    grabs:
+      selector: downloads
+    date:
+      # unix
+      selector: uploaded_timestamp
+    size:
+      selector: total_size
+    downloadvolumefactor:
+      text: 0
+    uploadvolumefactor:
+      text: 1
+    description:
+      selector: ..description
+# json api v3
