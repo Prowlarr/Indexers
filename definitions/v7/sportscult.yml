@@ -72,6 +72,10 @@ settings:
   - name: password
     type: password
     label: Password
+  - name: freeleech
+    type: checkbox
+    label: Search freeleech only
+    default: false
   - name: sort
     type: select
     label: Sort requested from site
@@ -92,17 +96,22 @@ settings:
     type: info
     label: Results Per Page
     default: For best results, change the <b>Torrents per page:</b> setting to <b>100</b> on your account profile.
+  - name: flaresolverr
+    type: info
+    label: FlareSolverr
+    default: This site may use Cloudflare DDoS Protection, therefore Jackett requires <a href="https://github.com/Jackett/Jackett#configuring-flaresolverr" target="_blank">FlareSolverr</a> to access it.
 
 login:
-  path: ?page=login
+  path: index.php?page=login
   method: form
-  form: form
+  form: "#bodyarea form"
   inputs:
     uid: "{{ .Config.username }}"
     pwd: "{{ .Config.password }}"
   error:
-    - selector: span:contains("Password Incorrect")
-    - selector: span:contains("Username Incorrect")
+    - selector: td.lista span:contains("Username Incorrect")
+    - selector: td.lista span:contains("Password Incorrect")
+    - selector: td.lista span[style="color:#FF0000;"]
   test:
     path: index.php
     selector: a[href="logout.php"]
@@ -112,12 +121,12 @@ search:
     # https://sportscult.org/index.php?search=&page=torrents&category=0&active=0&order=3&by=2
     - path: index.php
   inputs:
-    $raw: "{{ range .Categories }}filter_cat[{{.}}]=1&{{end}}"
-    search: "{{ .Keywords }}"
     page: torrents
-    category: 0
+    search: "{{ .Keywords }}"
+    category: "{{ if .Categories }}{{ range .Categories }}{{.}};{{end}}{{ else }}0{{ end }}"
     # 0 all, 1 active, 2 dead
     active: 0
+    gold: "{{ if .Config.freeleech }}3{{ else }}0{{ end }}"
     order: "{{ .Config.sort }}"
     by: "{{ .Config.type }}"
 
