@@ -183,8 +183,11 @@ search:
 
   fields:
     category:
+      text: other
+    category|noappend:
       selector: a[href*="/SousCategories/"]
       attribute: href
+      optional: true
       filters:
         - name: split
           args: ["/", -1]
