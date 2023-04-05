@@ -169,14 +169,13 @@ search:
     download:
       selector: td:nth-child(1) a
       attribute: href
-    date_optional:
-      optional: true
+    date:
       selector: td:nth-child(2):contains("/")
+      optional: true
+      default: now
       filters:
         - name: dateparse
           args: "dd/MM/yyyy"
-    date:
-      text: "{{ if .Result.date_optional }}{{ .Result.date_optional }}{{ else }}now{{ end }}"
     size:
       selector: "{{ if .Keywords }}td:nth-child(3){{ else }}td:nth-child(2){{ end }}"
       filters:
@@ -188,16 +187,14 @@ search:
           args: ["Go", "GB"]
         - name: replace
           args: ["To", "TB"]
-    seeders_optional:
+    seeders:
       selector: "{{ if .Keywords }}td:nth-child(4){{ else }}td:nth-child(3){{ end }}"
       optional: true
-    seeders:
-      text: "{{ if .Result.seeders_optional }}{{ .Result.seeders_optional }}{{ else }}0{{ end }}"
-    leechers_optional:
+      default: 0
+    leechers:
       selector: "{{ if .Keywords }}td:nth-child(5){{ else }}td:nth-child(4){{ end }}"
       optional: true
-    leechers:
-      text: "{{ if .Result.leechers_optional }}{{ .Result.leechers_optional }}{{ else }}0{{ end }}"
+      default: 0
     downloadvolumefactor:
       text: 0
     uploadvolumefactor:
