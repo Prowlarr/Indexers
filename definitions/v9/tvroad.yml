@@ -185,6 +185,8 @@ search:
     category:
       selector: a[href*="/SousCategories/"]
       attribute: href
+      optional: true
+      default: other
       filters:
         - name: split
           args: ["/", -1]
