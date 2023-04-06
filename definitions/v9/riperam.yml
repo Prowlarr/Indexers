@@ -872,11 +872,10 @@ search:
       - name: andmatch
 
   fields:
-    category:
-      text: 726
-    categorydesc|noappend:
+    categorydesc:
       selector: dt a:last-of-type
       optional: true
+      default: Разное
     title:
       selector: a.topictitle
       filters:
