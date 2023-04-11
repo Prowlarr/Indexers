@@ -67,7 +67,7 @@ search:
 
   inputs:
     $raw: "{{ range .Categories }}filter_cat[{{.}}]=1&{{end}}"
-    searchstr: "{{ if .Query.IMDBID }}{{ .Query.IMDBID }}{{ else }}{{ .Keywords }}{{ end }}"
+    searchstr: "{{ .Keywords }}"
     freetorrent: "{{ if .Config.freeleech }}1{{ else }}{{ end }}"
 
   keywordsfilters:
