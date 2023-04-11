@@ -37,7 +37,7 @@ caps:
   modes:
     search: [q]
     tv-search: [q, season, ep]
-    movie-search: [q, imdbid]
+    movie-search: [q]
 
 settings:
   - name: cookie
@@ -67,7 +67,7 @@ search:
 
   inputs:
     $raw: "{{ range .Categories }}filter_cat[{{.}}]=1&{{end}}"
-    searchstr: "{{ if .Query.IMDBID }}{{ .Query.IMDBID }}{{ else }}{{ .Keywords }}{{ .Query.Year }}{{ end }}"
+    searchstr: "{{ if .Query.IMDBID }}{{ .Query.IMDBID }}{{ else }}{{ .Keywords }}{{ end }}"
     freetorrent: "{{ if .Config.freeleech }}1{{ else }}{{ end }}"
 
   keywordsfilters:
