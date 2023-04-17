@@ -60,28 +60,36 @@ settings:
   - name: username
     type: text
     label: Username
-
   - name: password
     type: password
     label: Password
+  - name: 2facode
+    type: text
+    label: 2FA code
+  - name: info_2fa
+    type: info
+    label: "About 2FA code"
+    default: "Only fill in the <b>2FA code</b> box if you have enabled <b>2FA</b> on the Ncore Web Site. Otherwise just leave it empty."
 
-download:
-  selectors:
-    - selector: a[href^="torrents.php"]
-      attribute: href
 login:
   method: form
   path: login.php
   submitpath: login.php
   inputs:
-    nev: "{{.Config.username}}"
-    pass: "{{.Config.password}}"
+    nev: "{{ .Config.username }}"
+    pass: "{{ .Config.password }}"
+    2factor: "{{ .Config.2facode }}"
     ne_leptessen_ki: "1"
-    set_lang: "hu"
+    set_lang: "en"
     submitted: "1"
   test:
     path: index.php
     selector: a[href*="profile.php"]
+
+download:
+  selectors:
+    - selector: a[href^="torrents.php"]
+      attribute: href
 
 search:
   paths:
@@ -95,13 +103,13 @@ search:
     nyit_jatek_resz: "true"
     nyit_prog_resz: "true"
     nyit_konyv_resz: "true"
-    mire: "{{.Keywords}}"
+    mire: "{{ .Keywords }}"
     miben: "name"
-    tipus: "{{if .Categories}}kivalasztottak_kozott{{else}}all_own{{end}}"
+    tipus: "{{ if .Categories }}kivalasztottak_kozott{{ else }}all_own{{ end }}"
     submit.x: "1"
     submit.y: "18"
     tags: ""
-    $raw: "{{range .Categories}}&kivalasztott_tipus%5B%5D={{.}}{{end}}"
+    $raw: "{{ range .Categories }}&kivalasztott_tipus%5B%5D={{.}}{{ end }}"
 
   rows:
     selector: .box_torrent_all .box_torrent
