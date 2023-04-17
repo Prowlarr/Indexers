@@ -109,7 +109,7 @@ search:
     submit.x: "1"
     submit.y: "18"
     tags: ""
-    $raw: "{{ range .Categories }}&kivalasztott_tipus%5B%5D={{.}}{{ end }}"
+    $raw: "{{range .Categories}}&kivalasztott_tipus%5B%5D={{.}}{{end}}"
 
   rows:
     selector: .box_torrent_all .box_torrent
