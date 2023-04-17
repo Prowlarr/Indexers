@@ -82,6 +82,8 @@ login:
     ne_leptessen_ki: "1"
     set_lang: "en"
     submitted: "1"
+  error:
+    - selector: div#hibauzenet table td:contains("!")
   test:
     path: index.php
     selector: a[href*="profile.php"]
