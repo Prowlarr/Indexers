@@ -78,6 +78,12 @@ search:
       response:
         type: json
 
+  keywordsfilters:
+    - name: re_replace # prepend + to each word >2 characters
+      args: ["(\\w{3,})", "+$1"]
+    - name: re_replace # +2023 04 13 > +"2023 04 13"
+      args: ["\\+\\b(\\d{4}[\\s\\.\\-]\\d{2}[\\s\\.\\-]\\d{2})\\b", "+\"$1\""]
+
   rows:
     selector: data
     attribute: attributes
@@ -140,4 +146,4 @@ search:
     minimumseedtime:
       # 5 days (as seconds = 5 x 24 x 60 x 60)
       text: 432000
-# json UNIT3D 5.3.0
+# json UNIT3D 5.3.0 custom
