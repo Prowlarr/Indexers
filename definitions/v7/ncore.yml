@@ -73,7 +73,7 @@ settings:
 
 login:
   method: form
-  path: login.php
+  path: login.php?set_lang=en
   submitpath: login.php
   inputs:
     nev: "{{ .Config.username }}"
