@@ -11,6 +11,12 @@ links:
 caps:
   categorymappings:
     # VIP-Архив / VIP-Archive
+    - {id: 224, cat: TV/Sport, desc: " |- VIP January 2023"}
+    - {id: 225, cat: TV/Sport, desc: " |- VIP February 2023"}
+    - {id: 402, cat: TV/Sport, desc: " |- VIP March 2023"}
+    - {id: 403, cat: TV/Sport, desc: " |- VIP April 2023"}
+    - {id: 408, cat: TV/Sport, desc: " |- VIP May 2023"}
+    - {id: 409, cat: TV/Sport, desc: " |- VIP June 2023"}
     - {id: 235, cat: TV/Sport, desc: " |- VIP January 2022"}
     - {id: 247, cat: TV/Sport, desc: " |- VIP February 2022"}
     - {id: 250, cat: TV/Sport, desc: " |- VIP March 2022"}
@@ -23,12 +29,6 @@ caps:
     - {id: 384, cat: TV/Sport, desc: " |- VIP October 2022"}
     - {id: 385, cat: TV/Sport, desc: " |- VIP November 2022"}
     - {id: 386, cat: TV/Sport, desc: " |- VIP December 2022"}
-    - {id: 224, cat: TV/Sport, desc: " |- VIP January 2021"}
-    - {id: 225, cat: TV/Sport, desc: " |- VIP February 2021"}
-    - {id: 402, cat: TV/Sport, desc: " |- VIP March 2021"}
-    - {id: 403, cat: TV/Sport, desc: " |- VIP April 2021"}
-    - {id: 408, cat: TV/Sport, desc: " |- VIP May 2021"}
-    - {id: 409, cat: TV/Sport, desc: " |- VIP June 2021"}
     - {id: 436, cat: TV/Sport, desc: " |- VIP July 2021"}
     - {id: 438, cat: TV/Sport, desc: " |- VIP August 2021"}
     - {id: 448, cat: TV/Sport, desc: " |- VIP September 2021"}
@@ -212,9 +212,6 @@ caps:
     - {id: 537, cat: TV/Sport, desc: " |- VIP-Light All Champs"}
     - {id: 573, cat: TV/Sport, desc: " |- VIP-Extra Argentina"}
     - {id: 531, cat: TV/Sport, desc: " |- VIP-Extra Portugal"}
-    - {id: 546, cat: TV/Sport, desc: " |- VIP-Extra Colombia"}
-    - {id: 240, cat: TV/Sport, desc: " |- VIP-Extra Belgium"}
-    - {id: 551, cat: TV/Sport, desc: " |- VIP-Extra Japan"}
     - {id: 394, cat: TV/Sport, desc: " |- VIP-Extra Brazil"}
     - {id: 441, cat: TV/Sport, desc: " |- Португалия/Portugal"}
     - {id: 87, cat: TV/Sport, desc: " |- Европа/Europe"}
@@ -228,7 +225,6 @@ caps:
     - {id: 376, cat: TV/Sport, desc: " |- VIP-Extra UEFA Classic"}
     - {id: 212, cat: TV/Sport, desc: " |- VIP UEFA"}
     - {id: 421, cat: TV/Sport, desc: " |- VIP-Light UEFA"}
-    - {id: 383, cat: TV/Sport, desc: " |- 2020-21 UEFA Youth League"}
     - {id: 377, cat: TV/Sport, desc: " |- UEFA Super Cup"}
     - {id: 74, cat: TV/Sport, desc: " |- UEFA Champions League"}
     - {id: 75, cat: TV/Sport, desc: " |- UEFA Europa League"}
@@ -248,11 +244,6 @@ caps:
     - {id: 117, cat: TV/Sport, desc: " |- Play-off"}
     - {id: 15, cat: TV/Sport, desc: "Чемпионаты Мира/FIFA World Cups"}
     - {id: 461, cat: TV/Sport, desc: " |- VIP-Extra FIFA WC Classic"}
-    - {id: 509, cat: TV/Sport, desc: " |- VIP-Extra 2019 FIFA U-17 World Cup"}
-    - {id: 510, cat: TV/Sport, desc: " |- VIP 2019 FIFA U-17 World Cup"}
-    - {id: 443, cat: TV/Sport, desc: " |- VIP-Extra 2019 FIFA U-20 World Cup"}
-    - {id: 411, cat: TV/Sport, desc: " |- 2019 FIFA U-20 World Cup"}
-    - {id: 454, cat: TV/Sport, desc: " |- 2019 FIFA U-17 World Cup"}
     - {id: 456, cat: TV/Sport, desc: " |- FIFA WC 2014. Финальный турнир"}
     - {id: 168, cat: TV/Sport, desc: " |- FIFA WC 2014. Отборочный турнир"}
     - {id: 495, cat: TV/Sport, desc: " |- FIFA WC 2014. Обзорные передачи"}
@@ -275,8 +266,8 @@ caps:
     - {id: 533, cat: TV/Sport, desc: " |- VIP-Extra Clubs International"}
     - {id: 243, cat: TV/Sport, desc: " |- VIP Clubs International"}
     - {id: 539, cat: TV/Sport, desc: " |- VIP-Light Clubs International"}
-    - {id: 401, cat: TV/Sport, desc: " |- VIP-Extra Copa Libertadores"}
-    - {id: 526, cat: TV/Sport, desc: " |- VIP-Extra Copa Sudamericana"}
+    - {id: 401, cat: TV/Sport, desc: " |- VIP-Extra Copa Libertadores 2023"}
+    - {id: 526, cat: TV/Sport, desc: " |- VIP-Extra Copa Sudamericana 2023"}
     - {id: 550, cat: TV/Sport, desc: " |- VIP-Extra AFC Competitions"}
     - {id: 399, cat: TV/Sport, desc: " |- VIP-Extra CAF Competitions"}
     - {id: 524, cat: TV/Sport, desc: " |- VIP-Extra CONCACAF Competitions"}
@@ -288,8 +279,8 @@ caps:
     - {id: 367, cat: TV/Sport, desc: " |- Copa Sudamericana"}
     - {id: 390, cat: TV/Sport, desc: " |- AFC Club Competitions"}
     - {id: 10, cat: TV/Sport, desc: "Международные турниры/National Team..."}
-    - {id: 462, cat: TV/Sport, desc: " |- VIP-Extra 2022 Africa Cup of Nations"}
-    - {id: 575, cat: TV/Sport, desc: " |- VIP 2022 Africa Cup of Nations"}
+    - {id: 462, cat: TV/Sport, desc: " |- VIP-Extra CHAN 2023 (2022 African Nations Championship"}
+    - {id: 575, cat: TV/Sport, desc: " |- VIP CHAN 2023"}
     - {id: 466, cat: TV/Sport, desc: " |- VIP-Extra International"}
     - {id: 213, cat: TV/Sport, desc: " |- VIP International"}
     - {id: 532, cat: TV/Sport, desc: " |- 2022 Africa Cup of Nations"}
@@ -301,9 +292,7 @@ caps:
     - {id: 239, cat: TV/Sport, desc: " |- Africa Cup of Nations"}
     - {id: 507, cat: TV/Sport, desc: " |- AFC Asian Cups"}
     - {id: 393, cat: TV/Sport, desc: " |- Sudamericano U-20"}
-    - {id: 534, cat: TV/Sport, desc: " |- VIP-Extra 2021 CONCACAF Gold Cup"}
     - {id: 560, cat: TV/Sport, desc: " |- VIP-Extra 2019 Sudamericano U-20 + U-17"}
-    - {id: 233, cat: TV/Sport, desc: " |- VIP-Extra 2020 AFC U-23"}
     - {id: 16, cat: TV/Sport, desc: "Товарищеские турниры и матчи/Frie..."}
     - {id: 387, cat: TV/Sport, desc: " |- VIP-Extra Friendlies"}
     - {id: 219, cat: TV/Sport, desc: " |- VIP  Friendlies"}
@@ -320,8 +309,8 @@ caps:
     - {id: 43, cat: TV/Sport, desc: "Аудиопередачи /Футбольное..."}
     # Спорт / Sport
     - {id: 23, cat: TV/Sport, desc: "Авто/мотоспорт"}
+    - {id: 492, cat: TV/Sport, desc: " |- Formula 1. Season 2023"}
     - {id: 131, cat: TV/Sport, desc: " |- Formula 1. Season 2022"}
-    - {id: 492, cat: TV/Sport, desc: " |- Formula 1. Season 2021"}
     - {id: 400, cat: TV/Sport, desc: " |- Formula 1. Seasons until 2022"}
     - {id: 21, cat: TV/Sport, desc: "Хоккей"}
     - {id: 420, cat: TV/Sport, desc: " |- ЧМ 2022 /  IIHF WС 2022"}
@@ -349,14 +338,14 @@ caps:
     - {id: 171, cat: TV/Sport, desc: " |- International tournaments"}
     - {id: 203, cat: TV/Sport, desc: " |- Women's basketball"}
     - {id: 22, cat: TV/Sport, desc: "Теннис"}
-    - {id: 227, cat: TV/Sport, desc: " |- Australian Open 2022"}
-    - {id: 248, cat: TV/Sport, desc: " |- Roland Garros 2022"}
-    - {id: 388, cat: TV/Sport, desc: " |- Wimbledon 2022"}
-    - {id: 459, cat: TV/Sport, desc: " |- US Open 2022"}
-    - {id: 505, cat: TV/Sport, desc: " |- ATP 1000 WT Masters 2022"}
-    - {id: 502, cat: TV/Sport, desc: " |- ATP 250/500 World Tour 2022"}
-    - {id: 504, cat: TV/Sport, desc: " |- WTA Tour 2022"}
-    - {id: 503, cat: TV/Sport, desc: " |- Team Season 2022"}
+    - {id: 227, cat: TV/Sport, desc: " |- Australian Open 2023"}
+    - {id: 248, cat: TV/Sport, desc: " |- Roland Garros 2023"}
+    - {id: 388, cat: TV/Sport, desc: " |- Wimbledon 2023"}
+    - {id: 459, cat: TV/Sport, desc: " |- US Open 2023"}
+    - {id: 505, cat: TV/Sport, desc: " |- ATP 1000 WT Masters 2023"}
+    - {id: 502, cat: TV/Sport, desc: " |- ATP 250/500 World Tour 2023"}
+    - {id: 504, cat: TV/Sport, desc: " |- WTA Tour 2023"}
+    - {id: 503, cat: TV/Sport, desc: " |- Team Season 2023"}
     - {id: 128, cat: TV/Sport, desc: " |- Grand Slam Tournaments up to 2022"}
     - {id: 127, cat: TV/Sport, desc: " |- ATP WT Masters 1000 up to 2022"}
     - {id: 125, cat: TV/Sport, desc: " |- ATP World Tour up to 2022"}
@@ -453,7 +442,7 @@ caps:
     - {id: 279, cat: TV/Sport, desc: " |- Water polo"}
     - {id: 284, cat: TV/Sport, desc: " |- Canoeing - Rowing - Sailing - Surfing"}
     - {id: 303, cat: TV/Sport, desc: "Boxing / Wrestling / Judo / Karate / Taekwondo"}
-    - {id: 518" value="518, cat: TV/Sport, desc: " |- VIP-Extra"}
+    - {id: 518, cat: TV/Sport, desc: " |- VIP-Extra"}
     - {id: 310, cat: TV/Sport, desc: "Gymnastics"}
     - {id: 312, cat: TV/Sport, desc: " |- Artistic - Спортивная"}
     - {id: 311, cat: TV/Sport, desc: " |- Rhythmic - Художественная"}
@@ -479,7 +468,11 @@ caps:
     - {id: 229, cat: TV/Sport, desc: "Тестовый форум"}
     # Администраторский
     - {id: 417, cat: TV/Sport, desc: "2021-22 UEFA Europa League"}
-    - {id: 527, cat: TV/Sport, desc: " |- VIP-Extra UEL 2017-18"}
+    - {id: 383, cat: TV/Sport, desc: " |- 2020-21 UEFA Youth League"}
+    - {id: 534, cat: TV/Sport, desc: " |- VIP-Extra 2021 CONCACAF Gold Cup"}
+    - {id: 411, cat: TV/Sport, desc: " |- 2019 FIFA U-20 World Cup"}
+    - {id: 454, cat: TV/Sport, desc: " |- 2019 FIFA U-17 World Cup"}
+    - {id: 233, cat: TV/Sport, desc: " |- VIP-Extra 2020 AFC U-23"}
     - {id: 202, cat: TV/Sport, desc: " |- VIP-Extra UCL 2016-17"}
     - {id: 431, cat: TV/Sport, desc: " |- VIP-Extra UEL 2016-17"}
     - {id: 440, cat: TV/Sport, desc: " |- VIP-Extra UСL 2015-16"}
@@ -490,8 +483,13 @@ caps:
     - {id: 513, cat: TV/Sport, desc: " |- VIP-Extra UEL 2013-14"}
     - {id: 508, cat: TV/Sport, desc: " |- VIP 2021 Copa America"}
     # Приватные разделы
+    - {id: 551, cat: TV/Sport, desc: " |- VIP-Extra Japan"}
+    - {id: 240, cat: TV/Sport, desc: " |- VIP-Extra Belgium"}
+    - {id: 546, cat: TV/Sport, desc: " |- VIP-Extra Colombia"}
+    - {id: 509, cat: TV/Sport, desc: " |- VIP-Extra 2019 FIFA U-17 World Cup"}
+    - {id: 510, cat: TV/Sport, desc: " |- VIP 2019 FIFA U-17 World Cup"}
+    - {id: 443, cat: TV/Sport, desc: " |- VIP-Extra 2019 FIFA U-20 World Cup"}
     - {id: 429, cat: TV/Sport, desc: " |- VIP-Extra Real Madrid 2020-21"}
-    - {id: 369, cat: TV/Sport, desc: " |- VIP-Extra Sat Feed France"}
 
   modes:
     search: [q]
