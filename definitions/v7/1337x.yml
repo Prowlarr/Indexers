@@ -266,10 +266,12 @@ search:
       filters:
         - name: replace
           args: ["'", ""]
+        - name: replace
+          args: [".", ""]
         - name: re_replace
           args: ["st|nd|rd|th", ""]
         - name: dateparse
-          args: "MMM. d yy"
+          args: "MMM d yy"
     date_today:
       # (today) 12:25am
       optional: true
