@@ -1,35 +1,41 @@
 ---
-id: torrentseeds-api
-name: TorrentSeeds (API)
-description: "TorrentSeeds is a Private Torrent Tracker for MOVIES / TV / MUSIC / GENERAL"
+id: rareshare2
+name: RareShare2 (API)
+description: "RareShare2 is a Private Torrent Tracker for TV"
 language: en-US
 type: private
 encoding: UTF-8
 links:
-  - https://torrentseeds.org/
+  - https://rareshare2.me/
 
 caps:
   categorymappings:
-    - {id: 1, cat: PC/0day, desc: "Apps"}
-    - {id: 2, cat: PC/Games, desc: "Games"}
-    - {id: 3, cat: Movies, desc: "Movies"}
-    - {id: 4, cat: Audio, desc: "Music"}
-    - {id: 5, cat: TV/Anime, desc: "Anime"}
-    - {id: 6, cat: XXX, desc: "Porn"}
-    - {id: 7, cat: TV/Sport, desc: "Sport"}
-    - {id: 8, cat: Movies, desc: "Movies/Packs"}
-    - {id: 3205, cat: TV, desc: "TV"}
-    - {id: 3206, cat: TV/Foreign, desc: "TV/Foreign"}
-    - {id: 3207, cat: Movies/Foreign, desc: "Movies/Foreign"}
-    - {id: 3208, cat: Books/EBook, desc: "E-Books"}
-    - {id: 3209, cat: TV, desc: "TV/Packs"}
+    - {id: 3, cat: TV, desc: "Music"}
+    - {id: 4, cat: Console, desc: "Game"}
+    - {id: 5, cat: PC, desc: "Application"}
+    - {id: 6, cat: TV, desc: "Comedy"}
+    - {id: 24, cat: TV/Documentary, desc: "Documentary"}
+    - {id: 7, cat: TV, desc: "Drama"}
+    - {id: 9, cat: TV, desc: "Entertaiment"}
+    - {id: 10, cat: TV, desc: "Factual"}
+    - {id: 11, cat: TV, desc: "Kids/Family"}
+    - {id: 12, cat: TV, desc: "News"}
+    - {id: 13, cat: TV, desc: "Soaps"}
+    - {id: 14, cat: TV, desc: "SciFi"}
+    - {id: 15, cat: TV/Sport, desc: "Sport"}
+    - {id: 16, cat: TV, desc: "True Crime"}
+    - {id: 17, cat: Audio, desc: "Radio"}
+    - {id: 18, cat: TV, desc: "Reality"}
+    - {id: 19, cat: TV, desc: "TV Movie"}
+    - {id: 21, cat: TV, desc: "Action-Adventure"}
+    - {id: 22, cat: TV, desc: "Music"}
+    - {id: 23, cat: TV, desc: "Comedy-Drama"}
+    - {id: 20, cat: TV, desc: "0"}
+    - {id: 8, cat: TV, desc: "0"}
 
   modes:
     search: [q]
     tv-search: [q, season, ep, imdbid, tvdbid, tmdbid]
-    movie-search: [q, imdbid, tmdbid]
-    music-search: [q]
-    book-search: [q]
 
 settings:
   - name: apikey
@@ -38,7 +44,7 @@ settings:
   - name: info_key
     type: info
     label: About your API key
-    default: "Find or Generate a new API Token by accessing your <a href=\"https://torrentseeds.org/\" target=\"_blank\">TorrentSeeds</a> account <i>My Security</i> page and clicking on the <b>API Token</b> tab."
+    default: "Find or Generate a new API Token by accessing your <a href=\"https://rareshare2.me/\" target=\"_blank\">RareShare2</a> account <i>My Security</i> page and clicking on the <b>API Token</b> tab."
   - name: freeleech
     type: checkbox
     label: Search freeleech only
@@ -74,14 +80,17 @@ search:
   paths:
     # https://hdinnovations.github.io/UNIT3D-Community-Edition-Docs/api_endpoints.html
     # https://github.com/HDInnovations/UNIT3D-Community-Edition/blob/master/app/Http/Controllers/API/TorrentController.php
-    - path: api/torrents/filter
+    - path: "/api/torrents/filter"
       response:
         type: json
 
   inputs:
+  # if we have an id based search, add Season and Episode as query in name for UNIT3D < v6.  Else pass S/E Params for UNIT3D >= v6
     api_token: "{{ .Config.apikey }}"
     $raw: "{{ range .Categories }}&categories[]={{.}}{{end}}"
     name: "{{ .Keywords }}"
+    seasonNumber: "{{ .Query.Season }}"
+    episodeNumber: "{{ .Query.Ep }}"
     imdbId: "{{ .Query.IMDBIDShort }}"
     tmdbId: "{{ .Query.TMDBID }}"
     tvdbId: "{{ .Query.TVDBID }}"
@@ -92,12 +101,8 @@ search:
     page: 1
 
   keywordsfilters:
-    - name: replace # avoid conflict when prepending + to words
-      args: ["-", " "]
-    - name: re_replace # prepend + to each word >2 characters
-      args: ["(\\w{3,})", "+$1"]
-    - name: re_replace # +2023 04 13 > +"2023 04 13"
-      args: ["\\+\\b(\\d{4}[\\s\\.]\\d{2}[\\s\\.]\\d{2})\\b", "+\"$1\""]
+    - name: re_replace
+      args: ["\\.", " "]
 
   rows:
     selector: data
@@ -106,14 +111,16 @@ search:
       selector: meta.total
 
   fields:
-    categorydesc:
-      selector: category
+    category:
+      selector: category_id
     title:
       selector: name
     details:
       selector: details_link
     download:
       selector: download_link
+    infohash:
+      selector: info_hash
     poster:
       selector: poster
       filters:
@@ -144,21 +151,23 @@ search:
     size:
       selector: size
     downloadvolumefactor:
-      # api returns 0=false, 1=true
+      # api returns 0%, 25%, 50%, 75%, 100%
       selector: freeleech
       case:
-        0: 1 # not free
-        1: 0 # freeleech
+        0%: 1 # not free
+        25%: 0.75
+        50%: 0.5
+        75%: 0.25
+        100%: 0 # freeleech
+        "*": 0 # catch errors
     uploadvolumefactor:
       # api returns 0=false, 1=true
       selector: double_upload
       case:
         0: 1 # normal
         1: 2 # double
-# global MR is 0.5 but torrents must be seeded for 5 days regardless of ratio
-#    minimumratio:
-#      text: 0.5
     minimumseedtime:
-      # 5 days (as seconds = 5 x 24 x 60 x 60)
-      text: 432000
-# json UNIT3D 5.3.0 custom
+      # 1 day (as seconds = 1 x 24 x 60 x 60) for Single episodes
+      # 3 days (as seconds = 3 x 24 x 60 x 60) for Packs
+      text: 259200
+# json UNIT3D 6.0.6

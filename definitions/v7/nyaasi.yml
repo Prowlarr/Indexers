@@ -9,8 +9,10 @@ requestDelay: 2
 links:
   - https://nyaa.si/
   - https://nyaa.iss.ink/
-  - https://nyaa.mrunblock.guru/ # for magnets only
+  - https://nyaa.mrunblock.life/ # for magnets only
   - https://nyaa.unblockninja.com/ # for magnets only
+  - https://nyaa.nocensor.click/
+  - https://nyaa.land/
 legacylinks:
   - https://nyaa.black-mirror.xyz/
   - https://nyaa.unblocked.casa/
@@ -25,6 +27,7 @@ legacylinks:
   - https://nyaa.nocensor.world/
   - https://nyaa.nocensor.lol/
   - https://nyaa.nocensor.art/
+  - https://nyaa.mrunblock.guru/
 
 settings:
   - name: prefer_magnet_links
