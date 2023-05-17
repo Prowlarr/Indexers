@@ -135,7 +135,7 @@ login:
     - selector: table:contains("An error has occured!")
   test:
     path: index.php
-    selector: a[href*="/logout.php?logouthash="]
+    selector: a[href*="/logout.php?logouthash="], table:contains("You have succesfully logged in")
 
 search:
   paths:
