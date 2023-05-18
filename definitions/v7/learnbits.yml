@@ -131,11 +131,13 @@ login:
   inputs:
     username: "{{ .Config.username }}"
     password: "{{ .Config.password }}"
+    logout: ""
+    logintype: ""
   error:
     - selector: table:contains("An error has occured!")
   test:
     path: index.php
-    selector: a[href*="/logout.php?logouthash="], table:contains("You have succesfully logged in")
+    selector: a[href*="/logout.php?logouthash="]
 
 search:
   paths:
