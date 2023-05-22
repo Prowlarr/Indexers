@@ -139,16 +139,14 @@ search:
       selector: td:nth-child(5)
     grabs:
       selector: td:nth-child(4)
-    seeders_optional:
+    seeders:
       selector: a[href$="seeders"]
       optional: true
-    seeders:
-      text: "{{ if .Result.seeders_optional }}{{ .Result.seeders_optional }}{{ else }}0{{ end }}"
-    leechers_optional:
+      default: 0
+    leechers:
       selector: a[href$="leechers"]
       optional: true
-    leechers:
-      text: "{{ if .Result.leechers_optional }}{{ .Result.leechers_optional }}{{ else }}0{{ end }}"
+      default: 0
     downloadvolumefactor:
       case:
         img[src="./pic/free.gif"]: 0

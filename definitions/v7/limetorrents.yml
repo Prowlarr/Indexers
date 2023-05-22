@@ -128,7 +128,7 @@ search:
       selector: td:nth-child(2)
       filters:
         - name: regexp
-          args: " in (.+?)$"
+          args: " in (.+?)[.]?$"
     details:
       selector: div.tt-name > a[href^="/"]
       attribute: href
