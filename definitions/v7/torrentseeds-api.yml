@@ -74,13 +74,14 @@ search:
   paths:
     # https://hdinnovations.github.io/UNIT3D-Community-Edition-Docs/api_endpoints.html
     # https://github.com/HDInnovations/UNIT3D-Community-Edition/blob/master/app/Http/Controllers/API/TorrentController.php
-    - path: "/api/torrents/filter?name={{ .Keywords }}{{ if .Query.TMDBID }}&tmdbId={{ .Query.TMDBID }}{{ else }}{{ end }}{{ if .Query.IMDBIDShort }}&imdbId={{ .Query.IMDBIDShort }}{{ else }}{{ end }}{{ if  .Query.TVDBID }}&tvdbId={{ .Query.TVDBID }}{{ else }}{{ end }}{{ if .Config.freeleech }}&free=1{{ else }}{{ end }}"
+    - path: api/torrents/filter
       response:
         type: json
 
   inputs:
     api_token: "{{ .Config.apikey }}"
-    $raw: "{{ range .Categories }}&categories[]={{.}}{{end}}"
+    $raw: "{{ if .Query.TMDBID }}&tmdbId={{ .Query.TMDBID }}{{ else }}{{ end }}{{ if .Query.IMDBIDShort }}&imdbId={{ .Query.IMDBIDShort }}{{ else }}{{ end }}{{ if  .Query.TVDBID }}&tvdbId={{ .Query.TVDBID }}{{ else }}{{ end }}{{ range .Categories }}&categories[]={{.}}{{end}}{{ if .Config.freeleech }}&free=1{{ else }}{{ end }}"
+    name: "{{ .Keywords }}"
     sortField: "{{ .Config.sort }}"
     sortDirection: "{{ .Config.type }}"
     perPage: 100
