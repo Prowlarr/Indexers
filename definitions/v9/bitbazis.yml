@@ -132,12 +132,11 @@ search:
       filters:
         - name: regexp
           args: (\d+)
-    details_optional:
+    details:
       selector: a[href^="details.php?id="]
       attribute: href
       optional: true
-    details:
-      text: "{{ if .Result.details_optional }}{{ .Result.details_optional }}{{ else }}details.php?id={{ .Result._id }}#adatlap{{ end }}"
+      default: "details.php?id={{ .Result._id }}#adatlap"
     download:
       text: "download.php?torrent={{ .Result._id }}"
     poster:
