@@ -1,15 +1,12 @@
 ---
-id: vsttorrents
-name: VST Torrentz
-description: "VST Torrentz is a Public site for AUDIO apps, plugins and samples"
+id: vstorrent
+name: VSTorrent
+description: "VSTorrent is a Public site for AUDIO apps, plugins and samples"
 language: en-US
 type: public
 encoding: UTF-8
 links:
-  - https://vsttorrentz.net/
-legacylinks:
-  - https://vsttorrents.net/
-  - https://looptorrent.net/
+  - https://vstorrent.org/
 
 caps:
   categories:
@@ -22,7 +19,7 @@ settings: []
 
 download:
   selectors:
-    - selector: div.wp-block-file a
+    - selector: a[href^="magnet:?xt"]
       attribute: href
 
 search:
@@ -48,10 +45,9 @@ search:
       selector: .entry-title > a
       attribute: href
     description:
-      selector: .entry-excerpt
+      selector: .entry-summary
     date:
-      selector: time
-      attribute: datetime
+      selector: span.date
     size:
       text: "512 MB"
     seeders:
