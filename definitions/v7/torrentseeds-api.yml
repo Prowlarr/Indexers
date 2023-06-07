@@ -63,8 +63,7 @@ settings:
 login:
   path: /api/torrents
   method: get
-  inputs:
-    api_token: "{{ .Config.apikey }}"
+  inputs: {} # TODO: remove in v10
   error:
     - selector: a[href*="/login"]
       message:
@@ -78,8 +77,10 @@ search:
       response:
         type: json
 
+  headers:
+    Authorization: ["Bearer {{ .Config.apikey }}"]
+
   inputs:
-    api_token: "{{ .Config.apikey }}"
     $raw: "{{ if .Query.TMDBID }}&tmdbId={{ .Query.TMDBID }}{{ else }}{{ end }}{{ if .Query.IMDBIDShort }}&imdbId={{ .Query.IMDBIDShort }}{{ else }}{{ end }}{{ if  .Query.TVDBID }}&tvdbId={{ .Query.TVDBID }}{{ else }}{{ end }}{{ range .Categories }}&categories[]={{.}}{{end}}{{ if .Config.freeleech }}&free=1{{ else }}{{ end }}"
     name: "{{ .Keywords }}"
     sortField: "{{ .Config.sort }}"
