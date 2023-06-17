@@ -67,8 +67,9 @@ search:
     - name: replace
       args: ["&", ""] # Ampersands throw it off. eztv fails with this too, so unclear. Simplest solution is to just strip it out. Prowlarr #1094
 
-  headers:
-    cookie: ["sort_no=100"] # show 100 results for keywordless search
+# TODO: uncomment after fixing Headers['Cookie'] + Cookies
+#  headers:
+#    cookie: ["sort_no=100"] # show 100 results for keywordless search
 
   rows:
     # only use latest added torrents table for keywordless search to avoid duplicates, some torrents don't have any download links so skip them
