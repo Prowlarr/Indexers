@@ -148,11 +148,13 @@ search:
     category_p1:
       selector: div.kat_cat_pic_name
       optional: true
+      default: Other
     category_p2:
       selector: div.kat_cat_pic_name_b
       optional: true
+      default: Other
     categorydesc:
-      text: "{{ if .Result.category_p1 }}{{ .Result.category_p1 }}{{ else }}Other{{ end }} {{ if .Result.category_p2 }}{{ .Result.category_p2 }}{{ else }}Other{{ end }}"
+      text: "{{ .Result.category_p1 }} {{ .Result.category_p2 }}"
     title:
       selector: a.selection_a
       filters:

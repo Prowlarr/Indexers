@@ -121,8 +121,11 @@ search:
 
   fields:
     category:
+      text: "/other/"
+    category|noappend:
       selector: td:nth-child(1) div div a:last-child
       attribute: href
+      optional: true
     title:
       selector: td:nth-child(1) div a
     details:

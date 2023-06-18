@@ -123,6 +123,8 @@ search:
     category:
       selector: td:nth-child(1) div div a:last-child
       attribute: href
+      optional: true
+      default: "/other/"
     title:
       selector: td:nth-child(1) div a
     details:
@@ -133,10 +135,11 @@ search:
       attribute: href
     size:
       selector: td:nth-child(2)
-    files:
+    files_optional:
       selector: td:nth-child(3)
       optional: true
-      default: 1
+    files:
+      text: "{{ if .Result.files_optional }}{{ .Result.files_optional }}{{ else }}0{{ end }}"
     date:
       selector: td:nth-child(4)
     seeders:
