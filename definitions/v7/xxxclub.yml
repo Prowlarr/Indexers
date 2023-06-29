@@ -33,7 +33,7 @@ settings:
 
 download:
   selectors:
-    - selector: a[href^="/torrents/download/"]
+    - selector: a[href^="magnet:?xt="]
       attribute: href
 
 search:
