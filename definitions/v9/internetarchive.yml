@@ -78,11 +78,10 @@ search:
       selector: identifier
     category:
       selector: mediatype
-    title_optional:
+    title:
       selector: title
       optional: true
-    title:
-      text: "{{ if .Result.title_optional }}{{ .Result.title_optional }}{{ else }}Missing title for {{ .Result._id }}{{ end }}"
+      default: "Missing title for {{ .Result._id }}"
     details:
       text: "details/{{ .Result._id }}"
     download:
