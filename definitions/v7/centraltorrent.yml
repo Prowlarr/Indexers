@@ -87,9 +87,12 @@ login:
   error:
     - selector: td.embedded:has(h2:contains("failed"))
     - selector: td.embedded:has(h2:contains("Error"))
+    - selector: form[action="takelogin.php"]
+      message:
+        text: "Login page detected at {{ .Config.sitelink }}."
   test:
-    path: my.php
-    selector: a[href="logout.php"]
+    path: index.php
+    selector: a[href="/my.php"]
 
 download:
   selectors:
