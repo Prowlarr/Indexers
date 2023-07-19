@@ -11,7 +11,7 @@ links:
   - https://yts.mx/
   - https://yts.unblockit.rsvp/
   - https://yts.unblockninja.com/
-  - https://yts.mrunblock.life/
+  - https://yts.mrunblock.bond/
   - https://yts.nocensor.click/
 legacylinks:
   - https://yts.ag/
@@ -38,6 +38,7 @@ legacylinks:
   - https://yts.unblockit.click/
   - https://yts.unblockit.asia/
   - https://yts.unblockit.mov/
+  - https://yts.mrunblock.life/
 
 caps:
   categorymappings:
@@ -89,8 +90,14 @@ search:
         "2160p": 46
         "3D": 47
         "*": 45
+    _audio:
+      selector: audio_channels
+    _depth:
+      selector: bit_depth
     _type:
       selector: type
+    _codec:
+      selector: video_codec
     year:
       selector: ..year
     title_default:
@@ -106,9 +113,8 @@ search:
       filters:
         - name: replace
           args: [":", ""]
-        # append type: BRRip or WEBRip, resolves #3558 via #4577
         - name: append
-          args: " {{ .Result._quality }} {{ if eq .Result._type \"web\" }}WEBRip{{ else }}BRRip{{ end }} -YTS"
+          args: " {{ .Result._quality }} {{ if eq .Result._type \"web\" }}WEBRip{{ else }}BRRip{{ end }} {{ if eq .Result._audio \"5.1\" }}5.1 {{ else }}{{ end }}{{ if eq .Result._depth \"10\" }}10Bit {{ else }}{{ end }}{{ .Result._codec }} -YTS"
     details:
       selector: ..url
       filters:
