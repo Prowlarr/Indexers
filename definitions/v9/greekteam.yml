@@ -167,11 +167,10 @@ search:
       selector: td:has(a[href$="filelist=1"]) ~ td ~ td ~ td ~ td ~ td
     seeders:
       selector: td:has(a[href$="filelist=1"]) ~ td ~ td ~ td ~ td ~ td ~ td
-    leechers_optional:
+    leechers:
       selector: td:has(a[href$="filelist=1"]) ~ td ~ td ~ td ~ td ~ td ~ td ~ td
       optional: true
-    leechers:
-      text: "{{ if .Result.leechers_optional }}{{ .Result.leechers_optional }}{{ else }}0{{ end }}"
+      default: 0
     downloadvolumefactor:
       case:
         img[src="pic/free.png"]: 0

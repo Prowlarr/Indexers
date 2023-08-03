@@ -1,34 +1,43 @@
 ---
-id: kamept
-name: KamePT
-description: "KamePT is a CHINESE Private Torrent Tracker for 3X"
+id: wintersakura
+name: WinterSakura
+description: "WinterSakura is a CHINESE Private Torrent Tracker for MOVIES / TV / GENERAL"
 language: zh-CN
 type: private
 encoding: UTF-8
+requestDelay: 2
 links:
-  - https://kamept.com/
+  - https://wintersakura.net/
 
 caps:
   categorymappings:
-    - {id: 410, cat: XXX, desc: "同人AV"}
-    - {id: 413, cat: XXX, desc: "男娘"}
-    - {id: 414, cat: XXX, desc: "同人VR"}
-    - {id: 417, cat: XXX, desc: "Cosplay套图"}
-    - {id: 419, cat: XXX, desc: "里番"}
-    - {id: 411, cat: XXX, desc: "2D动画"}
-    - {id: 423, cat: XXX, desc: "3D动画"}
-    - {id: 424, cat: XXX/ImageSet, desc: "单行本"}
-    - {id: 435, cat: XXX/ImageSet, desc: "同人志"}
-    - {id: 433, cat: XXX/ImageSet, desc: "画师CG"}
-    - {id: 415, cat: XXX/Other, desc: "游戏"}
-    - {id: 418, cat: XXX/Other, desc: "中文游戏"}
-    - {id: 434, cat: XXX/ImageSet, desc: "游戏CG"}
-    - {id: 420, cat: XXX/Other, desc: "外语音声"}
-    - {id: 421, cat: XXX/Other, desc: "中文音声"}
-    - {id: 422, cat: XXX/Other, desc: "视频音声"}
+    # torrents.php
+    - {id: 409, cat: Other, desc: "Misc其他", default: true}
+    - {id: 407, cat: TV/Sport, desc: "Sports体育", default: true}
+    - {id: 406, cat: Audio/Video, desc: "Music Videos音乐MV", default: true}
+    - {id: 408, cat: Audio, desc: "HQ Audio无损音乐", default: true}
+    - {id: 418, cat: TV, desc: "TV Shows综艺(分集)", default: true}
+    - {id: 403, cat: TV, desc: "TV Shows综艺(Packs合集)", default: true}
+    - {id: 402, cat: TV, desc: "TV Series剧集(分集)", default: true}
+    - {id: 414, cat: TV, desc: "TV Series剧集(Packs合集)", default: true}
+    - {id: 413, cat: TV/Anime, desc: "Animation series动漫剧集(分集)", default: true}
+    - {id: 423, cat: TV/Anime, desc: "Animation series动漫剧集(Packs合集)", default: true}
+    - {id: 422, cat: TV/Anime, desc: "Animation flims动漫电影", default: true}
+    - {id: 410, cat: TV/Documentary, desc: "Documentaries纪录片", default: true}
+    - {id: 401, cat: Movies, desc: "Movies电影", default: true}
+    # special.php
+    - {id: 427, cat: PC, desc: "Software软件/程序/代码", default: false}
+    - {id: 426, cat: Books/Technical, desc: "Papers期刊/论文", default: false}
+    - {id: 428, cat: Books/EBook, desc: "Books图书", default: false}
+    - {id: 425, cat: Other, desc: "Database数据/数据库", default: false}
+    - {id: 424, cat: Other, desc: "Course课程", default: false}
 
   modes:
     search: [q]
+    tv-search: [q, season, ep, imdbid, doubanid]
+    movie-search: [q, imdbid, doubanid]
+    music-search: [q]
+    book-search: [q]
 
 settings:
   - name: username
@@ -43,7 +52,7 @@ settings:
   - name: info_2fa
     type: info
     label: "About 2FA code"
-    default: "Only fill in the <b>2FA code</b> box if you have enabled <b>2FA</b> on the KamePT Web Site. Otherwise just leave it empty."
+    default: "Only fill in the <b>2FA code</b> box if you have enabled <b>2FA</b> on the WinterSakura Web Site. Otherwise just leave it empty."
   - name: freeleech
     type: checkbox
     label: Search freeleech only
@@ -70,8 +79,13 @@ settings:
     default: For best results, change the <b>Torrents per page:</b> setting to <b>100</b> on your account profile.
 
 login:
-  path: takelogin.php
-  method: post
+  path: login.php
+  method: form
+  form: form[action="takelogin.php"]
+  captcha:
+    type: image
+    selector: img[alt="CAPTCHA"]
+    input: imagestring
   inputs:
     secret: ""
     username: "{{ .Config.username }}"
@@ -85,21 +99,24 @@ login:
     - selector: td.embedded:has(h2:contains("失败"))
   test:
     path: index.php
-    selector: a[href*="usercp.php"]
+    selector: a[href="logout.php"]
 
 search:
   paths:
     - path: torrents.php
+      categories: [409, 407, 406, 408, 418, 403, 402, 414, 413, 423, 422, 410, 401]
+    - path: special.php
+      categories: [427, 426, 428, 425, 424]
   inputs:
     $raw: "{{ range .Categories }}cat{{.}}=1&{{end}}"
-    search: "{{ .Keywords }}"
+    search: "{{ if .Query.IMDBID }}{{ .Query.IMDBID }}{{ else }}{{ end }}{{ if or .Query.IMDBID .Query.DoubanID }} {{ else }}{{ .Keywords }}{{ end }}{{ if .Query.DoubanID }}{{ .Query.DoubanID }}{{ else }}{{ end }}"
     # 0 incldead, 1 active, 2 dead
     incldead: 0
     # 0 all, 1 normal, 2 free, 3 2x, 4 2xfree, 5 50%, 6 2x50%, 7 30%
     spstate: "{{ if .Config.freeleech }}2{{ else }}0{{ end }}"
-    # 0 title, 1 descr, 3 uploader
-    search_area: 0
-    # 0 AND, 1 OR, 2 exact
+    # 0 title, 1 descr, 3 uploader, 4 imdburl
+    search_area: "{{ if or .Query.IMDBID .Query.DoubanID }}1{{ else }}0{{ end }}"
+    # 0 AND, 2 exact
     search_mode: 0
     sort: "{{ .Config.sort }}"
     type: "{{ .Config.type }}"
@@ -117,12 +134,11 @@ search:
           args: cat
     title_default:
       selector: a[href^="details.php?id="]
-    title_optional:
-      optional: true
+    title:
       selector: a[title][href^="details.php?id="]
       attribute: title
-    title:
-      text: "{{ if .Result.title_optional }}{{ .Result.title_optional }}{{ else }}{{ .Result.title_default }}{{ end }}"
+      optional: true
+      default: "{{ .Result.title_default }}"
     details:
       selector: a[href^="details.php?id="]
       attribute: href
@@ -132,6 +148,14 @@ search:
     poster:
       selector: img[data-src]
       attribute: data-src
+    imdbid:
+      # site currently only has a badge and rating, the id is not present. just in case a future update.
+      selector: a[href*="imdb.com/title/tt"]
+      attribute: href
+    doubanid:
+      # site currently only has a badge and rating, the id is not present. just in case a future update.
+      selector: a[href*="movie.douban.com/subject/"]
+      attribute: href
     date_elapsed:
       # time type: time elapsed (default)
       selector: td.rowfollow:nth-child(4) > span[title]
@@ -176,8 +200,8 @@ search:
         img.pro_2up: 2
         "*": 1
     minimumratio:
-      text: 0.9
+      text: 0.4
     description:
       selector: td.rowfollow:nth-child(2)
       remove: a, b, font, img, span
-# NexusPHP KEMURIKUSA 2019-01-09
+# NexusPHP f99d919 2023-05-08
