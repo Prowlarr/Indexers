@@ -9,16 +9,15 @@ requestDelay: 2.5 # 2.5 requests per second (2 causes problems)
 links:
   # dont forget to update the details, download and poster replace args
   - https://yts.mx/
-  - https://yts.unblockit.rsvp/
+  - https://yts.unblockit.vegas/
   - https://yts.unblockninja.com/
   - https://yts.mrunblock.bond/
-  - https://yts.nocensor.click/
+  - https://yts.nocensor.cloud/
 legacylinks:
   - https://yts.ag/
   - https://yts.am/
   - https://yts.lt/
   - https://yts.nocensor.biz/
-  - https://yts.unblockit.llc/
   - https://yts.unblockit.blue/
   - https://yts.unblockit.name/
   - https://yts.nocensor.sbs/
@@ -39,6 +38,8 @@ legacylinks:
   - https://yts.unblockit.asia/
   - https://yts.unblockit.mov/
   - https://yts.mrunblock.life/
+  - https://yts.unblockit.rsvp/
+  - https://yts.nocensor.click/
 
 caps:
   categorymappings:
