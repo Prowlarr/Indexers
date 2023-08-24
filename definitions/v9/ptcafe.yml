@@ -1,33 +1,30 @@
 ---
-id: 2xfree
-name: 2xFree
-description: "2xFree is a CHINESE Private Torrent Tracker for 3D MOVIES / TV"
+id: ptcafe
+name: PTCafe
+description: "PTCafe (咖啡) is a CHINESE Private Torrent Tracker for MOVIES / TV / GENERAL"
 language: zh-CN
 type: private
 encoding: UTF-8
 links:
-  - https://pt.2xfree.org/
+  - https://ptcafe.club/
 
 caps:
   categorymappings:
-
-    # torrents.php
-    - {id: 526, cat: Movies, desc: "3DMovies(3D电影)"}
-    - {id: 527, cat: TV, desc: "3DSeries(3D剧集)"}
-    - {id: 533, cat: Movies, desc: "VRMovies(VR电影)"}
-    - {id: 534, cat: TV, desc: "VRSeries(VR剧集)"}
-    - {id: 528, cat: Audio/Video, desc: "AV(VR无码)"}
-    - {id: 529, cat: Audio/Video, desc: "AV(VR有码)"}
-    - {id: 530, cat: Console, desc: "VRGame(VR一体机游戏)"}
-    - {id: 531, cat: PC/Games, desc: "PCVRGame(PCVR游戏)"}
-    - {id: 532, cat: Other, desc: "VRTools(VR工具软件)"}
+    - {id: 401, cat: Movies, desc: "电影"}
+    - {id: 402, cat: TV, desc: "剧集"}
+    - {id: 403, cat: TV, desc: "综艺"}
+    - {id: 404, cat: TV/Documentary, desc: "纪录"}
+    - {id: 405, cat: TV/Anime, desc: "动漫"}
+    - {id: 406, cat: Audio/Video, desc: "MV"}
+    - {id: 407, cat: TV/Sport, desc: "体育"}
+    - {id: 408, cat: Audio, desc: "音乐"}
+    - {id: 409, cat: Other, desc: "其他"}
 
   modes:
     search: [q]
     tv-search: [q, season, ep, imdbid, doubanid]
     movie-search: [q, imdbid, doubanid]
     music-search: [q]
-    book-search: [q]
 
 settings:
   - name: username
@@ -42,7 +39,7 @@ settings:
   - name: info_2fa
     type: info
     label: "About 2FA code"
-    default: "Only fill in the <b>2FA code</b> box if you have enabled <b>2FA</b> on the 2xFree Web Site. Otherwise just leave it empty."
+    default: "Only fill in the <b>2FA code</b> box if you have enabled <b>2FA</b> on the PTCafe Web Site. Otherwise just leave it empty."
   - name: freeleech
     type: checkbox
     label: Search freeleech only
@@ -67,10 +64,6 @@ settings:
     type: info
     label: Results Per Page
     default: For best results, change the <b>Torrents per page:</b> setting to <b>100</b> on your account profile.
-  - name: info_ulslr
-    type: info
-    label: Upload Speed Limit Rule
-    default: The upload bandwidth shall not exceed 120Mbps, that is, the upload speed shall not exceed 15MB/s.
 
 login:
   path: login.php
@@ -91,6 +84,8 @@ login:
     trackerssl: yes
   error:
     - selector: td.embedded:has(h2:contains("失败"))
+      message:
+        selector: td.text
   test:
     path: index.php
     selector: a[href="logout.php"]
@@ -105,16 +100,16 @@ search:
     incldead: 0
     # 0 all, 1 normal, 2 free, 3 2x, 4 2xfree, 5 50%, 6 2x50%, 7 30%
     spstate: "{{ if .Config.freeleech }}2{{ else }}0{{ end }}"
-    # 0 title, 1 descr, 3 uploader, 4 imdburl (4 does not appear to work)
+    # 0 title, 1 descr, 3 uploader, 4 imdburl (not used)
     search_area: "{{ if or .Query.IMDBID .Query.DoubanID }}1{{ else }}0{{ end }}"
-    # 0 AND, 1 OR, 2 exact
+    # 0 AND, 2 exact
     search_mode: 0
     sort: "{{ .Config.sort }}"
     type: "{{ .Config.type }}"
     notnewword: 1
 
   rows:
-    selector: table.torrents > tbody > tr:has(a[href^="details.php?id="])
+    selector: table.torrents > tbody > tr:has(table.torrentname)
 
   fields:
     category:
@@ -125,32 +120,20 @@ search:
           args: cat
     title_default:
       selector: a[href^="details.php?id="]
-    title_optional:
-      optional: true
+    title:
       selector: a[title][href^="details.php?id="]
       attribute: title
-    title:
-      text: "{{ if .Result.title_optional }}{{ .Result.title_optional }}{{ else }}{{ .Result.title_default }}{{ end }}"
+      optional: true
+      default: "{{ .Result.title_default }}"
     details:
       selector: a[href^="details.php?id="]
       attribute: href
     download:
       selector: a[href^="download.php?id="]
       attribute: href
-    poster:
-      selector: img[data-src]
-      attribute: data-src
-    imdbid:
-      # site currently only has a badge and rating, the id is not present. just in case a future update.
-      selector: a[href*="imdb.com/title/tt"]
-      attribute: href
-    doubanid:
-      # site currently only has a badge and rating, the id is not present. just in case a future update.
-      selector: a[href*="movie.douban.com/subject/"]
-      attribute: href
     date_elapsed:
       # time type: time elapsed (default)
-      selector: td.rowfollow:nth-child(4) > span[title]
+      selector: td:nth-child(4) > span[title]
       attribute: title
       optional: true
       filters:
@@ -160,23 +143,23 @@ search:
           args: "yyyy-MM-dd HH:mm:ss zzz"
     date_added:
       # time added
-      selector: td.rowfollow:nth-child(4):not(:has(span))
+      selector: td:nth-child(4):not(:has(span))
       optional: true
       filters:
         - name: append
-          args: " +08:00" # CST
+          args: " +07:00" # CST
         - name: dateparse
           args: "yyyy-MM-ddHH:mm:ss zzz"
     date:
       text: "{{ if or .Result.date_elapsed .Result.date_added }}{{ or .Result.date_elapsed .Result.date_added }}{{ else }}now{{ end }}"
     size:
-      selector: td.rowfollow:nth-child(5)
+      selector: td:nth-child(5)
     seeders:
-      selector: td.rowfollow:nth-child(6)
+      selector: td:nth-child(6)
     leechers:
-      selector: td.rowfollow:nth-child(7)
+      selector: td:nth-child(7)
     grabs:
-      selector: td.rowfollow:nth-child(8)
+      selector: td:nth-child(8)
     downloadvolumefactor:
       case:
         img.pro_free: 0
@@ -194,6 +177,6 @@ search:
     minimumratio:
       text: 0.8
     description:
-      selector: td.rowfollow:nth-child(2)
+      selector: td:nth-child(2)
       remove: a, b, font, img, span
-# NexusPHP v1.8.6 2023-06-18
+# NexusPHP v1.8.5 2023-07-29
