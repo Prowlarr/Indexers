@@ -1,7 +1,7 @@
 ---
 id: 0daykiev
 name: 0day.kiev
-description: "0day.kiev.ua is a RUSSIAN Private Torrent Tracker for MOVIES / TV / GENERAL"
+description: "0day.kiev.ua is a UKRAINIAN Private Torrent Tracker for MOVIES / TV / GENERAL"
 language: ru-RU
 type: private
 encoding: windows-1251
@@ -130,15 +130,11 @@ search:
         - name: re_replace
           args: ["[\\:\\-\\/\\|]", " "]
         - name: re_replace
-          args: ["(?i)\\bКураж Бамбей\\b", "kurazh"]
-        - name: re_replace
-          args: ["(?i)\\bКубик в Кубе\\b", "Kubik"]
-        - name: re_replace
-          args: ["(?i)\\bКравец\\b", "Kravec"]
-        - name: re_replace
           args: ["(?i)(.*)\\([CС]езон\\s+(\\d+)\\)\\s+[CС]ери[ия]\\s+(\\d+)\\s+(\\d+)(.*)", "$1 S$2E$3-$4 rus $5"]
         - name: re_replace
-          args: ["(?i)(.*)\\([CС]езон\\s+(\\d+)\\)(.*)", "$1 S$2 rus $3"]
+          args: ["(?i)(.*)\\([CС]езон\\s+(\\d+)\\)\\s+[CС]ері[їя]\\s+(\\d+)\\s+(\\d+)(.*)", "$1 S$2E$3-$4 ukr $5"]
+        - name: re_replace
+          args: ["(?i)(.*)\\([CС]езон\\s+(\\d+)\\)(.*)", "$1 S$2 ukr $3"]
         - name: re_replace
           args: ["(\\([\\p{IsCyrillic}\\W]+\\))|(^[\\p{IsCyrillic}\\W\\d]+\\/ )|([\\p{IsCyrillic} \\-]+,+)|([\\p{IsCyrillic}]+)", "{{ if .Config.stripcyrillic }}{{ else }}$1$2$3$4{{ end }}"]
         - name: re_replace
@@ -161,7 +157,7 @@ search:
       selector: td:nth-child(2) i
       filters:
         - name: append
-          args: " +03:00" # MSK
+          args: " +02:00" # EET
         - name: dateparse
           args: "yyyy-MM-dd HH:mm:ss zzz"
     size:
