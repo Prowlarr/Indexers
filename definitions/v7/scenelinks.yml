@@ -1,0 +1,182 @@
+---
+id: scenelinks
+name: SceneLinks
+description: "SceneLinks (SL) is a ROMANIAN Private Torrent Tracker for MOVIES / TV / GENERAL"
+language: ro-RO
+type: private
+encoding: UTF-8
+requestDelay: 2
+links:
+  - https://scenelinks.io/
+
+caps:
+  categorymappings:
+    # when adding or removing cats don't forget the path categories
+    - {id: 163, cat: TV/Anime, desc: "Anime / Hentai", default: true}
+    - {id: 146, cat: PC, desc: "Applications", default: true}
+    - {id: 151, cat: Books/EBook, desc: "E-books", default: true}
+    - {id: 103, cat: PC/Games, desc: "Games: PC", default: true}
+    - {id: 174, cat: TV/HD, desc: "HDTV Episodes", default: true}
+    - {id: 175, cat: TV/HD, desc: "HDTV Episodes-Ro", default: true}
+    - {id: 149, cat: Other, desc: "Images", default: true}
+    - {id: 165, cat: PC, desc: "Linux", default: true}
+    - {id: 164, cat: PC/Mobile-Other, desc: "Mobile", default: true}
+    - {id: 161, cat: Movies/UHD, desc: "Movies: 4K(2160p)", default: true}
+    - {id: 162, cat: Movies/UHD, desc: "Movies: 4K-RO(2160p)", default: true}
+    - {id: 138, cat: Movies/BluRay, desc: "Movies: BluRay", default: true}
+    - {id: 148, cat: Movies/BluRay, desc: "Movies: BluRay-RO", default: true}
+    - {id: 82, cat: Movies/DVD, desc: "Movies: DVD", default: true}
+    - {id: 83, cat: Movies/DVD, desc: "Movies: DVD-Ro", default: true}
+    - {id: 147, cat: Movies/HD, desc: "Movies: HD", default: true}
+    - {id: 108, cat: Movies/HD, desc: "Movies: HD-Ro", default: true}
+    - {id: 1, cat: Movies/SD, desc: "Movies: SD", default: true}
+    - {id: 2, cat: Movies/SD, desc: "Movies: SD-Ro", default: true}
+    - {id: 142, cat: Audio, desc: "Music", default: true}
+    - {id: 143, cat: Audio/Video, desc: "Music Video", default: true}
+    - {id: 160, cat: Movies, desc: "Ro Movies", default: true}
+    - {id: 159, cat: TV, desc: "Ro TV", default: true}
+    - {id: 166, cat: TV/Sport, desc: "Sports", default: true}
+    - {id: 158, cat: TV/SD, desc: "TV Episodes (SD)", default: true}
+    - {id: 153, cat: TV/SD, desc: "TV Episodes-Ro (SD)", default: true}
+    - {id: 3, cat: XXX, desc: "XXX", default: false}
+
+  modes:
+    search: [q]
+    tv-search: [q, season, ep]
+    movie-search: [q]
+    music-search: [q]
+    book-search: [q]
+
+settings:
+  - name: username
+    type: text
+    label: Username
+  - name: password
+    type: password
+    label: Password
+  - name: freeleech
+    type: checkbox
+    label: Filter freeleech only
+    default: false
+  - name: sort
+    type: select
+    label: Sort requested from site
+    default: 4
+    options:
+      4: created
+      7: seeders
+      5: size
+      1: title
+  - name: type
+    type: select
+    label: Order requested from site
+    default: desc
+    options:
+      desc: desc
+      asc: asc
+  - name: info_tpp
+    type: info
+    label: Results Per Page
+    default: For best results, change the <b>Torrents per page:</b> setting to <b>100</b> on your account profile.
+
+login:
+  path: takelogin.php
+  method: post
+  inputs:
+    username: "{{ .Config.username }}"
+    password: "{{ .Config.password }}"
+  error:
+    - selector: td.embedded:has(h2:contains("failed"))
+  test:
+    path: index.php
+    selector: a[href="logout.php"]
+
+search:
+  paths:
+    - path: browse.php
+      categories: [163, 146, 151, 103, 174, 175, 149, 165. 164, 161, 162, 138, 148, 82, 83, 147, 108, 1, 2, 142, 143, 160, 159, 166, 158, 153]
+      inputs:
+        # 0 name, 1 descr, 2 genre (not reliable)
+        blah: 0
+    - path: browseadult.php
+      categories: [3]
+      inputs:
+        incldead: 1
+  inputs:
+    $raw: "{{ if .Categories}}{{ range .Categories }}c{{.}}=1&{{end}}{{ else }}cat=0{{ end }}"
+    search: "{{ .Keywords }}"
+    sort: "{{ .Config.sort }}"
+    type: "{{ .Config.type }}"
+    # does not support imdbid searching or return imdb in results.
+    Search: Search
+
+  rows:
+    selector: "table[border=\"1\"] > tbody > tr:has(a[href^=\"download.php?id=\"]){{ if .Config.freeleech }}:has(a#free-btn){{ else }}{{ end }}, table[width=\"1005\"] > tbody > tr:has(a[href^=\"download.php?id=\"]){{ if .Config.freeleech }}:has(a#free-btn){{ else }}{{ end }}"
+
+  fields:
+    category:
+      selector: a[href*=".php?cat="]
+      attribute: href
+      filters:
+        - name: querystring
+          args: cat
+    title:
+      selector: a[href^="download.php?id="]
+      attribute: href
+      filters:
+        - name: querystring
+          args: name
+        - name: replace
+          args: [".torrent", ""]
+    details:
+      selector: a[href^="details.php?id="]
+      attribute: href
+    poster:
+      selector: a[href^="details.php?id="]
+      attribute: onmouseover
+      filters:
+        - name: regexp
+          args: src=([^\s]+)
+    download:
+      selector: a[href^="download.php?id="]
+      attribute: href
+    date:
+      selector: td:nth-last-child(5)
+      filters:
+        - name: append
+          args: " +00:00" # auto adjusted by site account profile
+        - name: dateparse
+          args: "yyyy-MM-ddHH:mm:ss zzz"
+    size:
+      selector: td:nth-last-child(4)
+    grabs:
+      selector: td:nth-last-child(3)
+    seeders:
+      selector: td:nth-last-child(2)
+    leechers:
+      selector: td:nth-last-child(1)
+    genre:
+      selector: td:nth-child(2) > i:nth-last-child(1)
+      filters:
+        - name: re_replace
+          args: ["(?i)(All Sex)", "All_Sex"]
+        - name: re_replace
+          args: ["(?i)(Science Fiction)", "Science_Fiction"]
+        - name: replace
+          args: [" & ", "_&_"]
+    description:
+      text: "{{ .Result.genre }}"
+    downloadvolumefactor:
+      case:
+        "a#free-btn": 0
+        "*": 1
+    uploadvolumefactor:
+      case:
+        "a#double-btn": 2
+        "*": 1
+    minimumratio:
+      text: 1.0
+    minimumseedtime:
+      # 3 days (as seconds = 3 x 24 x 60 x 60)
+      text: 259200
+# TBDEV
