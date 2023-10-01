@@ -7,6 +7,8 @@ type: private
 encoding: UTF-8
 requestDelay: 2
 links:
+  - https://www.scenelinks.io/
+legacylinks:
   - https://scenelinks.io/
 
 caps:
@@ -88,7 +90,7 @@ login:
   error:
     - selector: td.embedded:has(h2:contains("failed"))
   test:
-    path: index.php
+    path: /
     selector: a[href="logout.php"]
 
 search:
