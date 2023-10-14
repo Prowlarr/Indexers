@@ -18,12 +18,13 @@ caps:
     movie-search: [q, imdbid]
 
 settings:
-  - name: username
+  - name: cookie
     type: text
-    label: Username
-  - name: password
-    type: password
-    label: Password
+    label: Cookie
+  - name: info_cookie
+    type: info
+    label: How to get the Cookie
+    default: "<ol><li>Login to this tracker with your browser</li><li>Open the <b>DevTools</b> panel by pressing <b>F12</b></li><li>Select the <b>Network</b> tab</li><li>Click on the <b>Doc</b> button (Chrome Browser) or <b>HTML</b> button (FireFox)</li><li>Refresh the page by pressing <b>F5</b></li><li>Click on the first row entry</li><li>Select the <b>Headers</b> tab on the Right panel</li><li>Find <b>'cookie:'</b> in the <b>Request Headers</b> section</li><li><b>Select</b> and <b>Copy</b> the whole cookie string <i>(everything after 'cookie: ')</i> and <b>Paste</b> here.</li></ol>"
   - name: info_8000
     type: info
     label: About BrasilTracker Categories
@@ -47,21 +48,11 @@ settings:
     options:
       desc: desc
       asc: asc
-  - name: info_results
-    type: info
-    label: "Search results"
-    default: "This indexer does not support <b>Torrent Groups</b><br />Un-tick the <b>Torrent grouping</b><i> (Habilitar Grupo de Torrents)</i> checkbox in your <b>Configurações</b>."
 
 login:
-  path: login.php
-  method: form
-  form: form#loginform
+  method: cookie
   inputs:
-    username: "{{ .Config.username }}"
-    password: "{{ .Config.password }}"
-    keeplogged: 1
-  error:
-    - selector: form#loginform:contains("incorretos")
+    cookie: "{{ .Config.cookie }}"
   test:
     path: index.php
     selector: a[href^="logout.php?auth="]
@@ -76,6 +67,7 @@ search:
     searchstr: "{{ if .Query.IMDBID }}{{ .Query.IMDBID }}{{ else }}{{ .Keywords }}{{ end }}"
     order_by: "{{ .Config.sort }}"
     order_way: "{{ .Config.type }}"
+    group_results: 0
     action: basic
     freetorrent: "{{ if .Config.freeleech }}1{{ else }}{{ end }}"
     searchsubmit: 1
@@ -99,6 +91,9 @@ search:
       attribute: src
     imdbid:
       selector: a[href*="imdb.com/title/tt"]
+      attribute: href
+    tmdbid:
+      selector: a[href*="themoviedb.org/movie/"], a[href*="themoviedb.org/tv/"]
       attribute: href
     files:
       selector: td:nth-child(3)
