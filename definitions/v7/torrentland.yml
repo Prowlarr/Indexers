@@ -106,8 +106,8 @@ search:
     selector: table > tbody > tr:has(a[href*="/download/"])
 
   fields:
-    category:
-      text: 10
+    categorydesc:
+      text: Otros
     categorydesc|noappend:
       selector: span[data-original-title="Categoria"]
       optional: true
@@ -215,4 +215,4 @@ search:
     minimumseedtime:
       # 4 days (as seconds = 4 x 24 x 60 x 60)
       text: 345600
-# UNIT3D 6.3.0 (custom)
+# UNIT3D 6.5.0 (custom)
