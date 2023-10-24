@@ -1,30 +1,26 @@
 ---
-id: emmidtracker
-name: Emmid Tracker
-description: "Emmid Tracker is a BRAZILIAN Private Torrent Tracker for MOVIES / TV / GENERAL"
+id: ultra-hd
+name: ULTRA HD
+description: "ULTRA HD is a BRAZILIAN Private Torrent Tracker for MOVIES / TV / GENERAL"
 language: pt-BR
 type: private
 encoding: UTF-8
 links:
-  - https://emmidtracker.online/
+  - https://ultrahd.online/
 
 caps:
   categorymappings:
     - {id: 1, cat: Movies, desc: "FILMES"}
     - {id: 2, cat: TV, desc: "SÉRIES"}
-    - {id: 3, cat: Audio, desc: "MÚSICAS"}
     - {id: 4, cat: PC/Games, desc: "JOGOS"}
     - {id: 5, cat: PC/0day, desc: "APPS"}
-    - {id: 6, cat: TV/Anime, desc: "ANIME SÉRIES"}
-    - {id: 7, cat: XXX, desc: "ADULTO"}
-    - {id: 8, cat: Movies/Other, desc: "ANIME FILMES"}
-    - {id: 9, cat: Other, desc: "CURSOS"}
+    - {id: 6, cat: XXX, desc: "ADULTO"}
+    - {id: 7, cat: Other, desc: "CURSOS"}
 
   modes:
     search: [q]
     tv-search: [q, season, ep, imdbid, tvdbid, tmdbid]
     movie-search: [q, imdbid, tmdbid]
-    music-search: [q]
 
 settings:
   - name: apikey
@@ -33,7 +29,7 @@ settings:
   - name: info_key
     type: info
     label: About your API key
-    default: "Find or Generate a new API Token by accessing your <a href=\"https://emmidtracker.online/\" target=\"_blank\">Emmid Tracker</a> account <i>My Security</i> page and clicking on the <b>API Token</b> tab."
+    default: "Find or Generate a new API Token by accessing your <a href=\"https://ultrahd.online/\" target=\"_blank\">ULTRA HD</a> account <i>My Security</i> page and clicking on the <b>API Token</b> tab."
   - name: freeleech
     type: checkbox
     label: Search freeleech only
