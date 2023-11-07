@@ -1,50 +1,39 @@
 ---
-id: datascene-api
-name: DataScene (API)
-description: "DataScene (DS) is a ROMANIAN Private Torrent Tracker for MOVIES / TV / GENERAL"
-language: en-US
+id: scenelinks
+name: SceneLinks
+description: "SceneLinks (SL) is a ROMANIAN Private Torrent Tracker for MOVIES / TV / GENERAL"
+language: ro-RO
 type: private
 encoding: UTF-8
 links:
-  - https://datascene.xyz/
+  - https://scenelinks.me/
 legacylinks:
-  - http://datascene.net/
-  - https://datascene.net/
+  - https://scenelinks.io/
+  - https://www.scenelinks.io/
 
 caps:
   categorymappings:
-    - {id: 1, cat: Movies/HD, desc: "Movie HD"}
-    - {id: 2, cat: TV, desc: "TV"}
+    - {id: 1, cat: Movies/HD, desc: "Movies: HD"}
+    - {id: 2, cat: TV, desc: "TV Episodes"}
+    - {id: 6, cat: TV, desc: "RO TV"}
+    - {id: 7, cat: Movies, desc: "Ro Movies"}
+    - {id: 8, cat: TV, desc: "TV Episodes-RO"}
+    - {id: 9, cat: Movies/HD, desc: "Movies: HD-Ro"}
+    - {id: 11, cat: Movies/BluRay, desc: "Movies: BluRay"}
+    - {id: 12, cat: Movies/BluRay, desc: "Movies: BluRay-RO"}
+    - {id: 13, cat: Movies/UHD, desc: "Movies: 4K"}
+    - {id: 14, cat: Movies/UHD, desc: "Movies: 4K-RO"}
+    - {id: 15, cat: TV, desc: "TV Packs RO"}
+    - {id: 20, cat: Movies/DVD, desc: "Movies: DVD"}
+    - {id: 21, cat: Movies/DVD, desc: "Movies: DVD-Ro"}
+    - {id: 19, cat: TV/Documentary, desc: "Docs"}
+    - {id: 18, cat: Other, desc: "Wallpapers"}
+    - {id: 17, cat: Audio/Video, desc: "Videos"}
     - {id: 3, cat: Audio, desc: "Music"}
-    - {id: 4, cat: PC/Games, desc: "Game"}
-    - {id: 5, cat: PC/0day, desc: "Application"}
-    - {id: 6, cat: XXX, desc: "XXX"}
-    - {id: 7, cat: PC/Mobile-Other, desc: "Mobile"}
-    - {id: 8, cat: Books/EBook, desc: "E-Book"}
-    - {id: 9, cat: Movies, desc: "Movies Ro"}
-    - {id: 10, cat: TV/SD, desc: "TV SD Ro"}
-    - {id: 11, cat: Movies/UHD, desc: "Movies 4K"}
-    - {id: 12, cat: Movies/UHD, desc: "Movies 4K Ro"}
-    - {id: 13, cat: TV/Anime, desc: "Anime"}
-    - {id: 14, cat: Movies/BluRay, desc: "Movies Bluray"}
-    - {id: 15, cat: Movies/BluRay, desc: "Movies Bluray Ro"}
-    - {id: 16, cat: PC/Games, desc: "Games PC"}
-    - {id: 17, cat: Console, desc: "Games Console"}
-    - {id: 18, cat: TV/HD, desc: "TV HD Ro"}
-    - {id: 19, cat: Movies/SD, desc: "SD"}
-    - {id: 20, cat: Movies/SD, desc: "SD Ro"}
-    - {id: 21, cat: Audio/Video, desc: "Music Video"}
-    - {id: 22, cat: TV, desc: "TV Pack Ro"}
-    - {id: 23, cat: Movies/HD, desc: "Movies HD Ro"}
-    - {id: 24, cat: PC, desc: "Linux"}
-    - {id: 25, cat: TV/Sport, desc: "Sport"}
-    - {id: 26, cat: TV/SD, desc: "TV SD"}
-    - {id: 27, cat: Movies/SD, desc: "DVD"}
-    - {id: 28, cat: Movies/SD, desc: "DVD Ro"}
-    - {id: 29, cat: TV/UHD, desc: "TV 4K"}
-    - {id: 30, cat: TV/UHD, desc: "TV 4K Ro"}
-    - {id: 31, cat: TV/SD, desc: "DVD"}
-    - {id: 32, cat: TV/SD, desc: "DVD Ro"}
+    - {id: 16, cat: Console, desc: "Games: Console"}
+    - {id: 4, cat: PC/Games, desc: "Games PC"}
+    - {id: 5, cat: PC, desc: "Application"}
+    - {id: 10, cat: XXX, desc: "XXX"}
 
   modes:
     search: [q]
@@ -60,7 +49,7 @@ settings:
   - name: info_key
     type: info
     label: About your API key
-    default: "Find or Generate a new API Token by accessing your <a href=\"https://datascene.xyz/\" target=\"_blank\">DataScene</a> account <i>My Settings</i> page and clicking on the <b>API Key</b> tab."
+    default: "Find or Generate a new API Token by accessing your <a href=\"https://www.scenelinks.me/\" target=\"_blank\">SceneLinks</a> account <i>My Settings</i> page and clicking on the <b>API Key</b> tab."
   - name: freeleech
     type: checkbox
     label: Search freeleech only
@@ -85,7 +74,6 @@ settings:
 login:
   path: /api/torrents
   method: get
-  inputs: {} # TODO: remove in v10
   error:
     - selector: a[href*="/login"]
       message:
@@ -150,8 +138,6 @@ search:
       selector: meta.genres
       filters:
         - name: re_replace
-          args: ["(?i)(All Sex)", "All_Sex"]
-        - name: re_replace
           args: ["(?i)(Science Fiction)", "Science_Fiction"]
         - name: re_replace
           args: ["(?i)(TV Movie)", "TV_Movie"]
@@ -193,10 +179,10 @@ search:
       case:
         False: 1 # normal
         True: 2 # double
-# global MR is 0.4 but torrents must be seeded for 7 days regardless of ratio
+# global MR is 0.4 but torrents must be seeded for 3 days regardless of ratio
 #    minimumratio:
 #      text: 0.4
     minimumseedtime:
-      # 2 days (as seconds = 2 x 24 x 60 x 60)
-      text: 172800
+      # 3 days (as seconds = 3 x 24 x 60 x 60)
+      text: 259200
 # json UNIT3D 7.0.3
