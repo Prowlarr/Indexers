@@ -74,7 +74,7 @@ search:
   inputs:
     # if we have an id based search, add Season and Episode as query in name for UNIT3D < v6.  Else pass S/E Params for UNIT3D >= v6
     name: "{{ .Keywords }}"
-    $raw: "{{ if .Query.Season }}&seasonNumber={{ .Query.Season }}{{ else }}{{ end }}{{ if .Query.Ep }}&episodeNumber={{ .Query.Ep }}{{ else }}{{ end }}{{ if .Query.TMDBID }}&tmdbId={{ .Query.TMDBID }}{{ else }}{{ end }}{{ if .Query.IMDBIDShort }}&imdbId={{ .Query.IMDBIDShort }}{{ else }}{{ end }}{{ if  .Query.TVDBID }}&tvdbId={{ .Query.TVDBID }}{{ else }}{{ end }}{{ range .Categories }}&categories[]={{.}}{{end}}{{ if .Config.freeleech }}&free=1{{ else }}{{ end }}"
+    $raw: "{{ if .Query.Season }}&seasonNumber={{ .Query.Season }}{{ else }}{{ end }}{{ if .Query.Ep }}&episodeNumber={{ .Query.Ep }}{{ else }}{{ end }}{{ if .Query.TMDBID }}&tmdbId={{ .Query.TMDBID }}{{ else }}{{ end }}{{ if .Query.IMDBIDShort }}&imdbId={{ .Query.IMDBIDShort }}{{ else }}{{ end }}{{ if  .Query.TVDBID }}&tvdbId={{ .Query.TVDBID }}{{ else }}{{ end }}{{ range .Categories }}&categories[]={{.}}{{end}}{{ if .Config.freeleech }}&free[]=100{{ else }}{{ end }}"
     sortField: "{{ .Config.sort }}"
     sortDirection: "{{ .Config.type }}"
     perPage: 100
@@ -93,8 +93,6 @@ search:
     title:
       selector: name
       filters:
-        - name: re_replace
-          args: ["\\.", " "]
         - name: append
           args: "{{ if .Config.addukrainiantotitle }} UKR{{ else }}{{ end }}"
     details:
@@ -104,7 +102,7 @@ search:
     infohash:
       selector: info_hash
     poster:
-      selector: poster
+      selector: meta.poster
       filters:
         - name: replace
           args: ["https://via.placeholder.com/90x135", ""]
@@ -114,6 +112,19 @@ search:
       selector: tmdb_id
     tvdbid:
       selector: tvdb_id
+    genre:
+      selector: meta.genres
+      filters:
+        - name: re_replace
+          args: ["(?i)(Екшн і Пригоди)", "Екшн_і_Пригоди"]
+        - name: re_replace
+          args: ["(?i)(Мильна опера)", "Мильна_опера"]
+        - name: re_replace
+          args: ["(?i)(Науково фантастичний)", "Науково_фантастичний"]
+        - name: re_replace
+          args: ["(?i)(Політика та війна)", "Політика_та_війна"]
+    description:
+      text: "{{ .Result.genre }}"
     files:
       selector: num_file
     seeders:
