@@ -210,6 +210,9 @@ settings:
     type: checkbox
     label: Replace VOSTFR and SUBFRENCH with ENGLISH
     default: false
+  - name: vffonly
+    type: checkbox
+    label: Exclude VFQ from search
   - name: filter_title
     type: checkbox
     label: Normalize release names by moving year after the title
@@ -281,7 +284,7 @@ search:
         $raw: "name={{ if .Keywords }}{{ re_replace .Keywords \"(?i)S0?(\\d{1,2})\" \"Saison $1\" }}{{ else }}&page=50{{ end }}"
       followredirect: true
   inputs:
-    $raw: "{{ if eq .Config.subcategory \"all\" }}category={{ .Config.category }}{{ else }}sub_category={{ .Config.subcategory }}{{ end }}"
+    $raw: "{{ if eq .Config.subcategory \"all\" }}category={{ .Config.category }}{{ else }}sub_category={{ .Config.subcategory }}{{ end }}{{ if .Config.vffonly }}&option_langue:multiple[]=1&option_langue:multiple[]=2&option_langue:multiple[]=3&option_langue:multiple[]=4&option_langue:multiple[]=7&option_langue:multiple[]=8{{ else }}{{ end }}"
     do: search
     order: "{{ .Config.type }}"
     sort: "{{ .Config.sort }}"
