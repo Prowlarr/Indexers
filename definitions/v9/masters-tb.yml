@@ -121,11 +121,11 @@ search:
           args: name
         - name: regexp
           args: ^(.+?)\.torrent
-    title_optional:
+        - name: htmldecode
+    title:
       selector: a[href^="details.php?id="]
       optional: true
-    title:
-      text: "{{ if .Result.title_optional }}{{ .Result.title_optional }}{{ else }}{{ .Result.title_default }}{{ end }}"
+      default: "{{ .Result.title_default }}"
     details:
       selector: a[href^="details.php?id="]
       attribute: href
