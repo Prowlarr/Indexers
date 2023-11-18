@@ -95,6 +95,10 @@ settings:
     type: checkbox
     label: Exclude SCENE torrents from results
     default: false
+  - name: exclude_archives
+    type: checkbox
+    label: Exclude torrents with the tag RAR from results
+    default: false    
   - name: sort
     type: select
     label: Sort requested from site
