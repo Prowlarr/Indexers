@@ -98,7 +98,7 @@ settings:
   - name: exclude_archives
     type: checkbox
     label: Exclude torrents with the tag RAR from results
-    default: false    
+    default: false
   - name: sort
     type: select
     label: Sort requested from site
