@@ -1,7 +1,7 @@
 ---
 id: ncore
-name: Ncore
-description: "Ncore is a Hungarian Private Torrent Tracker for Movies/Series/General"
+name: nCore
+description: "nCore is a Hungarian Private Torrent Tracker for Movies/Series/General"
 language: hu-HU
 type: private
 encoding: UTF-8
@@ -52,7 +52,7 @@ caps:
   modes:
     search: [q]
     tv-search: [q, season, ep]
-    movie-search: [q]
+    movie-search: [q, imdbid]
     music-search: [q]
     book-search: [q]
 
@@ -69,7 +69,7 @@ settings:
   - name: info_2fa
     type: info
     label: "About 2FA code"
-    default: "Only fill in the <b>2FA code</b> box if you have enabled <b>2FA</b> on the Ncore Web Site. Otherwise just leave it empty."
+    default: "Only fill in the <b>2FA code</b> box if you have enabled <b>2FA</b> on the nCore Web Site. Otherwise just leave it empty."
 
 login:
   method: form
@@ -105,8 +105,8 @@ search:
     nyit_jatek_resz: "true"
     nyit_prog_resz: "true"
     nyit_konyv_resz: "true"
-    mire: "{{ .Keywords }}"
-    miben: "name"
+    mire: "{{ if .Query.IMDBID }}{{ .Query.IMDBID }}{{ else }}{{ .Keywords }}{{ end }}"
+    miben: "{{ if .Query.IMDBID }}imdb{{ else }}name{{ end }}"
     tipus: "{{ if .Categories }}kivalasztottak_kozott{{ else }}all_own{{ end }}"
     submit.x: "1"
     submit.y: "18"
