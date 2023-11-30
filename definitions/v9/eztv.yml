@@ -71,9 +71,8 @@ search:
     - name: replace
       args: ["&", ""]
 
-# TODO: uncomment after fixing Headers['Cookie'] + Cookies
-#  headers:
-#    cookie: ["sort_no=100; q_filter=all; q_filter_web=on; q_filter_reality=on; q_filter_x265=on; layout=def_wlinks"] # show 100 results for keywordless search and show links in results
+  headers:
+    cookie: ["sort_no=100; q_filter=all; q_filter_web=on; q_filter_reality=on; q_filter_x265=on; layout=def_wlinks"] # show 100 results for keywordless search and show links in results
 
   rows:
     # only use latest added torrents table for keywordless search to avoid duplicates, some torrents don't have any download links so skip them
