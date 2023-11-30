@@ -6,7 +6,7 @@ language: en-US
 type: public
 encoding: UTF-8
 links:
-  - https://eztv.li/
+  - https://eztvx.to/
   - https://eztv.wf/
   - https://eztv.tf/
   - https://eztv.yt/
@@ -44,6 +44,7 @@ legacylinks:
   - https://eztv.unblockit.esq/
   - https://eztv.unblockit.zip/
   - https://eztv.re/
+  - https://eztv.li/
 
 caps:
   categories:
@@ -57,7 +58,7 @@ settings: []
 
 search:
   paths:
-    - path: "{{ if .Keywords }}search/{{ .Keywords }}{{ else }}{{ end }}"
+    - path: "{{ if .Keywords }}search/{{ .Keywords }}{{ else }}home{{ end }}"
 
   keywordsfilters:
     - name: re_replace
@@ -72,7 +73,7 @@ search:
 
 # TODO: uncomment after fixing Headers['Cookie'] + Cookies
 #  headers:
-#    cookie: ["sort_no=100"] # show 100 results for keywordless search
+#    cookie: ["sort_no=100; q_filter=all; q_filter_web=on; q_filter_reality=on; q_filter_x265=on; layout=def_wlinks"] # show 100 results for keywordless search and show links in results
 
   rows:
     # only use latest added torrents table for keywordless search to avoid duplicates, some torrents don't have any download links so skip them
