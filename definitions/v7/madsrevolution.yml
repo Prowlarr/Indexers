@@ -123,7 +123,7 @@ search:
   inputs:
     $raw: "{{ range .Categories }}filter_cat[{{.}}]=1&{{end}}{{ if .Config.freeleech }}action=uploadonly&{{ else }}{{ end }}"
     searchstr: "{{ .Keywords }}"
-    searchtags: "{{ if .Query.Genre }}{{ .Query.Genre }}{{ else }}{{ end }}"
+    searchtags: "{{ .Query.Genre }}"
     # 0 any, 1 all
     tags_type: 0
     order_by: "{{ .Config.sort }}"
