@@ -13,6 +13,7 @@ legacylinks:
 caps:
   categorymappings:
     # from https://electro-torrent.pl/szukaj.php
+    # don't forget to update the category case block below
     - {id: 1298, cat: Movies/SD, desc: "Filmy - Zwiastuny"}
     - {id: 1, cat: Movies/SD, desc: "Filmy XviD/DivX"}
     - {id: 769, cat: Movies/HD, desc: "Filmy 1080p AVC"}
@@ -108,6 +109,7 @@ search:
     category:
       selector: div#kategoria-gatunek-1
       case:
+        "div#kategoria-gatunek-1:contains(\"Filmy - Zwiastuny\")": 1298
         "div#kategoria-gatunek-1:contains(\"Filmy XviD/DivX\")": 1
         "div#kategoria-gatunek-1:contains(\"Filmy 1080p AVC\")": 769
         "div#kategoria-gatunek-1:contains(\"Filmy x264/1080p\")": 770
@@ -123,6 +125,7 @@ search:
         "div#kategoria-gatunek-1:contains(\"Filmy 3D\")": 5
         "div#kategoria-gatunek-1:contains(\"Filmy IVO\")": 362
         "div#kategoria-gatunek-1:contains(\"Filmy TS/CAM\")": 696
+        "div#kategoria-gatunek-1:contains(\"TV/Seriale - Warezy\")": 1255
         "div#kategoria-gatunek-1:contains(\"TV/Seriale\")": 7
         "div#kategoria-gatunek-1:contains(\"Erotyka\")": 8
         "div#kategoria-gatunek-1:contains(\"Muzyka\")": 10
