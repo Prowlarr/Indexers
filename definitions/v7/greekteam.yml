@@ -172,6 +172,10 @@ search:
       optional: true
     leechers:
       text: "{{ if .Result.leechers_optional }}{{ .Result.leechers_optional }}{{ else }}0{{ end }}"
+    description:
+      case:
+        img[src="pic/checked2.png"]: Verified
+        img[src="pic/notchecked.png"]: Unverified
     downloadvolumefactor:
       case:
         img[src="pic/free.png"]: 0

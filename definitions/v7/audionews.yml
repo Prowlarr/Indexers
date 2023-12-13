@@ -321,6 +321,10 @@ search:
       selector: td[title^="Replies:"]
     grabs:
       text: "{{ if .Result.grabs_optional }}{{ .Result.grabs_optional }}{{ else }}0{{ end }}"
+    description:
+      case:
+        span.tor-approved: Verified
+        span.tor-not-approved: Unverified
     downloadvolumefactor:
       text: 1
     uploadvolumefactor:
