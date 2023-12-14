@@ -182,6 +182,10 @@ search:
       text: "{{ if .Result.leechers_optional }}{{ .Result.leechers_optional }}{{ else }}0{{ end }}"
     size:
       selector: td.size_cell
+    description:
+      case:
+        img[src$="/checked.png"]: Verified
+        "*": Unverified
     downloadvolumefactor:
       case:
         img[src$="/freedownload.gif"]: 0

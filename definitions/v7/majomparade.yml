@@ -113,14 +113,14 @@ search:
       attribute: title
     title_optional:
       selector: a[href^="details.php?id="] > b[title*="Torrent neve:"]
-      optional: true
       attribute: title
+      optional: true
       filters:
         - name: regexp
           args: "Torrent neve: (.*?)<"
     title:
       text: "{{ if .Result.title_optional }}{{ .Result.title_optional }}{{ else }}{{ .Result.title_default }}{{ end }}"
-    _descr:
+    title_hungarian:
       selector: a[href^="details.php?id="] > b
       attribute: title
       filters:
@@ -174,9 +174,11 @@ search:
       remove: a, img
       filters:
         - name: re_replace
-          args: ["(?i)(0.5x |2x |3x |4x )", ""]
+          args: ["(?i)(0.5x|2x|3x|4x)", ""]
     description:
-      text: "{{ if .Result.genre }}{{ .Result.genre }}<br>{{ else }}{{ end }}{{ .Result._descr }}"
+      case:
+        img[src$="/pic/yes.png"]: "Verified: {{ if .Result.genre }}{{ .Result.genre }}<br>{{ else }}{{ end }}{{ .Result.title_hungarian }}"
+        img[src$="/pic/nincs.png"]: "Unverified: {{ if .Result.genre }}{{ .Result.genre }}<br>{{ else }}{{ end }}{{ .Result.title_hungarian }}"
     minimumratio:
       text: 1.0
     minimumseedtime:
