@@ -55,7 +55,7 @@ caps:
     - {id: 57, cat: TV/Foreign, desc: "مسلسلات آسيوية (Asian Series)"}
     - {id: 42, cat: Movies/Foreign, desc: "افلام اجنبيه (Foreign)"}
     - {id: 74, cat: Movies/HD, desc: "جودة عالية HD"}
-    - {id: 76, cat: Movies/3D, desc: "&ثلاثي الابعاد 3D (3D)"}
+    - {id: 76, cat: Movies/3D, desc: "ثلاثي الابعاد (3D)"}
     - {id: 59, cat: Movies/Foreign, desc: "افلام آسيوية (Asian Movies)"}
     - {id: 86, cat: Movies/Foreign, desc: "افلام هنديه (Indian Movies)"}
     # انمي مدبلج عربي Anime Arabic dubbed
@@ -88,7 +88,6 @@ caps:
     - {id: 65, cat: Other, desc: "صور (Images)"}
     - {id: 56, cat: Other, desc: "رياضي (Sport)"}
     - {id: 46, cat: Other, desc: "منوع (Misc)"}
-    - {id: 112, cat: Other, desc: "رمضان 2023"}
 
   modes:
     search: [q]
