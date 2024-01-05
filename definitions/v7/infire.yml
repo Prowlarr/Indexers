@@ -5,87 +5,88 @@ description: "Infire is a SLOVENIAN Private Torrent Tracker for MOVIES / TV / GE
 language: sl-SI
 type: private
 encoding: UTF-8
+requestDelay: 2
 links:
   - https://infire.si/
 
 caps:
   categorymappings:
     # Filmi
-    - {id: 14, cat: Movies/SD, desc: "Filmi XviD"}
-    - {id: 15, cat: Movies/HD, desc: "Filmi HD 720p"}
-    - {id: 16, cat: Movies/HD, desc: "Filmi HD 1080p"}
-    - {id: 20, cat: Movies/WEB-DL, desc: "Filmi WEB/Rip"}
-    - {id: 21, cat: Movies/WEB-DL, desc: "Filmi WEB-DL 720p"}
-    - {id: 49, cat: Movies/UHD, desc: "Filmi HD 2160p"}
-    - {id: 50, cat: Movies/HD, desc: "Filmi BluRay 1080p"}
-    - {id: 51, cat: Movies/HD, desc: "Filmi 720p H265"}
-    - {id: 52, cat: Movies/HD, desc: "Filmi 1080p H265"}
-    - {id: 55, cat: Movies/WEB-DL, desc: "Filmi WEB-DL 1080p"}
-    - {id: 71, cat: Movies/WEB-DL, desc: "Filmi WEB-DL 2160p"}
-    - {id: 72, cat: Movies/HD, desc: "Filmi BluRay 720p"}
-    - {id: 73, cat: Movies/HD, desc: "Filmi BluRay Remux"}
-    - {id: 74, cat: Movies/UHD, desc: "Filmi UHD Remux"}
-    - {id: 77, cat: Movies/HD, desc: "Filmi DrSi"}
-    - {id: 97, cat: Movies/UHD, desc: "Filmi BluRay 2160p"}
-    - {id: 99, cat: Movies/HD, desc: "Filmi BRRip 720p"}
-    - {id: 100, cat: Movies/HD, desc: "Filmi BRRip 1080p"}
+    - {id: 14, cat: Movies/SD, desc: "XviD", default: true}
+    - {id: 15, cat: Movies/HD, desc: "HD 720p", default: true}
+    - {id: 16, cat: Movies/HD, desc: "HD 1080p", default: true}
+    - {id: 20, cat: Movies/WEB-DL, desc: "WEB/Rip", default: true}
+    - {id: 21, cat: Movies/WEB-DL, desc: "WEB-DL 720p", default: true}
+    - {id: 49, cat: Movies/UHD, desc: "HD 2160p", default: true}
+    - {id: 50, cat: Movies/HD, desc: "BluRay 1080p", default: true}
+    - {id: 51, cat: Movies/HD, desc: "720p H265", default: true}
+    - {id: 52, cat: Movies/HD, desc: "1080p H265", default: true}
+    - {id: 55, cat: Movies/WEB-DL, desc: "WEB-DL 1080p", default: true}
+    - {id: 71, cat: Movies/WEB-DL, desc: "WEB-DL 2160p", default: true}
+    - {id: 72, cat: Movies/HD, desc: "BluRay 720p", default: true}
+    - {id: 73, cat: Movies/HD, desc: "BluRay Remux", default: true}
+    - {id: 74, cat: Movies/UHD, desc: "UHD Remux", default: true}
+    - {id: 77, cat: Movies/HD, desc: "DrSi", default: true}
+    - {id: 97, cat: Movies/UHD, desc: "BluRay 2160p", default: true}
+    - {id: 99, cat: Movies/HD, desc: "BRRip 720p", default: true}
+    - {id: 100, cat: Movies/HD, desc: "BRRip 1080p", default: true}
     # TV
-    - {id: 23, cat: TV, desc: "TV"}
-    - {id: 24, cat: TV/HD, desc: "TV HDTV 720p"}
-    - {id: 75, cat: TV/HD, desc: "TV HDTV 1080p"}
-    - {id: 76, cat: TV/WEB-DL, desc: "TV WEB/Rip"}
-    - {id: 78, cat: TV/WEB-DL, desc: "TV WEB-DL 720p"}
-    - {id: 79, cat: TV/WEB-DL, desc: "TV WEB-DL 1080p"}
-    - {id: 80, cat: TV/WEB-DL, desc: "TV WEB-DL 2160p"}
-    - {id: 81, cat: TV/HD, desc: "TV BluRay 720p"}
-    - {id: 82, cat: TV/HD, desc: "TV BluRay 1080p"}
-    - {id: 98, cat: TV/UHD, desc: "TV BluRay 2160p"}
+    - {id: 23, cat: TV, desc: "TV", default: true}
+    - {id: 24, cat: TV/HD, desc: "HDTV 720p", default: true}
+    - {id: 75, cat: TV/HD, desc: "HDTV 1080p", default: true}
+    - {id: 76, cat: TV/WEB-DL, desc: "TV WEB/Rip", default: true}
+    - {id: 78, cat: TV/WEB-DL, desc: "TV WEB 720p", default: true}
+    - {id: 79, cat: TV/WEB-DL, desc: "TV WEB 1080p", default: true}
+    - {id: 80, cat: TV/WEB-DL, desc: "TV WEB 2160p", default: true}
+    - {id: 81, cat: TV/HD, desc: "TV BluRay 720p", default: true}
+    - {id: 82, cat: TV/HD, desc: "TV BluRay 1080p", default: true}
+    - {id: 98, cat: TV/UHD, desc: "TV BluRay 2160p", default: true}
     # Risanke
-    - {id: 26, cat: Movies/Other, desc: "Animirano"}
-    - {id: 56, cat: TV/Anime, desc: "Anime"}
-    - {id: 93, cat: Movies/Other, desc: "SLOSiNH"}
+    - {id: 26, cat: Movies/Other, desc: "Animirano", default: true}
+    - {id: 56, cat: TV/Anime, desc: "Anime", default: true}
+    - {id: 93, cat: Movies/Other, desc: "SLOSiNH", default: true}
     # Igre
-    - {id: 29, cat: PC/Games, desc: "Igre PC ISO"}
-    - {id: 30, cat: Console/Wii, desc: "Igre Nintendo"}
-    - {id: 31, cat: Console/PS3, desc: "Igre Playstation"}
-    - {id: 34, cat: Console/XBox One, desc: "Igre Xbox"}
-    - {id: 83, cat: PC/Games, desc: "Igre Repack"}
+    - {id: 29, cat: PC/Games, desc: "PC ISO", default: true}
+    - {id: 30, cat: Console/Wii, desc: "Nintendo", default: true}
+    - {id: 31, cat: Console/PS3, desc: "Playstation", default: true}
+    - {id: 34, cat: Console/XBox One, desc: "Xbox", default: true}
+    - {id: 83, cat: PC/Games, desc: "Repack", default: true}
     # Glasba
-    - {id: 42, cat: Audio/Video, desc: "Music DVD"}
-    - {id: 43, cat: Audio/Video, desc: "Glasba Videospoti"}
-    - {id: 53, cat: Audio/MP3, desc: "Glasba MP3"}
-    - {id: 54, cat: Audio/Lossless, desc: "Glasba FLAC"}
-    - {id: 62, cat: Audio/Video, desc: "Koncerti"}
+    - {id: 42, cat: Audio/Video, desc: "Music DVD", default: true}
+    - {id: 43, cat: Audio/Video, desc: "Videospoti", default: true}
+    - {id: 53, cat: Audio/MP3, desc: "Glasba MP3", default: true}
+    - {id: 54, cat: Audio/Lossless, desc: "Glasba FLAC", default: true}
+    - {id: 62, cat: Audio/Video, desc: "Koncerti", default: true}
     # Sport
-    - {id: 37, cat: TV/Sport, desc: "Sport"}
+    - {id: 37, cat: TV/Sport, desc: "Sport", default: true}
     # XXX
-    - {id: 60, cat: XXX/Other, desc: "XXX Revije"}
-    - {id: 61, cat: XXX/Pack, desc: "XXX Packs"}
-    - {id: 66, cat: XXX/SD, desc: "XXX 480p"}
-    - {id: 67, cat: XXX/x264, desc: "XXX 720p"}
-    - {id: 68, cat: XXX/x264, desc: "XXX 1080p"}
-    - {id: 69, cat: XXX/UHD, desc: "XXX 2160p"}
-    - {id: 84, cat: XXX/ImageSet, desc: "XXX Slike"}
+    - {id: 60, cat: XXX/Other, desc: "Revije", default: false}
+    - {id: 61, cat: XXX/Pack, desc: "Packs", default: false}
+    - {id: 66, cat: XXX/SD, desc: "480p", default: false}
+    - {id: 67, cat: XXX/x264, desc: "720p", default: false}
+    - {id: 68, cat: XXX/x264, desc: "1080p", default: false}
+    - {id: 69, cat: XXX/UHD, desc: "2160p", default: false}
+    - {id: 84, cat: XXX/ImageSet, desc: "Slike", default: false}
     # Disc
-    - {id: 85, cat: Movies/DVD, desc: "DVD 5"}
-    - {id: 86, cat: Movies/DVD, desc: "DVD 9"}
-    - {id: 87, cat: Movies/BluRay, desc: "BD 25"}
-    - {id: 88, cat: Movies/BluRay, desc: "BD 50"}
-    - {id: 89, cat: Movies/BluRay, desc: "UHD 50"}
-    - {id: 90, cat: Movies/BluRay, desc: "UHD 66"}
-    - {id: 91, cat: Movies/BluRay, desc: "UHD 100"}
+    - {id: 85, cat: Movies/DVD, desc: "DVD 5", default: true}
+    - {id: 86, cat: Movies/DVD, desc: "DVD 9", default: true}
+    - {id: 87, cat: Movies/BluRay, desc: "BD 25", default: true}
+    - {id: 88, cat: Movies/BluRay, desc: "BD 50", default: true}
+    - {id: 89, cat: Movies/BluRay, desc: "UHD 50", default: true}
+    - {id: 90, cat: Movies/BluRay, desc: "UHD 66", default: true}
+    - {id: 91, cat: Movies/BluRay, desc: "UHD 100", default: true}
     # Razno
-    - {id: 38, cat: PC/0day, desc: "Programi"}
-    - {id: 39, cat: Books/EBook, desc: "eKnjige"}
-    - {id: 40, cat: Other, desc: "Slike"}
-    - {id: 41, cat: Audio/Audiobook, desc: "AudioBook"}
-    - {id: 44, cat: PC/Mobile-Android, desc: "Android"}
-    - {id: 45, cat: PC/Mobile-iOS, desc: "iOS"}
-    - {id: 46, cat: PC/Mac, desc: "Mac"}
-    - {id: 47, cat: PC/ISO, desc: "Linux"}
+    - {id: 38, cat: PC/0day, desc: "Programi", default: true}
+    - {id: 39, cat: Books/EBook, desc: "eKnjige", default: true}
+    - {id: 40, cat: Other, desc: "Slike", default: true}
+    - {id: 41, cat: Audio/Audiobook, desc: "AudioBook", default: true}
+    - {id: 44, cat: PC/Mobile-Android, desc: "Android", default: true}
+    - {id: 45, cat: PC/Mobile-iOS, desc: "iOS", default: true}
+    - {id: 46, cat: PC/Mac, desc: "Mac", default: true}
+    - {id: 47, cat: PC/ISO, desc: "Linux", default: true}
     # Dokumentarni
-    - {id: 95, cat: TV/Documentary, desc: "Dokumentarni Film"}
-    - {id: 96, cat: TV/Documentary, desc: "Dokumentarna Serija"}
+    - {id: 95, cat: TV/Documentary, desc: "Dokumentarni Film", default: true}
+    - {id: 96, cat: TV/Documentary, desc: "Dokumentarna Serija", default: true}
 
   modes:
     search: [q]
@@ -130,10 +131,6 @@ login:
     uid: "{{ .Config.username }}"
     pwd: "{{ .Config.password }}"
     login: "Prijavi se"
-  selectorinputs:
-    csrf_token:
-      selector: input[name="csrf_token"]
-      attribute: value
   error:
     - selector: font[color="#FF0000"]
   test:
@@ -143,6 +140,9 @@ login:
 search:
   paths:
     - path: torrents.php
+      categories: [14, 15, 16, 20, 21, 49, 50, 51, 52, 55, 71, 72, 73, 74, 77, 97, 99, 100, 23, 24, 75, 76, 78, 79, 80, 81, 82, 98, 26, 56, 93, 29, 30, 31, 34, 83, 42, 43, 53, 54, 62, 37, 85, 86, 87, 88, 89, 90, 91, 38, 39, 40, 41, 44, 45, 46, 47, 95, 96]
+    - path: xxx.php
+      categories: [60, 61, 66, 67, 68, 69, 84]
   inputs:
     # does not support multi categories, defaulting to all.
     search: "{{ .Keywords }}"
@@ -154,15 +154,11 @@ search:
     by: "{{ .Config.type }}"
 
   rows:
-    selector: table.lista > tbody > tr.a
+    selector: table.mg-b-0 > tbody > tr:has(a[href^="download.php?id="])
 
   fields:
-    category:
-      selector: a[href^="torrents.php?category="]
-      attribute: href
-      filters:
-        - name: querystring
-          args: category
+    categorydesc:
+      selector: span:has(i.fa-compact-disc)
     title:
       selector: a[href^="details.php?id="]
     details:
@@ -175,33 +171,38 @@ search:
       selector: img
       attribute: src
     size:
-      selector: td:nth-child(7)
+      selector: td:nth-last-child(4)
     date:
-      selector: td:nth-child(6)
+      selector: td:nth-last-child(5)
       # auto adjusted by site account profile
       filters:
         - name: dateparse
           args: "dd/MM/yyyy HH:mm:ss"
     seeders:
-      selector: td:nth-child(9)
+      selector: td:nth-last-child(3)
     leechers:
-      selector: td:nth-child(10)
+      selector: td:nth-last-child(2)
     grabs:
-      selector: td:nth-child(11)
+      selector: td:nth-last-child(1)
     genre:
-      selector: td:nth-child(2) span
+      selector: td:nth-child(2) > span:nth-child(5)
+      filters:
+        - name: re_replace
+          args: ["(?i)(Znanstvena fantastika)", "Znanstvena_fantastika"]
+        - name: validate
+          args: "Akcija, Animirani, Animacija, Avantura, Biografski, Dokumentarni, Drама, Družinski, Fantastika, Fantazija, Glasbeni, Grozljivka, Комеdija, Kratek, Kriminalka, Кriminalni, Misterij, Mladinski, Potovanje, Pustolovski, Romantika,  Sport, Sci-Fi, Тriler, Vojni, Western, Zgodovinski, Znanstvena_fantastika"
     description:
       text: "{{ .Result.genre }}"
     downloadvolumefactor:
       case:
-        img[src="images/gold.png"]: 0
-        img[src="images/silver.png"]: 0.5
+        "span:contains(\"100% Freeleech\")": 0
+        "span:contains(\"50% Freeleech\")": 0.5
         "*": 1
     uploadvolumefactor:
       text: 1
     minimumratio:
       text: 1.0
     minimumseedtime:
-      # 30 hours (as seconds = 30 x 60 x 60)
-      text: 108000
-# BtiTracker 1.5.8
+      # 3 days (as seconds = 3 x 24 x 60 x 60)
+      text: 259200
+# Engine n/a
