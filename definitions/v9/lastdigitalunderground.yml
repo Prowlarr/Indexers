@@ -1,38 +1,27 @@
 ---
-id: rptorrents-api
-name: RPTorrents (RPT)
-description: "RPTorrents (RPT) is a Private Torrent Tracker for MOVIES / TV / GENERAL"
+id: lastdigitalunderground
+name: Last Digital Underground
+description: "Last Digital Underground (LDU) is a Private Torrent Tracker for MOVIES / TV / GENERAL"
 language: en-US
 type: private
 encoding: UTF-8
 links:
-  - https://rptscene.xyz/
+  - https://theldu.net/
 
 caps:
   categorymappings:
-    - {id: 1, cat: Movies/HD, desc: "Movies HD"}
-    - {id: 2, cat: Movies/HD, desc: "Movies HD-RO"}
-    - {id: 3, cat: Movies/HD, desc: "Movie Pack HD-RO"}
-    - {id: 5, cat: Movies/BluRay, desc: "Movies Bluray"}
-    - {id: 6, cat: Movies/BluRay, desc: "Movies Bluray-RO"}
-    - {id: 7, cat: Movies/UHD, desc: "Movies 4K"}
-    - {id: 8, cat: Movies/UHD, desc: "Movies 4K-RO"}
-    - {id: 9, cat: TV, desc: "TV"}
-    - {id: 10, cat: TV, desc: "TV RO"}
-    - {id: 11, cat: TV, desc: "TV Pack-RO"}
-    - {id: 12, cat: Audio/MP3, desc: "Music Mp3"}
-    - {id: 13, cat: Audio/Lossless, desc: "Music Flac"}
-    - {id: 14, cat: Audio/Video, desc: "Music Video"}
-    - {id: 15, cat: Movies, desc: "Movies Cartoons"}
-    - {id: 16, cat: Movies, desc: "Movies Cartoons-RO"}
-    - {id: 17, cat: Console, desc: "Game"}
-    - {id: 18, cat: PC/0day, desc: "Application Win"}
-    - {id: 19, cat: PC/Mac, desc: "Application Mac"}
-    - {id: 20, cat: XXX, desc: "Movies XXX"}
-    - {id: 21, cat: Books, desc: "E-Book"}
-    - {id: 22, cat: TV/Anime, desc: "Anime"}
-    - {id: 23, cat: PC, desc: "Linux"}
-    - {id: 24, cat: PC/Mobile-Other, desc: "Mobile"}
+    - {id: 1, cat: Movies, desc: "Films: Movies"}
+    - {id: 8, cat: Movies/Other, desc: "Films: Anime"}
+    - {id: 12, cat: Movies, desc: "Films: FanEdits"}
+    - {id: 2, cat: TV, desc: "Series: TV"}
+    - {id: 9, cat: TV/Anime, desc: "Series: Anime"}
+    - {id: 6, cat: XXX, desc: "XXX: Standard"}
+    - {id: 10, cat: XXX, desc: "XXX: Hentai"}
+    - {id: 14, cat: XXX, desc: "XXX: Creators Corner"}
+    - {id: 13, cat: XXX/Other, desc: "XXX: Other"}
+    - {id: 11, cat: XXX, desc: "XXX: Zoo"}
+    - {id: 7, cat: Books/EBook, desc: "Ebooks"}
+    - {id: 3, cat: Audio, desc: "Music"}
 
   modes:
     search: [q]
@@ -48,7 +37,7 @@ settings:
   - name: info_key
     type: info
     label: About your API key
-    default: "Find or Generate a new API Token by accessing your <a href=\"https://rptscene.xyz/\" target=\"_blank\">RPTorrents</a> account <i>My Settings</i> page and clicking on the <b>API Key</b> tab."
+    default: "Find or Generate a new API Token by accessing your <a href=\"https://theldu.net/\" target=\"_blank\">Last Digital Underground</a> account <i>My Settings</i> page and clicking on the <b>API Key</b> tab."
   - name: freeleech
     type: checkbox
     label: Search freeleech only
