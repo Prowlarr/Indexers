@@ -1,26 +1,28 @@
 ---
-id: brsociety-api
-name: BrSociety (API)
-description: "BrSociety (SemeandoCC) is a BRAZILIAN Private Torrent Tracker for E-LEARNING"
-language: pt-BR
+id: jptv-api
+name: JPTV (API)
+description: "JPTV is a JAPANESE Private Torrent Tracker for JAPANESE TV / MOVIES / GENERAL"
+language: ja-JP
 type: private
 encoding: UTF-8
 links:
-  - https://brsociety.club/
+  - https://jptv.club/
 
 caps:
   categorymappings:
-    - {id: 1, cat: Other, desc: "Cursos"}
-    - {id: 2, cat: Books/EBook, desc: "eBooks"}
-    - {id: 5, cat: Books/Mags, desc: "Revistas"}
-    - {id: 3, cat: Audio/Audiobook, desc: "Audiobooks"}
-    - {id: 4, cat: Other, desc: "Arquivos de Auxilio"}
-    - {id: 6, cat: Other, desc: "Graduação"}
-    - {id: 7, cat: TV/Documentary, desc: "Documentários"}
+    - {id: 1, cat: Movies, desc: "Movies"}
+    - {id: 2, cat: TV, desc: "TV Shows"}
+    - {id: 6, cat: TV, desc: "TS Firehose"}
+    - {id: 7, cat: Movies/Other, desc: "Anime Movies"}
+    - {id: 9, cat: TV/Anime, desc: "Anime Series"}
+    - {id: 8, cat: Audio, desc: "Audio"}
+    - {id: 10, cat: Books, desc: "Book"}
 
   modes:
     search: [q]
-    tv-search: [q, season, ep]
+    tv-search: [q, season, ep, imdbid, tvdbid, tmdbid]
+    movie-search: [q, imdbid, tmdbid]
+    music-search: [q]
     book-search: [q]
 
 settings:
@@ -30,7 +32,7 @@ settings:
   - name: info_key
     type: info
     label: About your API key
-    default: "Find or Generate a new API Token by accessing your <a href=\"https://brsociety.club/\" target=\"_blank\">BrSociety</a> account <i>My Settings</i> page and clicking on the <b>API Key</b> tab."
+    default: "Find or Generate a new API Token by accessing your <a href=\"https://jptv.club/\" target=\"_blank\">JPTV</a> account <i>My Security</i> page and clicking on the <b>API Token</b> tab."
   - name: freeleech
     type: checkbox
     label: Search freeleech only
@@ -55,7 +57,6 @@ settings:
 login:
   path: /api/torrents
   method: get
-  inputs: {} # TODO: remove in v10
   error:
     - selector: a[href*="/login"]
       message:
@@ -73,11 +74,15 @@ search:
     Authorization: ["Bearer {{ .Config.apikey }}"]
 
   inputs:
-    $raw: "{{ range .Categories }}&categories[]={{.}}{{end}}{{ if .Config.freeleech }}&free[]=100{{ else }}{{ end }}"
+    $raw: "{{ range .Categories }}&categories[]={{.}}{{end}}"
     name: "{{ .Keywords }}"
-    sortField: "{{ .Config.sort }}"
-    sortDirection: "{{ .Config.type }}"
-    perPage: 100
+    imdb: "{{ .Query.IMDBIDShort }}"
+    tmdb: "{{ .Query.TMDBID }}"
+    tvdb: "{{ .Query.TVDBID }}"
+    freeleech: "{{ if .Config.freeleech }}1{{ else }}{{ end }}"
+    sorting: "{{ .Config.sort }}"
+    direction: "{{ .Config.type }}"
+    qty: 100
 
   keywordsfilters:
     - name: re_replace
@@ -88,19 +93,20 @@ search:
     attribute: attributes
 
   fields:
-    category:
-      selector: category_id
+    categorydesc:
+      selector: category
     title:
       selector: name
     details:
       selector: details_link
     download:
       selector: download_link
-    magnet:
-      selector: magnet_link
-      optional: true
-    infohash:
-      selector: info_hash
+    imdbid:
+      selector: imdb_id
+    tmdbid:
+      selector: tmdb_id
+    tvdbid:
+      selector: tvdb_id
     files:
       selector: num_file
     seeders:
@@ -120,25 +126,21 @@ search:
     size:
       selector: size
     downloadvolumefactor:
-      # api returns 0%, 25%, 50%, 75%, 100%
+      # api returns 0=false, 1=true
       selector: freeleech
       case:
-        0%: 1 # not free
-        25%: 0.75
-        50%: 0.5
-        75%: 0.25
-        100%: 0 # freeleech
-        "*": 0 # catch errors
+        0: 1 # not free
+        1: 0 # freeleech
     uploadvolumefactor:
-      # api returns False, True
+      # api returns 0=false, 1=true
       selector: double_upload
       case:
-        False: 1 # normal
-        True: 2 # double
-# global MR is 0.7 but torrents must be seeded for 4 days regardless of ratio
+        0: 1 # normal
+        1: 2 # double
+# global MR is 0.4 but torrents must be seeded for 7 days regardless of ratio
 #    minimumratio:
-#      text: 0.7
+#      text: 0.4
     minimumseedtime:
-      # 4 days (as seconds = 4 x 24 x 60 x 60)
-      text: 345600
-# json UNIT3D 7.1.3 (custom)
+      # 7 days (as seconds = 7 x 24 x 60 x 60)
+      text: 604800
+# json UNIT3D 5.2.0
