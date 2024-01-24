@@ -87,8 +87,10 @@ search:
           args: ["April", "Apr"]
         - name: re_replace
           args: ["March", "Mar"]
+        - name: append
+          args: " +00:00" # GMT
         - name: dateparse
-          args: "MMM d, yyyy, h:mm tt"
+          args: "MMM d, yyyy, h:mm tt zzz"
     date_abbr:
       # May 8, 2022, 6 a.m.
       selector: div.release_20:contains(".m."):not(:contains(":"))
