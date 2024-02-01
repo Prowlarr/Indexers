@@ -1,34 +1,22 @@
 ---
-id: shareisland-api
-name: Shareisland (API)
-description: "A general italian tracker"
-language: it-IT
+id: toonsforme
+name: ToonsForMe
+description: "ToonsForMe is a Private Tracker for Cartoons/Kids MOVIES / TV"
+language: en-US
 type: private
 encoding: UTF-8
 links:
-  - https://shareisland.org/
-legacylinks:
-  - http://shareisland.org/
-  - http://www.shareisland.org/
+  - https://toonsfor.me/
 
 caps:
   categorymappings:
-    - {id: 1, cat: Movies, desc: "Movie"}
-    - {id: 2, cat: TV, desc: "Serie TV"}
-    - {id: 15, cat: Books/EBook, desc: "Ebook"}
-    - {id: 17, cat: Books/Mags, desc: "Riviste e Giornali"}
-    - {id: 19, cat: XXX, desc: "XXX"}
-    - {id: 3, cat: Audio, desc: "Music"}
-    - {id: 7, cat: PC/Games, desc: "Games"}
-    - {id: 23, cat: PC, desc: "Software"}
-    - {id: 24, cat: TV/Sport, desc: "EVENTI SPORTIVI"}
+    - {id: 1, cat: Movies, desc: "Movies"}
+    - {id: 2, cat: TV, desc: "TV"}
 
   modes:
     search: [q]
     tv-search: [q, season, ep, imdbid, tvdbid, tmdbid]
     movie-search: [q, imdbid, tmdbid]
-    music-search: [q]
-    book-search: [q]
 
 settings:
   - name: apikey
@@ -37,7 +25,7 @@ settings:
   - name: info_key
     type: info
     label: About your API key
-    default: "Find or Generate a new API Token by accessing your <a href=\"https://shareisland.org/\" target=\"_blank\">Shareisland</a> account <i>My Settings</i> page and clicking on the <b>API Key</b> tab."
+    default: "Find or Generate a new API Token by accessing your <a href=\"https://toonsfor.me/\" target=\"_blank\">ToonsForMe</a> account <i>My Settings</i> page and clicking on the <b>API Key</b> tab."
   - name: freeleech
     type: checkbox
     label: Search freeleech only
@@ -62,7 +50,6 @@ settings:
 login:
   path: /api/torrents
   method: get
-  inputs: {} # TODO: remove in v10
   error:
     - selector: a[href*="/login"]
       message:
@@ -94,11 +81,6 @@ search:
     perPage: 100
 
   keywordsfilters:
-    # strip season and/or ep
-    - name: re_replace
-      args: ["\\b([SE]\\d{1,4}){1,2}\\b", ""]
-    - name: diacritics
-      args: replace
     - name: re_replace
       args: ["\\.", " "]
 
@@ -111,30 +93,6 @@ search:
       selector: category_id
     title:
       selector: name
-      filters:
-        - name: re_replace # replace special characters with " " (space)
-          args: ["[\\[!\"#$%&'()*+,\\-.\\/:;<=>?@[\\]^_`{|}~]", " "]
-        - name: diacritics
-          args: replace
-        - name: re_replace # replace multiple spaces
-          args: ["[ ]{2,}", " "]
-        # normalize to SXXEYY format
-        - name: re_replace # S01 E01 to S01E01
-          args: ["(?i)\\bS(\\d+)\\sE(\\d+)\\b", "S$1E$2"]
-        - name: re_replace # 01x01 to S01E01
-          args: ["(?i)(\\d{2})x(\\d+)", "S$1E$2"]
-        - name: re_replace # 1x01 to S01E01
-          args: ["(?i)\\b(\\d{1})x(\\d+)", "S0$1E$2"]
-        - name: re_replace # Stagione X --> S0X
-          args: ["(?i)\\bStagion[ei]\\s?(\\d{1})\\b|\\bSeason'?s?\\s?(\\d{1})\\b", "S0$1$2"]
-        - name: re_replace # Stagione XX --> SXX
-          args: ["(?i)\\bStagion[ei]\\s?(\\d{2,})\\b|\\bSeason'?s?\\s?(\\d{2,})\\b", "S$1$2"]
-        - name: re_replace # Episodio 4 to E4
-          args: ["(?i)\\b(?:[\\/\\|]?Episodio\\s?(\\d+)|Puntata\\s?(\\d+))", "E$1$2"]
-        - name: re_replace # Episodi 4 5 to E04-05
-          args: ["(?i)\\b(?:Puntate\\s*)(\\d+)\\s?(\\d+)", "E0$1-0$2"]
-        - name: re_replace # rimozioni varie
-          args: ["(?i)(Serie completa|Completat?a?|in pausa)", ""]
     details:
       selector: details_link
     download:
@@ -156,7 +114,9 @@ search:
       selector: meta.genres
       filters:
         - name: re_replace
-          args: ["(?i)(televisione film)", "televisione_film"]
+          args: ["(?i)(Science Fiction)", "Science_Fiction"]
+        - name: re_replace
+          args: ["(?i)(TV Movie)", "TV_Movie"]
         - name: replace
           args: [" & ", "_&_"]
     description:
@@ -195,10 +155,10 @@ search:
       case:
         False: 1 # normal
         True: 2 # double
-# global MR is 0.4 but torrents must be seeded for 7 days regardless of ratio
+# global MR is 0.4 but torrents must be seeded for 2 days regardless of ratio
 #    minimumratio:
 #      text: 0.4
     minimumseedtime:
-      # 6 day (as seconds = 6 x 24 x 60 x 60)
-      text: 518400
-# json UNIT3D 7.2.5 (custom)
+      # 2 days (as seconds = 2 x 24 x 60 x 60)
+      text: 172800
+# json UNIT3D 7.2.5
