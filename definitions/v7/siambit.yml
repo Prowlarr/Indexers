@@ -7,7 +7,10 @@ type: private
 encoding: tis-620
 requestDelay: 2
 links:
+  - https://thaibit.net/
+legacylinks:
   - https://www.siambit.me/
+  - https://siambit.io/
 
 caps:
   categorymappings:
