@@ -1,66 +1,71 @@
 ---
-id: eniahd
-name: EniaHD
-description: "EniaHD is a RUSSIAN Semi-Private Torrent Tracker for MOVIES / TV"
+id: tgay
+name: TGay
+description: "TGay is a RUSSIAN Private Torrent Tracker for LGBTQ MOVIES / TV / GENERAL"
 language: ru-RU
-type: semi-private
+type: private
 encoding: UTF-8
 links:
-  - https://eniatv.com/
-legacylinks:
-  - https://eniahd.com/
+  - https://tgay.pro/
 
 caps:
   categorymappings:
-    # Cinema
-    - {id: 13, cat: Movies/HD, desc: "Зарубежное кино HD"}
-    - {id: 11, cat: Movies, desc: "Зарубежное кино"}
-    - {id: 12, cat: Movies, desc: "Наше кино"}
-    - {id: 66, cat: Movies, desc: "Зарубежное кино | VIP"}
-    - {id: 67, cat: Movies, desc: "Зарубежное кино HD | VIP"}
-    - {id: 68, cat: Movies, desc: "Фабельманы / The Fabelmans"}
-    # TV
-    - {id: 2, cat: TV/HD, desc: "Зарубежные сериалы HD"}
-    - {id: 65, cat: TV/HD, desc: "Майя МС / Майянцы / Mayans M.C."}
-    - {id: 52, cat: TV/HD, desc: "Блудный сын / Prodigal Son"}
-    - {id: 49, cat: TV/HD, desc: "Пенниуорт / Pennyworth"}
-    - {id: 62, cat: TV/HD, desc: "Черный список / The Blacklist"}
-    - {id: 64, cat: TV/HD, desc: "Игра престолов / Game of Thrones"}
-    - {id: 59, cat: TV/HD, desc: "Американская история ужасов / American Horror Story"}
-    - {id: 60, cat: TV/HD, desc: "Хороший доктор / The Good Doctor"}
-    - {id: 54, cat: TV/HD, desc: "Рэй Донован / Ray Donovan"}
-    - {id: 55, cat: TV/HD, desc: "Сверхъестественное / Supernatural"}
-    - {id: 56, cat: TV/HD, desc: "Сквозь снег / Snowpiercer"}
-    - {id: 57, cat: TV/HD, desc: "Теория большого взрыва / The Big Bang Theory"}
-    - {id: 58, cat: TV/HD, desc: "Миллиарды / Billions"}
-    - {id: 53, cat: TV/HD, desc: "Родина / Homeland"}
-    - {id: 51, cat: TV/HD, desc: "Новобранец / The Rookie"}
-    - {id: 50, cat: TV/HD, desc: "Это мы / This Is Us"}
-    - {id: 48, cat: TV/HD, desc: "Бэтвумен / Batwoman"}
-    - {id: 32, cat: TV/HD, desc: "Кости / Bones"}
-    - {id: 31, cat: TV/HD, desc: "Американские боги / American Gods"}
-    - {id: 30, cat: TV/HD, desc: "Агенты Щ.И.Т. / Agents of S.H.I.E.L.D."}
-    - {id: 17, cat: TV/HD, desc: "Зарубежные сериалы HD для Apple TV"}
-    - {id: 22, cat: TV, desc: "Зарубежные сериалы HEVC"}
-    - {id: 3, cat: TV, desc: "Зарубежные сериалы"}
-    - {id: 14, cat: TV, desc: "Русские сериалы"}
-    - {id: 10, cat: TV, desc: "Звуковые дорожки"}
-    # Cartoons
-    - {id: 24, cat: TV, desc: "Мультфильмы"}
-    - {id: 25, cat: TV, desc: "Мультсериалы"}
-    # Documentary
-    - {id: 7, cat: TV/Documentary, desc: "Документальные (HD Video)"}
-    - {id: 21, cat: TV/Documentary, desc: "Документальные"}
-    - {id: 28, cat: TV/Documentary, desc: "Развлекательные телепередачи и шоу"}
-    # Private Forums
-    - {id: 47, cat: TV/HD, desc: "Рассказ служанки / The Handmaid's Tale"}
-    # Miscellaneous
-    - {id: 8, cat: Other, desc: "Разное (раздачи)"}
+    # Кино и ТВ
+    - {id: 38, cat: Movies, desc: "Полнометражные гей-фильмы"}
+    - {id: 39, cat: Movies, desc: "Короткий метр"}
+    - {id: 41, cat: Movies/HD, desc: "Гей-фильмы в высоком качестве"}
+    - {id: 40, cat: Movies, desc: "Гей-мюзиклы и театральные постановки"}
+    - {id: 16, cat: Movies, desc: "Арт-хаус и авторское кино"}
+    - {id: 45, cat: Movies, desc: "Арт-хаус полнометражные гей-фильмы"}
+    - {id: 44, cat: Movies, desc: "Арт-хаус короткий метр"}
+    - {id: 43, cat: Movies/HD, desc: "Арт-хаус в высоком качестве"}
+    - {id: 17, cat: TV/Documentary, desc: "Документальные фильмы и телепередачи"}
+    - {id: 47, cat: TV/Documentary, desc: "Отечественные документальные фильмы и телепередачи"}
+    - {id: 46, cat: TV/Documentary, desc: "Зарубежные документальные фильмы и передачи"}
+    - {id: 18, cat: TV, desc: "Сериалы"}
+    - {id: 51, cat: TV, desc: "ЛГБТ-сериалы"}
+    - {id: 50, cat: TV, desc: "ЛГБТ-минисериалы"}
+    - {id: 49, cat: TV/HD, desc: "ЛГБТ-сериалы в высоком качестве"}
+    - {id: 48, cat: TV, desc: "Не тематические сериалы"}
+    - {id: 19, cat: Movies, desc: "Разное интересное кино"}
+    - {id: 56, cat: Movies, desc: "Лесби- и транс-фильмы"}
+    - {id: 55, cat: Movies, desc: "Не тематические художественные фильмы"}
+    - {id: 75, cat: Movies, desc: "Мюзиклы и театральные постановки"}
+    - {id: 54, cat: TV/Documentary, desc: "Не тематические документальные фильмы"}
+    - {id: 53, cat: Movies, desc: "Разное интересное кино короткий метр"}
+    - {id: 52, cat: Movies/HD, desc: "Разное интересное кино в высоком качестве"}
+    - {id: 20, cat: Movies/Foreign, desc: "Фильмы без русского перевода"}
+    - {id: 62, cat: Movies/Foreign, desc: "Художественные гей-фильмы без перевода"}
+    - {id: 61, cat: TV/Foreign, desc: "Документальные гей-фильмы и передачи без перевода"}
+    - {id: 60, cat: Movies/Foreign, desc: "Фильмы без перевода в высоком качестве"}
+    - {id: 59, cat: Movies/Foreign, desc: "Короткий метр без перевода"}
+    - {id: 58, cat: TV/Foreign, desc: "Гей-сериалы без перевода"}
+    - {id: 57, cat: Movies/Foreign, desc: "Дополнительные материалы без перевода"}
+    - {id: 22, cat: Movies/Other, desc: "Мультфильмы"}
+    - {id: 21, cat: Movies/Other, desc: "Дополнительные материалы к фильмам"}
+    # Музыка
+    - {id: 23, cat: Audio, desc: "Аудио"}
+    - {id: 24, cat: Audio/Video, desc: "Музыкальное видео"}
+    # Книги
+    - {id: 25, cat: Books, desc: "Печатные книги и журналы"}
+    - {id: 26, cat: Audio/Audiobook, desc: "Аудиокниги"}
+    # Игры
+    - {id: 27, cat: PC/Games, desc: "Гей-игры"}
+    - {id: 28, cat: PC/Games, desc: "Не тематические игры"}
+    # Знакомства
+    - {id: 65, cat: Other, desc: "Анкеты для знакомств"}
+    # Служебный форум
+    # - {id: 37, cat: Other, desc: "Песочница"}
+    # - {id: 63, cat: Other, desc: "test Гей-фильмы"}
+    # - {id: 76, cat: Other, desc: "test Мюзиклы и театральные постановки"}
 
   modes:
     search: [q]
     tv-search: [q, season, ep]
     movie-search: [q]
+    music-search: [q]
+    book-search: [q]
+  allowrawsearch: true
 
 settings:
   - name: username
@@ -77,7 +82,7 @@ settings:
     type: checkbox
     label: Add RUS to end of all titles to improve language detection by Sonarr and Radarr. Will cause English-only results to be misidentified.
     default: false
-  - name: freeleech
+  - name: freeleech_50
     type: checkbox
     label: Search freeleech and 50% freeleech only
     default: false
@@ -100,14 +105,15 @@ settings:
 
 login:
   path: login.php
-  method: form
-  form: form[action="login.php"]
+  method: post
   inputs:
+    redirect: index.php
     login_username: "{{ .Config.username }}"
     login_password: "{{ .Config.password }}"
-    autologin: 1
+    autologin: on
+    login: "Log in"
   error:
-    - selector: table.error
+    - selector: div.msg
   test:
     path: index.php
     selector: a[href="./login.php?logout=1"]
@@ -117,7 +123,7 @@ search:
     - path: tracker.php
   inputs:
     $raw: "{{ if .Categories }}{{ range .Categories }}f[]={{.}}&{{end}}{{ else }}f[]=-1{{ end }}"
-    prev_allw: 0
+    prev_allw: 1
     prev_a: 0
     prev_dla: 0
     prev_dlc: 0
@@ -131,7 +137,9 @@ search:
     prev_df: 1
     prev_ds: 0
     prev_tor_type: 0
+    # sort by 1=registered 2=topicTitle 4=completed 10=seed 11=leech 12=up 13=down 5=replies 6=views 7=size 8=lastPost 9=seedLastSeen
     o: "{{ .Config.sort }}"
+    # 1=asc 2=desc
     s: "{{ .Config.type }}"
     # show category
     dc: 0
@@ -147,27 +155,33 @@ search:
     sns: -1
     # group releases -1=not selected
     srg: -1
-    # title search
     nm: "{{ .Keywords }}"
     # search by partial word
     allw: 0
-    tor_type: "{{ if .Config.freeleech }}1{{ else }}{{ end }}"
+    tor_type: "{{ if .Config.freeleech_50 }}1{{ else }}{{ end }}"
 
   keywordsfilters:
     - name: diacritics
       args: replace
-    # strip season and/or ep
-    - name: re_replace
-      args: ["(?i)\\b(?:[SE]\\d{1,4}){1,2}\\b\\s?", ""]
-    - name: re_replace
-      args: ["(\\w+)", "+$1"] # prepend + to each word
+    - name: re_replace # S01 to сезон 1
+      args: ["(?i)\\bS0*(\\d+)\\b", "сезон $1"]
+    - name: re_replace # E02 to сери 1
+      args: ["(?i)\\bE0*(\\d+)\\b", "сери $1"]
+    - name: re_replace # S01E02 to сезон 1 сери 2
+      args: ["(?i)\\bS0*(\\d+)E0*(\\d+)\\b", "сезон $1 сери $2"]
 
   rows:
-    selector: tr[id^="tor_"]:has(a[href^="./dl.php?id="])
+    selector: tr[id^="tor_"]:has(a[href^="magnet:?xt="])
 
   fields:
+    category:
+      selector: a[href^="tracker.php?f="]
+      attribute: href
+      filters:
+        - name: querystring
+          args: f
     title:
-      selector: a.tLink
+      selector: a[href^="./viewtopic.php?t="]
       filters:
         # normalize to SXXEYY format
         - name: re_replace
@@ -216,24 +230,16 @@ search:
           args: ["[\\[\\(\\{<«][\\s\\W]*[\\]\\)\\}>»]", ""]
         - name: re_replace
           args: ["^[\\s&,\\.!\\?\\+\\-_\\|\\/':]+", ""]
+        - name: re_replace
+          args: ["(?i)^\\(\\s*([SE]\\d+.*?)\\s*\\)[\\s\\/\\|]*(.+)", "$2 $1"]
         - name: append
           args: "{{ if .Config.addrussiantotitle }} RUS{{ else }}{{ end }}"
     details:
-      selector: a.tLink
-      attribute: href
-    download:
-      selector: a[href^="./dl.php?id="]
+      selector: a[href^="./viewtopic.php?t="]
       attribute: href
     magnet:
-      optional: true
       selector: a[href^="magnet:?xt="]
       attribute: href
-    category:
-      selector: a.gen
-      attribute: href
-      filters:
-        - name: querystring
-          args: f
     size:
       selector: td:nth-child(6) > u
     seeders:
@@ -243,20 +249,21 @@ search:
     grabs:
       selector: td:nth-child(9)
     date:
-      # unix
       selector: td:last-child > u
     downloadvolumefactor:
       case:
-        img[src$="/tor_gold.gif"]: 0
-        img[src$="/tor_silver.gif"]: 0.5
+        img[src="styles/images/tor_gold.gif"]: 0
+        img[src="styles/images/tor_silver.gif"]: 0.5
         "*": 1
     uploadvolumefactor:
       text: 1
-    minimumratio:
-      text: 1.0
-    minimumseedtime:
-      # 100 hours (as seconds = 100 x 60 x 60)
-      text: 360000
+    description_verified:
+      case:
+        span.tor-approved: "Verified:"
+        span.tor-not-approved: "Unverified:"
     description:
-      selector: a.tLink
-# TorrentPier
+      selector: a[href^="./viewtopic.php?t="]
+      filters:
+        - name: prepend
+          args: "{{ .Result.description_verified }} "
+# TorrentPier II

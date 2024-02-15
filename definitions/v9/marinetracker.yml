@@ -206,7 +206,7 @@ settings:
     label: Password
   - name: freeleech
     type: checkbox
-    label: Search freeleech only
+    label: Search freeleech and 50% freeleech only
     default: false
   - name: sort
     type: select
