@@ -20,7 +20,7 @@ settings:
   - name: flaresolverr-onejav
     type: info
     label: FlareSolverr
-    default: This site may use Cloudflare DDoS Protection, therefore Prowlarr requires FlareSolverr to access it.<br><br>If you have issues downloading, perform a keyword search (e.g. <b>video</b>) so FlareSolverr can grab new cookies.
+    default: This site may use Cloudflare DDoS Protection, therefore Prowlarr requires <a href="https://wiki.servarr.com/prowlarr/faq#can-i-use-flaresolverr-indexers" target="_blank" rel="noreferrer">FlareSolverr</a> to access it.<br><br>If you have issues downloading, perform a keyword search (e.g. <b>video</b>) so FlareSolverr can grab new cookies.
 
 search:
   paths:
