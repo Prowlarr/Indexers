@@ -55,11 +55,11 @@ search:
     after: 1
 
   fields:
-    category_optional:
+    categorydesc_optional:
       selector: div.inmy > a:last-of-type
       optional: true
-    category:
-      text: "{{ if .Result.category_optional }}{{ .Result.category_optional }}{{ else }}порно видео{{ end }}"
+    categorydesc:
+      text: "{{ if .Result.categorydesc_optional }}{{ .Result.categorydesc_optional }}{{ else }}порно видео{{ end }}"
     title:
       selector: div.news_text > a
     details:

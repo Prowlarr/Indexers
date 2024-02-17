@@ -91,9 +91,7 @@ search:
     selector: table.torrenttable_helper > tbody > tr:has(img)
 
   fields:
-    category:
-      text: 12
-    category|noappend:
+    category_optional:
       selector: img[class^="cat-"]
       attribute: class
       optional: true
@@ -114,6 +112,8 @@ search:
         img.cat-pinku: 12
         img.cat-drama: 15
         img.cat-ost: 16
+    category:
+      text: "{{ if .Result.category_optional }}{{ .Result.category_optional }}{{ else }}12{{ end }}"
     title:
       selector: span[id]
     details:

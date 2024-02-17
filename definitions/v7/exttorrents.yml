@@ -122,12 +122,12 @@ search:
     selector: table.table-striped > tbody > tr
 
   fields:
-    category:
-      text: "/other/"
-    category|noappend:
+    category_optional:
       selector: td:nth-child(1) div div a:last-child
       attribute: href
       optional: true
+    category:
+      text: "{{ if .Result.category_optional }}{{ .Result.category_optional }}{{ else }}/other/{{ end }}"
     title:
       selector: td:nth-child(1) div a
     details:

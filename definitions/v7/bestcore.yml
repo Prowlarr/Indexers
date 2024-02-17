@@ -123,15 +123,15 @@ search:
       - name: andmatch
 
   fields:
-    category:
-      text: 38
-    category|noappend:
+    category_optional:
       selector: a[href^="browse.php?cat="]
       attribute: href
       optional: true
       filters:
         - name: querystring
           args: cat
+    category:
+      text: "{{ if .Result.category_optional }}{{ .Result.category_optional }}{{ else }}38{{ end }}"
     title_default:
       # can be abbreviated
       selector: a[href^="details.php?id="]

@@ -114,11 +114,9 @@ search:
       - name: andmatch
 
   fields:
-    category:
-      text: other
-    category|noappend:
-      optional: true
+    category_optional:
       selector: td:nth-child(1) i
+      optional: true
       case:
         i[class="fa fa-video-camera"]: films
         i[class="fa fa-tv"]: series # search by name
@@ -127,6 +125,8 @@ search:
         i[class="fa fa-gamepad"]: jeux-pc
         i[class="fa fa-laptop"]: logiciels
         i[class="fa fa-book"]: ebook
+    category:
+      text: "{{ if .Result.category_optional }}{{ .Result.category_optional }}{{ else }}other{{ end }}"
     title_default:
       selector: td:nth-child(1) a
     title_optional:
