@@ -66,7 +66,7 @@ search:
   paths:
     # https://github.com/HDInnovations/UNIT3D-Community-Edition/wiki/Torrent-API-(UNIT3D-v7.0.0)
     # https://github.com/HDInnovations/UNIT3D-Community-Edition/blob/master/app/Http/Controllers/API/TorrentController.php#L349
-    - path: "/api/torrents/filter"
+    - path: api/torrents/filter
       response:
         type: json
 
@@ -74,24 +74,20 @@ search:
     Authorization: ["Bearer {{ .Config.apikey }}"]
 
   inputs:
-    # if we have an id based search, add Season and Episode as query in name for UNIT3D < v6.  Else pass S/E Params for UNIT3D >= v6
+  # if we have an id based search, add Season and Episode as query in name for UNIT3D < v6.  Else pass S/E Params for UNIT3D >= v6
     name: "{{ .Keywords }}"
-    $raw: "{{ if .Query.Season }}&seasonNumber={{ .Query.Season }}{{ else }}{{ end }}{{ if .Query.Ep }}&episodeNumber={{ .Query.Ep }}{{ else }}{{ end }}{{ if .Query.TMDBID }}&tmdbId={{ .Query.TMDBID }}{{ else }}{{ end }}{{ if .Query.IMDBIDShort }}&imdbId={{ .Query.IMDBIDShort }}{{ else }}{{ end }}{{ if  .Query.TVDBID }}&tvdbId={{ .Query.TVDBID }}{{ else }}{{ end }}{{ range .Categories }}&categories[]={{.}}{{end}}{{ if .Config.freeleech }}&free[]=100{{ else }}{{ end }}"
+    $raw: "{{ if .Query.Season }}&seasonNumber={{ .Query.Season }}{{ else }}{{ end }}{{ if .Query.Ep }}&episodeNumber={{ .Query.Ep }}{{ else }}{{ end }}{{ if .Query.TMDBID }}&tmdbId={{ .Query.TMDBID }}{{ else }}{{ end }}{{ if .Query.IMDBIDShort }}&imdbId={{ .Query.IMDBIDShort }}{{ else }}{{ end }}{{ if  .Query.TVDBID }}&tvdbId={{ .Query.TVDBID }}{{ else }}{{ end }}{{ range .Categories }}&categories[]={{.}}{{end}}{{ if .Config.freeleech }}&free=1{{ else }}{{ end }}"
     sortField: "{{ .Config.sort }}"
     sortDirection: "{{ .Config.type }}"
     perPage: 100
-
-  keywordsfilters:
-    - name: re_replace
-      args: ["\\.", " "]
 
   rows:
     selector: data
     attribute: attributes
 
   fields:
-    category:
-      selector: category_id
+    categorydesc:
+      selector: category
     title:
       selector: name
       filters:
@@ -153,10 +149,8 @@ search:
       selector: details_link
     download:
       selector: download_link
-    infohash:
-      selector: info_hash
     poster:
-      selector: meta.poster
+      selector: poster
       filters:
         - name: replace
           args: ["https://via.placeholder.com/90x135", ""]
@@ -185,22 +179,22 @@ search:
     size:
       selector: size
     downloadvolumefactor:
-      # api returns 0%, 25%, 50%, 75%, 100%
+      # api returns 0, 25, 50, 75, 100
       selector: freeleech
       case:
-        0%: 1 # not free
-        25%: 0.75
-        50%: 0.5
-        75%: 0.25
-        100%: 0 # freeleech
+        0: 1 # not free
+        25: 0.75
+        50: 0.5
+        75: 0.25
+        100: 0 # freeleech
         "*": 0 # catch errors
     uploadvolumefactor:
-      # api returns False, True
+      # api returns 0=false, 1=true
       selector: double_upload
       case:
-        False: 1 # normal
-        True: 2 # double
+        0: 1 # normal
+        1: 2 # double
     minimumseedtime:
       # 4 days (as seconds = 4 x 24 x 60 x 60)
       text: 345600
-# json UNIT3D 7.x.x
+# json UNIT3D 6.0.x (custom)
