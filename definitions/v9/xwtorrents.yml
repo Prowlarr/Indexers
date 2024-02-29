@@ -154,12 +154,11 @@ search:
           args: name
         - name: replace
           args: [".torrent", ""]
-    title_optional:
+    title:
       selector: a[href^="details.php?id="]
       attribute: title
       optional: true
-    title:
-      text: "{{ if .Result.title_optional }}{{ .Result.title_optional }}{{ else }}{{ .Result.title_default }}{{ end }}"
+      default: "{{ .Result.title_default }}"
     download_2:
       selector: a[href^="download2.php"]
       attribute: href
