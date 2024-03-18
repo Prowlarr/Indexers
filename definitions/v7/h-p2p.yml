@@ -1,30 +1,21 @@
 ---
-id: lilleskyorg
-name: LilleSky.org
-description: "LilleSky.org is a Private Torrent Tracker for MOVIES / TV / GENERAL"
+id: h-p2p
+name: H-P2P
+description: "H-P2P is a Private Torrent Tracker for OnlyFans XXX"
 language: en-US
 type: private
 encoding: UTF-8
 links:
-  - https://lillesky.org/
+  - https://h-p2p.cam/
 
 caps:
   categorymappings:
-    - {id: 1, cat: Movies, desc: "MOVIES"}
-    - {id: 2, cat: TV, desc: "TV"}
-    - {id: 3, cat: TV/Foreign, desc: "TV-FOREIGN"}
-    - {id: 4, cat: PC, desc: "APPS"}
-    - {id: 5, cat: Audio, desc: "MUSIC"}
-    - {id: 6, cat: XXX, desc: "XXX"}
-    - {id: 7, cat: Console, desc: "GAMES"}
-    - {id: 8, cat: Books, desc: "EBOOKS"}
+    - {id: 6, cat: XXX/WEB-DL, desc: "OnlyFans"}
 
   modes:
     search: [q]
-    tv-search: [q, season, ep, imdbid, tvdbid, tmdbid]
-    movie-search: [q, imdbid, tmdbid]
-    music-search: [q]
-    book-search: [q]
+    tv-search: [q]
+    movie-search: [q]
 
 settings:
   - name: apikey
@@ -33,7 +24,7 @@ settings:
   - name: info_key
     type: info
     label: About your API key
-    default: "Find or Generate a new API Token by accessing your <a href=\"https://lillesky.org/\" target=\"_blank\">LilleSky.org</a> account <i>My Settings</i> page and clicking on the <b>API Key</b> tab."
+    default: "Find or Generate a new API Token by accessing your <a href=\"https://h-p2p.cam/\" target=\"_blank\">H-P2P</a> account <i>My Security</i> page and clicking on the <b>API Token</b> tab."
   - name: freeleech
     type: checkbox
     label: Search freeleech only
@@ -58,7 +49,6 @@ settings:
 login:
   path: /api/torrents
   method: get
-  inputs: {} # TODO: remove in v10
   error:
     - selector: a[href*="/login"]
       message:
@@ -76,15 +66,9 @@ search:
     Authorization: ["Bearer {{ .Config.apikey }}"]
 
   inputs:
-  # if we have an id based search, add Season and Episode as query in name for UNIT3D < v6.  Else pass S/E Params for UNIT3D >= v6
     $raw: "{{ range .Categories }}&categories[]={{.}}{{end}}"
     name: "{{ .Keywords }}"
-    seasonNumber: "{{ .Query.Season }}"
-    episodeNumber: "{{ .Query.Ep }}"
-    imdbId: "{{ .Query.IMDBIDShort }}"
-    tmdbId: "{{ .Query.TMDBID }}"
-    tvdbId: "{{ .Query.TVDBID }}"
-    "free[]": "{{ if .Config.freeleech }}100{{ else }}{{ end }}"
+    free: "{{ if .Config.freeleech }}1{{ else }}{{ end }}"
     sortField: "{{ .Config.sort }}"
     sortDirection: "{{ .Config.type }}"
     perPage: 100
@@ -102,6 +86,9 @@ search:
       selector: category_id
     title:
       selector: name
+      filters:
+        - name: re_replace
+          args: ["\\.", " "]
     details:
       selector: details_link
     download:
@@ -109,27 +96,10 @@ search:
     infohash:
       selector: info_hash
     poster:
-      selector: meta.poster
+      selector: poster
       filters:
         - name: replace
           args: ["https://via.placeholder.com/90x135", ""]
-    imdbid:
-      selector: imdb_id
-    tmdbid:
-      selector: tmdb_id
-    tvdbid:
-      selector: tvdb_id
-    genre:
-      selector: meta.genres
-      filters:
-        - name: re_replace
-          args: ["(?i)^None$", ""]
-        - name: re_replace
-          args: ["(?i)(Science Fiction)", "Science_Fiction"]
-        - name: replace
-          args: [" & ", "_&_"]
-    description:
-      text: "{{ .Result.genre }}"
     files:
       selector: num_file
     seeders:
@@ -159,15 +129,14 @@ search:
         100%: 0 # freeleech
         "*": 0 # catch errors
     uploadvolumefactor:
-      # api returns False, True
+      # api returns 0=false, 1=true
       selector: double_upload
       case:
-        False: 1 # normal
-        True: 2 # double
-# global MR is 0.4 but torrents must be seeded for 7 days regardless of ratio
-#    minimumratio:
-#      text: 0.4
+        0: 1 # normal
+        1: 2 # double
+    minimumratio:
+      text: 1.0
     minimumseedtime:
       # 7 days (as seconds = 7 x 24 x 60 x 60)
       text: 604800
-# json UNIT3D 7.2.5
+# json UNIT3D 6.3.0
