@@ -15,7 +15,11 @@ caps:
   modes:
     search: [q]
 
-settings: []
+settings:
+  - name: flaresolverr
+    type: info
+    label: FlareSolverr
+    default: This site may use Cloudflare DDoS Protection, therefore Prowlarr requires <a href="https://wiki.servarr.com/prowlarr/faq#can-i-use-flaresolverr-indexers" target="_blank" rel="noreferrer">FlareSolverr</a> to access it.
 
 search:
   headers:
