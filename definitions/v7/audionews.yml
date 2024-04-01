@@ -307,7 +307,7 @@ search:
           args: f
     size_optional:
       optional: true
-      selector: td:contains(\00a0GB), td:contains(\00a0MB), td:contains(\00a0kB), td:contains(\00a0B)
+      selector: td:contains(\00a0GB), td:contains(\00a0MB), td:contains(\00a0KB), td:contains(\00a0B)
     size:
       text: "{{ if .Result.size_optional }}{{ .Result.size_optional }}{{ else }}0 B{{ end }}"
     seeders_optional:
