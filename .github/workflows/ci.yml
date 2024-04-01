@@ -14,7 +14,7 @@ jobs:
     name: Lint Yaml
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: yamllint version
         run: |
           yamllint --version
@@ -25,7 +25,7 @@ jobs:
     name: Validate Schema
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - run: npm ci
     - name: yaml schema check
       run: |
