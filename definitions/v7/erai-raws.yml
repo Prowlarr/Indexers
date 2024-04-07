@@ -1,0 +1,167 @@
+---
+id: erai-raws
+name: Erai-Raws
+description: "Erai-Raws is a team release site for Anime subtitles."
+language: en-US
+type: semi-private
+encoding: UTF-8
+requestDelay: 2
+links:
+  - https://www.erai-raws.info/
+  - https://beta.erai-raws.info/
+
+caps:
+  categorymappings:
+    - { id: 1, cat: TV/Anime, desc: "Anime" }
+    - { id: 2, cat: Movies/Other, desc: "[Movie or Special Episode]" }
+
+  modes:
+    search: [q]
+    tv-search: [q, season, ep]
+    movie-search: [q]
+
+settings:
+  - name: rss_token
+    type: password
+    label: "RSS Token"
+  - name: resolution
+    type: select
+    label: "Resolution"
+    default: ""
+    options:
+      "": "Any"
+      1080p: "1080p"
+      720p: "720p"
+      SD: "SD (480p)"
+  - name: link_type
+    type: select
+    label: "Link Type"
+    default: magnet
+    options:
+      magnet: "Magnet"
+      torrent: "Torrent"
+  - name: subtitles
+    type: select
+    label: "Subtitles"
+    default: ""
+    options:
+      "": "Any"
+      us: "English"
+      br: "Portuguese (Brazil)"
+      mx: "Spanish (Latin America)"
+      es: "Spanish"
+      sa: "Arabic"
+      fr: "French"
+      de: "German"
+      it: "Italian"
+      ru: "Russian"
+      jp: "Japanese"
+      pt: "Portuguese"
+      pl: "Polish"
+      nl: "Dutch"
+      no: "Norwegian"
+      fi: "Finnish"
+      tr: "Turkish"
+      se: "Swedish"
+      gr: "Greek"
+      il: "Hebrew"
+      ro: "Romanian"
+      id: "Indonesian"
+      th: "Thai"
+      kr: "Korean"
+      dk: "Danish"
+      cn: "Chinese (Simplified & Traditional)"
+      bg: "Bulgarian"
+      vn: "Vietnamese"
+      in: "Hindi"
+      lk: "Tamil"
+      ua: "Ukrainian"
+      hu: "Hungarian"
+      cz: "Czech"
+      hr: "Croatian"
+      my: "Malaysian"
+      sk: "Slovakian"
+      ph: "Filipino"
+  - name: want_v0
+    type: checkbox
+    label: "Want v0?"
+    default: true
+  - name: include_subtitles
+    type: checkbox
+    label: "Append subtitle details to titles"
+    default: false
+
+search:
+  paths:
+    # All
+    - path: "/feed/?{{ .Config.rss_token }}{{ if .Config.link_type }}&type={{ .Config.link_type }}{{ else }}{{ end }}{{ if .Config.resolution }}&res={{ .Config.resolution }}{{ else }}{{ end }}{{ if .Config.subtitles }}&subs%5B0%5D={{ .Config.subtitles }}{{ else }}{{ end }}{{ if .Config.want_v0 }}{{ else }}&v0=no{{ end }}"
+      categories: ["!", "2"]
+      response:
+        type: xml
+
+    # Movies or Special Episodes
+    - path: "/specials/feed/?{{ .Config.rss_token }}{{ if .Config.link_type }}&type={{ .Config.link_type }}{{ else }}{{ end }}{{ if .Config.resolution }}&res={{ .Config.resolution }}{{ else }}{{ end }}{{ if .Config.subtitles }}&subs%5B0%5D={{ .Config.subtitles }}{{ else }}{{ end }}{{ if .Config.want_v0 }}{{ else }}&v0=no{{ end }}"
+      categories: ["2"]
+      response:
+        type: xml
+
+  rows:
+    selector: rss > channel > item
+    filters:
+      - name: andmatch
+
+  fields:
+    category_optional:
+      selector: category
+      optional: true
+    categorydesc:
+      text: "{{ if eq .Result.category_optional \"[Movie or Special Episode]\" }}{{ .Result.category_optional }}{{ else }}Anime{{ end }}"
+    title_resolution:
+      selector: resolution
+    title_subtitles:
+      selector: subtitles
+      optional: true
+      filters:
+        - name: replace
+          args: ["][", " "]
+        - name: replace
+          args: ["[", ""]
+        - name: replace
+          args: ["]", ""]
+        - name: trim
+        - name: toupper
+    title:
+      selector: title
+      filters:
+        - name: re_replace
+          args: ["^\\[.+?\\]", ""]
+        - name: re_replace
+          args: [" \\[.+\\]", ""]
+        - name: trim
+        - name: append
+          args: " - {{ .Result.title_resolution }}"
+        - name: append
+          args: "{{ if and .Config.include_subtitles .Result.title_subtitles }} JAPANESE [Subs: {{ .Result.title_subtitles }}]{{ else }}{{ end }}"
+    details:
+      selector: description > a[href]
+      attribute: href
+    download:
+      selector: link
+    infohash:
+      selector: infohash
+    date:
+      selector: pubDate
+    size:
+      selector: size
+    seeders:
+      text: 1
+    leechers:
+      text: 1
+    description:
+      selector: description
+      remove: a
+    downloadvolumefactor:
+      text: 0
+    uploadvolumefactor:
+      text: 1
+# engine n/a
