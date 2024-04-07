@@ -1,0 +1,156 @@
+---
+id: erairaws
+name: Erai-raws
+description: "A mysterious organization that releases anime content with multi-subs and more. (Placeholder text)"
+language: en-US
+type: public
+encoding: UTF-8
+requestDelay: 2
+links:
+  - https://www.erai-raws.info/
+
+caps:
+  categorymappings:
+    - { id: 100, cat: TV/Anime, desc: "[Airing]", default: true }
+    - { id: 110, cat: TV/Anime, desc: "[Finale]" }
+    - { id: 200, cat: TV/Anime, desc: "[Batch]" }
+    - { id: 300, cat: Movies/Other, desc: "[Movie or Special Episode]" }
+    - { id: 400, cat: TV/Anime, desc: "[Encoded]" }
+    - { id: 500, cat: TV/Anime, desc: "[Raw]" }
+  modes:
+    search: [q]
+    tv-search: [q, season, ep]
+    movie-search: [q]
+  allowrawsearch: true
+
+settings:
+  - name: rss_token
+    label: "RSS Token"
+    type: password
+    default: "d157edc6b50f28b2776442c03d067d56"
+  - name: categories
+    label: "Categories"
+    type: select
+    default: all
+    options:
+      all: "All"
+      episodes: "Airing"
+      batches: "Batches"
+      specials: "Movies or Special Episodes"
+      encodes: "Encodings"
+      raws: "Raws"
+  - name: resolution
+    label: "Resolution"
+    type: select
+    default: 1080p
+    options:
+      1080p: "1080p"
+      720p: "720p"
+      SD: "SD (480p)"
+  - name: link_type
+    label: "Link Type"
+    type: select
+    default: torrent
+    options:
+      torrent: "Torrent"
+      magnet: "Magnet"
+  - name: subtitles
+    label: "Subtitles"
+    type: select
+    default: us
+    options:
+      us: "English"
+      br: "Portuguese(Brazil)"
+      mx: "Spanish(Latin_America)"
+      es: "Spanish"
+      sa: "Arabic"
+      fr: "French"
+      de: "German"
+      it: "Italian"
+      ru: "Russian"
+      jp: "Japanese"
+      pt: "Portuguese"
+      pl: "Polish"
+      nl: "Dutch"
+      no: "Norwegian"
+      fi: "Finnish"
+      tr: "Turkish"
+      se: "Swedish"
+      gr: "Greek"
+      il: "Hebrew"
+      ro: "Romanian"
+      id: "Indonesian"
+      th: "Thai"
+      kr: "Korean"
+      dk: "Danish"
+      cn: "Chinese(Simplified&Traditional)"
+      bg: "Bulgarian"
+      vn: "Vietnamese"
+      in: "Hindi"
+      lk: "Tamil"
+      ua: "Ukrainian"
+      hu: "Hungarian"
+      cz: "Czech"
+      hr: "Croatian"
+      my: "Malaysian"
+      sk: "Slovakian"
+      ph: "Filipino"
+  - name: want_v0
+    label: "Want v0?"
+    type: checkbox
+    default: true
+
+search:
+  paths:
+    - path: "{{ if ne .Config.categories \"all\" }}/{{ .Config.categories }}{{ else }}{{ end }}/feed/"
+      response:
+        type: xml
+  inputs:
+    $raw: "{{ .Config.rss_token }}=0&"
+    res: "{{ .Config.resolution }}"
+    type: "{{ .Config.link_type }}"
+    subs: "{{ .Config.subtitles }}"
+    v0: "{{ if .Config.want_v0 }}{{ else }}no{{ end }}"
+    s: "{{ .Keywords }}"
+  rows:
+    selector: rss > channel > item
+  fields:
+    categorydesc:
+      selector: category
+    title:
+      selector: title
+      filters:
+        - name: regexp
+          args: "^\\[(?:Magnet|Torrent)\\] (.*)"
+    details_link:
+      selector: description
+      filters:
+        - name: regexp
+          args: "href=\"(.*)\""
+      optional: true
+    details:
+      text: "{{ or (.Result.details_link) \"https://www.erai-raws.info/\" }}"
+    download_link:
+      selector: link
+    download:
+      text: "{{ if eq .Config.link_type \"torrent\" }}{{ .Result.download_link }}{{ else }}{{ end }}"
+      optional: true
+    magnet:
+      text: "{{ if eq .Config.link_type \"magnet\"}}{{ .Result.download_link }}{{ else }}{{ end }}"
+    infohash:
+      selector: infohash
+    date:
+      selector: pubDate
+      filters:
+        - name: dateparse
+          args: "ddd, dd MMM yyyy HH:mm:ss zz"
+    size:
+      selector: size
+    seeders:
+      text: 1
+    leechers:
+      text: 1
+    description:
+      selector: description
+      remove: a
+# engine n/a
