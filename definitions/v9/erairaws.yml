@@ -144,8 +144,14 @@ search:
       filters:
         - name: regexp
           args: "^(?:.*) - (\\d+ ~ \\d+|\\d+)"
+    title_movie:
+      selector: title
+      filters:
+        - name: regexp
+          args: "^(?:.*) - (Movie(?:\\s\\d+)?)"
+      optional: true
     title_is_movie:
-      text: "{{ if .Config.include_movie }} - Movie{{ else }}{{ end }}"
+      text: "{{ if .Config.include_movie }} - {{ .Result.title_movie }}{{ else }}{{ end }}"
       optional: true
     title_has_hevc:
       selector: title
@@ -164,6 +170,12 @@ search:
         - name: regexp
           args: "\\[(?:1080p|720p|SD)\\]((?:\\[\\w{2}\\])+)"
       optional: true
+    title_categories:
+      selector: title
+      filters:
+        - name: regexp
+          args: "((?:\\[\\w{3,}\\]|\\[Movie or Special Episode\\])+)$"
+      optional: true
     title:
       selector: title
       filters:
@@ -178,7 +190,7 @@ search:
         - name: append
           args: "{{ if .Config.include_subtitles }} {{ .Result.title_subtitles }}{{ else }}{{ end }}"
         - name: append
-          args: "{{ if .Config.include_categories }}{{ .Result.categorydesc }}{{ else }}{{ end }}"
+          args: "{{ if .Config.include_categories }}{{ .Result.title_categories }}{{ else }}{{ end }}"
     details_link:
       selector: description
       filters:
