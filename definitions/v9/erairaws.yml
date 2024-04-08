@@ -27,7 +27,6 @@ settings:
   - name: rss_token
     label: "RSS Token"
     type: password
-    default: "d157edc6b50f28b2776442c03d067d56"
   - name: categories
     label: "Categories"
     type: select
