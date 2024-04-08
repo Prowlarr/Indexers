@@ -3,7 +3,7 @@ id: erairaws
 name: Erai-raws
 description: "A mysterious organization that releases anime content with multi-subs and more. (Placeholder text)"
 language: en-US
-type: public
+type: semi-private
 encoding: UTF-8
 requestDelay: 2
 links:
