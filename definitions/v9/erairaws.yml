@@ -11,9 +11,11 @@ links:
 
 caps:
   categorymappings:
-    - { id: 100, cat: TV/Anime, desc: "[Airing]", default: true }
+    - { id: 100, cat: TV/Anime, desc: "[Airing]" }
     - { id: 110, cat: TV/Anime, desc: "[Finale]" }
     - { id: 200, cat: TV/Anime, desc: "[Batch]" }
+    - { id: 210, cat: TV/Anime, desc: "[Batch][Encoded]" }
+    - { id: 220, cat: TV/Anime, desc: "[Batch][Raw]" }
     - { id: 300, cat: Movies/Other, desc: "[Movie or Special Episode]" }
     - { id: 400, cat: TV/Anime, desc: "[Encoded]" }
     - { id: 500, cat: TV/Anime, desc: "[Raw]" }
@@ -32,7 +34,7 @@ settings:
     type: select
     default: all
     options:
-      all: "All"
+      all: "All categories"
       episodes: "Airing"
       batches: "Batches"
       specials: "Movies or Special Episodes"
@@ -41,23 +43,26 @@ settings:
   - name: resolution
     label: "Resolution"
     type: select
-    default: 1080p
+    default: ""
     options:
+      "": "Any"
       1080p: "1080p"
       720p: "720p"
       SD: "SD (480p)"
   - name: link_type
     label: "Link Type"
     type: select
-    default: torrent
+    default: ""
     options:
+      "": "Any"
       torrent: "Torrent"
       magnet: "Magnet"
   - name: subtitles
     label: "Subtitles"
     type: select
-    default: us
+    default: ""
     options:
+      "": "Any"
       us: "English"
       br: "Portuguese(Brazil)"
       mx: "Spanish(Latin_America)"
