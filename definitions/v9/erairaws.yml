@@ -119,6 +119,10 @@ settings:
     label: "Include v0 releases"
     type: checkbox
     default: true
+  - name: prefix
+    label: "Prefix (leave blank to disable)"
+    type: text
+    default: "[Erai-raws]"
 
 search:
   paths:
@@ -189,8 +193,8 @@ search:
           args: "{{ if .Config.include_resolution }} ({{ .Result.title_resolution }}){{ else }}{{ end }}"
         - name: append
           args: "{{ if .Config.include_subtitles }} {{ .Result.title_subtitles }}{{ else }}{{ end }}"
-        - name: append
-          args: "{{ if .Config.include_categories }}{{ .Result.title_categories }}{{ else }}{{ end }}"
+        - name: prepend
+          args: "{{ if .Config.prefix }}{{ .Config.prefix }} {{ else }}{{ end }}"
     details_link:
       selector: description
       filters:
