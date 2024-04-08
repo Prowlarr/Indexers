@@ -40,6 +40,10 @@ settings:
       specials: "Movies or Special Episodes"
       encodes: "Encodings"
       raws: "Raws"
+  - name: include_categories
+    label: "Include categories in title"
+    type: checkbox
+    default: true
   - name: include_movie
     label: "Include movie label in title"
     type: checkbox
@@ -173,6 +177,8 @@ search:
           args: "{{ if .Config.include_resolution }} ({{ .Result.title_resolution }}){{ else }}{{ end }}"
         - name: append
           args: "{{ if .Config.include_subtitles }} {{ .Result.title_subtitles }}{{ else }}{{ end }}"
+        - name: append
+          args: "{{ if .Config.include_categories }}{{ .Result.categorydesc }}{{ else }}{{ end }}"
     details_link:
       selector: description
       filters:
