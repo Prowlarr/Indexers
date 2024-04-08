@@ -223,6 +223,8 @@ search:
     date:
       selector: pubDate
       filters:
+        - name: replace
+          args: ["+0000", "-00"]
         - name: dateparse
           args: "ddd, dd MMM yyyy HH:mm:ss zz"
     size:
