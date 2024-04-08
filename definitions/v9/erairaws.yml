@@ -118,6 +118,8 @@ search:
     s: "{{ .Keywords }}"
   rows:
     selector: rss > channel > item
+    filters:
+      - name: andmatch
   fields:
     categorydesc:
       selector: category
