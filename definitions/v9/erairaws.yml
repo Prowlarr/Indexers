@@ -106,7 +106,7 @@ settings:
 
 search:
   paths:
-    - path: "{{ if ne .Config.categories \"all\" }}/{{ .Config.categories }}{{ else }}{{ end }}/feed/"
+    - path: '{{ if ne .Config.categories "all" }}/{{ .Config.categories }}{{ else }}{{ end }}/feed/'
       response:
         type: xml
   inputs:
@@ -130,17 +130,17 @@ search:
       selector: description
       filters:
         - name: regexp
-          args: "href=\"(.*)\""
+          args: 'href="(.*)"'
       optional: true
     details:
-      text: "{{ or (.Result.details_link) \"https://www.erai-raws.info/\" }}"
+      text: '{{ or (.Result.details_link) "https://www.erai-raws.info/" }}'
     download_link:
       selector: link
     download:
-      text: "{{ if eq .Config.link_type \"torrent\" }}{{ .Result.download_link }}{{ else }}{{ end }}"
+      text: '{{ if ne .Config.link_type "magnet" }}{{ .Result.download_link }}{{ else }}{{ end }}'
       optional: true
     magnet:
-      text: "{{ if eq .Config.link_type \"magnet\"}}{{ .Result.download_link }}{{ else }}{{ end }}"
+      text: '{{ if eq .Config.link_type "magnet" }}{{ .Result.download_link }}{{ else }}{{ end }}'
     infohash:
       selector: infohash
     date:
