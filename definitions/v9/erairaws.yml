@@ -40,6 +40,10 @@ settings:
       specials: "Movies or Special Episodes"
       encodes: "Encodings"
       raws: "Raws"
+  - name: include_movie
+    label: "Include movie label in title"
+    type: checkbox
+    default: true
   - name: resolution
     label: "Resolution"
     type: select
@@ -49,6 +53,10 @@ settings:
       1080p: "1080p"
       720p: "720p"
       SD: "SD (480p)"
+  - name: include_resolution
+    label: "Include resolution in title"
+    type: checkbox
+    default: true
   - name: link_type
     label: "Link Type"
     type: select
@@ -99,8 +107,12 @@ settings:
       my: "Malaysian"
       sk: "Slovakian"
       ph: "Filipino"
+  - name: include_subtitles
+    label: "Include subtitles in title"
+    type: checkbox
+    default: true
   - name: want_v0
-    label: "Want v0?"
+    label: "Include v0 releases"
     type: checkbox
     default: true
 
@@ -123,11 +135,44 @@ search:
   fields:
     categorydesc:
       selector: category
+    title_episode:
+      selector: title
+      filters:
+        - name: regexp
+          args: "^(?:.*) - (\\d+ ~ \\d+|\\d+)"
+    title_is_movie:
+      text: "{{ if .Config.include_movie }} - Movie{{ else }}{{ end }}"
+      optional: true
+    title_has_hevc:
+      selector: title
+      filters:
+        - name: regexp
+          args: "(?:\\d+ ~ \\d+|\\d+|Movie) (\\(HEVC\\))"
+    title_resolution:
+      selector: title
+      filters:
+        - name: regexp
+          args: "\\[(1080p|720p|SD)\\]"
+      optional: true
+    title_subtitles:
+      selector: title
+      filters:
+        - name: regexp
+          args: "\\[(?:1080p|720p|SD)\\]((?:\\[\\w{2}\\])+)"
+      optional: true
     title:
       selector: title
       filters:
         - name: regexp
-          args: "^\\[(?:Magnet|Torrent)\\] (.*)"
+          args: "^\\[(?:Magnet|Torrent)\\] (.*) -"
+        - name: append
+          args: "{{ if .Result.title_episode }} - {{ .Result.title_episode }}{{ else }}{{ .Result.title_is_movie }}{{ end }}"
+        - name: append
+          args: "{{ if .Result.title_has_hevc }} {{ .Result.title_has_hevc }}{{ else }}{{ end }}"
+        - name: append
+          args: "{{ if .Config.include_resolution }} ({{ .Result.title_resolution }}){{ else }}{{ end }}"
+        - name: append
+          args: "{{ if .Config.include_subtitles }} {{ .Result.title_subtitles }}{{ else }}{{ end }}"
     details_link:
       selector: description
       filters:
