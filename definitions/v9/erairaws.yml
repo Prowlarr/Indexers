@@ -68,9 +68,8 @@ settings:
   - name: link_type
     label: "Link Type"
     type: select
-    default: ""
+    default: magnet
     options:
-      "": "Any"
       torrent: "Torrent"
       magnet: "Magnet"
   - name: subtitles
