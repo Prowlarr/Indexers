@@ -61,6 +61,10 @@ settings:
     label: "Include resolution in title"
     type: checkbox
     default: true
+  - name: fix_resolution
+    label: "Attempt to fix resolution (SD -> 480p)"
+    type: checkbox
+    default: false
   - name: link_type
     label: "Link Type"
     type: select
@@ -167,6 +171,9 @@ search:
       filters:
         - name: regexp
           args: "\\[(1080p|720p|SD)\\]"
+        - name: replace
+          args:
+            ["SD", "{{ if .Config.fix_resolution }}480p{{ else }}SD{{ end }}"]
       optional: true
     title_subtitles:
       selector: title
@@ -193,6 +200,8 @@ search:
           args: "{{ if .Config.include_resolution }} ({{ .Result.title_resolution }}){{ else }}{{ end }}"
         - name: append
           args: "{{ if .Config.include_subtitles }} {{ .Result.title_subtitles }}{{ else }}{{ end }}"
+        - name: append
+          args: "{{ if .Config.include_categories }}{{ .Result.title_categories }}{{ else }}{{ end }}"
         - name: prepend
           args: "{{ if .Config.prefix }}{{ .Config.prefix }} {{ else }}{{ end }}"
     details_link:
