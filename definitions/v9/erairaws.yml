@@ -11,14 +11,14 @@ links:
 
 caps:
   categorymappings:
-    - { id: 100, cat: TV/Anime, desc: "[Airing]" }
-    - { id: 110, cat: TV/Anime, desc: "[Finale]" }
-    - { id: 200, cat: TV/Anime, desc: "[Batch]" }
-    - { id: 210, cat: TV/Anime, desc: "[Batch][Encoded]" }
-    - { id: 220, cat: TV/Anime, desc: "[Batch][Raw]" }
-    - { id: 300, cat: Movies/Other, desc: "[Movie or Special Episode]" }
-    - { id: 400, cat: TV/Anime, desc: "[Encoded]" }
-    - { id: 500, cat: TV/Anime, desc: "[Raw]" }
+    - {id: 100, cat: TV/Anime, desc: "[Airing]"}
+    - {id: 110, cat: TV/Anime, desc: "[Finale]"}
+    - {id: 200, cat: TV/Anime, desc: "[Batch]"}
+    - {id: 210, cat: TV/Anime, desc: "[Batch][Encoded]"}
+    - {id: 220, cat: TV/Anime, desc: "[Batch][Raw]"}
+    - {id: 300, cat: Movies/Other, desc: "[Movie or Special Episode]"}
+    - {id: 400, cat: TV/Anime, desc: "[Encoded]"}
+    - {id: 500, cat: TV/Anime, desc: "[Raw]"}
   modes:
     search: [q]
     tv-search: [q, season, ep]
