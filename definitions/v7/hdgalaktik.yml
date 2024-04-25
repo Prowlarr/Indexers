@@ -119,19 +119,15 @@ search:
     selector: table.embedded > tbody > tr.torcontduo
 
   fields:
-    category:
-      selector: td:nth-child(1)
-      optional: true
-      filters:
-        - name: replace
-          args: ["---", 4]
-    category|noappend:
+    category_optional:
       selector: a[href^="browse.php?cat="]
       attribute: href
       optional: true
       filters:
         - name: querystring
           args: cat
+    category:
+      text: "{{ if .Result.category_optional }}{{ .Result.category_optional }}{{ else }}4{{ end }}"
     title:
       selector: a.alink
       attribute: onmouseover
@@ -204,6 +200,9 @@ search:
       filters:
         - name: replace
           args: ["details", "download"]
+    poster:
+      selector: img.s
+      attribute: src
     imdbid:
       selector: a[href^="browse.php?imdb="]
       attribute: href
