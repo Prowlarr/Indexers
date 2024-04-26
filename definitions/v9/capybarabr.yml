@@ -42,7 +42,7 @@ settings:
   - name: single_file_release_use_filename
     type: checkbox
     label: Use filename as title for single file releases
-    default: true
+    default: false
   - name: sort
     type: select
     label: Sort requested from site
@@ -184,4 +184,4 @@ search:
     minimumseedtime:
       # 7 days (as seconds = 7 x 24 x 60 x 60)
       text: 604800
-# json UNIT3D 8.0.2
+# json UNIT3D 8.0.2 (custom)
