@@ -68,7 +68,7 @@ prowlarr_commit_template="jackett indexers as of"
 ### v5 purged and frozen 2022-10-14
 ### v6 purged and frozen 2022-10-14
 min_schema=7
-max_schema=9
+max_schema=10
 new_schema=$((max_schema + 1))
 ## Switch to Prowlarr directory and fetch all
 cd "$prowlarr_git_path" || exit
@@ -374,7 +374,7 @@ if [ -n "$added_indexers" ]; then
                 else
                     v_matched="v$matched_version"
                 fi
-                updated_indexer=${indexer/v[0-9]/$v_matched}
+                updated_indexer=${indexer/v[0-9]*/$v_matched}
                 if [ "$indexer" != "$updated_indexer" ]; then
                     echo "--- Moving indexer old [$indexer] to new [$updated_indexer]"
                     if $debug; then
@@ -415,7 +415,7 @@ if [ -n "$modified_indexers" ]; then
                 else
                     v_matched="v$matched_version"
                 fi
-                updated_indexer=${indexer/v[0-9]/$v_matched}
+                updated_indexer=${indexer/v[0-9]*/$v_matched}
                 if [ "$indexer" != "$updated_indexer" ]; then
                     echo "--- Version bumped indexer old [$indexer] to new [$updated_indexer]"
                     if $debug; then
@@ -443,7 +443,7 @@ if [ -n "$modified_indexers_vcheck" ]; then
         for ((i = max_schema; i >= min_schema; i--)); do
             version="v$i"
             echo "--- looking for [$version] indexer of [$indexer]"
-            indexer_check=${indexer/v[0-9]/$version}
+            indexer_check=${indexer/v[0-9]*/$version}
             if [ "$indexer_check" != "$indexer" ] && [ -f "$indexer_check" ]; then
                 echo "--- Found [v$i] indexer for [$indexer] - comparing to [$indexer_check]"
                 if $debug; then
@@ -464,7 +464,7 @@ if [ -n "$newschema_indexers" ]; then
         for ((i = max_schema; i >= min_schema; i--)); do
             version="v$i"
             echo "--- looking for [$version] indexer of [$indexer]"
-            indexer_check=${indexer/v[0-9]/$version}
+            indexer_check=${indexer/v[0-9]*/$version}
             if [ "$indexer_check" != "$indexer" ] && [ -f "$indexer_check" ]; then
                 echo "--- Found [v$i] indexer for [$indexer] - comparing to [$indexer_check]"
                 if $debug; then
@@ -486,7 +486,7 @@ if [ -n "$removed_indexers" ]; then
     for indexer in ${removed_indexers}; do
         echo "--- looking for previous versions of removed indexer [$indexer]"
         for ((i = max_schema; i >= min_schema; i--)); do
-            indexer_remove=${indexer/v[0-9]/v$i}
+            indexer_remove=${indexer/v[0-9]*/v$i}
             if [ "$indexer_remove" != "$indexer" ] && [ -f "$indexer_remove" ]; then
                 echo "--- Found [v$i] indexer for [$indexer] - removing [$indexer_remove]"
                 if $debug; then
