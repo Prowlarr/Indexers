@@ -67,7 +67,9 @@ prowlarr_commit_template="jackett indexers as of"
 ### v4 purged and frozen 2022-08-18
 ### v5 purged and frozen 2022-10-14
 ### v6 purged and frozen 2022-10-14
-min_schema=7
+### v7 purged and frozen 2024-04-27
+### v8 purged and frozen 2024-04-27
+min_schema=9
 max_schema=9
 new_schema=$((max_schema + 1))
 ## Switch to Prowlarr directory and fetch all
