@@ -342,6 +342,17 @@
                     }
                 }
             },
+            "if": {
+                "properties": {
+                    "method": {
+                        "const": "get"
+                    }
+                },
+                "required": ["method"]
+            },
+            "then": {
+                "required": ["inputs"]
+            },
             "title": "Login"
         },
         "PageTestBlock": {

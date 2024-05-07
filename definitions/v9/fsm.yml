@@ -50,6 +50,7 @@ settings:
 login:
   path: https://api.fsm.name/Torrents/listTorrents
   method: get
+  inputs: {} # TODO: remove in v10
 
 search:
   paths:
