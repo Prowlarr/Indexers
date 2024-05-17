@@ -10,8 +10,6 @@ requestDelay: 2
 links:
   - https://www.ygg.re/
 legacylinks:
-  - https://ww3.yggtorrent.si/
-  - https://yggtorrent.si/
   - http://www2.yggtorrent.si/
   - https://www2.yggtorrent.si/
   - https://www.yggtorrent.li/
@@ -244,16 +242,13 @@ settings:
 
 login:
   method: form
-  path: /
-  form: "#user-login"
+  path: /auth/login
+  form: form[action="/auth/process_login"]
   inputs:
     id: "{{ .Config.username }}"
     pass: "{{ .Config.password }}"
-    ci_csrf_token: ""
   error:
-    - selector: "#login_msg_pass[style=\"\"][style] > center"
-    - selector: "#ban_msg_login[style=\"\"][style] > center"
-    - selector: "#login_msg_mail[style=\"\"][style] > center"
+    - selector: p.error-form
     - selector: a[href$="/user/disabled"]
       message:
         # Compte Inactif
@@ -263,7 +258,7 @@ login:
             args: " - Dès que vous passez en dessous d'un ratio inférieur à 1, Votre compte devient inactif et le site vous coupe les téléchargements."
   test:
     path: /
-    selector: div#top_panel:contains("Déconnexion")
+    selector: a[href$="/user/logout"]
 
 search:
   paths:

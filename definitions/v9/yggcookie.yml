@@ -10,8 +10,6 @@ requestDelay: 2
 links:
   - https://www.ygg.re/
 legacylinks:
-  - https://ww3.yggtorrent.si/
-  - https://yggtorrent.si/
   - http://www2.yggtorrent.si/
   - https://www2.yggtorrent.si/
   - https://www.yggtorrent.li/
@@ -256,7 +254,7 @@ login:
     cookie: "{{ .Config.cookie }}"
   test:
     path: /
-    selector: div#top_panel:contains("Déconnexion")
+    selector: a[href$="/user/logout"]
 
 search:
   paths:
