@@ -70,7 +70,7 @@ prowlarr_commit_template="jackett indexers as of"
 ### v7 purged and frozen 2024-04-27
 ### v8 purged and frozen 2024-04-27
 min_schema=9
-max_schema=9
+max_schema=10
 new_schema=$((max_schema + 1))
 ## Switch to Prowlarr directory and fetch all
 cd "$prowlarr_git_path" || exit
@@ -195,9 +195,11 @@ commit_count=$(git rev-list --count "$recent_pulled_commit".."$jackett_recent_co
 ## Cherry pick each commit and attempt to resolve common conflicts
 echo "--- Commit Range is: [ $commit_range ]"
 echo "--- There are [$commit_count] commits to cherry-pick"
+
 echo "--- --------------------------------------------- Beginning Cherrypicking ------------------------------"
 git config merge.directoryRenames true
 git config merge.verbosity 0
+
 for pick_commit in ${commit_range}; do
     has_conflicts=$(git ls-files --unmerged)
     if [ -n "$has_conflicts" ]; then
@@ -217,7 +219,7 @@ for pick_commit in ${commit_range}; do
         readme_conflicts=$(git diff --cached --name-only | grep "README.md")
         nonyml_conflicts=$(git diff --cached --name-only | grep "\.cs\|\.js\|\.iss\|\.html")
         yml_conflicts=$(git diff --cached --name-only | grep ".yml")
-        schema_conflicts=$(git diff --cached | grep ".schema.json")
+        schema_conflicts=$(git diff --cached --name-only | grep ".schema.json")
         ## Handle Common Conflicts
         echo "--- conflicts exist"
         if [ -n "$readme_conflicts" ]; then
@@ -229,12 +231,11 @@ for pick_commit in ${commit_range}; do
             git add --f "README.md"
         fi
         if [ -n "$schema_conflicts" ]; then
-            echo "--- Schema conflict exists; using Jackett Schema and creating version [$new_schema]"
+            echo "--- Schema conflict exists; using Prowlarr schema"
             if $trace; then
-                read -ep $"Reached - README Conflict ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
+                read -ep $"Reached - schema Conflict ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
             fi
-            mv "$schema_conflicts" "$prowlarr_git_path/$new_schema/schema.json"
-            git checkout --theirs "*schema.json"
+            git checkout --ours "*schema.json"
             git add --f "*schema.json"
         fi
 
@@ -300,9 +301,10 @@ git checkout HEAD -- "definitions/v*/schema.json"
 
 # New Indexers pulled
 # Segment Changes
-added_indexers=$(git diff --cached --diff-filter=A --name-only | grep ".yml" | grep "v[$min_schema-$max_schema]")
-modified_indexers=$(git diff --cached --diff-filter=M --name-only | grep ".yml" | grep "v[$min_schema-$max_schema]")
-removed_indexers=$(git diff --cached --diff-filter=D --name-only | grep ".yml" | grep "v[$min_schema-$max_schema]")
+added_indexers=$(git diff --cached --diff-filter=A --name-only | grep ".yml" | grep -E "v[[:digit:]]+")
+modified_indexers=$(git diff --cached --diff-filter=M --name-only | grep ".yml" | grep -E "v[[:digit:]]+")
+removed_indexers=$(git diff --cached --diff-filter=D --name-only | grep ".yml" | grep -E "v[[:digit:]]+")
+
 # Create new version directory just in case.
 new_vers_dir="definitions/v$new_schema"
 mkdir -p "$new_vers_dir"
@@ -376,7 +378,7 @@ if [ -n "$added_indexers" ]; then
                 else
                     v_matched="v$matched_version"
                 fi
-                updated_indexer=${indexer/v[0-9]/$v_matched}
+                updated_indexer=${indexer/v[0-9]*/$v_matched}
                 if [ "$indexer" != "$updated_indexer" ]; then
                     echo "--- Moving indexer old [$indexer] to new [$updated_indexer]"
                     if $debug; then
@@ -417,7 +419,7 @@ if [ -n "$modified_indexers" ]; then
                 else
                     v_matched="v$matched_version"
                 fi
-                updated_indexer=${indexer/v[0-9]/$v_matched}
+                updated_indexer=${indexer/v[0-9]*/$v_matched}
                 if [ "$indexer" != "$updated_indexer" ]; then
                     echo "--- Version bumped indexer old [$indexer] to new [$updated_indexer]"
                     if $debug; then
@@ -436,16 +438,17 @@ if [ -n "$modified_indexers" ]; then
     unset test
 fi
 echo "--- --------------------------------------------- completed changed indexers ---------------------------------------------"
+
 echo "--- --------------------------------------------- begining indexer backporting ---------------------------------------------"
 # Get new set of modified indexers after version checking above
-modified_indexers_vcheck=$(git diff --cached --diff-filter=AM --name-only | grep ".yml" | grep "v[$min_schema-$max_schema]")
+modified_indexers_vcheck=$(git diff --cached --diff-filter=AM --name-only | grep ".yml" | grep -E "v[[:digit:]]+")
 # Backporting Indexers
 if [ -n "$modified_indexers_vcheck" ]; then
     for indexer in ${modified_indexers_vcheck}; do
         for ((i = max_schema; i >= min_schema; i--)); do
             version="v$i"
             echo "--- looking for [$version] indexer of [$indexer]"
-            indexer_check=${indexer/v[0-9]/$version}
+            indexer_check=${indexer/v[0-9]*/$version}
             if [ "$indexer_check" != "$indexer" ] && [ -f "$indexer_check" ]; then
                 echo "--- Found [v$i] indexer for [$indexer] - comparing to [$indexer_check]"
                 if $debug; then
@@ -466,7 +469,7 @@ if [ -n "$newschema_indexers" ]; then
         for ((i = max_schema; i >= min_schema; i--)); do
             version="v$i"
             echo "--- looking for [$version] indexer of [$indexer]"
-            indexer_check=${indexer/v[0-9]/$version}
+            indexer_check=${indexer/v[0-9]*/$version}
             if [ "$indexer_check" != "$indexer" ] && [ -f "$indexer_check" ]; then
                 echo "--- Found [v$i] indexer for [$indexer] - comparing to [$indexer_check]"
                 if $debug; then
@@ -488,7 +491,7 @@ if [ -n "$removed_indexers" ]; then
     for indexer in ${removed_indexers}; do
         echo "--- looking for previous versions of removed indexer [$indexer]"
         for ((i = max_schema; i >= min_schema; i--)); do
-            indexer_remove=${indexer/v[0-9]/v$i}
+            indexer_remove=${indexer/v[0-9]*/v$i}
             if [ "$indexer_remove" != "$indexer" ] && [ -f "$indexer_remove" ]; then
                 echo "--- Found [v$i] indexer for [$indexer] - removing [$indexer_remove]"
                 if $debug; then
