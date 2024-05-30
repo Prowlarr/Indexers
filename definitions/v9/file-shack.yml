@@ -1,14 +1,12 @@
 ---
-id: rptscene
-name: RPTScene
-description: "RPTScene is a Private tracker for MOVIES / TV / GENERAL"
+id: file-shack
+name: File-Shack
+description: "File-Shack is a Private tracker for MOVIES / TV / GENERAL"
 language: en-US
 type: private
 encoding: UTF-8
 links:
-  - https://rptscene.xyz/
-legacylinks:
-  - https://rpthd.com/
+  - https://file-shack.xyz/
 
 caps:
   categorymappings:
@@ -96,7 +94,7 @@ login:
 
 search:
   paths:
-    # https://rptscene.xyz/torrents-search.php?c22=1&c23=1&c76=1&c77=1&search=&incldead=0&freeleech=0&inclrosub=0
+    # https://file-shack.xyz/torrents-search.php?c22=1&c23=1&c76=1&c77=1&search=&incldead=0&freeleech=0&inclrosub=0
     - path: torrents-search.php
   inputs:
     $raw: "{{ range .Categories }}c{{.}}=1&{{end}}"
@@ -169,8 +167,6 @@ search:
         "*": 1
     uploadvolumefactor:
       text: 1
-    minimumratio:
-      text: 1.0
     minimumseedtime:
       # 1 day (as seconds = 24 x 60 x 60)
       text: 86400
