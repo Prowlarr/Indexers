@@ -9,11 +9,12 @@ links:
   - https://finelite.org/
 
 settings:
-  - name: cookie
+  - name: username
     type: text
-    label: Cookie
-  - name: info_cookie
-    type: info_cookie
+    label: Username
+  - name: password
+    type: text
+    label: Password
   - name: freeleech
     type: checkbox
     label: Search freeleech only
@@ -34,6 +35,10 @@ settings:
     options:
       desc: desc
       asc: asc
+  - name: info_finelite
+    type: info
+    label: Login Requirement
+    default: "To successfully login, members must first <a href=\"https://finelite.org/staff.php\" target=\"_blank\">message FinElite staff</a>, asking that their account be whitelisted from captcha validation.</br></br>Onnistuakseen sisäänkirjautumisessa jäsenten on ensin lähetettävä <a href=\"https://finelite.org/staff.php\" target=\"_blank\">viesti FinElite henkilökunnalle</a> ja pyydettävä, että heidän tilinsä poistetaan captcha-varmennuksesta."
   - name: info_tpp
     type: info
     label: Results Per Page
@@ -75,9 +80,14 @@ caps:
     book-search: [q]
 
 login:
-  method: cookie
+  path: login.php
+  method: form
+  form: form[action="/take_login.php"]
   inputs:
-    cookie: "{{ .Config.cookie }}"
+    username: "{{ .Config.username }}"
+    password: "{{ .Config.password }}"
+  error:
+    - selector: div.notice.notice-error
   test:
     path: /
     selector: a[href="/logout.php"]
@@ -149,4 +159,4 @@ search:
     minimumseedtime:
       # 3 days (as seconds = 3 x 24 x 60 x 60)
       text: 259200
-# custom 4.0.0
+# FE v4.0.0
