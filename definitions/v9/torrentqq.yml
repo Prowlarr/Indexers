@@ -7,9 +7,8 @@ type: public
 encoding: UTF-8
 followredirect: true
 links:
-  - https://torrentqq318.com/
+  - https://torrentqq319.com/
 legacylinks:
-  - https://torrentqq303.com/
   - https://torrentqq304.com/
   - https://torrentqq305.com/
   - https://torrentqq306.com/
@@ -24,18 +23,19 @@ legacylinks:
   - https://torrentqq315.com/
   - https://torrentqq316.com/
   - https://torrentqq317.com/
+  - https://torrentqq318.com/
 
 caps:
   categorymappings:
-    - {id: "adt", cat: XXX, desc: "성인 (XXX)"}
-    - {id: "ani", cat: TV/Anime, desc: "애니 (Anime)"}
-    - {id: "etc", cat: Other, desc: "기타 (Other)"}
-    - {id: "gme", cat: Console, desc: "게임 (Games)"}
-    - {id: "med", cat: TV, desc: "방송 (TV)"}
-    - {id: "mov", cat: Movies, desc: "영화 (Movie)"}
-    - {id: "mus", cat: Audio, desc: "음악 (Music)"}
-    - {id: "spo", cat: TV/Sport, desc: "스포츠 (Sport)"}
-    - {id: "utl", cat: PC, desc: "유틸 (Software)"}
+    - { id: "adt", cat: XXX, desc: "성인 (XXX)" }
+    - { id: "ani", cat: TV/Anime, desc: "애니 (Anime)" }
+    - { id: "etc", cat: Other, desc: "기타 (Other)" }
+    - { id: "gme", cat: Console, desc: "게임 (Games)" }
+    - { id: "med", cat: TV, desc: "방송 (TV)" }
+    - { id: "mov", cat: Movies, desc: "영화 (Movie)" }
+    - { id: "mus", cat: Audio, desc: "음악 (Music)" }
+    - { id: "spo", cat: TV/Sport, desc: "스포츠 (Sport)" }
+    - { id: "utl", cat: PC, desc: "유틸 (Software)" }
 
   modes:
     search: [q]
