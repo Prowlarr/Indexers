@@ -548,50 +548,40 @@ else
     git commit -m "$new_commit_msg"
     echo "--- New Commit made - [$new_commit_msg]"
 fi
+
 while true; do
-    read -ep $"Do you wish to Push to $prowlarr_release_branch [Rr] or $prowlarr_target_branch [Tt] at remote $prowlarr_remote_name? Enter other key to exit:" -n1 push
-    case $push in
-    [Rr]*)
-        if $debug; then
-            read -ep $"Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
-        fi
-        push_branch="$prowlarr_release_branch"
-        ;;
-    [Tt]*)
-        if $debug; then
-            read -ep $"Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
-        fi
-        push_branch="$prowlarr_target_branch"
-        ;;
+    read -ep "Do you wish to Push to $prowlarr_release_branch [Rr] or $prowlarr_target_branch [Tt] at remote $prowlarr_remote_name? Enter any other key to exit: " -n1 branch_choice
+    case $branch_choice in
+    [Rr]*) push_branch="$prowlarr_release_branch" ;;
+    [Tt]*) push_branch="$prowlarr_target_branch" ;;
     *)
         echo "--- Exiting"
         exit 0
         ;;
     esac
-done
-echo "selected push branch is [$push_branch]"
-while true; do
-    read -ep $"Do you wish to Force Push with Lease [Ff] or Push branch [Pp] $push_branch to $prowlarr_remote_name? Enter any other value to exit:" -n1 fp
-    case $fp in
-    [Ff]*)
-        if $debug; then
-            read -ep $"Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
-        fi
-        git push "$prowlarr_remote_name" "$push_branch" --force-if-includes --force-with-lease
-        echo "--- Branch Force Pushed"
-        exit 0
-        ;;
-    [Pp]*)
-        if $debug; then
-            read -ep $"Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
-        fi
-        git push "$prowlarr_remote_name" "$push_branch" --force-if-includes
-        echo "--- Branch Pushed"
-        exit 0
-        ;;
-    *)
-        echo "--- Exiting"
-        exit 0
-        ;;
-    esac
+
+    [[ $debug ]] && read -ep "Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
+    echo "Selected push branch is [$push_branch]"
+
+    while true; do
+        read -ep "Do you wish to Force Push with Lease [Ff] or Push branch [Pp] $push_branch to $prowlarr_remote_name? Enter any other key to exit: " -n1 push_choice
+        case $push_choice in
+        [Ff]*)
+            [[ $debug ]] && read -ep "Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
+            git push "$prowlarr_remote_name" "$push_branch" --force-if-includes --force-with-lease
+            echo "--- Branch Force Pushed"
+            exit 0
+            ;;
+        [Pp]*)
+            [[ $debug ]] && read -ep "Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
+            git push "$prowlarr_remote_name" "$push_branch" --force-if-includes
+            echo "--- Branch Pushed"
+            exit 0
+            ;;
+        *)
+            echo "--- Exiting"
+            exit 0
+            ;;
+        esac
+    done
 done
