@@ -27,6 +27,7 @@ legacylinks:
   - https://www3.yggtorrent.cool/
 
 caps:
+  # dont forget to update the search fields category case block
   categorymappings:
     - {id: 2145, cat: TV, desc: "Film/Vidéo"}
     - {id: 2178, cat: Movies/Other, desc: "Film/Vidéo : Animation"} # changed to movies, see #3553
@@ -114,84 +115,6 @@ settings:
     type: info
     label: How to get the User-Agent
     default: "<ol><li>From the same place you fetched the cookie,</li><li>Find <b>'user-agent:'</b> in the <b>Request Headers</b> section</li><li><b>Select</b> and <b>Copy</b> the whole user-agent string <i>(everything after 'user-agent: ')</i> and <b>Paste</b> here.</li></ol>"
-  - name: category
-    type: select
-    label: Category
-    default: all
-    options:
-      all: "Tous"
-      2145: "Film/Vidéo"
-      2139: "Audio"
-      2144: "Application"
-      2142: "Jeu vidéo"
-      2140: "eBook"
-      2300: "Nulled"
-      2200: "Imprimante 3D"
-      2141: "Emulation"
-      2143: "GPS"
-      2188: "XXX"
-  - name: subcategory
-    type: select
-    label: Sub-category
-    default: all
-    options:
-      all: "Tous"
-      2178: "Film/Vidéo : Animation"
-      2179: "Film/Vidéo : Animation Série"
-      2180: "Film/Vidéo : Concert"
-      2181: "Film/Vidéo : Documentaire"
-      2182: "Film/Vidéo : Emission TV"
-      2183: "Film/Vidéo : Film"
-      2184: "Film/Vidéo : Série TV"
-      2185: "Film/Vidéo : Spectacle"
-      2186: "Film/Vidéo : Sport"
-      2187: "Film/Vidéo : Vidéo-clips"
-      2147: "Audio : Karaoké"
-      2148: "Audio : Musique"
-      2150: "Audio : Podcast Radio"
-      2149: "Audio : Samples"
-      2177: "Application : Autre"
-      2176: "Application : Formation"
-      2171: "Application : Linux"
-      2172: "Application : MacOS"
-      2174: "Application : Smartphone"
-      2175: "Application : Tablette"
-      2173: "Application : Windows"
-      2167: "Jeu vidéo : Autre"
-      2159: "Jeu vidéo : Linux"
-      2160: "Jeu vidéo : MacOS"
-      2162: "Jeu vidéo : Microsoft"
-      2163: "Jeu vidéo : Nintendo"
-      2165: "Jeu vidéo : Smartphone"
-      2164: "Jeu vidéo : Sony"
-      2166: "Jeu vidéo : Tablette"
-      2161: "Jeu vidéo : Windows"
-      2151: "eBook : Audio"
-      2152: "eBook : Bds"
-      2153: "eBook : Comics"
-      2154: "eBook : Livres"
-      2155: "eBook : Mangas"
-      2156: "eBook : Presse"
-      2301: "Nulled : Wordpress"
-      2302: "Nulled : Scripts PHP & CMS"
-      2303: "Nulled : Mobile"
-      2304: "Nulled : Divers"
-      2201: "Imprimante 3D : Objets"
-      2202: "Imprimante 3D : Personnages"
-      2157: "Emulation : Emulateurs"
-      2158: "Emulation : Roms"
-      2168: "GPS : Applications"
-      2169: "GPS : Cartes"
-      2170: "GPS : Divers"
-      2401: "XXX : Ebooks"
-      2189: "XXX : Films"
-      2190: "XXX : Hentai"
-      2191: "XXX : Images"
-      2402: "XXX : Jeux"
-  - name: info_category
-    type: info
-    label: Category and Sub-category
-    default: Only select a <i>Category</i> <b>OR</b> a <i>Sub-category</i>, leaving the other as <i>Tous</i>.
   - name: multilang
     type: checkbox
     label: Replace MULTi by another language in release name
@@ -243,6 +166,10 @@ settings:
     options:
       desc: desc
       asc: asc
+  - name: categories
+    type: info
+    label: Categories
+    default: To avoid unnecessary additional requests, it's recommended to only use indexer-specific categories (>=100000) when configuring this indexer in Sonarr, Radarr, and Lidarr, or when manually searching in TV, Movies, and Audio categories.
   - name: flaresolverr
     type: info
     label: FlareSolverr
@@ -258,16 +185,154 @@ login:
 
 search:
   paths:
+    # Tous
     - path: engine/search
+      categories: ["!", 2145, 2178, 2179, 2180, 2181, 2182, 2183, 2184, 2185, 2186, 2187, 2139, 2147, 2148, 2150, 2149, 2144, 2177, 2176, 2171, 2172, 2174, 2175, 2173, 2142, 2167, 2159, 2160, 2162, 2163, 2165, 2164, 2166, 2161, 2140, 2151, 2152, 2153, 2154, 2155, 2156, 2300, 2301, 2302, 2303, 2304, 2200, 2201, 2202, 2141, 2157, 2158, 2143, 2168, 2169, 2170, 2188, 2401, 2189, 2190, 2191, 2402]
       inputs:
         name: "{{ .Keywords }}"
+        category: all
       followredirect: true
+    # Tous p2
     - path: engine/search
+      categories: ["!", 2145, 2178, 2179, 2180, 2181, 2182, 2183, 2184, 2185, 2186, 2187, 2139, 2147, 2148, 2150, 2149, 2144, 2177, 2176, 2171, 2172, 2174, 2175, 2173, 2142, 2167, 2159, 2160, 2162, 2163, 2165, 2164, 2166, 2161, 2140, 2151, 2152, 2153, 2154, 2155, 2156, 2300, 2301, 2302, 2303, 2304, 2200, 2201, 2202, 2141, 2157, 2158, 2143, 2168, 2169, 2170, 2188, 2401, 2189, 2190, 2191, 2402]
       inputs:
-        $raw: "name={{ if .Keywords }}{{ re_replace .Keywords \"(?i)S0?(\\d{1,2})\" \"Saison $1\" }}{{ else }}&page=50{{ end }}"
+        $raw: "{{ if .Keywords }}name={{ re_replace .Keywords \"(?i)S0?(\\d{1,2})\" \"Saison $1\" }}{{ else }}&page=50{{ end }}"
+        category: all
+      followredirect: true
+    # Film/Vidéo p1
+    - path: engine/search
+      categories: [2145, 2180, 2181, 2182, 2184, 2185, 2186, 2187]
+      inputs:
+        name: "{{ .Keywords }}"
+        category: 2145
+      followredirect: true
+    # Film/Vidéo (TV which use Saison) p2
+    - path: engine/search
+      categories: [2145, 2181, 2182, 2184]
+      inputs:
+        $raw: "{{ if .Keywords }}name={{ re_replace .Keywords \"(?i)S0?(\\d{1,2})\" \"Saison $1\" }}{{ else }}&page=50{{ end }}"
+        category: 2145
+      followredirect: true
+    # Film/Vidéo (TV which don't use Saison) p2
+    - path: engine/search
+      categories: [2180, 2185, 2186, 2187]
+      inputs:
+        name: "{{ .Keywords }}"
+        page: 50
+        category: 2145
+      followredirect: true
+    # Film/Vidéo (TV/Anime) p1
+    - path: engine/search
+      categories: [2179]
+      inputs:
+        name: "{{ .Keywords }}"
+        category: 2145
+        sub_category: 2179
+      followredirect: true
+    # Film/Vidéo (TV/Anime) p2
+    - path: engine/search
+      categories: [2179]
+      inputs:
+        $raw: "{{ if .Keywords }}name={{ re_replace .Keywords \"(?i)S0?(\\d{1,2})\" \"Saison $1\" }}{{ else }}&page=50{{ end }}"
+        category: 2145
+        sub_category: 2179
+      followredirect: true
+    # Film/Vidéo (Movies/Other)
+    - path: engine/search
+      categories: [2178]
+      inputs:
+        name: "{{ .Keywords }}"
+        category: 2145
+        sub_category: 2178
+      followredirect: true
+    # Film/Vidéo (Movies)
+    - path: engine/search
+      categories: [2183]
+      inputs:
+        name: "{{ .Keywords }}"
+        category: 2145
+        sub_category: 2183
+      followredirect: true
+    # Audio p1
+    - path: engine/search
+      categories: [2139, 2147, 2148, 2150, 2149]
+      inputs:
+        name: "{{ .Keywords }}"
+        category: 2139
+      followredirect: true
+    # Audio p2
+    - path: engine/search
+      categories: [2139, 2147, 2148, 2150, 2149]
+      inputs:
+        name: "{{ .Keywords }}"
+        page: 50
+        category: 2139
+      followredirect: true
+    # Application
+    - path: engine/search
+      categories: [2144, 2177, 2176, 2171, 2172, 2174, 2175, 2173]
+      inputs:
+        name: "{{ .Keywords }}"
+        category: 2144
+      followredirect: true
+    # Jeu vidéo
+    - path: engine/search
+      categories: [2142, 2167, 2159, 2160, 2162, 2163, 2165, 2164, 2166, 2161]
+      inputs:
+        name: "{{ .Keywords }}"
+        category: 2142
+      followredirect: true
+    # eBook p1
+    - path: engine/search
+      categories: [2140, 2151, 2152, 2153, 2154, 2155, 2156]
+      inputs:
+        name: "{{ .Keywords }}"
+        category: 2140
+      followredirect: true
+    # eBook p2
+    - path: engine/search
+      categories: [2140, 2151, 2152, 2153, 2154, 2155, 2156]
+      inputs:
+        name: "{{ .Keywords }}"
+        page: 50
+        category: 2140
+      followredirect: true
+    # Nulled
+    - path: engine/search
+      categories: [2300, 2301, 2302, 2303, 2304]
+      inputs:
+        name: "{{ .Keywords }}"
+        category: 2300
+      followredirect: true
+    # Imprimante 3D
+    - path: engine/search
+      categories: [2200, 2201, 2202]
+      inputs:
+        name: "{{ .Keywords }}"
+        category: 2200
+      followredirect: true
+    # Emulation
+    - path: engine/search
+      categories: [2141, 2157, 2158]
+      inputs:
+        name: "{{ .Keywords }}"
+        category: 2141
+      followredirect: true
+    # GPS
+    - path: engine/search
+      categories: [2143, 2168, 2169, 2170]
+      inputs:
+        name: "{{ .Keywords }}"
+        category: 2143
+      followredirect: true
+    # XXX
+    - path: engine/search
+      categories: [2188, 2401, 2189, 2190, 2191, 2402]
+      inputs:
+        name: "{{ .Keywords }}"
+        category: 2188
       followredirect: true
   inputs:
-    $raw: "{{ if eq .Config.subcategory \"all\" }}category={{ .Config.category }}{{ else }}sub_category={{ .Config.subcategory }}{{ end }}"
     do: search
     order: "{{ .Config.type }}"
     sort: "{{ .Config.sort }}"
