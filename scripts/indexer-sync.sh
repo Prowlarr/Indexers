@@ -9,15 +9,13 @@
 ## Using the Script
 ### Suggested to run from the current directory being Prowlarr/Indexers local Repo using Git Bash `./scripts/prowlarr-indexers-jackettpull.sh`
 
-if ! command -v npx &> /dev/null
-then
+if ! command -v npx &>/dev/null; then
     echo "npx could not be found. check your node installation"
     exit 1
 fi
 
 # Check if Required NPM Modules are installed
-if ! npm list --depth=0 ajv-cli-servarr &> /dev/null || ! npm list --depth=0 ajv-formats &> /dev/null
-then
+if ! npm list --depth=0 ajv-cli-servarr &>/dev/null || ! npm list --depth=0 ajv-formats &>/dev/null; then
     echo "required npm packages are missing, you should run \"npm install\""
     exit 2
 fi
@@ -57,7 +55,7 @@ prowlarr_repo_url="https://github.com/Prowlarr/Indexers"
 jackett_repo_url="https://github.com/Jackett/Jackett"
 jackett_release_branch="master"
 jackett_remote_name="z_Jackett"
-jackett_pulls_branch="jackett-pulls"
+prowlarr_target_branch="jackett-pulls"
 prowlarr_commit_template="jackett indexers as of"
 ### Indexer Schema Versions
 ### v1 frozen 2021-10-13
@@ -91,24 +89,24 @@ jackett_branch="$jackett_remote_name/$jackett_release_branch"
 echo "--- Fetching and pruning repos"
 git fetch --all --prune --progress
 ## Check if jackett-pulls exists (remote)
-remote_pulls_check=$(git ls-remote --heads $prowlarr_remote_name "$jackett_pulls_branch")
-local_pulls_check=$(git branch --list "$jackett_pulls_branch")
+remote_pulls_check=$(git ls-remote --heads $prowlarr_remote_name "$prowlarr_target_branch")
+local_pulls_check=$(git branch --list "$prowlarr_target_branch")
 if [ -z "$local_pulls_check" ]; then
     local_exist=false
-    echo "--- local [$jackett_pulls_branch] does not exist"
+    echo "--- local [$prowlarr_target_branch] does not exist"
 else
     local_exist=true
-    echo "--- local [$jackett_pulls_branch] does exist"
+    echo "--- local [$prowlarr_target_branch] does exist"
 fi
 # Check if Remote Branch exists
 if [ -z "$remote_pulls_check" ]; then
     ## no existing remote  branch found
     pulls_exists=false
-    echo "--- remote [$prowlarr_remote_name/$jackett_pulls_branch] does not exist"
+    echo "--- remote [$prowlarr_remote_name/$prowlarr_target_branch] does not exist"
 else
     ## existing remote branch found
     pulls_exists=true
-    echo "--- remote [$prowlarr_remote_name/$jackett_pulls_branch] does exist"
+    echo "--- remote [$prowlarr_remote_name/$prowlarr_target_branch] does exist"
 fi
 
 if [ "$pulls_exists" = false ]; then
@@ -117,12 +115,12 @@ if [ "$pulls_exists" = false ]; then
         ## local branch exists
         ## reset on master
         if [ "$skipupstream" = true ]; then
-            echo "--- [$skipupstream] skipping checking out local branch [$jackett_pulls_branch]"
-            echo "--- checking out local branch [$jackett_pulls_branch]"
-            git checkout -B "$jackett_pulls_branch"
+            echo "--- [$skipupstream] skipping checking out local branch [$prowlarr_target_branch]"
+            echo "--- checking out local branch [$prowlarr_target_branch]"
+            git checkout -B "$prowlarr_target_branch"
         else
             git reset --hard "$prowlarr_remote_name"/"$prowlarr_release_branch"
-            echo "--- local [$jackett_pulls_branch] hard reset based on [$prowlarr_remote_name/$prowlarr_release_branch]"
+            echo "--- local [$prowlarr_target_branch] hard reset based on [$prowlarr_remote_name/$prowlarr_release_branch]"
             if $trace; then
                 read -ep $"Reached - Finished Github Actions [LocalExistsNoRemote] | Pausing for trace debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
             fi
@@ -130,8 +128,8 @@ if [ "$pulls_exists" = false ]; then
     else
         ## local branch does not exist
         ## create new branch from master
-        git checkout -B "$jackett_pulls_branch" "$prowlarr_remote_name"/"$prowlarr_release_branch" --no-track
-        echo "--- local [$jackett_pulls_branch] created from [$prowlarr_remote_name/$prowlarr_release_branch]"
+        git checkout -B "$prowlarr_target_branch" "$prowlarr_remote_name"/"$prowlarr_release_branch" --no-track
+        echo "--- local [$prowlarr_target_branch] created from [$prowlarr_remote_name/$prowlarr_release_branch]"
         if $trace; then
             read -ep $"Reached - Finished Github Actions [NoLocalNoRemote] | Pausing for trace debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
         fi
@@ -141,20 +139,20 @@ else
     if [ "$local_exist" = true ]; then
         # if local exists; reset to remote
         if $skipupstream; then
-            echo "--- [$skipupstream] skipping checking out local branch [$jackett_pulls_branch]"
-            echo "--- checking out local branch [$jackett_pulls_branch]"
-            git checkout -B "$jackett_pulls_branch"
+            echo "--- [$skipupstream] skipping checking out local branch [$prowlarr_target_branch]"
+            echo "--- checking out local branch [$prowlarr_target_branch]"
+            git checkout -B "$prowlarr_target_branch"
         else
-            git reset --hard "$prowlarr_remote_name"/"$jackett_pulls_branch"
-            echo "--- local [$jackett_pulls_branch] hard reset based on [$prowlarr_remote_name/$prowlarr_release_branch]"
+            git reset --hard "$prowlarr_remote_name"/"$prowlarr_target_branch"
+            echo "--- local [$prowlarr_target_branch] hard reset based on [$prowlarr_remote_name/$prowlarr_release_branch]"
         fi
         if $trace; then
             read -ep $"Reached - Finished Github Actions [LocalExistsRemoteExists] | Pausing for trace debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
         fi
     else
         # else create local
-        git checkout -B "$jackett_pulls_branch" "$prowlarr_remote_name"/"$jackett_pulls_branch"
-        echo "--- local [$jackett_pulls_branch] created from [$prowlarr_remote_name/$jackett_pulls_branch]"
+        git checkout -B "$prowlarr_target_branch" "$prowlarr_remote_name"/"$prowlarr_target_branch"
+        echo "--- local [$prowlarr_target_branch] created from [$prowlarr_remote_name/$prowlarr_target_branch]"
         if $trace; then
             read -ep $"Reached - Finished Github Actions [NoLocalRemoteExists] | Pausing for trace debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
         fi
@@ -172,7 +170,7 @@ echo "--- most recent Jackett commit is: [$jackett_recent_commit] from [$jackett
 # require start of commit
 recent_pulled_commit=$(echo "$prowlarr_commits" | awk 'NR==1{print $5}')
 ## check most recent 20 commits in case we have other commits
-echo "--- most recent Prowlarr jackett commit is: [$recent_pulled_commit] from [$prowlarr_remote_name/$jackett_pulls_branch]"
+echo "--- most recent Prowlarr jackett commit is: [$recent_pulled_commit] from [$prowlarr_remote_name/$prowlarr_target_branch]"
 
 if $trace; then
     read -ep $"Reached - Ready to Cherrypick | Pausing for trace debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
@@ -366,7 +364,7 @@ if [ -n "$added_indexers" ]; then
             # If the version git pulled to passes do nothing; else identify the version
             determine_schema_version "$indexer"
             echo "--- Checked Version Output is $check_version"
-            if [ $check_version != "v0" ]; then
+            if [ "$check_version" != "v0" ]; then
                 echo "--- Schema Test passed."
                 updated_indexer=$indexer
             else
@@ -407,7 +405,7 @@ if [ -n "$modified_indexers" ]; then
             # If the version git pulled to passes do nothing; else identify the version
             determine_schema_version "$indexer"
             echo "--- Checked Version Output is $check_version"
-            if [ $check_version != "v0" ]; then
+            if [ "$check_version" != "v0" ]; then
                 echo "--- Schema Test passed."
                 updated_indexer=$indexer
             else
@@ -551,13 +549,35 @@ else
     echo "--- New Commit made - [$new_commit_msg]"
 fi
 while true; do
-    read -ep $"Do you wish to Force Push with Lease [Ff] or Push to $prowlarr_remote_name [Pp]? Enter any other value to exit:" -n1 fp
+    read -ep $"Do you wish to Push to $prowlarr_release_branch [Rr] or $prowlarr_target_branch [Tt] at remote $prowlarr_remote_name? Enter other key to exit:" -n1 push
+    case $push in
+    [Rr]*)
+        if $debug; then
+            read -ep $"Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
+        fi
+        push_branch="$prowlarr_release_branch"
+        ;;
+    [Tt]*)
+        if $debug; then
+            read -ep $"Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
+        fi
+        push_branch="$prowlarr_target_branch"
+        ;;
+    *)
+        echo "--- Exiting"
+        exit 0
+        ;;
+    esac
+done
+echo "selected push branch is [$push_branch]"
+while true; do
+    read -ep $"Do you wish to Force Push with Lease [Ff] or Push branch [Pp] $push_branch to $prowlarr_remote_name? Enter any other value to exit:" -n1 fp
     case $fp in
     [Ff]*)
         if $debug; then
             read -ep $"Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
         fi
-        git push "$prowlarr_remote_name" "$jackett_pulls_branch" --force-if-includes --force-with-lease
+        git push "$prowlarr_remote_name" "$push_branch" --force-if-includes --force-with-lease
         echo "--- Branch Force Pushed"
         exit 0
         ;;
@@ -565,7 +585,7 @@ while true; do
         if $debug; then
             read -ep $"Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
         fi
-        git push "$prowlarr_remote_name" "$jackett_pulls_branch" --force-if-includes
+        git push "$prowlarr_remote_name" "$push_branch" --force-if-includes
         echo "--- Branch Pushed"
         exit 0
         ;;
