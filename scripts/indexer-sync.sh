@@ -447,6 +447,7 @@ if [ -n "$modified_indexers_vcheck" ]; then
             version="v$i"
             echo "--- looking for [$version] indexer of [$indexer]"
             indexer_check=${indexer/v[0-9]+/$version}
+            echo "— Checking for [$indexer_check] != [$indexer] and $indexer_check exists"
             if [ "$indexer_check" != "$indexer" ] && [ -f "$indexer_check" ]; then
                 echo "--- Found [v$i] indexer for [$indexer] - comparing to [$indexer_check]"
                 if $debug; then
