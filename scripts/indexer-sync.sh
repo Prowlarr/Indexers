@@ -9,15 +9,13 @@
 ## Using the Script
 ### Suggested to run from the current directory being Prowlarr/Indexers local Repo using Git Bash `./scripts/prowlarr-indexers-jackettpull.sh`
 
-if ! command -v npx &> /dev/null
-then
+if ! command -v npx &>/dev/null; then
     echo "npx could not be found. check your node installation"
     exit 1
 fi
 
 # Check if Required NPM Modules are installed
-if ! npm list --depth=0 ajv-cli-servarr &> /dev/null || ! npm list --depth=0 ajv-formats &> /dev/null
-then
+if ! npm list --depth=0 ajv-cli-servarr &>/dev/null || ! npm list --depth=0 ajv-formats &>/dev/null; then
     echo "required npm packages are missing, you should run \"npm install\""
     exit 2
 fi
@@ -57,7 +55,7 @@ prowlarr_repo_url="https://github.com/Prowlarr/Indexers"
 jackett_repo_url="https://github.com/Jackett/Jackett"
 jackett_release_branch="master"
 jackett_remote_name="z_Jackett"
-jackett_pulls_branch="jackett-pulls"
+prowlarr_target_branch="jackett-pulls"
 prowlarr_commit_template="jackett indexers as of"
 ### Indexer Schema Versions
 ### v1 frozen 2021-10-13
@@ -67,8 +65,10 @@ prowlarr_commit_template="jackett indexers as of"
 ### v4 purged and frozen 2022-08-18
 ### v5 purged and frozen 2022-10-14
 ### v6 purged and frozen 2022-10-14
-min_schema=7
-max_schema=9
+### v7 purged and frozen 2024-04-27
+### v8 purged and frozen 2024-04-27
+min_schema=9
+max_schema=10
 new_schema=$((max_schema + 1))
 ## Switch to Prowlarr directory and fetch all
 cd "$prowlarr_git_path" || exit
@@ -89,24 +89,24 @@ jackett_branch="$jackett_remote_name/$jackett_release_branch"
 echo "--- Fetching and pruning repos"
 git fetch --all --prune --progress
 ## Check if jackett-pulls exists (remote)
-remote_pulls_check=$(git ls-remote --heads $prowlarr_remote_name "$jackett_pulls_branch")
-local_pulls_check=$(git branch --list "$jackett_pulls_branch")
+remote_pulls_check=$(git ls-remote --heads $prowlarr_remote_name "$prowlarr_target_branch")
+local_pulls_check=$(git branch --list "$prowlarr_target_branch")
 if [ -z "$local_pulls_check" ]; then
     local_exist=false
-    echo "--- local [$jackett_pulls_branch] does not exist"
+    echo "--- local [$prowlarr_target_branch] does not exist"
 else
     local_exist=true
-    echo "--- local [$jackett_pulls_branch] does exist"
+    echo "--- local [$prowlarr_target_branch] does exist"
 fi
 # Check if Remote Branch exists
 if [ -z "$remote_pulls_check" ]; then
     ## no existing remote  branch found
     pulls_exists=false
-    echo "--- remote [$prowlarr_remote_name/$jackett_pulls_branch] does not exist"
+    echo "--- remote [$prowlarr_remote_name/$prowlarr_target_branch] does not exist"
 else
     ## existing remote branch found
     pulls_exists=true
-    echo "--- remote [$prowlarr_remote_name/$jackett_pulls_branch] does exist"
+    echo "--- remote [$prowlarr_remote_name/$prowlarr_target_branch] does exist"
 fi
 
 if [ "$pulls_exists" = false ]; then
@@ -115,12 +115,12 @@ if [ "$pulls_exists" = false ]; then
         ## local branch exists
         ## reset on master
         if [ "$skipupstream" = true ]; then
-            echo "--- [$skipupstream] skipping checking out local branch [$jackett_pulls_branch]"
-            echo "--- checking out local branch [$jackett_pulls_branch]"
-            git checkout -B "$jackett_pulls_branch"
+            echo "--- [$skipupstream] skipping checking out local branch [$prowlarr_target_branch]"
+            echo "--- checking out local branch [$prowlarr_target_branch]"
+            git checkout -B "$prowlarr_target_branch"
         else
             git reset --hard "$prowlarr_remote_name"/"$prowlarr_release_branch"
-            echo "--- local [$jackett_pulls_branch] hard reset based on [$prowlarr_remote_name/$prowlarr_release_branch]"
+            echo "--- local [$prowlarr_target_branch] hard reset based on [$prowlarr_remote_name/$prowlarr_release_branch]"
             if $trace; then
                 read -ep $"Reached - Finished Github Actions [LocalExistsNoRemote] | Pausing for trace debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
             fi
@@ -128,8 +128,8 @@ if [ "$pulls_exists" = false ]; then
     else
         ## local branch does not exist
         ## create new branch from master
-        git checkout -B "$jackett_pulls_branch" "$prowlarr_remote_name"/"$prowlarr_release_branch" --no-track
-        echo "--- local [$jackett_pulls_branch] created from [$prowlarr_remote_name/$prowlarr_release_branch]"
+        git checkout -B "$prowlarr_target_branch" "$prowlarr_remote_name"/"$prowlarr_release_branch" --no-track
+        echo "--- local [$prowlarr_target_branch] created from [$prowlarr_remote_name/$prowlarr_release_branch]"
         if $trace; then
             read -ep $"Reached - Finished Github Actions [NoLocalNoRemote] | Pausing for trace debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
         fi
@@ -139,20 +139,20 @@ else
     if [ "$local_exist" = true ]; then
         # if local exists; reset to remote
         if $skipupstream; then
-            echo "--- [$skipupstream] skipping checking out local branch [$jackett_pulls_branch]"
-            echo "--- checking out local branch [$jackett_pulls_branch]"
-            git checkout -B "$jackett_pulls_branch"
+            echo "--- [$skipupstream] skipping checking out local branch [$prowlarr_target_branch]"
+            echo "--- checking out local branch [$prowlarr_target_branch]"
+            git checkout -B "$prowlarr_target_branch"
         else
-            git reset --hard "$prowlarr_remote_name"/"$jackett_pulls_branch"
-            echo "--- local [$jackett_pulls_branch] hard reset based on [$prowlarr_remote_name/$prowlarr_release_branch]"
+            git reset --hard "$prowlarr_remote_name"/"$prowlarr_target_branch"
+            echo "--- local [$prowlarr_target_branch] hard reset based on [$prowlarr_remote_name/$prowlarr_release_branch]"
         fi
         if $trace; then
             read -ep $"Reached - Finished Github Actions [LocalExistsRemoteExists] | Pausing for trace debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
         fi
     else
         # else create local
-        git checkout -B "$jackett_pulls_branch" "$prowlarr_remote_name"/"$jackett_pulls_branch"
-        echo "--- local [$jackett_pulls_branch] created from [$prowlarr_remote_name/$jackett_pulls_branch]"
+        git checkout -B "$prowlarr_target_branch" "$prowlarr_remote_name"/"$prowlarr_target_branch"
+        echo "--- local [$prowlarr_target_branch] created from [$prowlarr_remote_name/$prowlarr_target_branch]"
         if $trace; then
             read -ep $"Reached - Finished Github Actions [NoLocalRemoteExists] | Pausing for trace debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
         fi
@@ -170,7 +170,7 @@ echo "--- most recent Jackett commit is: [$jackett_recent_commit] from [$jackett
 # require start of commit
 recent_pulled_commit=$(echo "$prowlarr_commits" | awk 'NR==1{print $5}')
 ## check most recent 20 commits in case we have other commits
-echo "--- most recent Prowlarr jackett commit is: [$recent_pulled_commit] from [$prowlarr_remote_name/$jackett_pulls_branch]"
+echo "--- most recent Prowlarr jackett commit is: [$recent_pulled_commit] from [$prowlarr_remote_name/$prowlarr_target_branch]"
 
 if $trace; then
     read -ep $"Reached - Ready to Cherrypick | Pausing for trace debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
@@ -193,9 +193,11 @@ commit_count=$(git rev-list --count "$recent_pulled_commit".."$jackett_recent_co
 ## Cherry pick each commit and attempt to resolve common conflicts
 echo "--- Commit Range is: [ $commit_range ]"
 echo "--- There are [$commit_count] commits to cherry-pick"
+
 echo "--- --------------------------------------------- Beginning Cherrypicking ------------------------------"
 git config merge.directoryRenames true
 git config merge.verbosity 0
+
 for pick_commit in ${commit_range}; do
     has_conflicts=$(git ls-files --unmerged)
     if [ -n "$has_conflicts" ]; then
@@ -215,7 +217,7 @@ for pick_commit in ${commit_range}; do
         readme_conflicts=$(git diff --cached --name-only | grep "README.md")
         nonyml_conflicts=$(git diff --cached --name-only | grep "\.cs\|\.js\|\.iss\|\.html")
         yml_conflicts=$(git diff --cached --name-only | grep ".yml")
-        schema_conflicts=$(git diff --cached | grep ".schema.json")
+        schema_conflicts=$(git diff --cached --name-only | grep ".schema.json")
         ## Handle Common Conflicts
         echo "--- conflicts exist"
         if [ -n "$readme_conflicts" ]; then
@@ -227,12 +229,11 @@ for pick_commit in ${commit_range}; do
             git add --f "README.md"
         fi
         if [ -n "$schema_conflicts" ]; then
-            echo "--- Schema conflict exists; using Jackett Schema and creating version [$new_schema]"
+            echo "--- Schema conflict exists; using Prowlarr schema"
             if $trace; then
-                read -ep $"Reached - README Conflict ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
+                read -ep $"Reached - schema Conflict ; Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
             fi
-            mv "$schema_conflicts" "$prowlarr_git_path/$new_schema/schema.json"
-            git checkout --theirs "*schema.json"
+            git checkout --ours "*schema.json"
             git add --f "*schema.json"
         fi
 
@@ -298,9 +299,10 @@ git checkout HEAD -- "definitions/v*/schema.json"
 
 # New Indexers pulled
 # Segment Changes
-added_indexers=$(git diff --cached --diff-filter=A --name-only | grep ".yml" | grep "v[$min_schema-$max_schema]")
-modified_indexers=$(git diff --cached --diff-filter=M --name-only | grep ".yml" | grep "v[$min_schema-$max_schema]")
-removed_indexers=$(git diff --cached --diff-filter=D --name-only | grep ".yml" | grep "v[$min_schema-$max_schema]")
+added_indexers=$(git diff --cached --diff-filter=A --name-only | grep ".yml" | grep -E "v[[:digit:]]+")
+modified_indexers=$(git diff --cached --diff-filter=M --name-only | grep ".yml" | grep -E "v[[:digit:]]+")
+removed_indexers=$(git diff --cached --diff-filter=D --name-only | grep ".yml" | grep -E "v[[:digit:]]+")
+
 # Create new version directory just in case.
 new_vers_dir="definitions/v$new_schema"
 mkdir -p "$new_vers_dir"
@@ -362,7 +364,7 @@ if [ -n "$added_indexers" ]; then
             # If the version git pulled to passes do nothing; else identify the version
             determine_schema_version "$indexer"
             echo "--- Checked Version Output is $check_version"
-            if [ $check_version != "v0" ]; then
+            if [ "$check_version" != "v0" ]; then
                 echo "--- Schema Test passed."
                 updated_indexer=$indexer
             else
@@ -374,7 +376,7 @@ if [ -n "$added_indexers" ]; then
                 else
                     v_matched="v$matched_version"
                 fi
-                updated_indexer=${indexer/v[0-9]/$v_matched}
+                updated_indexer=${indexer/v[0-9]*/$v_matched}
                 if [ "$indexer" != "$updated_indexer" ]; then
                     echo "--- Moving indexer old [$indexer] to new [$updated_indexer]"
                     if $debug; then
@@ -403,7 +405,7 @@ if [ -n "$modified_indexers" ]; then
             # If the version git pulled to passes do nothing; else identify the version
             determine_schema_version "$indexer"
             echo "--- Checked Version Output is $check_version"
-            if [ $check_version != "v0" ]; then
+            if [ "$check_version" != "v0" ]; then
                 echo "--- Schema Test passed."
                 updated_indexer=$indexer
             else
@@ -415,7 +417,7 @@ if [ -n "$modified_indexers" ]; then
                 else
                     v_matched="v$matched_version"
                 fi
-                updated_indexer=${indexer/v[0-9]/$v_matched}
+                updated_indexer=${indexer/v[0-9]*/$v_matched}
                 if [ "$indexer" != "$updated_indexer" ]; then
                     echo "--- Version bumped indexer old [$indexer] to new [$updated_indexer]"
                     if $debug; then
@@ -434,16 +436,18 @@ if [ -n "$modified_indexers" ]; then
     unset test
 fi
 echo "--- --------------------------------------------- completed changed indexers ---------------------------------------------"
+
 echo "--- --------------------------------------------- begining indexer backporting ---------------------------------------------"
 # Get new set of modified indexers after version checking above
-modified_indexers_vcheck=$(git diff --cached --diff-filter=AM --name-only | grep ".yml" | grep "v[$min_schema-$max_schema]")
+modified_indexers_vcheck=$(git diff --cached --diff-filter=AM --name-only | grep ".yml" | grep -E "v[[:digit:]]+")
 # Backporting Indexers
 if [ -n "$modified_indexers_vcheck" ]; then
     for indexer in ${modified_indexers_vcheck}; do
         for ((i = max_schema; i >= min_schema; i--)); do
             version="v$i"
             echo "--- looking for [$version] indexer of [$indexer]"
-            indexer_check=${indexer/v[0-9]/$version}
+            indexer_check=$(echo "$indexer" | sed -E "s/v[0-9]+/$version/")
+            echo "— Checking for [$indexer_check] != [$indexer] and $indexer_check exists"
             if [ "$indexer_check" != "$indexer" ] && [ -f "$indexer_check" ]; then
                 echo "--- Found [v$i] indexer for [$indexer] - comparing to [$indexer_check]"
                 if $debug; then
@@ -464,7 +468,7 @@ if [ -n "$newschema_indexers" ]; then
         for ((i = max_schema; i >= min_schema; i--)); do
             version="v$i"
             echo "--- looking for [$version] indexer of [$indexer]"
-            indexer_check=${indexer/v[0-9]/$version}
+            indexer_check=$(echo "$indexer" | sed -E "s/v[0-9]+/$version/")
             if [ "$indexer_check" != "$indexer" ] && [ -f "$indexer_check" ]; then
                 echo "--- Found [v$i] indexer for [$indexer] - comparing to [$indexer_check]"
                 if $debug; then
@@ -486,7 +490,7 @@ if [ -n "$removed_indexers" ]; then
     for indexer in ${removed_indexers}; do
         echo "--- looking for previous versions of removed indexer [$indexer]"
         for ((i = max_schema; i >= min_schema; i--)); do
-            indexer_remove=${indexer/v[0-9]/v$i}
+            indexer_remove=$(echo "$indexer" | sed -E "s/v[0-9]+/$version/")
             if [ "$indexer_remove" != "$indexer" ] && [ -f "$indexer_remove" ]; then
                 echo "--- Found [v$i] indexer for [$indexer] - removing [$indexer_remove]"
                 if $debug; then
@@ -545,28 +549,44 @@ else
     git commit -m "$new_commit_msg"
     echo "--- New Commit made - [$new_commit_msg]"
 fi
+
 while true; do
-    read -ep $"Do you wish to Force Push with Lease [Ff] or Push to $prowlarr_remote_name [Pp]? Enter any other value to exit:" -n1 fp
-    case $fp in
-    [Ff]*)
-        if $debug; then
-            read -ep $"Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
-        fi
-        git push "$prowlarr_remote_name" "$jackett_pulls_branch" --force-if-includes --force-with-lease
-        echo "--- Branch Force Pushed"
-        exit 0
-        ;;
-    [Pp]*)
-        if $debug; then
-            read -ep $"Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
-        fi
-        git push "$prowlarr_remote_name" "$jackett_pulls_branch" --force-if-includes
-        echo "--- Branch Pushed"
-        exit 0
-        ;;
+    read -ep "Do you wish to Push to $prowlarr_release_branch [Rr] or $prowlarr_target_branch [Tt] at remote $prowlarr_remote_name? Enter any other key to exit: " -n1 branch_choice
+    case $branch_choice in
+    [Rr]*) push_branch="$prowlarr_release_branch" ;;
+    [Tt]*) push_branch="$prowlarr_target_branch" ;;
     *)
         echo "--- Exiting"
         exit 0
         ;;
     esac
+
+    [[ $debug ]] && read -ep "Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
+    echo "Selected push branch is [$push_branch]"
+
+    while true; do
+        read -ep "Do you wish to Force Push with Lease [Ff] or Push branch [Pp] $push_branch to $prowlarr_remote_name? Enter any other key to exit: " -n1 push_choice
+        case $push_choice in
+        [Ff]*)
+            if $debug; then
+                read -ep "Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
+            fi
+            git push "$prowlarr_remote_name" "$push_branch" --force-if-includes --force-with-lease
+            echo "--- Branch Force Pushed"
+            exit 0
+            ;;
+        [Pp]*)
+            if $debug; then
+                read -ep "Pausing for debugging - Press any key to continue or [Ctrl-C] to abort." -n1 -s
+            fi
+            git push "$prowlarr_remote_name" "$push_branch" --force-if-includes
+            echo "--- Branch Pushed"
+            exit 0
+            ;;
+        *)
+            echo "--- Exiting"
+            exit 0
+            ;;
+        esac
+    done
 done

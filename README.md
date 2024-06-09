@@ -36,12 +36,11 @@ To test the definition:
 
 ## Active Versions
 
-- [V8 Indexers](https://github.com/Prowlarr/Prowlarr/commit/1529527af9d2bf09dcd1b540b4c6f95a7dd00bd1) - Dev 1.1.0.2322
-  - Prowlarr Cardigann v8 includes several changes such as
-    - HtmlEncode and HtmlDecode filters
-- [V7 Indexers](https://github.com/Prowlarr/Prowlarr/commit/ee6467073f64cfaa5ef0de2225f39f0fd0eb5c05) - Dev 0.4.4.1947
-  - Prowlarr Cardigann v7 includes several changes such as
-    - `Publisher`, `Year`, `Genre`, Query support
+- [V9 Indexers](https://github.com/Prowlarr/Prowlarr/commit/bceebc34c134db8140a307e25312cb15e0ff5d63) - Dev 1.4.0.3230
+  - Prowlarr Cardigann v9 includes several changes such as
+    - AllowEmptyInputs
+    - default values
+    - MissingAttributeEqualsNoResults
 
 ## Depreciated Versions
 
@@ -86,3 +85,11 @@ To test the definition:
 - Prowlarr Cardigann v6 includes several changes such as
   - `doubanid` support
   - `tmdbid` TV Search Support
+
+### [V8 Indexers](https://github.com/Prowlarr/Prowlarr/commit/1529527af9d2bf09dcd1b540b4c6f95a7dd00bd1) - Dev 1.1.0.2322
+- Prowlarr Cardigann v8 includes several changes such as
+    - HtmlEncode and HtmlDecode filters
+
+### [V7 Indexers](https://github.com/Prowlarr/Prowlarr/commit/ee6467073f64cfaa5ef0de2225f39f0fd0eb5c05) - Dev 0.4.4.1947
+- Prowlarr Cardigann v7 includes several changes such as
+    - `Publisher`, `Year`, `Genre`, Query support
