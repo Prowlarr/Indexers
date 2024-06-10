@@ -6,18 +6,20 @@ language: en-US
 type: public
 encoding: UTF-8
 requestDelay: 2
+# get status and news on domains at the official site https://1337x-status.org/
 links:
   - https://1337x.to/
   - https://1337x.st/
   - https://x1337x.ws/
   - https://x1337x.eu/
   - https://x1337x.se/
-  - https://1337x.so/
-  - https://1337x.abcproxy.org/
+  - https://x1337x.cc/
   - https://1337x.unblockninja.com/
   - https://1337x.ninjaproxy1.com/
   - https://1337x.proxyninja.org/
+  - https://1337x.proxyninja.net/
   - https://1337x.torrentbay.st/
+  - https://1337x.torrentsbay.org/
 legacylinks:
   - https://1337x.is/
   - https://1337x.gd/
@@ -38,6 +40,8 @@ legacylinks:
   - https://1337x.unblockit.sbs/ # 502
   - https://1337x.unblockit.ong/ # 502
   - https://1337x.unblockit.black/ # 502
+  - https://1337x.abcproxy.org/
+  - https://1337x.so/
 
 caps:
   categorymappings:
