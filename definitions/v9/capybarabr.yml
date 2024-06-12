@@ -43,7 +43,7 @@ settings:
     default: false
   - name: use_single_file_release_use_filename
     type: checkbox
-    label: Use filename as title for single file releases
+    label: Use filename as the title for single file releases
     default: false
   - name: sort
     type: select
