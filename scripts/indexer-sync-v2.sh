@@ -50,7 +50,7 @@ determine_schema_version() {
     local test_output
     test_output=$(npx ajv test -d "$def_file" -s "$schema" --valid -c ajv-formats --spec=draft2019)
 
-    if test_output; then
+    if $test_output; then
         log "INFO" "Definition [$def_file] matches schema [$schema]"
     else
         check_version="v0"
