@@ -71,7 +71,7 @@ determine_best_schema_version() {
         log "INFO" "Checking file [$def_file] against schema [$schema]"
         local test_output
         local test_command
-        test_command="npx ajv test -d \"\$def_file\" -s \"\$schema\" --valid -c ajv-formats --spec=draft2019"
+        test_command="npx ajv test -d \"$def_file\" -s \"$schema\" --valid -c ajv-formats --spec=draft2019"
         test_output=$(eval "$test_command")
 
         if test_output; then
