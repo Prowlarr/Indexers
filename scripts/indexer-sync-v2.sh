@@ -120,7 +120,9 @@ select_remote_and_branch() {
         ;;
     [Dd]*)
         is_dev_exec=true
-        log "INFO" "Skipping upstream Prowlarr pull, local only"
+        log "INFO" "Skipping upstream reset to local. Also Skip checking out the local branch and log an info message."
+        log "INFO" "This will not reset branch from upstream/master and will ONLY checkout the selected branch to use."
+        log "INFO" "This will pause at various debugging points for human review"
         ;;
     *) ;;
     esac
@@ -290,7 +292,7 @@ resolve_conflicts() {
         git checkout --ours "package-lock.json"
         git checkout --ours ".editorconfig"
         git rm --f --q --ignore-unmatch "*.cs*"
-        git rm --f --q --ignore-unmatch "src/Jackett*/**.js*"
+        git rm --f --q --ignore-unmatch "*.js*"
         git rm --f --q --ignore-unmatch "*.iss*"
         git rm --f --q --ignore-unmatch "*.html*"
     fi
@@ -479,7 +481,7 @@ cleanup_and_commit() {
     git rm -r -f -q --ignore-unmatch --cached node_modules
 
     log "INFO" "After review; the script will commit the changes."
-    read -p "Press any key to continue or [Ctrl-C] to abort. Waiting for human review..." -n1 -s
+    read -r -p "Press any key to continue or [Ctrl-C] to abort. Waiting for human review..." -n1 -s
     new_commit_msg="$PROWLARR_COMMIT_TEMPLATE $jackett_recent_commit"
 
     if [ $pulls_exists = true ]; then
@@ -497,17 +499,8 @@ cleanup_and_commit() {
 }
 
 push_changes() {
+    push_branch="$prowlarr_target_branch"
     while true; do
-        read -p "Do you wish to Push to $PROWLARR_RELEASE_BRANCH [Rr] or $prowlarr_target_branch [Tt] at remote $prowlarr_remote_name? Enter any other key to exit: " -n1 branch_choice
-        case $branch_choice in
-        [Rr]*) push_branch="$PROWLARR_RELEASE_BRANCH" ;;
-        [Tt]*) push_branch="$prowlarr_target_branch" ;;
-        *)
-            log "INFO" "Exiting"
-            exit 0
-            ;;
-        esac
-
         read -p "Do you wish to Force Push with Lease [Ff] or Push branch [Pp] $push_branch to $prowlarr_remote_name? Enter any other key to exit: " -n1 push_choice
         case $push_choice in
         [Ff]*)
