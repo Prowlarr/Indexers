@@ -72,7 +72,7 @@ determine_best_schema_version() {
         npx ajv test -d "$def_file" -s "$schema" --valid -c ajv-formats --spec=draft2019
         test_output=$?
 
-        if test_output; then
+        if $test_output; then
             log "INFO" "Definition [$def_file] matches schema [$schema]"
             matched_version=$i
             export matched_version
