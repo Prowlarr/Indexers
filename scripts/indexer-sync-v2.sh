@@ -488,7 +488,7 @@ cleanup_and_commit() {
     read -r -p "Press any key to continue or [Ctrl-C] to abort. Waiting for human review..." -n1 -s
     new_commit_msg="$PROWLARR_COMMIT_TEMPLATE $jackett_recent_commit"
 
-    if [ $pulls_exists = true ]; then
+    if [ "$pulls_exists" = true ] && [ "$prowlarr_target_branch" != "$PROWLARR_RELEASE_BRANCH" ]; then
         if [ "$existing_message_ln1" = "$prowlarr_jackett_commit_message" ]; then
             git commit --amend -m "$new_commit_msg" -m "$existing_message"
             log "INFO" "Commit Appended - [$new_commit_msg]"
