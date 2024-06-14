@@ -187,6 +187,8 @@ handle_branch_reset() {
         if [ "$local_exist" = true ]; then
             if $is_dev_exec; then
                 git checkout -B "$prowlarr_target_branch"
+                log "INFO" "Checked out out local branch [$prowlarr_target_branch]"
+                log "DEBUG" "Development Mode - Skipping reset to upstream/master"
             else
                 git reset --hard "$prowlarr_remote_name"/"$prowlarr_target_branch"
                 log "INFO" "local [$prowlarr_target_branch] hard reset based on [$prowlarr_remote_name/$PROWLARR_RELEASE_BRANCH]"
