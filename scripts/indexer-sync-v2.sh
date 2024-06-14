@@ -48,9 +48,8 @@ determine_schema_version() {
 
     log "INFO" "Checking file against schema [$schema]"
     local test_output
-    local test_command
-    test_command="npx ajv test -d \"$def_file\" -s \"$schema\" --valid -c ajv-formats --spec=draft2019"
-    test_output=$(eval "$test_command")
+    npx ajv test -d "$def_file" -s "$schema" --valid -c ajv-formats --spec=draft2019
+    test_output=$?
 
     if $test_output; then
         log "INFO" "Definition [$def_file] matches schema [$schema]"
@@ -70,9 +69,8 @@ determine_best_schema_version() {
         schema="$dir/schema.json"
         log "INFO" "Checking file [$def_file] against schema [$schema]"
         local test_output
-        local test_command
-        test_command="npx ajv test -d \"$def_file\" -s \"$schema\" --valid -c ajv-formats --spec=draft2019"
-        test_output=$(eval "$test_command")
+        npx ajv test -d "$def_file" -s "$schema" --valid -c ajv-formats --spec=draft2019
+        test_output=$?
 
         if test_output; then
             log "INFO" "Definition [$def_file] matches schema [$schema]"
