@@ -210,7 +210,7 @@ commit_and_push() {
     prowlarr_jackett_commit_message=$(echo "$prowlarr_commits" | awk 'NR==1')
     if [ "$is_dev_exec" = true ]; then
         log "DEBUG" "Jackett Remote is [$JACKETT_REMOTE_NAME/$JACKETT_BRANCH]"
-        read -r -p "Pausing to review commits. Press any key to continue." -n1 -s
+        # read -r -p "Pausing to review commits. Press any key to continue." -n1 -s
     fi
     jackett_recent_commit=$(git rev-parse "$JACKETT_REMOTE_NAME/$JACKETT_BRANCH")
     log "INFO" "most recent Jackett commit is: [$jackett_recent_commit] from [$JACKETT_REMOTE_NAME/$JACKETT_BRANCH]"
@@ -235,7 +235,7 @@ commit_and_push() {
     log "INFO" "There are [$commit_count] commits to cherry-pick"
     if [ "$is_dev_exec" = true ]; then
         log "DEBUG" "Get Range Command is [$commit_range_cmd]"
-        read -r -p "Pausing to review commits. Press any key to continue." -n1 -s
+        # read -r -p "Pausing to review commits. Press any key to continue." -n1 -s
     fi
     log "INFO" "Commit Range is: [$commit_range]"
     log "INFO" "Beginning Cherrypicking"
@@ -292,13 +292,13 @@ resolve_conflicts() {
 
     if [ -n "$nonyml_conflicts" ]; then
         log "INFO" "Non-YML conflicts exist; removing cs, js, iss, html"
+        git rm --f --q --ignore-unmatch "*.cs*"
+        git rm --f --q --ignore-unmatch "*.js"
+        git rm --f --q --ignore-unmatch "*.iss*"
+        git rm --f --q --ignore-unmatch "*.html*"
         git checkout --ours "package.json"
         git checkout --ours "package-lock.json"
         git checkout --ours ".editorconfig"
-        git rm --f --q --ignore-unmatch "*.cs*"
-        git rm --f --q --ignore-unmatch "*.js*"
-        git rm --f --q --ignore-unmatch "*.iss*"
-        git rm --f --q --ignore-unmatch "*.html*"
     fi
     if [ -n "$yml_conflicts" ]; then
         log "INFO" "YML conflict exists; [$yml_conflicts]"
