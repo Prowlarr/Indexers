@@ -110,35 +110,58 @@ initialize_script() {
     fi
 }
 
-select_remote_and_branch() {
-    read -r -p "Enter the remote to use (origin [Oo] / upstream [Uu]): " remote_choice
-    case "$remote_choice" in
-    [Oo]*) prowlarr_remote_name="origin" ;;
-    [Uu]*) prowlarr_remote_name="upstream" ;;
-    *) ;;
-    esac
-
-    read -r -p "Enter the branch to use (master [Mm] / jackett-pulls [Pp]): " branch_choice
-    case "$branch_choice" in
-    [Mm]*) prowlarr_target_branch="master" ;;
-    [Pp]*) prowlarr_target_branch="jackett-pulls" ;;
-    *) ;;
-    esac
-
-    read -r -p "Enter the mode (normal [Nn]/ Development (Skip Upstream) [Dd]): " mode_choice
-    case "$mode_choice" in
-    [Nn]*)
-        is_dev_exec=false
-        ;;
-    [Dd]*)
-        is_dev_exec=true
-        log "INFO" "Skipping upstream reset to local. Also Skip checking out the local branch and log an info message."
-        log "INFO" "This will not reset branch from upstream/master and will ONLY checkout the selected branch to use."
-        log "INFO" "This will pause at various debugging points for human review"
-        ;;
-    *) ;;
-    esac
-}
+while getopts ":r:b:m:p:c:u:j:R:J:n:" opt; do
+  case ${opt} in
+    r )
+      prowlarr_remote_name=$OPTARG
+      ;;
+    b )
+      prowlarr_target_branch=$OPTARG
+      ;;
+    m )
+      mode_choice=$OPTARG
+      case "$mode_choice" in
+        normal|n|N)
+          is_dev_exec=false
+          ;;
+        development|d|D)
+          is_dev_exec=true
+          log "INFO" "Skipping upstream reset to local. Also Skip checking out the local branch and log an info message."
+          log "INFO" "This will not reset branch from upstream/master and will ONLY checkout the selected branch to use."
+          log "INFO" "This will pause at various debugging points for human review"
+          ;;
+        *)
+          usage
+          ;;
+      esac
+      ;;
+    p )
+      push_mode=$OPTARG
+      ;;
+    c )
+      PROWLARR_COMMIT_TEMPLATE=$OPTARG
+      ;;
+    u )
+      PROWLARR_REPO_URL=$OPTARG
+      ;;
+    j )
+      JACKETT_REPO_URL=$OPTARG
+      ;;
+    R )
+      PROWLARR_RELEASE_BRANCH=$OPTARG
+      ;;
+    J )
+      JACKETT_BRANCH=$OPTARG
+      ;;
+    n )
+      JACKETT_REMOTE_NAME=$OPTARG
+      ;;
+    \? )
+      usage
+      ;;
+  esac
+done
+shift $((OPTIND -1))
 
 configure_git() {
     git config advice.statusHints false
