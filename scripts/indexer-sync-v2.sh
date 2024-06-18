@@ -10,6 +10,16 @@
 ## Using the Script
 ### Suggested to run from the current directory being Prowlarr/Indexers local Repo using Git Bash `./scripts/prowlarr-indexers-jackettpull.sh`
 
+usage() {
+    echo "Usage: $0 [-r remote] [-b branch] [-m mode] [-p push_mode] [-c commit_template] [-u prowlarr_repo_url] [-j jackett_repo_url] [-R release_branch] [-J jackett_branch] [-n jackett_remote_name]"
+    exit 1
+}
+
+# Default values
+prowlarr_remote_name="origin"
+prowlarr_target_branch="master"
+mode_choice="normal"
+push_mode="push"
 PROWLARR_COMMIT_TEMPLATE="jackett indexers as of"
 PROWLARR_REPO_URL="https://github.com/Prowlarr/Indexers.git"
 JACKETT_REPO_URL="https://github.com/Jackett/Jackett.git"
@@ -80,8 +90,8 @@ determine_best_schema_version() {
         fi
 
         if [ $i -eq $MAX_SCHEMA ]; then
-            log "ERROR" "Definition [$def_file] does not match max schema [$MAX_SCHEMA]."
-            log "ERROR" "Cardigann update likely needed. Version [$NEW_SCHEMA] required. Review definition."
+            log "WARN" "Definition [$def_file] does not match max schema [$MAX_SCHEMA]."
+            log "WARN" "Cardigann update likely needed. Version [$NEW_SCHEMA] required. Review definition."
             export matched_version
         fi
     done
@@ -100,35 +110,58 @@ initialize_script() {
     fi
 }
 
-select_remote_and_branch() {
-    read -r -p "Enter the remote to use (origin [Oo] / upstream [Uu]): " remote_choice
-    case "$remote_choice" in
-    [Oo]*) prowlarr_remote_name="origin" ;;
-    [Uu]*) prowlarr_remote_name="upstream" ;;
-    *) ;;
-    esac
-
-    read -r -p "Enter the branch to use (master [Mm] / jackett-pulls [Pp]): " branch_choice
-    case "$branch_choice" in
-    [Mm]*) prowlarr_target_branch="master" ;;
-    [Pp]*) prowlarr_target_branch="jackett-pulls" ;;
-    *) ;;
-    esac
-
-    read -r -p "Enter the mode (normal [Nn]/ Development (Skip Upstream) [Dd]): " mode_choice
-    case "$mode_choice" in
-    [Nn]*)
-        is_dev_exec=false
-        ;;
-    [Dd]*)
-        is_dev_exec=true
-        log "INFO" "Skipping upstream reset to local. Also Skip checking out the local branch and log an info message."
-        log "INFO" "This will not reset branch from upstream/master and will ONLY checkout the selected branch to use."
-        log "INFO" "This will pause at various debugging points for human review"
-        ;;
-    *) ;;
-    esac
-}
+while getopts ":r:b:m:p:c:u:j:R:J:n:" opt; do
+  case ${opt} in
+    r )
+      prowlarr_remote_name=$OPTARG
+      ;;
+    b )
+      prowlarr_target_branch=$OPTARG
+      ;;
+    m )
+      mode_choice=$OPTARG
+      case "$mode_choice" in
+        normal|n|N)
+          is_dev_exec=false
+          ;;
+        development|d|D)
+          is_dev_exec=true
+          log "INFO" "Skipping upstream reset to local. Also Skip checking out the local branch and log an info message."
+          log "INFO" "This will not reset branch from upstream/master and will ONLY checkout the selected branch to use."
+          log "INFO" "This will pause at various debugging points for human review"
+          ;;
+        *)
+          usage
+          ;;
+      esac
+      ;;
+    p )
+      push_mode=$OPTARG
+      ;;
+    c )
+      PROWLARR_COMMIT_TEMPLATE=$OPTARG
+      ;;
+    u )
+      PROWLARR_REPO_URL=$OPTARG
+      ;;
+    j )
+      JACKETT_REPO_URL=$OPTARG
+      ;;
+    R )
+      PROWLARR_RELEASE_BRANCH=$OPTARG
+      ;;
+    J )
+      JACKETT_BRANCH=$OPTARG
+      ;;
+    n )
+      JACKETT_REMOTE_NAME=$OPTARG
+      ;;
+    \? )
+      usage
+      ;;
+  esac
+done
+shift $((OPTIND -1))
 
 configure_git() {
     git config advice.statusHints false
@@ -145,7 +178,7 @@ configure_git() {
     fi
 
     log "INFO" "Configured Git"
-    git fetch --all --prune --progress
+    git fetch --all --prune
 }
 
 check_branches() {
@@ -156,18 +189,18 @@ check_branches() {
 
     if [ -z "$local_pulls_check" ]; then
         local_exist=false
-        log "INFO" "local [$prowlarr_target_branch] does not exist"
+        log "INFO" "local branch [$prowlarr_target_branch] does not exist"
     else
         local_exist=true
-        log "INFO" "local [$prowlarr_target_branch] does exist"
+        log "INFO" "local branch [$prowlarr_target_branch] does exist"
     fi
 
     if [ -z "$remote_pulls_check" ]; then
         pulls_exists=false
-        log "INFO" "remote [$prowlarr_remote_name/$prowlarr_target_branch] does not exist"
+        log "INFO" "remote repo/branch [$prowlarr_remote_name/$prowlarr_target_branch] does not exist"
     else
         pulls_exists=true
-        log "INFO" "remote [$prowlarr_remote_name/$prowlarr_target_branch] does exist"
+        log "INFO" "remote repo/branch [$prowlarr_remote_name/$prowlarr_target_branch] does exist"
     fi
 }
 
@@ -175,15 +208,15 @@ handle_branch_reset() {
     if [ "$pulls_exists" = false ]; then
         if [ "$local_exist" = true ]; then
             if [ "$is_dev_exec" = true ]; then
-                log "INFO" "[$is_dev_exec] skipping checking out local branch [$prowlarr_target_branch]"
+                log "INFO" "[$is_dev_exec] skipping reset to [$prowlarr_remote_name/$PROWLARR_RELEASE_BRANCH] and checking out local branch [$prowlarr_target_branch]"
                 git checkout -B "$prowlarr_target_branch"
             else
                 git reset --hard "$prowlarr_remote_name"/"$PROWLARR_RELEASE_BRANCH"
-                log "INFO" "local [$prowlarr_target_branch] hard reset based on [$prowlarr_remote_name/$PROWLARR_RELEASE_BRANCH]"
+                log "INFO" "local [$prowlarr_target_branch] hard reset based on remote/branch [$prowlarr_remote_name/$PROWLARR_RELEASE_BRANCH]"
             fi
         else
             git checkout -B "$prowlarr_target_branch" "$prowlarr_remote_name"/"$PROWLARR_RELEASE_BRANCH" --no-track
-            log "INFO" "local [$prowlarr_target_branch] created from [$prowlarr_remote_name/$PROWLARR_RELEASE_BRANCH]"
+            log "INFO" "local [$prowlarr_target_branch] created from remote/branch [$prowlarr_remote_name/$PROWLARR_RELEASE_BRANCH]"
         fi
     else
         if [ "$local_exist" = true ]; then
@@ -486,7 +519,7 @@ cleanup_and_commit() {
 
     log "INFO" "After review; the script will commit the changes."
     read -r -p "Press any key to continue or [Ctrl-C] to abort. Waiting for human review..." -n1 -s
-    new_commit_msg="$PROWLARR_COMMIT_TEMPLATE $jackett_recent_commit"
+    new_commit_msg="$PROWLARR_COMMIT_TEMPLATE $jackett_recent_commit [$(date -u +'%Y-%m-%dT%H:%M:%SZ')]"
 
     if [ "$pulls_exists" = true ] && [ "$prowlarr_target_branch" != "$PROWLARR_RELEASE_BRANCH" ]; then
         if [ "$existing_message_ln1" = "$prowlarr_jackett_commit_message" ]; then
@@ -504,34 +537,29 @@ cleanup_and_commit() {
 
 push_changes() {
     push_branch="$prowlarr_target_branch"
-    while true; do
-        read -p "Do you wish to Force Push with Lease [Ff] or Push branch [Pp] $push_branch to $prowlarr_remote_name? Enter any other key to exit: " -n1 push_choice
-        case $push_choice in
-        [Ff]*)
-            git push "$prowlarr_remote_name" "$push_branch" --force-if-includes --force-with-lease
-            log "INFO" "Branch Force Pushed"
-            exit 0
-            ;;
-        [Pp]*)
-            git push "$prowlarr_remote_name" "$push_branch" --force-if-includes
-            log "INFO" "Branch Pushed"
-            exit 0
-            ;;
-        *)
-            log "INFO" "Exiting"
-            exit 0
-            ;;
-        esac
-    done
+    case "$push_mode" in
+    force)
+        git push "$prowlarr_remote_name" "$push_branch" --force-if-includes --force-with-lease
+        log "INFO" "Branch Force Pushed"
+        ;;
+    push)
+        git push "$prowlarr_remote_name" "$push_branch" --force-if-includes
+        log "INFO" "Branch Pushed"
+        ;;
+    *)
+        log "INFO" "Invalid push mode specified. Exiting."
+        exit 1
+        ;;
+    esac
 }
 
 main() {
     initialize_script
-    select_remote_and_branch
     configure_git
     check_branches
     handle_branch_reset
     commit_and_push
+    push_changes
 }
 
 main "$@"
