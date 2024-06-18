@@ -10,6 +10,16 @@
 ## Using the Script
 ### Suggested to run from the current directory being Prowlarr/Indexers local Repo using Git Bash `./scripts/prowlarr-indexers-jackettpull.sh`
 
+usage() {
+    echo "Usage: $0 [-r remote] [-b branch] [-m mode] [-p push_mode] [-c commit_template] [-u prowlarr_repo_url] [-j jackett_repo_url] [-R release_branch] [-J jackett_branch] [-n jackett_remote_name]"
+    exit 1
+}
+
+# Default values
+prowlarr_remote_name="origin"
+prowlarr_target_branch="master"
+mode_choice="normal"
+push_mode="push"
 PROWLARR_COMMIT_TEMPLATE="jackett indexers as of"
 PROWLARR_REPO_URL="https://github.com/Prowlarr/Indexers.git"
 JACKETT_REPO_URL="https://github.com/Jackett/Jackett.git"
