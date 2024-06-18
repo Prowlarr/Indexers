@@ -537,25 +537,20 @@ cleanup_and_commit() {
 
 push_changes() {
     push_branch="$prowlarr_target_branch"
-    while true; do
-        read -p "Do you wish to Force Push with Lease [Ff] or Push branch [Pp] $push_branch to $prowlarr_remote_name? Enter any other key to exit: " -n1 push_choice
-        case $push_choice in
-        [Ff]*)
-            git push "$prowlarr_remote_name" "$push_branch" --force-if-includes --force-with-lease
-            log "INFO" "Branch Force Pushed"
-            exit 0
-            ;;
-        [Pp]*)
-            git push "$prowlarr_remote_name" "$push_branch" --force-if-includes
-            log "INFO" "Branch Pushed"
-            exit 0
-            ;;
-        *)
-            log "INFO" "Exiting"
-            exit 0
-            ;;
-        esac
-    done
+    case "$push_mode" in
+    force)
+        git push "$prowlarr_remote_name" "$push_branch" --force-if-includes --force-with-lease
+        log "INFO" "Branch Force Pushed"
+        ;;
+    push)
+        git push "$prowlarr_remote_name" "$push_branch" --force-if-includes
+        log "INFO" "Branch Pushed"
+        ;;
+    *)
+        log "INFO" "Invalid push mode specified. Exiting."
+        exit 1
+        ;;
+    esac
 }
 
 main() {
