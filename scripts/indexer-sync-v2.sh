@@ -555,11 +555,11 @@ push_changes() {
 
 main() {
     initialize_script
-    select_remote_and_branch
     configure_git
     check_branches
     handle_branch_reset
     commit_and_push
+    push_changes
 }
 
 main "$@"
