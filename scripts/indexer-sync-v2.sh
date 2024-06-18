@@ -519,7 +519,7 @@ cleanup_and_commit() {
 
     log "INFO" "After review; the script will commit the changes."
     read -r -p "Press any key to continue or [Ctrl-C] to abort. Waiting for human review..." -n1 -s
-    new_commit_msg="$PROWLARR_COMMIT_TEMPLATE $jackett_recent_commit"
+    new_commit_msg="$PROWLARR_COMMIT_TEMPLATE $jackett_recent_commit [$(date -u +'%Y-%m-%dT%H:%M:%SZ')]"
 
     if [ "$pulls_exists" = true ] && [ "$prowlarr_target_branch" != "$PROWLARR_RELEASE_BRANCH" ]; then
         if [ "$existing_message_ln1" = "$prowlarr_jackett_commit_message" ]; then
