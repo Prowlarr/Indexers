@@ -546,7 +546,7 @@ push_changes() {
         git push "$prowlarr_remote_name" "$push_branch" --force-if-includes
         log "INFO" "Branch Pushed"
         ;;
-    skip|none|nopush)
+    skip|none|nopush|no)
         log "INFO" "Skipping Push due to [skip|nopush|none] value"
         ;;
     *)
