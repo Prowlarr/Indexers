@@ -26,7 +26,7 @@ settings:
   - name: password
     type: password
     label: Password
-  - name: info_8000
+  - name: info_category_8000
     type: info
     label: About MVGroup Categories
     default: MVGroup does not return categories in its search results. To sync to your apps, include 8000(Other) in your Apps' Sync Categories.

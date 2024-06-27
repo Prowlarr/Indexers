@@ -31,7 +31,7 @@ settings:
     type: checkbox
     label: Add RUS to end of all titles to improve language detection by Sonarr and Radarr. Will cause English-only results to be misidentified.
     default: false
-  - name: info_8000
+  - name: info_category_8000
     type: info
     label: About torrent.by Categories
     default: torrent.by does not return categories in its search results. To sync to your apps, include 8000(Other) in your Apps' Sync Categories.

@@ -24,7 +24,7 @@ caps:
     movie-search: [q]
 
 settings:
-  - name: info_8000
+  - name: info_category_8000
     type: info
     label: About Torrentz2nz Categories
     default: Torrentz2nz does not return categories in its search results. To sync to your apps, include 8000(Other) in your Apps' Sync Categories.
