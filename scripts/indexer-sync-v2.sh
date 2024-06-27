@@ -37,7 +37,7 @@ JACKETT_REMOTE_NAME="z_Jackett"
 ## v7 purged and frozen 2024-04-27
 ## v8 purged and frozen 2024-04-27
 MIN_SCHEMA=9
-MAX_SCHEMA=10
+MAX_SCHEMA=11
 NEW_SCHEMA=$((MAX_SCHEMA + 1))
 NEW_VERS_DIR="definitions/v$NEW_SCHEMA"
 mkdir -p "$NEW_VERS_DIR"
