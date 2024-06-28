@@ -245,7 +245,7 @@ handle_branch_reset() {
     fi
 }
 
-commit_and_push() {
+pull_cherry_and_merge() {
     log "INFO" "Reviewing Commits"
     existing_message=$(git log --format=%B -n1)
     existing_message_ln1=$(echo "$existing_message" | awk 'NR==1')
@@ -310,9 +310,6 @@ commit_and_push() {
     handle_new_indexers
     handle_modified_indexers
     handle_backporting_indexers
-
-    cleanup_and_commit
-    push_changes
 }
 
 resolve_conflicts() {
@@ -572,7 +569,8 @@ main() {
     configure_git
     check_branches
     handle_branch_reset
-    commit_and_push
+    pull_cherry_and_merge
+    cleanup_and_commit
     push_changes
 }
 
