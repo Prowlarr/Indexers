@@ -114,12 +114,15 @@ while getopts ":r:b:m:p:c:u:j:R:J:n:" opt; do
   case ${opt} in
     r )
       prowlarr_remote_name=$OPTARG
+      log "DEBUG" "prowlarr_remote_name using argument $prowlarr_remote_name"
       ;;
     b )
       prowlarr_target_branch=$OPTARG
+      log "DEBUG" "prowlarr_target_branch using argument $prowlarr_target_branch"
       ;;
     m )
       mode_choice=$OPTARG
+      log "DEBUG" "mode_choice using argument $mode_choice"
       case "$mode_choice" in
         normal|n|N)
           is_dev_exec=false
@@ -137,24 +140,31 @@ while getopts ":r:b:m:p:c:u:j:R:J:n:" opt; do
       ;;
     p )
       push_mode=$OPTARG
+      log "DEBUG" "push_mode using argument $push_mode"
       ;;
     c )
       PROWLARR_COMMIT_TEMPLATE=$OPTARG
+      log "DEBUG" "PROWLARR_COMMIT_TEMPLATE using argument $PROWLARR_COMMIT_TEMPLATE"
       ;;
     u )
       PROWLARR_REPO_URL=$OPTARG
+      log "DEBUG" "PROWLARR_REPO_URL using argument $PROWLARR_REPO_URL"
       ;;
     j )
       JACKETT_REPO_URL=$OPTARG
+      log "DEBUG" "JACKETT_REPO_URL using argument $JACKETT_REPO_URL"
       ;;
     R )
       PROWLARR_RELEASE_BRANCH=$OPTARG
+      log "DEBUG" "PROWLARR_RELEASE_BRANCH using argument $PROWLARR_RELEASE_BRANCH"
       ;;
     J )
       JACKETT_BRANCH=$OPTARG
+      log "DEBUG" "JACKETT_BRANCH using argument $JACKETT_BRANCH"
       ;;
     n )
       JACKETT_REMOTE_NAME=$OPTARG
+      log "DEBUG" "JACKETT_REMOTE_NAME using argument $JACKETT_REMOTE_NAME"
       ;;
     \? )
       usage
@@ -537,6 +547,7 @@ cleanup_and_commit() {
 
 push_changes() {
     push_branch="$prowlarr_target_branch"
+    log "INFO" "Pushing Changes to $push_branch as specified by push mode $push_mode"
     case "$push_mode" in
     force)
         git push "$prowlarr_remote_name" "$push_branch" --force-if-includes --force-with-lease
@@ -547,7 +558,7 @@ push_changes() {
         log "INFO" "Branch Pushed"
         ;;
     skip|none|nopush|no)
-        log "INFO" "Skipping Push due to [skip|nopush|none] value"
+        log "INFO" "Skipping Push due to [skip|nopush|none|no] value"
         ;;
     *)
         log "INFO" "Invalid push mode specified ($push_mode). Exiting."
