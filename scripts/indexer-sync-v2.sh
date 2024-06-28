@@ -111,67 +111,67 @@ initialize_script() {
 }
 
 while getopts ":r:b:m:p:c:u:j:R:J:n:" opt; do
-  case ${opt} in
-    r )
-      prowlarr_remote_name=$OPTARG
-      log "DEBUG" "prowlarr_remote_name using argument $prowlarr_remote_name"
-      ;;
-    b )
-      prowlarr_target_branch=$OPTARG
-      log "DEBUG" "prowlarr_target_branch using argument $prowlarr_target_branch"
-      ;;
-    m )
-      mode_choice=$OPTARG
-      log "DEBUG" "mode_choice using argument $mode_choice"
-      case "$mode_choice" in
-        normal|n|N)
-          is_dev_exec=false
-          ;;
-        development|d|D)
-          is_dev_exec=true
-          log "INFO" "Skipping upstream reset to local. Also Skip checking out the local branch and log an info message."
-          log "INFO" "This will not reset branch from upstream/master and will ONLY checkout the selected branch to use."
-          log "INFO" "This will pause at various debugging points for human review"
-          ;;
+    case ${opt} in
+    r)
+        prowlarr_remote_name=$OPTARG
+        log "DEBUG" "prowlarr_remote_name using argument $prowlarr_remote_name"
+        ;;
+    b)
+        prowlarr_target_branch=$OPTARG
+        log "DEBUG" "prowlarr_target_branch using argument $prowlarr_target_branch"
+        ;;
+    m)
+        mode_choice=$OPTARG
+        log "DEBUG" "mode_choice using argument $mode_choice"
+        case "$mode_choice" in
+        normal | n | N)
+            is_dev_exec=false
+            ;;
+        development | d | D)
+            is_dev_exec=true
+            log "INFO" "Skipping upstream reset to local. Also Skip checking out the local branch and log an info message."
+            log "INFO" "This will not reset branch from upstream/master and will ONLY checkout the selected branch to use."
+            log "INFO" "This will pause at various debugging points for human review"
+            ;;
         *)
-          usage
-          ;;
-      esac
-      ;;
-    p )
-      push_mode=$OPTARG
-      log "DEBUG" "push_mode using argument $push_mode"
-      ;;
-    c )
-      PROWLARR_COMMIT_TEMPLATE=$OPTARG
-      log "DEBUG" "PROWLARR_COMMIT_TEMPLATE using argument $PROWLARR_COMMIT_TEMPLATE"
-      ;;
-    u )
-      PROWLARR_REPO_URL=$OPTARG
-      log "DEBUG" "PROWLARR_REPO_URL using argument $PROWLARR_REPO_URL"
-      ;;
-    j )
-      JACKETT_REPO_URL=$OPTARG
-      log "DEBUG" "JACKETT_REPO_URL using argument $JACKETT_REPO_URL"
-      ;;
-    R )
-      PROWLARR_RELEASE_BRANCH=$OPTARG
-      log "DEBUG" "PROWLARR_RELEASE_BRANCH using argument $PROWLARR_RELEASE_BRANCH"
-      ;;
-    J )
-      JACKETT_BRANCH=$OPTARG
-      log "DEBUG" "JACKETT_BRANCH using argument $JACKETT_BRANCH"
-      ;;
-    n )
-      JACKETT_REMOTE_NAME=$OPTARG
-      log "DEBUG" "JACKETT_REMOTE_NAME using argument $JACKETT_REMOTE_NAME"
-      ;;
-    \? )
-      usage
-      ;;
-  esac
+            usage
+            ;;
+        esac
+        ;;
+    p)
+        push_mode=$OPTARG
+        log "DEBUG" "push_mode using argument $push_mode"
+        ;;
+    c)
+        PROWLARR_COMMIT_TEMPLATE=$OPTARG
+        log "DEBUG" "PROWLARR_COMMIT_TEMPLATE using argument $PROWLARR_COMMIT_TEMPLATE"
+        ;;
+    u)
+        PROWLARR_REPO_URL=$OPTARG
+        log "DEBUG" "PROWLARR_REPO_URL using argument $PROWLARR_REPO_URL"
+        ;;
+    j)
+        JACKETT_REPO_URL=$OPTARG
+        log "DEBUG" "JACKETT_REPO_URL using argument $JACKETT_REPO_URL"
+        ;;
+    R)
+        PROWLARR_RELEASE_BRANCH=$OPTARG
+        log "DEBUG" "PROWLARR_RELEASE_BRANCH using argument $PROWLARR_RELEASE_BRANCH"
+        ;;
+    J)
+        JACKETT_BRANCH=$OPTARG
+        log "DEBUG" "JACKETT_BRANCH using argument $JACKETT_BRANCH"
+        ;;
+    n)
+        JACKETT_REMOTE_NAME=$OPTARG
+        log "DEBUG" "JACKETT_REMOTE_NAME using argument $JACKETT_REMOTE_NAME"
+        ;;
+    \?)
+        usage
+        ;;
+    esac
 done
-shift $((OPTIND -1))
+shift $((OPTIND - 1))
 
 configure_git() {
     git config advice.statusHints false
@@ -557,7 +557,7 @@ push_changes() {
         git push "$prowlarr_remote_name" "$push_branch" --force-if-includes
         log "INFO" "Branch Pushed"
         ;;
-    skip|none|nopush|no)
+    skip | none | nopush | no)
         log "INFO" "Skipping Push due to [skip|nopush|none|no] value"
         ;;
     *)
