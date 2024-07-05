@@ -110,7 +110,7 @@ initialize_script() {
     fi
 }
 
-while getopts ":r:b:m:p:c:u:j:R:J:n:" opt; do
+while getopts ":r:b:m:p:c:u:j:R:J:n:z:" opt; do
     case ${opt} in
     r)
         prowlarr_remote_name=$OPTARG
@@ -165,6 +165,10 @@ while getopts ":r:b:m:p:c:u:j:R:J:n:" opt; do
     n)
         JACKETT_REMOTE_NAME=$OPTARG
         log "DEBUG" "JACKETT_REMOTE_NAME using argument $JACKETT_REMOTE_NAME"
+        ;;
+    z)
+        SKIP_BACKPORT=true
+        log "DEBUG" "SKIP_BACKPORT using argument $SKIP_BACKPORT"
         ;;
     \?)
         usage
@@ -309,7 +313,11 @@ pull_cherry_and_merge() {
 
     handle_new_indexers
     handle_modified_indexers
-    handle_backporting_indexers
+    if [ "$SKIP_BACKPORT" = true ];  then
+        log "DEBUG" "Skipping backporting changes"
+    else
+        handle_backporting_indexers
+    fi
 }
 
 resolve_conflicts() {
