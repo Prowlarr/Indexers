@@ -19,7 +19,8 @@ usage() {
 prowlarr_remote_name="origin"
 prowlarr_target_branch="master"
 mode_choice="normal"
-push_mode="push"
+push_mode=false
+push_mode_force=false
 PROWLARR_COMMIT_TEMPLATE="jackett indexers as of"
 PROWLARR_COMMIT_TEMPLATE_APPEND=""
 PROWLARR_REPO_URL="https://github.com/Prowlarr/Indexers.git"
