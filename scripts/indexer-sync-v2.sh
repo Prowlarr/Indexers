@@ -11,7 +11,7 @@
 ### Suggested to run from the current directory being Prowlarr/Indexers local Repo using Git Bash `./scripts/prowlarr-indexers-jackettpull.sh`
 
 usage() {
-    echo "Usage: $0 [-r remote] [-b branch] [-m mode] [-p push to remote] [-f force push if pushing] [-c commit_template] [-u prowlarr_repo_url] [-j jackett_repo_url] [-R release_branch] [-J jackett_branch] [-n jackett_remote_name]"
+    echo "Usage: $0 [-r remote] [-b branch] [-m mode (normal or dev)] [-p push to remote] [-f force push if pushing] [-c commit_template] [-u prowlarr_repo_url] [-j jackett_repo_url] [-R release_branch] [-J jackett_branch] [-n jackett_remote_name]"
     exit 1
 }
 
@@ -609,7 +609,8 @@ cleanup_and_commit() {
 
 push_changes() {
     push_branch="$prowlarr_target_branch"
-    log "INFO" "Pushing Changes to $push_branch as specified by push mode $push_mode"
+    log "INFO" "Evaluating for Push to Remote" 
+    log "DEBUG" " Push Modes for Branch $push_branch: Push To Remote: $push_mode with Force Push With Lease: $push_mode_force"
     if [ "$push_mode" = true ] && [ "$push_mode_force" = true ]; then
         git push "$prowlarr_remote_name" "$push_branch" --force-if-includes --force-with-lease
         log "WARN" "[$prowlarr_remote_name $push_branch] Branch Force Pushed"
@@ -617,7 +618,7 @@ push_changes() {
         git push "$prowlarr_remote_name" "$push_branch" --force-if-includes
         log "SUCCESS" "[$prowlarr_remote_name $push_branch] Branch Pushed"
     else
-         log "INFO" "Skipping Push to [$prowlarr_remote_name $push_branch] you should push manually."
+         log "SUCCESS" "Skipping Push to [$prowlarr_remote_name $push_branch] you should consider pushing manually and/or submitting a pull-request."
     fi
 }
 
