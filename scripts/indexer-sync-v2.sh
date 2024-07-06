@@ -111,8 +111,12 @@ initialize_script() {
     fi
 }
 
-while getopts ":r:b:m:p:c:u:j:R:J:n:z:" opt; do
+while getopts ":f:r:b:m:p:c:u:j:R:J:n:z:" opt; do
     case ${opt} in
+    f)
+        push_mode_force=true
+        log "DEBUG" "push_mode_force using argument $push_mode"
+        ;;
     r)
         prowlarr_remote_name=$OPTARG
         log "DEBUG" "prowlarr_remote_name using argument $prowlarr_remote_name"
@@ -140,7 +144,7 @@ while getopts ":r:b:m:p:c:u:j:R:J:n:z:" opt; do
         esac
         ;;
     p)
-        push_mode=$OPTARG
+        push_mode=push
         log "DEBUG" "push_mode using argument $push_mode"
         ;;
     c)
@@ -555,23 +559,15 @@ cleanup_and_commit() {
 push_changes() {
     push_branch="$prowlarr_target_branch"
     log "INFO" "Pushing Changes to $push_branch as specified by push mode $push_mode"
-    case "$push_mode" in
-    force)
+    if [ "$push_mode" = "push" ] && [ "$push_mode_force" = true ]; then
         git push "$prowlarr_remote_name" "$push_branch" --force-if-includes --force-with-lease
-        log "INFO" "Branch Force Pushed"
-        ;;
-    push)
+        log "INFO" "[$prowlarr_remote_name $push_branch] Branch Force Pushed"
+    elif [ "$push_mode" = "push" ]; then
         git push "$prowlarr_remote_name" "$push_branch" --force-if-includes
-        log "INFO" "Branch Pushed"
-        ;;
-    skip | none | nopush | no)
-        log "INFO" "Skipping Push due to [skip|nopush|none|no] value"
-        ;;
-    *)
-        log "INFO" "Invalid push mode specified ($push_mode). Exiting."
-        exit 2
-        ;;
-    esac
+        log "INFO" "[$prowlarr_remote_name $push_branch] Branch Pushed"
+    else
+         log "INFO" "Skipping Push to [$prowlarr_remote_name $push_branch] you should push manually."
+    fi
 }
 
 main() {
