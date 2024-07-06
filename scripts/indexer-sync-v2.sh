@@ -11,7 +11,7 @@
 ### Suggested to run from the current directory being Prowlarr/Indexers local Repo using Git Bash `./scripts/prowlarr-indexers-jackettpull.sh`
 
 usage() {
-    echo "Usage: $0 [-r remote] [-b branch] [-m mode] [-p push_mode] [-c commit_template] [-u prowlarr_repo_url] [-j jackett_repo_url] [-R release_branch] [-J jackett_branch] [-n jackett_remote_name]"
+    echo "Usage: $0 [-r remote] [-b branch] [-m mode] [-p push_mode] [-f allow force push] [-c commit_template] [-u prowlarr_repo_url] [-j jackett_repo_url] [-R release_branch] [-J jackett_branch] [-n jackett_remote_name]"
     exit 1
 }
 
@@ -46,7 +46,32 @@ mkdir -p "$NEW_VERS_DIR"
 log() {
     local level="$1"
     local message="$2"
-    echo "[$(date +'%Y-%m-%dT%H:%M:%S%z')]|[$level]|$message"
+    local color_reset="\033[0m"
+    local color_info="\033[0;32m"  # Green
+    local color_warn="\033[0;33m"  # Yellow
+    local color_debug="\033[0;34m" # Blue
+    local color_error="\033[0;31m" # Red
+
+    local color
+    case "$level" in
+        INFO)
+            color=$color_info
+            ;;
+        WARN)
+            color=$color_warn
+            ;;
+        DEBUG)
+            color=$color_debug
+            ;;
+        ERROR)
+            color=$color_error
+            ;;
+        *)
+            color=$color_reset
+            ;;
+    esac
+
+    echo -e "${color}[$(date +'%Y-%m-%dT%H:%M:%S%z')]|[$level]|$message${color_reset}"
 }
 
 determine_schema_version() {
@@ -144,7 +169,7 @@ while getopts ":f:r:b:m:p:c:u:j:R:J:n:z:" opt; do
         esac
         ;;
     p)
-        push_mode=push
+        push_mode=true
         log "DEBUG" "push_mode using argument $push_mode"
         ;;
     c)
@@ -191,14 +216,16 @@ configure_git() {
 
     if [ -z "$prowlarr_remote_exists" ]; then
         git remote add "$prowlarr_remote_name" "$PROWLARR_REPO_URL"
+        log "DEBUG" "git remote add $prowlarr_remote_name $PROWLARR_REPO_URL"
     fi
 
     if [ -z "$jackett_remote_exists" ]; then
         git remote add "$JACKETT_REMOTE_NAME" "$JACKETT_REPO_URL"
+        log "DEBUG" "git remote add $JACKETT_REMOTE_NAME $JACKETT_REPO_URL"
     fi
 
     log "INFO" "Configured Git"
-    git fetch --all --prune
+    git fetch --all --prune --progress
 }
 
 check_branches() {
@@ -232,7 +259,7 @@ handle_branch_reset() {
                 git checkout -B "$prowlarr_target_branch"
             else
                 git reset --hard "$prowlarr_remote_name"/"$PROWLARR_RELEASE_BRANCH"
-                log "INFO" "local [$prowlarr_target_branch] hard reset based on remote/branch [$prowlarr_remote_name/$PROWLARR_RELEASE_BRANCH]"
+                log "WARN" "local [$prowlarr_target_branch] hard reset based on remote/branch [$prowlarr_remote_name/$PROWLARR_RELEASE_BRANCH]"
             fi
         else
             git checkout -B "$prowlarr_target_branch" "$prowlarr_remote_name"/"$PROWLARR_RELEASE_BRANCH" --no-track
@@ -559,10 +586,10 @@ cleanup_and_commit() {
 push_changes() {
     push_branch="$prowlarr_target_branch"
     log "INFO" "Pushing Changes to $push_branch as specified by push mode $push_mode"
-    if [ "$push_mode" = "push" ] && [ "$push_mode_force" = true ]; then
+    if [ "$push_mode" = true ] && [ "$push_mode_force" = true ]; then
         git push "$prowlarr_remote_name" "$push_branch" --force-if-includes --force-with-lease
         log "INFO" "[$prowlarr_remote_name $push_branch] Branch Force Pushed"
-    elif [ "$push_mode" = "push" ]; then
+    elif [ "$push_mode" = true ]; then
         git push "$prowlarr_remote_name" "$push_branch" --force-if-includes
         log "INFO" "[$prowlarr_remote_name $push_branch] Branch Pushed"
     else
