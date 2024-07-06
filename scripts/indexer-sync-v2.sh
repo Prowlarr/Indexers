@@ -306,7 +306,7 @@ pull_cherry_and_merge() {
     log "INFO" "most recent Prowlarr jackett commit is: [$recent_pulled_commit] from [$prowlarr_remote_name/$prowlarr_target_branch]"
 
     if [ "$jackett_recent_commit" = "$recent_pulled_commit" ]; then
-        log "INFO" "we are current with jackett; nothing to do"
+        log "SUCCESS" "we are current with jackett; nothing to do"
         exit 0
     fi
 
@@ -557,10 +557,25 @@ cleanup_and_commit() {
         unset indexer_remove
     fi
 
-    log "SUCCESS" "Added Indexers are [$added_indexers]"
-    log "SUCCESS" "Modified Indexers are [$modified_indexers]"
-    log "SUCCESS" "Removed Indexers are [$removed_indexers]"
-    log "WARN" "New Schema Indexers are [$newschema_indexers]"
+    # Check if there are added indexers and log if present
+    if [ -n "$added_indexers" ]; then
+        log "SUCCESS" "Added Indexers are [$added_indexers]"
+    fi
+
+    # Check if there are modified indexers and log if present
+    if [ -n "$modified_indexers" ]; then
+        log "SUCCESS" "Modified Indexers are [$modified_indexers]"
+    fi
+
+    # Check if there are removed indexers and log if present
+    if [ -n "$removed_indexers" ]; then
+        log "SUCCESS" "Removed Indexers are [$removed_indexers]"
+    fi
+
+    # Check if there are new schema indexers and log if present
+    if [ -n "$newschema_indexers" ]; then
+        log "WARN" "New Schema Indexers are [$newschema_indexers]"
+    fi
 
     if [ -d "$NEW_VERS_DIR" ]; then
         if [ "$(ls -A $NEW_VERS_DIR)" ]; then
