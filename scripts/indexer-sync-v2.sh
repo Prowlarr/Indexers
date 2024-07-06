@@ -11,7 +11,7 @@
 ### Suggested to run from the current directory being Prowlarr/Indexers local Repo using Git Bash `./scripts/prowlarr-indexers-jackettpull.sh`
 
 usage() {
-    echo "Usage: $0 [-r remote] [-b branch] [-m mode] [-p push_mode] [-f allow force push] [-c commit_template] [-u prowlarr_repo_url] [-j jackett_repo_url] [-R release_branch] [-J jackett_branch] [-n jackett_remote_name]"
+    echo "Usage: $0 [-r remote] [-b branch] [-m mode] [-p push to remote] [-f force push if pushing] [-c commit_template] [-u prowlarr_repo_url] [-j jackett_repo_url] [-R release_branch] [-J jackett_branch] [-n jackett_remote_name]"
     exit 1
 }
 
@@ -47,18 +47,26 @@ log() {
     local level="$1"
     local message="$2"
     local color_reset="\033[0m"
-    local color_info="\033[0;32m"  # Green
-    local color_warn="\033[0;33m"  # Yellow
-    local color_debug="\033[0;34m" # Blue
-    local color_error="\033[0;31m" # Red
+    local color_success="\033[0;32m"  # Green
+    local color_info="\033[0;36m"    # Cyan
+    local color_warn="\033[0;33m"    # Yellow
+    local color_debug="\033[0;34m"   # Blue
+    local color_error="\033[0;31m"   # Red
 
     local color
     case "$level" in
+        SUCCESS)
+            color=$color_success
+            ;;
         INFO)
             color=$color_info
             ;;
         WARN)
             color=$color_warn
+            ;;
+        WARNING)
+            color=$color_warn
+            level="WARN"
             ;;
         DEBUG)
             color=$color_debug
@@ -71,18 +79,18 @@ log() {
             ;;
     esac
 
-    echo -e "${color}[$(date +'%Y-%m-%dT%H:%M:%S%z')]|[$level]|$message${color_reset}"
+    echo -e "${color}$(date +'%Y-%m-%dT%H:%M:%S%z')|$level|$message${color_reset}"
 }
 
 determine_schema_version() {
     local def_file="$1"
-    log "INFO" "Testing schema version of [$def_file]"
+    log "DEBUG" "Testing schema version of [$def_file]"
 
     check_version=$(echo "$def_file" | cut -d'/' -f2)
     dir="definitions/$check_version"
     schema="$dir/schema.json"
 
-    log "INFO" "Checking file against schema [$schema]"
+    log "DEBUG" "Checking file against schema [$schema]"
     local test_output
     npx ajv test -d "$def_file" -s "$schema" --valid -c ajv-formats --spec=draft2019
     test_output=$?
@@ -103,7 +111,7 @@ determine_best_schema_version() {
     for ((i = MIN_SCHEMA; i <= MAX_SCHEMA; i++)); do
         dir="definitions/v$i"
         schema="$dir/schema.json"
-        log "INFO" "Checking file [$def_file] against schema [$schema]"
+        log "DEBUG" "Checking file [$def_file] against schema [$schema]"
         local test_output
         npx ajv test -d "$def_file" -s "$schema" --valid -c ajv-formats --spec=draft2019
         test_output=$?
@@ -117,7 +125,7 @@ determine_best_schema_version() {
 
         if [ $i -eq $MAX_SCHEMA ]; then
             log "WARN" "Definition [$def_file] does not match max schema [$MAX_SCHEMA]."
-            log "WARN" "Cardigann update likely needed. Version [$NEW_SCHEMA] required. Review definition."
+            log "ERROR" "Cardigann update likely needed. Version [$NEW_SCHEMA] required. Review definition."
             export matched_version
         fi
     done
@@ -339,7 +347,7 @@ pull_cherry_and_merge() {
         git config merge.verbosity 2
     done
 
-    log "INFO" "completed cherry pick actions"
+    log "SUCCESS" "Completed cherry picking"
     log "INFO" "Evaluating and Reviewing Changes"
 
     git checkout HEAD -- "definitions/v*/schema.json"
@@ -359,7 +367,7 @@ resolve_conflicts() {
     yml_conflicts=$(git diff --cached --name-only | grep ".yml")
     schema_conflicts=$(git diff --cached --name-only | grep ".schema.json")
 
-    log "INFO" "conflicts exist"
+    log "WARN" "conflicts exist"
     if [ -n "$readme_conflicts" ]; then
         log "INFO" "README conflict exists; using Prowlarr README"
         git checkout --ours "README.md"
@@ -400,12 +408,12 @@ handle_yml_conflicts() {
         yml_delete=$(echo "$yml_defs" | grep "UD" | awk -F '[ADUMRC]{1,2} ' '{print $2}' | awk '{ gsub(/^[ \t]+|[ \t]+$/, ""); print }')
 
         for def in $yml_add; do
-            log "INFO" "Using & Adding Jackett's definition yml; [$def]"
+            log "DEBUG" "Using & Adding Jackett's definition yml; [$def]"
             git checkout --theirs "$def"
             git add --f "$def"
         done
         for def in $yml_delete; do
-            log "INFO" "Removing definitions Jackett deleted; [$def]"
+            log "DEBUG" "Removing definitions Jackett deleted; [$def]"
             git rm --f --ignore-unmatch "$def"
         done
     fi
@@ -416,17 +424,17 @@ handle_new_indexers() {
     if [ -n "$added_indexers" ]; then
         log "INFO" "New Indexers detected"
         for indexer in ${added_indexers}; do
-            log "INFO" "Evaluating [$indexer] Cardigann Version"
+            log "DEBUG" "Evaluating [$indexer] Cardigann Version"
             if [ -f "$indexer" ]; then
                 determine_schema_version "$indexer"
-                log "INFO" "Checked Version Output is $check_version"
+                log "DEBUG" "Checked Version Output is $check_version"
                 if [ "$check_version" != "v0" ]; then
-                    log "INFO" "Schema Test passed."
+                    log "DEBUG" "Schema Test passed."
                     updated_indexer=$indexer
                 else
                     determine_best_schema_version "$indexer"
                     if [ "$matched_version" -eq 0 ]; then
-                        log "INFO" "Version [$NEW_SCHEMA] required. Review definition [$indexer]"
+                        log "WARN" "Version [$NEW_SCHEMA] required. Review definition [$indexer]"
                         v_matched="v$NEW_SCHEMA"
                     else
                         v_matched="v$matched_version"
@@ -438,7 +446,7 @@ handle_new_indexers() {
                         git rm -f "$indexer"
                         git add -f "$updated_indexer"
                     else
-                        log "INFO" "Doing nothing; [$indexer] already is [$updated_indexer]"
+                        log "DEBUG" "Doing nothing; [$indexer] already is [$updated_indexer]"
                     fi
                 fi
             fi
@@ -459,12 +467,12 @@ handle_modified_indexers() {
                 determine_schema_version "$indexer"
                 log "INFO" "Checked Version Output is $check_version"
                 if [ "$check_version" != "v0" ]; then
-                    log "INFO" "Schema Test passed."
+                    log "DEBUG" "Schema Test passed."
                     updated_indexer=$indexer
                 else
                     determine_best_schema_version "$indexer"
                     if [ "$matched_version" -eq 0 ]; then
-                        log "INFO" "Version [$NEW_SCHEMA] required. Review definition [$indexer]"
+                        log "WARN" "Version [$NEW_SCHEMA] required. Review definition [$indexer]"
                         v_matched="v$NEW_SCHEMA"
                     else
                         v_matched="v$matched_version"
@@ -484,7 +492,7 @@ handle_modified_indexers() {
         unset indexer
         unset test
     fi
-    log "INFO" "completed changed indexers"
+    log "SUCCESS" "completed changed indexers"
 }
 
 handle_backporting_indexers() {
@@ -494,11 +502,11 @@ handle_backporting_indexers() {
             # SC2004: $/${} is unnecessary on arithmetic variables.
             for ((i = MAX_SCHEMA; i >= MIN_SCHEMA; i--)); do
                 version="v$i"
-                log "INFO" "looking for [$version] indexer of [$indexer]"
+                log "DEBUG" "looking for [$version] indexer of [$indexer]"
                 indexer_check=$(echo "$indexer" | sed -E "s/v[0-9]+/$version/")
                 if [ "$indexer_check" != "$indexer" ] && [ -f "$indexer_check" ]; then
                     log "INFO" "Found [v$i] indexer for [$indexer] - comparing to [$indexer_check]"
-                    log "INFO" "HUMAN! Review this change and ensure no incompatible updates are backported."
+                    log "WARN" "HUMAN! Review this change and ensure no incompatible updates are backported."
                     git difftool --no-index "$indexer" "$indexer_check"
                     git add "$indexer_check"
                 fi
@@ -514,12 +522,12 @@ handle_backporting_indexers() {
             # SC2004: $/${} is unnecessary on arithmetic variables.
             for ((i = MAX_SCHEMA; i >= MIN_SCHEMA; i--)); do
                 version="v$i"
-                log "INFO" "looking for [$version] indexer of [$indexer]"
+                log "DEBUG" "looking for [$version] indexer of [$indexer]"
                 indexer_check=$(echo "$indexer" | sed -E "s/v[0-9]+/$version/")
                 if [ "$indexer_check" != "$indexer" ] && [ -f "$indexer_check" ]; then
                     log "INFO" "Found [v$i] indexer for [$indexer] - comparing to [$indexer_check]"
-                    log "WARNING" "THIS IS A NEW CARDIGANN VERSION THAT IS REQUIRED"
-                    log "INFO" "HUMAN! Review this change and ensure no incompatible updates are backported."
+                    log "ERROR" "THIS IS A NEW CARDIGANN VERSION THAT IS REQUIRED"
+                    log "WARN" "HUMAN! Review this change and ensure no incompatible updates are backported."
                     git difftool --no-index "$indexer" "$indexer_check"
                     git add "$indexer_check"
                 fi
@@ -528,13 +536,13 @@ handle_backporting_indexers() {
         unset indexer
         unset indexer_check
     fi
-    log "INFO" "completed backporting indexers"
+    log "SUCCESS" "completed backporting indexers"
 }
 
 cleanup_and_commit() {
     if [ -n "$removed_indexers" ]; then
         for indexer in ${removed_indexers}; do
-            log "INFO" "looking for previous versions of removed indexer [$indexer]"
+            log "DEBUG" "looking for previous versions of removed indexer [$indexer]"
             # SC2004: $/${} is unnecessary on arithmetic variables.
             for ((i = MAX_SCHEMA; i >= MIN_SCHEMA; i--)); do
                 indexer_remove=$(echo "$indexer" | sed -E "s/v[0-9]+/$version/")
@@ -549,15 +557,15 @@ cleanup_and_commit() {
         unset indexer_remove
     fi
 
-    log "INFO" "Added Indexers are [$added_indexers]"
-    log "INFO" "Modified Indexers are [$modified_indexers]"
-    log "INFO" "Removed Indexers are [$removed_indexers]"
-    log "INFO" "New Schema Indexers are [$newschema_indexers]"
+    log "SUCCESS" "Added Indexers are [$added_indexers]"
+    log "SUCCESS" "Modified Indexers are [$modified_indexers]"
+    log "SUCCESS" "Removed Indexers are [$removed_indexers]"
+    log "WARN" "New Schema Indexers are [$newschema_indexers]"
 
     if [ -d "$NEW_VERS_DIR" ]; then
         if [ "$(ls -A $NEW_VERS_DIR)" ]; then
-            log "WARNING" "THIS IS A NEW CARDIGANN VERSION THAT IS REQUIRED: Version [v$NEW_SCHEMA] is needed."
-            log "INFO" "Review the following definitions for new Cardigann Version: $newschema_indexers"
+            log "ERROR" "THIS IS A NEW CARDIGANN VERSION THAT IS REQUIRED: Version [v$NEW_SCHEMA] is needed."
+            log "WARNING" "Review the following definitions for new Cardigann Version: $newschema_indexers"
         else
             rmdir $NEW_VERS_DIR
         fi
@@ -565,7 +573,7 @@ cleanup_and_commit() {
 
     git rm -r -f -q --ignore-unmatch --cached node_modules
 
-    log "INFO" "After review; the script will commit the changes and push as/if specified."
+    log "WARNING" "After review; the script will commit the changes and push as/if specified."
     read -r -p "Press any key to continue or [Ctrl-C] to abort. Waiting for human review..." -n1 -s
     new_commit_msg="$PROWLARR_COMMIT_TEMPLATE $jackett_recent_commit [$(date -u +'%Y-%m-%dT%H:%M:%SZ')] $PROWLARR_COMMIT_TEMPLATE_APPEND"
 
@@ -588,10 +596,10 @@ push_changes() {
     log "INFO" "Pushing Changes to $push_branch as specified by push mode $push_mode"
     if [ "$push_mode" = true ] && [ "$push_mode_force" = true ]; then
         git push "$prowlarr_remote_name" "$push_branch" --force-if-includes --force-with-lease
-        log "INFO" "[$prowlarr_remote_name $push_branch] Branch Force Pushed"
+        log "WARN" "[$prowlarr_remote_name $push_branch] Branch Force Pushed"
     elif [ "$push_mode" = true ]; then
         git push "$prowlarr_remote_name" "$push_branch" --force-if-includes
-        log "INFO" "[$prowlarr_remote_name $push_branch] Branch Pushed"
+        log "SUCCESS" "[$prowlarr_remote_name $push_branch] Branch Pushed"
     else
          log "INFO" "Skipping Push to [$prowlarr_remote_name $push_branch] you should push manually."
     fi
