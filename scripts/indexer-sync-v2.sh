@@ -29,6 +29,14 @@ PROWLARR_RELEASE_BRANCH="master"
 JACKETT_BRANCH="master"
 JACKETT_REMOTE_NAME="z_Jackett"
 SKIP_BACKPORT=false
+is_dev_exec=false
+pulls_exists=false
+local_exist=false
+# Initialize Defaults
+removed_indexers=""
+added_indexers=""
+modified_indexers=""
+newschema_indexers=""
 
 # Prowlarr Schema Versions
 ## v1 frozen 2021-10-13
@@ -50,7 +58,7 @@ log() {
     local level="$1"
     local message="$2"
     local color_reset="\033[0m"
-    local color_success="\033[0;32m"  # Green
+    local color_success="\033[0;32m" # Green
     local color_info="\033[0;36m"    # Cyan
     local color_warn="\033[0;33m"    # Yellow
     local color_debug="\033[0;34m"   # Blue
@@ -58,28 +66,28 @@ log() {
 
     local color
     case "$level" in
-        SUCCESS)
-            color=$color_success
-            ;;
-        INFO)
-            color=$color_info
-            ;;
-        WARN)
-            color=$color_warn
-            ;;
-        WARNING)
-            color=$color_warn
-            level="WARN"
-            ;;
-        DEBUG)
-            color=$color_debug
-            ;;
-        ERROR)
-            color=$color_error
-            ;;
-        *)
-            color=$color_reset
-            ;;
+    SUCCESS)
+        color=$color_success
+        ;;
+    INFO)
+        color=$color_info
+        ;;
+    WARN)
+        color=$color_warn
+        ;;
+    WARNING)
+        color=$color_warn
+        level="WARN"
+        ;;
+    DEBUG)
+        color=$color_debug
+        ;;
+    ERROR)
+        color=$color_error
+        ;;
+    *)
+        color=$color_reset
+        ;;
     esac
 
     echo -e "${color}$(date +'%Y-%m-%dT%H:%M:%S%z')|$level|$message${color_reset}"
@@ -103,7 +111,7 @@ determine_schema_version() {
     else
         check_version="v0"
     fi
-    export check_version
+    export check_version=$check_version
 }
 
 determine_best_schema_version() {
@@ -122,15 +130,12 @@ determine_best_schema_version() {
         if [ "$test_output" = 0 ]; then
             log "INFO" "Definition [$def_file] matches schema [$schema]"
             matched_version=$i
-            export matched_version
-            break
+            if [ $i -eq $MAX_SCHEMA ]; then
+                log "WARN" "Definition [$def_file] does not match max schema [$MAX_SCHEMA]."
+                log "ERROR" "Cardigann update likely needed. Version [$NEW_SCHEMA] required. Review definition."
+            fi
         fi
-
-        if [ $i -eq $MAX_SCHEMA ]; then
-            log "WARN" "Definition [$def_file] does not match max schema [$MAX_SCHEMA]."
-            log "ERROR" "Cardigann update likely needed. Version [$NEW_SCHEMA] required. Review definition."
-            export matched_version
-        fi
+        export matched_version=$matched_version
     done
 }
 
@@ -151,7 +156,7 @@ while getopts ":f:r:b:m:p:c:u:j:R:J:n:z:" opt; do
     case ${opt} in
     f)
         push_mode_force=true
-        log "DEBUG" "push_mode_force using argument $push_mode"
+        log "DEBUG" "push_mode_force using argument $push_mode_force"
         ;;
     r)
         prowlarr_remote_name=$OPTARG
@@ -357,7 +362,7 @@ pull_cherry_and_merge() {
 
     handle_new_indexers
     handle_modified_indexers
-    if [ "$SKIP_BACKPORT" = true ];  then
+    if [ "$SKIP_BACKPORT" = true ]; then
         log "DEBUG" "Skipping backporting changes"
     else
         handle_backporting_indexers
@@ -611,7 +616,7 @@ cleanup_and_commit() {
 
 push_changes() {
     push_branch="$prowlarr_target_branch"
-    log "INFO" "Evaluating for Push to Remote" 
+    log "INFO" "Evaluating for Push to Remote"
     log "DEBUG" " Push Modes for Branch $push_branch: Push To Remote: $push_mode with Force Push With Lease: $push_mode_force"
     if [ "$push_mode" = true ] && [ "$push_mode_force" = true ]; then
         git push "$prowlarr_remote_name" "$push_branch" --force-if-includes --force-with-lease
@@ -620,7 +625,7 @@ push_changes() {
         git push "$prowlarr_remote_name" "$push_branch" --force-if-includes
         log "SUCCESS" "[$prowlarr_remote_name $push_branch] Branch Pushed"
     else
-         log "SUCCESS" "Skipping Push to [$prowlarr_remote_name $push_branch] you should consider pushing manually and/or submitting a pull-request."
+        log "SUCCESS" "Skipping Push to [$prowlarr_remote_name $push_branch] you should consider pushing manually and/or submitting a pull-request."
     fi
 }
 
