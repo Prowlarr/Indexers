@@ -290,11 +290,11 @@ handle_branch_reset() {
                 git checkout -B "$prowlarr_target_branch"
             else
                 git reset --hard "$prowlarr_remote_name"/"$PROWLARR_RELEASE_BRANCH"
-                log "WARN" "local [$prowlarr_target_branch] hard reset based on remote/branch [$prowlarr_remote_name/$PROWLARR_RELEASE_BRANCH]"
+                log "WARN" "local branch [$prowlarr_target_branch] hard reset based on remote/branch [$prowlarr_remote_name/$PROWLARR_RELEASE_BRANCH]"
             fi
         else
             git checkout -B "$prowlarr_target_branch" "$prowlarr_remote_name"/"$PROWLARR_RELEASE_BRANCH" --no-track
-            log "INFO" "local [$prowlarr_target_branch] created from remote/branch [$prowlarr_remote_name/$PROWLARR_RELEASE_BRANCH]"
+            log "INFO" "local branch [$prowlarr_target_branch] created from remote/branch [$prowlarr_remote_name/$PROWLARR_RELEASE_BRANCH]"
         fi
     else
         if [ "$local_exist" = true ]; then
@@ -324,9 +324,9 @@ pull_cherry_and_merge() {
         # read -r -p "Pausing to review commits. Press any key to continue." -n1 -s
     fi
     jackett_recent_commit=$(git rev-parse "$JACKETT_REMOTE_NAME/$JACKETT_BRANCH")
-    log "INFO" "most recent Jackett commit is: [$jackett_recent_commit] from [$JACKETT_REMOTE_NAME/$JACKETT_BRANCH]"
+    log "INFO" "[$jackett_recent_commit] is the most recent Jackett commit as per branch [$JACKETT_REMOTE_NAME/$JACKETT_BRANCH]"
     recent_pulled_commit=$(echo "$prowlarr_commits" | awk 'NR==1{print $5}')
-    log "INFO" "most recent Prowlarr pulled jackett commit is: [$recent_pulled_commit] from [$prowlarr_remote_name/$prowlarr_target_branch]"
+    log "INFO" "[$recent_pulled_commit] is the most recent Prowlarr/Indexer commit pulled from Jackett as per branch [$prowlarr_remote_name/$prowlarr_target_branch]"
 
     if [ "$jackett_recent_commit" = "$recent_pulled_commit" ]; then
         log "SUCCESS" "--- we are current with jackett; nothing to do ---"
