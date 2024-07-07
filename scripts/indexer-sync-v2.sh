@@ -190,6 +190,7 @@ initialize_script() {
 while getopts "frpzb:m:c:u:j:R:J:n:" opt; do
     case ${opt} in
     f)
+        # No Arg
         push_mode_force=true
         log "DEBUG" "push_mode_force is $push_mode_force"
         ;;
@@ -210,7 +211,7 @@ while getopts "frpzb:m:c:u:j:R:J:n:" opt; do
             ;;
         development | d | D)
             is_dev_exec=true
-            log "INFO" "Skipping upstream reset to local. Also Skip checking out the local branch and log an info message."
+            log "WARN" "Skipping upstream reset to local. Also Skip checking out the local branch and output thr details."
             log "INFO" "This will not reset branch from upstream/master and will ONLY checkout the selected branch to use."
             log "INFO" "This will pause at various debugging points for human review"
             ;;
@@ -220,8 +221,9 @@ while getopts "frpzb:m:c:u:j:R:J:n:" opt; do
         esac
         ;;
     p)
+        # No Arg
         push_mode=true
-        log "DEBUG" "push_mode using argument $push_mode"
+        log "DEBUG" "push_mode is $push_mode"
         ;;
     c)
         PROWLARR_COMMIT_TEMPLATE=$OPTARG
@@ -248,9 +250,10 @@ while getopts "frpzb:m:c:u:j:R:J:n:" opt; do
         log "DEBUG" "JACKETT_REMOTE_NAME using argument $JACKETT_REMOTE_NAME"
         ;;
     z)
+        # No Arg
         SKIP_BACKPORT=true
         PROWLARR_COMMIT_TEMPLATE_APPEND="[backports skipped - TODO]"
-        log "DEBUG" "SKIP_BACKPORT using argument $SKIP_BACKPORT"
+        log "DEBUG" "SKIP_BACKPORT is $SKIP_BACKPORT. Commit Template will be appended with 'PROWLARR_COMMIT_TEMPLATE_APPEND'"
         ;;
     \?)
         usage
@@ -287,7 +290,7 @@ check_branches() {
 
     if [ -z "$local_pulls_check" ]; then
         local_exist=false
-        log "INFO" "local branch [$prowlarr_target_branch] does not exist"
+        log "WARN" "local branch [$prowlarr_target_branch] does not exist"
     else
         local_exist=true
         log "INFO" "local branch [$prowlarr_target_branch] does exist"
@@ -295,7 +298,7 @@ check_branches() {
 
     if [ -z "$remote_pulls_check" ]; then
         pulls_exists=false
-        log "INFO" "remote repo/branch [$prowlarr_remote_name/$prowlarr_target_branch] does not exist"
+        log "WARN" "remote repo/branch [$prowlarr_remote_name/$prowlarr_target_branch] does not exist"
     else
         pulls_exists=true
         log "INFO" "remote repo/branch [$prowlarr_remote_name/$prowlarr_target_branch] does exist"
@@ -306,7 +309,7 @@ handle_branch_reset() {
     if [ "$pulls_exists" = false ]; then
         if [ "$local_exist" = true ]; then
             if [ "$is_dev_exec" = true ]; then
-                log "INFO" "[$is_dev_exec] skipping reset to [$prowlarr_remote_name/$PROWLARR_RELEASE_BRANCH] and checking out local branch [$prowlarr_target_branch]"
+                log "DEBUG" "[$is_dev_exec] skipping reset to [$prowlarr_remote_name/$PROWLARR_RELEASE_BRANCH] and checking out local branch [$prowlarr_target_branch]"
                 git checkout -B "$prowlarr_target_branch"
             else
                 git reset --hard "$prowlarr_remote_name"/"$PROWLARR_RELEASE_BRANCH"
@@ -346,10 +349,10 @@ pull_cherry_and_merge() {
     jackett_recent_commit=$(git rev-parse "$JACKETT_REMOTE_NAME/$JACKETT_BRANCH")
     log "INFO" "most recent Jackett commit is: [$jackett_recent_commit] from [$JACKETT_REMOTE_NAME/$JACKETT_BRANCH]"
     recent_pulled_commit=$(echo "$prowlarr_commits" | awk 'NR==1{print $5}')
-    log "INFO" "most recent Prowlarr jackett commit is: [$recent_pulled_commit] from [$prowlarr_remote_name/$prowlarr_target_branch]"
+    log "INFO" "most recent Prowlarr pulled jackett commit is: [$recent_pulled_commit] from [$prowlarr_remote_name/$prowlarr_target_branch]"
 
     if [ "$jackett_recent_commit" = "$recent_pulled_commit" ]; then
-        log "SUCCESS" "we are current with jackett; nothing to do"
+        log "SUCCESS" "--- we are current with jackett; nothing to do ---"
         exit 0
     fi
 
@@ -369,9 +372,10 @@ pull_cherry_and_merge() {
         # read -r -p "Pausing to review commits. Press any key to continue." -n1 -s
     fi
     log "INFO" "Commit Range is: [$commit_range]"
-    log "INFO" "Beginning Cherrypicking"
+    log "INFO" "-- Beginning Cherrypicking ---"
     git config merge.directoryRenames true
     git config merge.verbosity 0
+    sleep 5
 
     for pick_commit in ${commit_range}; do
         has_conflicts=$(git ls-files --unmerged)
@@ -380,7 +384,7 @@ pull_cherry_and_merge() {
             read -r -p "Pausing due to conflicts. Press any key to continue when resolved." -n1 -s
             log "INFO" "Continuing Cherrypicking"
         fi
-        log "INFO" "cherrypicking [$pick_commit]"
+        log "INFO" "cherrypicking Jackett commit [$pick_commit]"
         git cherry-pick --no-commit --rerere-autoupdate --allow-empty --keep-redundant-commits "$pick_commit"
         has_conflicts=$(git ls-files --unmerged)
         if [ -n "$has_conflicts" ]; then
@@ -390,7 +394,7 @@ pull_cherry_and_merge() {
         git config merge.verbosity 2
     done
 
-    log "SUCCESS" "Completed cherry picking"
+    log "SUCCESS" "--- Completed cherry picking ---"
     log "INFO" "Evaluating and Reviewing Changes"
 
     git checkout HEAD -- "definitions/v*/schema.json"
@@ -412,18 +416,18 @@ resolve_conflicts() {
 
     log "WARN" "conflicts exist"
     if [ -n "$readme_conflicts" ]; then
-        log "INFO" "README conflict exists; using Prowlarr README"
+        log "DEBUG" "README conflict exists; using Prowlarr README"
         git checkout --ours "README.md"
         git add --f "README.md"
     fi
     if [ -n "$schema_conflicts" ]; then
-        log "INFO" "Schema conflict exists; using Prowlarr schema"
+        log "DEBUG" "Schema conflict exists; using Prowlarr schema"
         git checkout --ours "*schema.json"
         git add --f "*schema.json"
     fi
 
     if [ -n "$nonyml_conflicts" ]; then
-        log "INFO" "Non-YML conflicts exist; removing cs, js, iss, html"
+        log "DEBUG" "Non-YML conflicts exist; removing cs, js, iss, html"
         git rm --f --q --ignore-unmatch "*.cs*"
         git rm --f --q --ignore-unmatch "*.js"
         git rm --f --q --ignore-unmatch "*.iss*"
@@ -433,7 +437,7 @@ resolve_conflicts() {
         git checkout --ours ".editorconfig"
     fi
     if [ -n "$yml_conflicts" ]; then
-        log "INFO" "YML conflict exists; [$yml_conflicts]"
+        log "DEBUG" "YML conflict exists; [$yml_conflicts]"
         handle_yml_conflicts
     fi
 }
@@ -441,7 +445,7 @@ resolve_conflicts() {
 handle_yml_conflicts() {
     yml_remove=$(git status --porcelain | grep yml | grep -v "definitions/" | awk -F '[ADUMRC]{1,2} ' '{print $2}' | awk '{ gsub(/^[ \t]+|[ \t]+$/, ""); print }')
     for def in $yml_remove; do
-        log "INFO" "Removing non-definition yml; [$yml_remove]"
+        log "DEBUG" "Removing non-definition yml; [$yml_remove]"
         git rm --f --ignore-unmatch "$yml_remove"
         yml_conflicts=$(git diff --cached --name-only | grep ".yml")
     done
@@ -535,7 +539,7 @@ handle_modified_indexers() {
         unset indexer
         unset test
     fi
-    log "SUCCESS" "completed changed indexers"
+    log "SUCCESS" "--- completed changed indexers ---"
 }
 
 handle_backporting_indexers() {
@@ -579,7 +583,7 @@ handle_backporting_indexers() {
         unset indexer
         unset indexer_check
     fi
-    log "SUCCESS" "completed backporting indexers"
+    log "SUCCESS" "--- completed backporting indexers ---"
 }
 
 cleanup_and_commit() {
