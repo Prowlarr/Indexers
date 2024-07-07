@@ -9,12 +9,6 @@
 ### Typically only prowlarr_git_path would be needed to be set
 ## Using the Script
 ### Suggested to run from the current directory being Prowlarr/Indexers local Repo using Git Bash `./scripts/prowlarr-indexers-jackettpull.sh`
-
-usage() {
-    echo "Usage: $0 [-r remote] [-b branch] [-m mode (normal or dev)] [-p push to remote] [-f force push if pushing] [-c commit_template] [-u prowlarr_repo_url] [-j jackett_repo_url] [-R release_branch] [-J jackett_branch] [-n jackett_remote_name] [-z skip_backport]"
-    exit 1
-}
-
 # Default values
 prowlarr_remote_name="origin"
 prowlarr_target_branch="master"
@@ -37,6 +31,47 @@ removed_indexers=""
 added_indexers=""
 modified_indexers=""
 newschema_indexers=""
+
+usage() {
+# Default values
+prowlarr_remote_name="origin"
+prowlarr_target_branch="master"
+mode_choice="normal"
+push_mode=false
+push_mode_force=false
+PROWLARR_COMMIT_TEMPLATE="jackett indexers as of"
+PROWLARR_COMMIT_TEMPLATE_APPEND=""
+PROWLARR_REPO_URL="https://github.com/Prowlarr/Indexers.git"
+JACKETT_REPO_URL="https://github.com/Jackett/Jackett.git"
+PROWLARR_RELEASE_BRANCH="master"
+JACKETT_BRANCH="master"
+JACKETT_REMOTE_NAME="z_Jackett"
+SKIP_BACKPORT=false
+is_dev_exec=false
+pulls_exists=false
+local_exist=false
+# Initialize Defaults
+removed_indexers=""
+added_indexers=""
+modified_indexers=""
+newschema_indexers=""
+usage() {
+    echo "Usage: $0 [options]
+    Options:
+      -r <remote>            Set the Prowlarr remote name. Default: $prowlarr_remote_name
+      -b <branch>            Set the Prowlarr target branch. Default: $prowlarr_target_branch
+      -m <mode>              Set the mode ('normal' or 'dev'). Default: $mode_choice
+      -p                     Enable push to remote. Default: $push_mode
+      -f                     Force push if pushing. Default: $push_mode_force
+      -c <commit_template>   Set the commit template for Prowlarr. Default: $PROWLARR_COMMIT_TEMPLATE
+      -u <repo_url>          Set the Prowlarr repository URL. Default: $PROWLARR_REPO_URL
+      -j <repo_url>          Set the Jackett repository URL. Default: $JACKETT_REPO_URL
+      -R <release_branch>    Set the Prowlarr release branch. Default: $PROWLARR_RELEASE_BRANCH
+      -J <jackett_branch>    Set the Jackett branch. Default: $JACKETT_BRANCH
+      -n <remote_name>       Set the Jackett remote name. Default: $JACKETT_REMOTE_NAME
+      -z                     Skip backporting. Default: $SKIP_BACKPORT"
+    exit 1
+}
 
 # Prowlarr Schema Versions
 ## v1 frozen 2021-10-13
@@ -152,11 +187,11 @@ initialize_script() {
     fi
 }
 
-while getopts ":f:r:b:m:p:c:u:j:R:J:n:z:" opt; do
+while getopts "frpzb:m:c:u:j:R:J:n:" opt; do
     case ${opt} in
     f)
         push_mode_force=true
-        log "DEBUG" "push_mode_force using argument $push_mode_force"
+        log "DEBUG" "push_mode_force is $push_mode_force"
         ;;
     r)
         prowlarr_remote_name=$OPTARG
