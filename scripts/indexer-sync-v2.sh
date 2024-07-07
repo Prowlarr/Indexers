@@ -8,7 +8,7 @@
 ### Set variables as needed
 ### Typically only prowlarr_git_path would be needed to be set
 ## Using the Script
-### Suggested to run from the current directory being Prowlarr/Indexers local Repo using Git Bash `./scripts/prowlarr-indexers-jackettpull.sh`
+### Suggested to run from the current directory being Prowlarr/Indexers local Repo using Git Bash `./scripts/indexer-sync-v2.sh`
 # Default values
 prowlarr_remote_name="origin"
 prowlarr_target_branch="master"
@@ -32,29 +32,6 @@ added_indexers=""
 modified_indexers=""
 newschema_indexers=""
 
-usage() {
-# Default values
-prowlarr_remote_name="origin"
-prowlarr_target_branch="master"
-mode_choice="normal"
-push_mode=false
-push_mode_force=false
-PROWLARR_COMMIT_TEMPLATE="jackett indexers as of"
-PROWLARR_COMMIT_TEMPLATE_APPEND=""
-PROWLARR_REPO_URL="https://github.com/Prowlarr/Indexers.git"
-JACKETT_REPO_URL="https://github.com/Jackett/Jackett.git"
-PROWLARR_RELEASE_BRANCH="master"
-JACKETT_BRANCH="master"
-JACKETT_REMOTE_NAME="z_Jackett"
-SKIP_BACKPORT=false
-is_dev_exec=false
-pulls_exists=false
-local_exist=false
-# Initialize Defaults
-removed_indexers=""
-added_indexers=""
-modified_indexers=""
-newschema_indexers=""
 usage() {
     echo "Usage: $0 [options]
     Options:
