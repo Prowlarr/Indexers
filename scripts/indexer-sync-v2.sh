@@ -11,7 +11,7 @@
 ### Suggested to run from the current directory being Prowlarr/Indexers local Repo using Git Bash `./scripts/prowlarr-indexers-jackettpull.sh`
 
 usage() {
-    echo "Usage: $0 [-r remote] [-b branch] [-m mode (normal or dev)] [-p push to remote] [-f force push if pushing] [-c commit_template] [-u prowlarr_repo_url] [-j jackett_repo_url] [-R release_branch] [-J jackett_branch] [-n jackett_remote_name]"
+    echo "Usage: $0 [-r remote] [-b branch] [-m mode (normal or dev)] [-p push to remote] [-f force push if pushing] [-c commit_template] [-u prowlarr_repo_url] [-j jackett_repo_url] [-R release_branch] [-J jackett_branch] [-n jackett_remote_name] [-z skip_backport]"
     exit 1
 }
 
@@ -28,6 +28,8 @@ JACKETT_REPO_URL="https://github.com/Jackett/Jackett.git"
 PROWLARR_RELEASE_BRANCH="master"
 JACKETT_BRANCH="master"
 JACKETT_REMOTE_NAME="z_Jackett"
+SKIP_BACKPORT=false
+
 # Prowlarr Schema Versions
 ## v1 frozen 2021-10-13
 ## v2 frozen 2022-04-18
