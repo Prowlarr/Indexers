@@ -230,7 +230,7 @@ while getopts "frpzb:m:c:u:j:R:J:n:" opt; do
         # No Arg
         SKIP_BACKPORT=true
         PROWLARR_COMMIT_TEMPLATE_APPEND="[backports skipped - TODO]"
-        log "DEBUG" "SKIP_BACKPORT is $SKIP_BACKPORT. Commit Template will be appended with 'PROWLARR_COMMIT_TEMPLATE_APPEND'"
+        log "DEBUG" "SKIP_BACKPORT is $SKIP_BACKPORT. Commit Template will be appended with '$PROWLARR_COMMIT_TEMPLATE_APPEND'"
         ;;
     \?)
         usage
