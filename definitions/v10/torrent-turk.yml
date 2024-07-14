@@ -5,8 +5,6 @@ description: "TOrrent-tuRK (TORK) is a Turkish Private Torrent Tracker for HD MO
 language: tr-TR
 type: private
 encoding: UTF-8
-certificates:
-  - dcf240887b97fe098c5f2bf09167af6e2ca7b119 # Expired 10 July 2024
 links:
   - https://torrent-turk.de/
 legacylinks:
@@ -80,7 +78,7 @@ settings:
   - name: info
     type: info
     label: Layout
-    default: "<ol><li>Only the English Classic profile is supported.</li><li>Make sure to set the <b>Torrent Listing (Listeleme Biçimi)</b> option in your profile to <b>Classic (Klasik)</b></li><li>And set the <b>Language (Dil)</b> to <b>English</b></li><li>Using the <i>Modern</i> theme will prevent results, and using <i>Turkish</i> will prevent upload dates.</li></ol>"
+    default: "<ul><li>Only the English Classic profile is supported.</li><li>Make sure to set the <b>Torrent Listing (Listeleme Biçimi)</b> option in your profile to <b>Classic (Klasik)</b></li><li>And set the <b>Language (Dil)</b> to <b>English</b></li><li>Using the <i>Modern</i> theme will prevent results, and using <i>Turkish</i> will prevent upload dates.</li></ul>"
   - name: sort
     type: select
     label: Sort requested from site

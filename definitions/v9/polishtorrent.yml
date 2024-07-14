@@ -30,6 +30,7 @@ caps:
     - {id: 20, cat: Books, desc: "Book"}
     - {id: 27, cat: TV/Other, desc: "Teatr Telewizyjny"}
     - {id: 21, cat: TV/Sport, desc: "Sport"}
+    - {id: 29, cat: Movies, desc: "Stare Filmy"}
     - {id: 9, cat: TV/HD, desc: "Seriale HD"}
     - {id: 22, cat: TV/SD, desc: "Seriale SD"}
     - {id: 23, cat: Movies/UHD, desc: "Filmy 4K"}
@@ -87,6 +88,10 @@ settings:
     options:
       desc: desc
       asc: asc
+  - name: info_activity
+    type: info
+    label: Account Inactivity
+    default: "<ul><li>Your account must be at least 90 days old to be subject to deactivation.</li><li>Last Login: You must be inactive for at least 90 days for your account to be deactivated.</li><li>Soft deletion of accounts: Deactivated user accounts will be soft deleted 120 days after deactivation.</li><li>User Groups: Accounts belonging to the following user groups may be automatically deactivated: Leech, User, PowerUser and SuperUser.</li><li>Please do not disregard the above information and log in to your account regularly to avoid deactivation.</li></ul>"
 
 login:
   path: /api/torrents
