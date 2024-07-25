@@ -301,7 +301,7 @@ handle_branch_reset() {
             if $is_dev_exec; then
                 git checkout -B "$prowlarr_target_branch"
                 log "INFO" "Checked out out local branch [$prowlarr_target_branch]"
-                log "DEBUG" "Development Mode - Skipping reset to upstream/master"
+                log "DEBUG" "Development Mode - Skipping reset to [$prowlarr_remote_name/$prowlarr_target_branch]"
             else
                 git reset --hard "$prowlarr_remote_name"/"$prowlarr_target_branch"
                 log "INFO" "local [$prowlarr_target_branch] hard reset based on [$prowlarr_remote_name/$PROWLARR_RELEASE_BRANCH]"
@@ -633,7 +633,8 @@ cleanup_and_commit() {
 push_changes() {
     push_branch="$prowlarr_target_branch"
     log "INFO" "Evaluating for Push to Remote"
-    log "DEBUG" " Push Modes for Branch $push_branch: Push To Remote: $push_mode with Force Push With Lease: $push_mode_force"
+    log "DEBUG" " Push Modes for Branch: $push_branch"
+    log "DEBUG" "Push To Remote: $push_mode with Force Push With Lease: $push_mode_force"
     if [ "$push_mode" = true ] && [ "$push_mode_force" = true ]; then
         git push "$prowlarr_remote_name" "$push_branch" --force-if-includes --force-with-lease
         log "WARN" "[$prowlarr_remote_name $push_branch] Branch Force Pushed"
@@ -641,7 +642,7 @@ push_changes() {
         git push "$prowlarr_remote_name" "$push_branch" --force-if-includes
         log "SUCCESS" "[$prowlarr_remote_name $push_branch] Branch Pushed"
     else
-        log "SUCCESS" "Skipping Push to [$prowlarr_remote_name $push_branch] you should consider pushing manually and/or submitting a pull-request."
+        log "SUCCESS" "Skipping Push to [$prowlarr_remote_name/$push_branch] you should consider pushing manually and/or submitting a pull-request."
     fi
 }
 
