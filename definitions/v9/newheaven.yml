@@ -1,0 +1,230 @@
+---
+id: newheaven
+name: New Heaven
+description: A German private tracker calling themself Torrent Heaven Resurrection for MOVIES / AUDIO / TV / GENERAL
+language: de-DE
+type: private
+encoding: iso-8859-1
+links:
+  - https://newheaven.nl/
+legacylinks:
+  - https://torrentheaven.myfqdn.info/
+
+caps:
+  categorymappings:
+    - { id: 101, cat: Movies/HD, desc: MOVIES - 720p, default: false }
+    - { id: 102, cat: Movies/HD, desc: MOVIES - 1080p, default: false }
+    - { id: 7, cat: Movies/DVD, desc: MOVIES - DVD, default: false }
+    - { id: 8, cat: Movies/SD, desc: MOVIES - SD, default: false }
+    - { id: 109, cat: Movies/UHD, desc: MOVIES - 4K, default: false }
+    - { id: 104, cat: Movies/BluRay, desc: MOVIES - Blu Ray, default: false }
+
+    - { id: 14, cat: Audio/MP3, desc: AUDIO - Musik, default: false }
+    - { id: 36, cat: Audio/Lossless, desc: AUDIO - Flac, default: false }
+    - { id: 15, cat: Audio/Audiobook, desc: AUDIO - Hoerbuecher, default: false }
+    - { id: 16, cat: Audio/Audiobook, desc: AUDIO - Hoerspiele, default: false }
+    - { id: 58, cat: Audio/Video, desc: AUDIO - Musikvideos, default: false }
+
+    - { id: 18, cat: TV/SD, desc: TV/Serien - Serien SD, default: false }
+    - { id: 19, cat: TV/HD, desc: TV/Serien - Serien 720p, default: false }
+    - { id: 20, cat: TV/HD, desc: TV/Serien - Serien 1080p, default: false }
+    - { id: 110, cat: TV/UHD, desc: TV/Serien - 4k, default: false }
+    - { id: 53, cat: TV, desc: TV/Serien - Serien Complete Packs, default: false }
+    - { id: 51, cat: TV/Documentary, desc: TV/Serien - Doku SD, default: false }
+    - { id: 52, cat: TV/Documentary, desc: TV/Serien - Doku HD, default: false }
+    - { id: 54, cat: TV/Sport, desc: TV/Serien - Sport, default: false }
+    - { id: 108, cat: TV/Anime, desc: TV/Serien - Anime, default: false }
+
+    - { id: 22, cat: Books/EBook, desc: MISC - EBooks, default: false }
+
+  modes:
+    search: [q]
+    tv-search: [q]
+    movie-search: [q]
+    music-search: [q]
+    book-search: [q]
+
+settings:
+  - name: cookie
+    type: text
+    label: Cookie
+  - name: searchin
+    type: select
+    label: Search for torrent in
+    default: title
+    options:
+      title: title
+      nfo: nfo
+      descr: description
+      all: all
+  - name: state
+    type: select
+    label: State of the torrents
+    default: 0
+    options:
+      0: active
+      1: inactive
+      2: all
+  - name: sort
+    type: select
+    label: Sort torrents by
+    default: torrent_size
+    options:
+      torrent_cat: category name
+      torrent_name: torrent name
+      torrent_comment: comments
+      torrent_size: torrent size
+      torrent_speed: network traffic
+      torrent_complete: grabs
+      torrent_seeder: seeders
+      torrent_leecher: leechers
+  - name: sortmode
+    type: select
+    label: Sort mode
+    default: d
+    options:
+      a: ascending
+      d: descending
+      n: none
+  - name: info_age
+    type: info
+    label: Maximum age
+    default: Setting the value of torrent age to 0 will result in all torrents show. This is the desired behaviour most of the time.
+  - name: age
+    type: text
+    label: Maximum age
+    default: 0
+
+login:
+  method: cookie
+  inputs:
+    cookie: "{{ .Config.cookie }}"
+  test:
+    path: index.php
+    selector: a[href="index.php?strWebValue=account&strWebAction=logout"]
+
+search:
+  paths:
+    - path: index.php
+      inputs:
+        page: 0
+    - path: index.php
+      inputs:
+        page: 1
+    - path: index.php
+      inputs:
+        page: 2
+    - path: index.php
+      inputs:
+        page: 3
+
+  inputs:
+    strWebValue: torrent
+    strWebAction: search
+    details: "{{ .Config.searchin }}"
+    do_search: suchen
+    time: "{{ .Config.age }}"
+    sort: "{{ .Config.sort }}"
+    by: "{{ .Config.sortmode }}"
+    type: "{{ .Config.state }}"
+    searchstring: "{{ .Keywords }}"
+    $raw: "{{ range .Categories }}dirs{{.}}=1&{{end}}"
+
+  rows:
+    selector: table.torrenttable > tbody > tr:not(:has(td.torrenttableheader))
+
+  fields:
+    _id:
+      selector: a[href^="index.php?strWebValue=torrent&strWebAction=details&id="][href$="&view=1"]
+      attribute: href
+      filters:
+        - name: querystring
+          args: id
+    category:
+      selector: a[href^="index.php?strWebValue=torrent&strWebAction=search&dir="]
+      attribute: href
+      filters:
+        - name: querystring
+          args: dir
+    title:
+      selector: a[href^="index.php?strWebValue=torrent&strWebAction=details&id="][href$="&view=1"]
+    details:
+      selector: a[href^="index.php?strWebValue=torrent&strWebAction=details&id="][href$="&view=1"]
+      attribute: href
+    download:
+      text: "index.php?strWebValue=torrent&strWebAction=download&id={{ .Result._id }}"
+    imdbid:
+      selector: a[href^="redirect.php?url=https://www.imdb.com/title/"]
+      attribute: href
+      filters:
+        - name: querystring
+          args: url
+    day:
+      selector: td:nth-child(2) > table:nth-child(2) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > font
+      filters:
+        - name: regexp
+          args: "(\\d{2})\\.\\d{2}.\\d{4}"
+        - name: strdump
+          args: day
+    month:
+      selector: td:nth-child(2) > table:nth-child(2) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > font
+      filters:
+        - name: regexp
+          args: "\\d{2}\\.(\\d{2}).\\d{4}"
+        - name: strdump
+          args: month
+    year:
+      selector: td:nth-child(2) > table:nth-child(2) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > font
+      filters:
+        - name: regexp
+          args: "\\d{2}\\.\\d{2}.(\\d{4})"
+        - name: strdump
+          args: year
+    time:
+      selector: td:nth-child(2) > table:nth-child(2) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > font
+      filters:
+        - name: regexp
+          args: "(\\d{2}\\:\\d{2})"
+        - name: strdump
+          args: time
+    timeago:
+      selector: td:nth-child(2) > table:nth-child(2) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > font
+      filters:
+        - name: regexp
+          args: "\\b(Heute|Gestern)\\b"
+        - name: replace
+          args: ["Gestern", "Yesterday"]
+        - name: replace
+          args: ["Heute", "Today"]
+        - name: strdump
+          args: timeago
+    date:
+      text: "{{ if .Result.timeago }}{{ .Result.timeago }}{{ else }}{{ .Result.month }}.{{ .Result.day }}.{{ .Result.year }}{{ end }} {{ .Result.time }}"
+      filters:
+        - name: strdump
+          args: date
+        - name: fuzzytime
+    size:
+      selector: td:nth-child(4)
+    grabs:
+      selector: td:nth-child(6)
+    seeders:
+      selector: td:nth-child(7)
+    leechers:
+      selector: td:nth-child(8)
+    downloadvolumefactor:
+      selector: td:nth-child(2) > table:nth-child(2) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(2)
+      case:
+        div:has("50% DL"): 0.5
+        div:has("25% DL"): 0.25
+        img[src="themes/images/freeleech.png"]: 0
+        img[src="themes/images/onlyup.png"]: 0
+        "*": 1
+    uploadvolumefactor:
+      selector: td:nth-child(2) > table:nth-child(2) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(2)
+      case:
+        img[src="themes/images/freeleech.png"]: 0
+        div:has("200% UP"): 2
+        "*": 1
+    minimumratio:
+      text: 0.8
