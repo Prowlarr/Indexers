@@ -146,6 +146,8 @@ determine_best_schema_version() {
                 log "WARN" "Definition [$def_file] does not match max schema [$MAX_SCHEMA]."
                 log "ERROR" "Cardigann update likely needed. Version [$NEW_SCHEMA] required. Review definition."
             fi
+        else
+        	log "INFO" "Definition [$def_file] does not match schema [$schema]"
         fi
         export matched_version=$matched_version
     done
@@ -282,7 +284,7 @@ check_branches() {
     fi
 }
 
-handle_branch_reset() {
+git_branch_reset() {
     if [ "$pulls_exists" = false ]; then
         if [ "$local_exist" = true ]; then
             if [ "$is_dev_exec" = true ]; then
@@ -650,7 +652,7 @@ main() {
     initialize_script
     configure_git
     check_branches
-    handle_branch_reset
+    git_branch_reset
     pull_cherry_and_merge
     cleanup_and_commit
     push_changes
