@@ -147,7 +147,7 @@ determine_best_schema_version() {
                 log "ERROR" "Cardigann update likely needed. Version [$NEW_SCHEMA] required. Review definition."
             fi
         else
-        	log "INFO" "Definition [$def_file] does not match schema [$schema]"
+            log "INFO" "Definition [$def_file] does not match schema [$schema]"
         fi
         export matched_version=$matched_version
     done
