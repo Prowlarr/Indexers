@@ -583,6 +583,12 @@ cleanup_and_commit() {
         unset indexer
         unset indexer_remove
     fi
+    
+    # Recalculated Added / Modified / Removed
+    added_indexers=$(git diff --cached --diff-filter=A --name-only | grep ".yml" | grep -E "v[[:digit:]]+")
+    modified_indexers=$(git diff --cached --diff-filter=M --name-only | grep ".yml" | grep -E "v[[:digit:]]+")
+    removed_indexers=$(git diff --cached --diff-filter=D --name-only | grep ".yml" | grep -E "v[[:digit:]]+")
+    newschema_indexers=$(git diff --cached --diff-filter=A --name-only | grep ".yml" | grep -E "v$NEW_SCHEMA")
 
     # Check if there are added indexers and log if present
     if [ -n "$added_indexers" ]; then
