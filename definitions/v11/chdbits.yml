@@ -40,9 +40,7 @@ settings:
     label: Search freeleech only
     default: false
   - name: info_flaresolverr
-    type: info
-    label: FlareSolverr
-    default: This site may use Cloudflare DDoS Protection, therefore Prowlarr requires <a href="https://wiki.servarr.com/prowlarr/faq#can-i-use-flaresolverr-indexers" target="_blank" rel="noreferrer">FlareSolverr</a> to access it.<br><br>
+    type: info_flaresolverr
   - name: info_tpp
     type: info
     label: Results Per Page
