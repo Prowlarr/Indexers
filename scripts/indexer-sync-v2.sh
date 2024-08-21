@@ -26,11 +26,18 @@ SKIP_BACKPORT=false
 is_dev_exec=false
 pulls_exists=false
 local_exist=false
+
+BLOCKLIST=("uniongang.yml")
+
 # Initialize Defaults
 removed_indexers=""
 added_indexers=""
 modified_indexers=""
 newschema_indexers=""
+declare -A blocklist_map
+for blocked in "${BLOCKLIST[@]}"; do
+    blocklist_map["$blocked"]=1
+done
 
 usage() {
     echo "Usage: $0 [options]
@@ -147,7 +154,7 @@ determine_best_schema_version() {
                 log "WARN" "Definition [$def_file] does not match max schema [$MAX_SCHEMA]."
                 log "ERROR" "Cardigann update likely needed. Version [$NEW_SCHEMA] required. Review definition."
             else
-            	log "INFO" "Definition [$def_file] does not match schema [$schema]"
+                log "INFO" "Definition [$def_file] does not match schema [$schema]"
             fi
         fi
         export matched_version=$matched_version
@@ -451,6 +458,13 @@ handle_new_indexers() {
     if [ -n "$added_indexers" ]; then
         log "INFO" "New Indexers detected"
         for indexer in ${added_indexers}; do
+            log "DEBUG" "Evaluating [$indexer] against BLOCKLIST"
+            # Check if the indexer is in the BLOCKLIST
+            if [[ -n "${blocklist_map[$indexer]}" ]]; then
+                log "INFO" "[$indexer] is in the BLOCKLIST. Removing..."
+                git rm --f --ignore-unmatch "$indexer"
+                continue
+            fi
             log "DEBUG" "Evaluating [$indexer] Cardigann Version"
             if [ -f "$indexer" ]; then
                 determine_schema_version "$indexer"
@@ -583,7 +597,7 @@ cleanup_and_commit() {
         unset indexer
         unset indexer_remove
     fi
-    
+
     # Recalculated Added / Modified / Removed
     added_indexers=$(git diff --cached --diff-filter=A --name-only | grep ".yml" | grep -E "v[[:digit:]]+")
     modified_indexers=$(git diff --cached --diff-filter=M --name-only | grep ".yml" | grep -E "v[[:digit:]]+")
