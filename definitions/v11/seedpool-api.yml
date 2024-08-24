@@ -1,22 +1,36 @@
 ---
-id: uploadcx
-name: upload.cx
-description: "upload.cx (ULCX) is a Private Torrent Tracker for MOVIES / TV"
+id: seedpool-api
+name: seedpool (API)
+description: "seedpool is a Private Torrent Tracker for 0-day MOVIES / TV / GENERAL"
 language: en-US
 type: private
 encoding: UTF-8
 links:
-  - https://upload.cx/
+  - https://seedpool.org/
 
 caps:
   categorymappings:
-    - {id: 1, cat: Movies, desc: "Movies"}
-    - {id: 2, cat: TV, desc: "TV"}
+    - {id: 2, cat: TV, desc: "TV Show"}
+    - {id: 1, cat: Movies, desc: "Movie"}
+    - {id: 10, cat: Movies/UHD, desc: "4K Movie"}
+    - {id: 3, cat: PC/Games, desc: "PC Game"}
+    - {id: 8, cat: TV/Sport, desc: "Sports"}
+    - {id: 12, cat: PC/Games, desc: "Linux Game"}
+    - {id: 4, cat: Console/Other, desc: "NSW Game"}
+    - {id: 5, cat: Audio/Lossless, desc: "Music"}
+    - {id: 6, cat: TV/Anime, desc: "Anime"}
+    - {id: 7, cat: Books/EBook, desc: "E-Books"}
+    - {id: 7, cat: Movies, desc: "BoxSet"}
+    - {id: 14, cat: Console/PS4, desc: "PS4"}
+    - {id: 9, cat: Audio/Audiobook, desc: "Audiobook"}
+    - {id: 11, cat: Other, desc: "Other"}
 
   modes:
     search: [q]
     tv-search: [q, season, ep, imdbid, tvdbid, tmdbid]
     movie-search: [q, imdbid, tmdbid]
+    music-search: [q]
+    book-search: [q]
 
 settings:
   - name: apikey
@@ -25,7 +39,7 @@ settings:
   - name: info_key
     type: info
     label: About your API key
-    default: "Find or Generate a new API Token by accessing your <a href=\"https://upload.cx/\" target=\"_blank\">upload.cx</a> account <i>My Settings</i> page and clicking on the <b>API Key</b> tab."
+    default: "Find or Generate a new API Token by accessing your <a href=\"https://seedpool.org/\" target=\"_blank\">seedpool</a> account <i>My Settings</i> page and clicking on the <b>API Key</b> tab."
   - name: freeleech
     type: checkbox
     label: Search freeleech only
@@ -50,15 +64,10 @@ settings:
     options:
       desc: desc
       asc: asc
-  - name: info_activity
-    type: info
-    label: Account Inactivity
-    default: "All members must engage with the site, through either logging in or navigating upload.cx. Any account that remains inactive for over two months will be deactivated and pruned after an additional two months of deactivation."
 
 login:
   path: /api/torrents
   method: get
-  inputs: {} # TODO: remove in v10
   error:
     - selector: a[href*="/login"]
       message:
@@ -170,10 +179,10 @@ search:
       case:
         False: 1 # normal
         True: 2 # double
-# global MR is 0.4 but torrents must be seeded for 2 days regardless of ratio
+# global MR is 1.0 but torrents must be seeded for 10 days regardless of ratio
 #    minimumratio:
-#      text: 0.4
+#      text: 1.0
     minimumseedtime:
-      # 2 day (as seconds = 2 x 24 x 60 x 60)
-      text: 172800
+      # 10 day (as seconds = 2 x 24 x 60 x 60)
+      text: 864000
 # json UNIT3D 8.2.0
