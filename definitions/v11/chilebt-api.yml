@@ -1,29 +1,26 @@
 ---
-id: seedpool-api
-name: seedpool (API)
-description: "seedpool is a Private Torrent Tracker for 0-day MOVIES / TV / GENERAL"
-language: en-US
+id: chilebt-api
+name: ChileBT (API)
+description: "ChileBT is a CHILEAN Private Torrent Tracker for MOVIES / TV / GENERAL"
+language: es-CL
 type: private
 encoding: UTF-8
 links:
-  - https://seedpool.org/
+  - https://chilebt.com/
 
 caps:
   categorymappings:
-    - {id: 2, cat: TV, desc: "TV Show"}
-    - {id: 1, cat: Movies, desc: "Movie"}
-    - {id: 10, cat: Movies/UHD, desc: "4K Movie"}
-    - {id: 3, cat: PC/Games, desc: "PC Game"}
-    - {id: 8, cat: TV/Sport, desc: "Sports"}
-    - {id: 12, cat: PC/Games, desc: "Linux Game"}
-    - {id: 4, cat: Console/Other, desc: "NSW Game"}
-    - {id: 5, cat: Audio/Lossless, desc: "Music"}
-    - {id: 6, cat: TV/Anime, desc: "Anime"}
-    - {id: 7, cat: Books/EBook, desc: "E-Books"}
-    - {id: 7, cat: Movies, desc: "BoxSet"}
-    - {id: 14, cat: Console/PS4, desc: "PS4"}
-    - {id: 9, cat: Audio/Audiobook, desc: "Audiobook"}
-    - {id: 11, cat: Other, desc: "Other"}
+    - {id: 10, cat: Movies, desc: "Movies"}
+    - {id: 11, cat: TV, desc: "TV"}
+    - {id: 9, cat: Audio, desc: "Music"}
+    - {id: 7, cat: Other, desc: "Cultura / Educativos"}
+    - {id: 8, cat: PC/Games, desc: "Juegos"}
+    - {id: 6, cat: Books, desc: "EBook"}
+    - {id: 4, cat: TV/Anime, desc: "Anime"}
+    - {id: 5, cat: PC/0day, desc: "Aplicaciones / Programas"}
+    - {id: 14, cat: Movies, desc: "Infantil"}
+    - {id: 12, cat: Other/Misc, desc: "VIP"}
+    - {id: 13, cat: XXX, desc: "XXX"}
 
   modes:
     search: [q]
@@ -39,7 +36,7 @@ settings:
   - name: info_key
     type: info
     label: About your API key
-    default: "Find or Generate a new API Token by accessing your <a href=\"https://seedpool.org/\" target=\"_blank\">seedpool</a> account <i>My Settings</i> page and clicking on the <b>API Key</b> tab."
+    default: "Find or Generate a new API Token by accessing your <a href=\"https://chilebt.com/\" target=\"_blank\">ChileBT</a> account <i>My Settings</i> page and clicking on the <b>API Key</b> tab."
   - name: freeleech
     type: checkbox
     label: Search freeleech only
@@ -188,10 +185,10 @@ search:
         True: 2 # double
     uploadvolumefactor:
       text: "{{ if .Result._featured }}2{{ else }}{{ .Result.uploadvolumefactor_double_upload }}{{ end }}"
-# global MR is 1.0 but torrents must be seeded for 10 days regardless of ratio
+# global MR is 0.5 but torrents must be seeded for 7 days regardless of ratio
 #    minimumratio:
-#      text: 1.0
+#      text: 0.5
     minimumseedtime:
-      # 10 day (as seconds = 2 x 24 x 60 x 60)
-      text: 864000
+      # 7 day (as seconds = 7 x 24 x 60 x 60)
+      text: 604800
 # json UNIT3D 8.2.0
