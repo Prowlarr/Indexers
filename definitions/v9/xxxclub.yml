@@ -5,8 +5,10 @@ description: "XXXClub is a Public torrent site for 3X"
 language: en-US
 type: public
 encoding: UTF-8
+requestDelay: 3
 links:
   - https://xxxclub.to/
+  - https://xxxclub.cc/
 
 caps:
   categorymappings:
@@ -51,6 +53,10 @@ search:
   paths:
     # https://xxxclub.to/torrents/browse/2,4/metartx?sort=size&order=asc
     - path: "torrents/browse/{{ if .Categories }}{{ join .Categories \",\" }}{{ else }}all{{ end }}/{{ .Keywords }}?sort={{ .Config.sort }}&order={{ .Config.type }}"
+
+  headers:
+    # site blocks Prowlarr's UAs
+    User-Agent: ["Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.35"]
 
   rows:
     selector: div.browsetableinside > ul > li:not(:first-child)
