@@ -1,20 +1,23 @@
 ---
-id: oldtoonsworld
-name: Oldtoons
-description: "Oldtoons is a Private Torrent Tracker for Cartoon MOVIES / TV / GENERAL"
+id: animelovers-api
+name: AnimeLovers (API)
+description: "AnimeLovers is a Private tracker for ANIME / MANGA / DOUNGUA / MANHWA"
 language: en-US
 type: private
 encoding: UTF-8
 links:
-  - https://oldtoons.world/
+  - https://animelovers.club/
 
 caps:
   categorymappings:
-    - {id: 1, cat: Movies, desc: "Movies"}
-    - {id: 2, cat: TV, desc: "TV"}
-    - {id: 3, cat: Books, desc: "Books"}
-    - {id: 4, cat: Audio, desc: "Audio"}
-    - {id: 5, cat: PC/Games, desc: "Games"}
+    - {id: 1, cat: Movies/Other, desc: "Anime Movies"}
+    - {id: 2, cat: TV/Anime, desc: "Anime Series"}
+    - {id: 3, cat: TV/Anime, desc: "Anime OVA"}
+    - {id: 9, cat: XXX, desc: "Doujinshi"}
+    - {id: 4, cat: Books/Comics, desc: "Manhua/Manhwa"}
+    - {id: 8, cat: Books/Comics, desc: "Manga"}
+    - {id: 7, cat: XXX, desc: "Hentai"}
+    - {id: 10, cat: Audio/Lossless, desc: "Lossless Music"}
 
   modes:
     search: [q]
@@ -30,7 +33,7 @@ settings:
   - name: info_key
     type: info
     label: About your API key
-    default: "Find or Generate a new API Token by accessing your <a href=\"https://oldtoons.world/\" target=\"_blank\">Oldtoons</a> account <i>My Settings</i> page and clicking on the <b>API Key</b> tab."
+    default: "Find or Generate a new API Token by accessing your <a href=\"https://animelovers.club/\" target=\"_blank\">AnimeLovers</a> account <i>My Settings</i> page and clicking on the <b>API Key</b> tab."
   - name: freeleech
     type: checkbox
     label: Search freeleech only
@@ -58,12 +61,11 @@ settings:
   - name: info_activity
     type: info
     label: Account Inactivity
-    default: "<ul><li>You must log in once every 60 days or seed at least 1 torrent to not get disabled</li><li>Once disabled, you have another 60 days to log back in and have your account re-activated. You may need to contact Helpdesk to do so</li><li>Disabled account will be deleted after 180 days of inactivity</li></ul>"
+    default: "In order to not be disabled, you are required to login to AnimeLovers at least once every 90 days."
 
 login:
   path: /api/torrents
   method: get
-  inputs: {} # TODO: remove in v10
   error:
     - selector: a[href*="/login"]
       message:
@@ -188,6 +190,6 @@ search:
 #    minimumratio:
 #      text: 0.4
     minimumseedtime:
-      # 2 day (as seconds = 2 x 24 x 60 x 60)
-      text: 172800
+      # 7 days (as seconds = 7 x 24 x 60 x 60)
+      text: 604800
 # json UNIT3D 8.2.0
