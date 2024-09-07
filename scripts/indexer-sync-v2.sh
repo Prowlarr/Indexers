@@ -86,6 +86,8 @@ log() {
     local color
     case "$level" in
     SUCCESS)
+    	level="INFO"
+    	message="SUCCESS|$message"
         color=$color_success
         ;;
     INFO)
