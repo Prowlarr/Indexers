@@ -86,8 +86,8 @@ log() {
     local color
     case "$level" in
     SUCCESS)
-    	level="INFO"
-    	message="SUCCESS|$message"
+        level="INFO"
+        message="SUCCESS|$message"
         color=$color_success
         ;;
     INFO)
@@ -336,20 +336,18 @@ pull_cherry_and_merge() {
         # read -r -p "Pausing to review commits. Press any key to continue." -n1 -s
     fi
     jackett_recent_commit=$(git rev-parse "$JACKETT_REMOTE_NAME/$JACKETT_BRANCH")
-    log "INFO" "[$jackett_recent_commit] is the most recent Jackett commit as per branch [$JACKETT_REMOTE_NAME/$JACKETT_BRANCH]"
     recent_pulled_commit=$(echo "$prowlarr_commits" | awk 'NR==1{print $5}')
-    log "INFO" "[$recent_pulled_commit] is the most recent Prowlarr/Indexer commit pulled from Jackett as per branch [$prowlarr_remote_name/$prowlarr_target_branch]"
-
-    if [ "$jackett_recent_commit" = "$recent_pulled_commit" ]; then
-        log "SUCCESS" "--- we are current with jackett; nothing to do ---"
-        exit 0
-    fi
 
     if [ -z "$recent_pulled_commit" ]; then
         log "ERROR" "Recent Pulled Commit is empty. Failing."
         exit 3
     fi
-
+    if [ "$jackett_recent_commit" = "$recent_pulled_commit" ]; then
+        log "SUCCESS" "--- we are current with jackett; nothing to do ---"
+        exit 0
+    fi
+    log "INFO" "[$jackett_recent_commit] is the most recent Jackett commit as per branch [$JACKETT_REMOTE_NAME/$JACKETT_BRANCH]"
+    log "INFO" "[$recent_pulled_commit] is the most recent Prowlarr/Indexer commit pulled from Jackett as per branch [$prowlarr_remote_name/$prowlarr_target_branch]"
     # Define the command to get the commit range
     commit_range_cmd="git log --reverse --pretty='%n%H' $recent_pulled_commit..$jackett_recent_commit"
     # Execute the command and capture the output
