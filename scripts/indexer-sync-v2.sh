@@ -27,7 +27,7 @@ is_dev_exec=false
 pulls_exists=false
 local_exist=false
 
-BLOCKLIST=("uniongang.yml")
+BLOCKLIST=("uniongang.yml" "uniongangcookie.yml")
 
 # Initialize Defaults
 removed_indexers=""
