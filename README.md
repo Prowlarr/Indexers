@@ -36,6 +36,13 @@ To test the definition:
 
 ## Active Versions
 
+- [V11 Indexers](https://github.com/Prowlarr/Prowlarr/commit/886054fdf8e17e27714a8c41911980fff3550e39) - Dev 1.20.0.4590
+  - Prowlarr Cardigann v10 includes several changes such as
+    - Predefined setting type: `info_category_8000`
+    - Optional `selectorinputs` and `getselectorinputs` for login section
+- [V10 Indexers](https://github.com/Prowlarr/Prowlarr/commit/f95f67a7ca3e274cd0b5abbac487eb914fccd0bb) - Dev 1.18.0.4543
+  - Prowlarr Cardigann v10 includes several changes such as
+    - Predefined settings type: `info_cookie`, `info_flaresolverr` and `info_useragent`
 - [V9 Indexers](https://github.com/Prowlarr/Prowlarr/commit/bceebc34c134db8140a307e25312cb15e0ff5d63) - Dev 1.4.0.3230
   - Prowlarr Cardigann v9 includes several changes such as
     - AllowEmptyInputs
