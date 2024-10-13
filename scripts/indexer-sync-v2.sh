@@ -67,7 +67,8 @@ usage() {
 ## v6 purged and frozen 2022-10-14
 ## v7 purged and frozen 2024-04-27
 ## v8 purged and frozen 2024-04-27
-MIN_SCHEMA=9
+## v9 purged and frozen 2024-10-13
+MIN_SCHEMA=10
 MAX_SCHEMA=11
 NEW_SCHEMA=$((MAX_SCHEMA + 1))
 NEW_VERS_DIR="definitions/v$NEW_SCHEMA"
