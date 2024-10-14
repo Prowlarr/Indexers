@@ -166,9 +166,17 @@ search:
         - name: append
           args: " {{ .Result.title_details }}"
         - name: re_replace
-          args: ["(?i)\\bFull HD\\b", "1080p"]
+          args: ["\\bWEB\\b(?![-_. ]?DL)", "WEB-DL"]
         - name: re_replace
           args: ["(?i)\\b4K\\b", "2160p"]
+        - name: re_replace
+          args: ["(?i)\\bFull HD\\b", "1080p"]
+        - name: re_replace
+          args: ["(?i)\\b(?<!Full )HD\\b", "720p"]
+        - name: re_replace
+          args: ["(?i)\\bLegendado\\b", "Subs"]
+        - name: re_replace
+          args: ["(Dual|[Nn]acional|[Dd]ublado)", "Brazilian $1"]
     minimumratio:
       text: 1.0
     minimumseedtime:
