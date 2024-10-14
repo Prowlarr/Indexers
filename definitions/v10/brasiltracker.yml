@@ -9,8 +9,22 @@ links:
   - https://brasiltracker.org/
 
 caps:
-  categories:
-    Other: Other
+  categorymappings:
+    - {id: 16, cat: Audio/Audiobook, desc: "Audiobooks"}
+    - {id: 6, cat: TV/Anime, desc: "Animes"}
+    - {id: 11, cat: PC/0day, desc: "Aplicativos"}
+    - {id: 15, cat: Other, desc: "Cursos"}
+    - {id: 8, cat: TV/Documentary, desc: "Documentários"}
+    - {id: 14, cat: TV/Sport, desc: "Esportes"}
+    - {id: 3, cat: XXX, desc: "Filmes XXX"}
+    - {id: 1, cat: Movies, desc: "Filmes"}
+    - {id: 12, cat: Books/Comics, desc: "Histórias em Quadrinhos"}
+    - {id: 9, cat: PC/Games, desc: "Jogos"}
+    - {id: 13, cat: Books/EBook, desc: "Livros"}
+    - {id: 10, cat: Books/Mags, desc: "Revistas"}
+    - {id: 2, cat: TV, desc: "Séries"}
+    - {id: 5, cat: Audio/Video, desc: "Show"}
+    - {id: 7, cat: TV, desc: "Televisão"}
 
   modes:
     search: [q]
@@ -25,10 +39,6 @@ settings:
     type: info
     label: How to get the Cookie
     default: "<ol><li>Login to this tracker with your browser</li><li>Open the <b>DevTools</b> panel by pressing <b>F12</b></li><li>Select the <b>Network</b> tab</li><li>Click on the <b>Doc</b> button (Chrome Browser) or <b>HTML</b> button (FireFox)</li><li>Refresh the page by pressing <b>F5</b></li><li>Click on the first row entry</li><li>Select the <b>Headers</b> tab on the Right panel</li><li>Find <b>'cookie:'</b> in the <b>Request Headers</b> section</li><li><b>Select</b> and <b>Copy</b> the whole cookie string <i>(everything after 'cookie: ')</i> and <b>Paste</b> here.</li></ol>"
-  - name: info_category_8000
-    type: info
-    label: About BrasilTracker Categories
-    default: BrasilTracker does not return categories in its search results. To sync to your apps, include 8000(Other) in your Apps' Sync Categories.
   - name: freeleech
     type: checkbox
     label: Search freeleech only
@@ -64,6 +74,7 @@ search:
     # https://brasiltracker.org/torrents.php?searchstr=tt8179024&order_by=time&order_way=desc&action=basic&searchsubmit=1
     - path: torrents.php
   inputs:
+    $raw: "{{ range .Categories }}filter_cat[{{.}}]=1&{{end}}"
     searchstr: "{{ if .Query.IMDBID }}{{ .Query.IMDBID }}{{ else }}{{ .Keywords }}{{ end }}"
     order_by: "{{ .Config.sort }}"
     order_way: "{{ .Config.type }}"
@@ -77,7 +88,24 @@ search:
 
   fields:
     category:
-      text: Other
+      selector: td.big_info div.group_info
+      case:
+        "div:contains(\"[Audiobooks]\")": 16
+        "div:contains(\"[Animes]\")": 6
+        "div:contains(\"[Aplicativos]\")": 11
+        "div:contains(\"[Cursos]\")": 15
+        "div:contains(\"[Documentários]\")": 8
+        "div:contains(\"[Esportes]\")": 14
+        "div:contains(\"[Filmes XXX]\")": 3
+        "div:contains(\"[Filmes]\")": 1
+        "div:contains(\"[Histórias em Quadrinhos]\")": 12
+        "div:contains(\"[Jogos]\")": 9
+        "div:contains(\"[Livros]\")": 13
+        "div:contains(\"[Revistas]\")": 10
+        "div:contains(\"[Séries]\")": 2
+        "div:contains(\"[Show]\")": 5
+        "div:contains(\"[Televisão]\")": 7
+        "*": 0 # catch errors
     details:
       selector: a[href^="torrents.php?id="]
       attribute: href
@@ -122,11 +150,25 @@ search:
     title_details:
       selector: div.torrent_info
       remove: strong
+    year:
+      selector: td.big_info div.group_info
+      optional: true
+      filters:
+        - name: regexp
+          args: "\\[((?:19|20)\\d{2})\\]"
     title:
       selector: a[href^="torrents.php?id="]
       filters:
+        - name: re_replace
+          args: ["\\[([^\\]]+)\\]", " / $1"]
+        - name: append
+          args: "{{ if .Result.year }} ({{ .Result.year }}){{ else }}{{ end }}"
         - name: append
           args: " {{ .Result.title_details }}"
+        - name: re_replace
+          args: ["(?i)\\bFull HD\\b", "1080p"]
+        - name: re_replace
+          args: ["(?i)\\b4K\\b", "2160p"]
     minimumratio:
       text: 1.0
     minimumseedtime:
