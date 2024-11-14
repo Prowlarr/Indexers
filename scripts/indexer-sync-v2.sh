@@ -27,7 +27,7 @@ is_dev_exec=false
 pulls_exists=false
 local_exist=false
 
-BLOCKLIST=("uniongang.yml" "uniongangcookie.yml" "sharewood.yml")
+BLOCKLIST=("uniongang.yml" "uniongangcookie.yml" "sharewood.yml", "ygg-api")
 
 # Initialize Defaults
 removed_indexers=""
