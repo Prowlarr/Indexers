@@ -8,7 +8,11 @@ For more information on the formatting of the YML Indexer Definition, please see
 
 To develop and test definitions, you may use the [Custom Definition Folder](https://wiki.servarr.com/prowlarr/indexers#adding-a-custom-yml-definition)
 
-For Prowlarr Indexer Requests; please see [our request site](https://requests.prowlarr.com/)
+For Prowlarr Indexer Requests; please see [our request forum on Discord](https://requests.prowlarr.com/)
+
+## Defintions from Jackett
+
+With [some differences](https://github.com/Prowlarr/Indexers/issues/370) and a few exceptions Prowlarr Cardigann Indexers are synced upstream with [Jackett](https://github.com/Jackett/Jackett) via the [indexer-sync sync in this repository](https://github.com/Prowlarr/Indexers/blob/master/scripts/indexer-sync-v2.sh). Syncs are executed manually by the Prowlarr Team and Contributors; however, any user may [pull request](https://github.com/Prowlarr/Indexers/compare) a sync.
 
 ## Definition Versions
 
