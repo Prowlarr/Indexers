@@ -41,7 +41,7 @@ To test the definition:
 ## Active Versions
 
 - [V11 Indexers](https://github.com/Prowlarr/Prowlarr/commit/886054fdf8e17e27714a8c41911980fff3550e39) - Dev 1.20.0.4590
-  - Prowlarr Cardigann v10 includes several changes such as
+  - Prowlarr Cardigann v11 includes several changes such as
     - Predefined setting type: `info_category_8000`
     - Optional `selectorinputs` and `getselectorinputs` for login section
 - [V10 Indexers](https://github.com/Prowlarr/Prowlarr/commit/f95f67a7ca3e274cd0b5abbac487eb914fccd0bb) - Dev 1.18.0.4543
