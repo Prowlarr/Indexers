@@ -7,11 +7,11 @@ type: public
 encoding: UTF-8
 requestDelay: 2
 links:
-  - https://solidtorrents.to/
+  - https://solidtorrents.eu/
 legacylinks:
   - https://solidtorrents.net/
-  - https://solidtorrents.eu/
   - https://solidtorrents.nocensor.cloud/
+  - https://solidtorrents.to/
 
 caps:
   categories:
@@ -39,6 +39,7 @@ caps:
     "Other/Source Code": PC
     "Other/Video": TV
     Softwares: PC/0day
+    "Softwares/Mac": PC/Mac
     "Softwares/Windows": PC/0day
     TV: TV
     Unknown: Other
