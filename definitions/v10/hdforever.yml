@@ -138,11 +138,9 @@ search:
       remove: :scope > span.team_name, :scope > span:nth-child(2), div.tags, div.vote_controls, .add_bookmark, img
       filters:
         - name: replace
-          args: ["\n", ""]
+          args: ["\n", " "]
         - name: re_replace
-          args: ["^(.+)                                                                            (.+)", "$2-$1"]
-        - name: replace
-          args: ["                         ", " "]
+          args: ["\\s+", " "]
         - name: replace
           args: ["Blu-Ray Original", "Complete.BluRay"]
         - name: replace
