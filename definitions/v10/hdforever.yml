@@ -135,7 +135,7 @@ search:
       text: "{{ if .Config.usetoken }}{{ .Result.download_usetoken }}{{ else }}{{ .Result.download_regular }}{{ end }}"
     title_phase1:
       selector: div.group_info
-      remove: :scope > span.team_name, :scope > span:nth-child(1), div.tags, div.vote_controls, .add_bookmark, img
+      remove: :scope > span.team_name, :scope > span:nth-child(2), div.tags, div.vote_controls, .add_bookmark, img
       filters:
         - name: replace
           args: ["\n", ""]
