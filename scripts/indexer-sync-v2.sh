@@ -393,12 +393,12 @@ pull_cherry_and_merge() {
         log "DEBUG" "Get Range Command is [$commit_range_cmd]"
         # read -r -p "Pausing to review commits. Press any key to continue." -n1 -s
     fi
-    log "INFO" "Commit Range is: [$commit_range]"
     # Enforce maximum commits threshold
     if [ "$commit_count" -gt "$MAX_COMMITS_TO_PICK" ]; then
         log "ERROR" "Commit count [$commit_count] is greater than [$MAX_COMMITS_TO_PICK]. Exiting."
         exit 4
     fi
+    log "INFO" "Commit Range is: [$commit_range]"
     log "INFO" "-- Beginning Cherrypicking ---"
     git config merge.directoryRenames true
     git config merge.verbosity 0
