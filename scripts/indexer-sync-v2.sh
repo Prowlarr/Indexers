@@ -44,11 +44,20 @@ usage() {
     Options:
       -r <remote>            Set the Prowlarr remote name. Default: $prowlarr_remote_name
       -b <branch>            Set the Prowlarr target branch. Default: $prowlarr_target_branch
-      -m <mode>   Set the operational mode:
-             - $(normal): Default mode with regular operations.
-             - $(dev | development | D | d): Enables development mode, skips upstream reset, uses local branches, and pauses at debugging points for review.
-             - $(jackett | j | J): Enables Jackett development mode, skips upstream reset, uses existing local Jackett and Prowlarr branches, and pauses at debugging points for review.
-             Default: $mode_choice
+       -m <mode>             Set the operational mode:
+                             - $(normal): Default mode with regular operations.
+                             - $(dev | development | D | d):
+                                Enables development mode:
+                                - Skips upstream reset.
+                                - Uses local branches.
+                                - Pauses at debugging points for review.
+                            - $(jackett | j | J):
+                                Enables Jackett development mode:
+                                - Skips upstream reset.
+                                - Uses existing local Jackett and Prowlarr branches.
+                                - Pauses at debugging points for review.
+                                - Local branch used: $JACKETT_REMOTE_NAME_$JACKETT_BRANCH
+                             Default: $mode_choice
       -p                     Enable push to remote. Default: $push_mode
       -f                     Force push if pushing. Default: $push_mode_force
       -c <commit_template>   Set the commit template for Prowlarr. Default: $PROWLARR_COMMIT_TEMPLATE
@@ -350,8 +359,7 @@ pull_cherry_and_merge() {
     prowlarr_jackett_commit_message=$(echo "$prowlarr_commits" | awk 'NR==1')
     if [ "$is_jackett_dev" = true ]; then
         # Use only local Jackett branch (no remote)
-        jackett_ref="$JACKETT_BRANCH"
-    else
+        jackett_ref="$JACKETT_REMOTE_NAME_$JACKETT_BRANCH"
         # Normal usage: remote reference
         jackett_ref="$JACKETT_REMOTE_NAME/$JACKETT_BRANCH"
     fi
