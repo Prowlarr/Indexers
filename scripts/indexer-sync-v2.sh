@@ -470,21 +470,41 @@ resolve_conflicts() {
 }
 
 handle_yml_conflicts() {
-    yml_remove=$(git status --porcelain | grep yml | grep -v "definitions/" | awk -F '[ADUMRC]{1,2} ' '{print $2}' | awk '{ gsub(/^[ \t]+|[ \t]+$/, ""); print }')
+    yml_remove=$(git status --porcelain | grep yml | grep -vi "definitions/" | awk -F '[ADUMRC]{1,2} ' '{print $2}' | awk '{ gsub(/^[ \t]+|[ \t]+$/, ""); print }')
     for def in $yml_remove; do
         log "DEBUG" "Removing non-definition yml; [$yml_remove]"
         git rm --f --ignore-unmatch "$yml_remove"
         yml_conflicts=$(git diff --cached --name-only | grep ".yml")
     done
     if [ -n "$yml_conflicts" ]; then
-        yml_defs=$(git status --porcelain | grep yml | grep "definitions/")
-        yml_add=$(echo "$yml_defs" | grep -v "UD\|D" | awk -F '[ADUMRC]{1,2} ' '{print $2}' | awk '{ gsub(/^[ \t]+|[ \t]+$/, ""); print }')
+        yml_defs=$(git status --porcelain | grep yml | grep -i "definitions/")
+        yml_add=$(echo "$yml_defs" | grep -v "UD\|D|DU" | awk -F '[ADUMRC]{1,2} ' '{print $2}' | awk '{ gsub(/^[ \t]+|[ \t]+$/, ""); print }')
         yml_delete=$(echo "$yml_defs" | grep "UD" | awk -F '[ADUMRC]{1,2} ' '{print $2}' | awk '{ gsub(/^[ \t]+|[ \t]+$/, ""); print }')
-
+        log "DEBUG" "YML Definitions Process: [$yml_defs]"
         for def in $yml_add; do
             log "DEBUG" "Using & Adding Jackett's definition yml; [$def]"
-            git checkout --theirs "$def"
-            git add --f "$def"
+            # 1) Create a new path by replacing "src/Jackett.Common/Definitions/"
+            #    with "definitions/$MIN_SCHEMA/".
+            #    - In Bash parameter expansion, the syntax is:
+            #      ${variable/search/replace}
+            new_def="${def/src\/Jackett\.Common\/Definitions\//definitions/v$MIN_SCHEMA/}"
+            # 2) If the path has changed, we do a rename; otherwise, just do normal checkout
+            if [ "$new_def" != "$def" ]; then
+                # Make sure the target directory exists
+                mkdir -p "$(dirname "$new_def")"
+                # Use git mv so that Git tracks the file rename
+                log "DEBUG" "Moving definition to new path; [$def] to [$new_def]"
+                mv "$def" "$new_def"
+                # Then checkout "theirs" to accept Jackett’s content
+                git checkout --theirs "$new_def"
+                # Stage the new path
+                git add --force "$new_def"
+                git rm --f --ignore-unmatch "$def"
+            else
+                # Fallback if the path didn't actually change
+                git checkout --theirs "$def"
+                git add --force "$def"
+            fi
         done
         for def in $yml_delete; do
             log "DEBUG" "Removing definitions Jackett deleted; [$def]"
@@ -535,8 +555,11 @@ handle_new_indexers() {
         done
         unset indexer
         unset test
+        log "INFO" "completed new indexers"
+    else
+        log "INFO" "No new indexers"
     fi
-    log "INFO" "completed new indexers"
+
 }
 
 handle_modified_indexers() {
