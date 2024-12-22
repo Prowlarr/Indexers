@@ -490,10 +490,11 @@ handle_new_indexers() {
     if [ -n "$added_indexers" ]; then
         log "INFO" "New Indexers detected"
         for indexer in ${added_indexers}; do
-            log "DEBUG" "Evaluating [$indexer] against BLOCKLIST"
+            base_indexer=$(basename "$indexer")
+            log "DEBUG" "Evaluating [$indexer] against BLOCKLIST with name [$base_indexer]"
             # Check if the indexer is in the BLOCKLIST
-            if [[ -n "${blocklist_map[$indexer]}" ]]; then
-                log "INFO" "[$indexer] is in the BLOCKLIST. Removing..."
+            if [[ -n "${blocklist_map[$base_indexer]}" ]]; then
+                log "INFO" "[$base_indexer] is in the BLOCKLIST. Removing [${indexer}]..."
                 git rm --f --ignore-unmatch "$indexer"
                 continue
             fi
