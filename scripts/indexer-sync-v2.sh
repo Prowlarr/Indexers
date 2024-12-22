@@ -360,6 +360,7 @@ pull_cherry_and_merge() {
     if [ "$is_jackett_dev" = true ]; then
         # Use only local Jackett branch (no remote)
         jackett_ref="$JACKETT_REMOTE_NAME_$JACKETT_BRANCH"
+    else
         # Normal usage: remote reference
         jackett_ref="$JACKETT_REMOTE_NAME/$JACKETT_BRANCH"
     fi
