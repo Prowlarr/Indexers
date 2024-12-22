@@ -44,7 +44,11 @@ usage() {
     Options:
       -r <remote>            Set the Prowlarr remote name. Default: $prowlarr_remote_name
       -b <branch>            Set the Prowlarr target branch. Default: $prowlarr_target_branch
-      -m <mode>              Set the mode ('normal' or 'dev'). Default: $mode_choice
+      -m <mode>   Set the operational mode:
+             - $(normal): Default mode with regular operations.
+             - $(dev | development | D | d): Enables development mode, skips upstream reset, uses local branches, and pauses at debugging points for review.
+             - $(jackett | j | J): Enables Jackett development mode, skips upstream reset, uses existing local Jackett and Prowlarr branches, and pauses at debugging points for review.
+             Default: $mode_choice
       -p                     Enable push to remote. Default: $push_mode
       -f                     Force push if pushing. Default: $push_mode_force
       -c <commit_template>   Set the commit template for Prowlarr. Default: $PROWLARR_COMMIT_TEMPLATE
@@ -201,8 +205,16 @@ while getopts "frpzb:m:c:u:j:R:J:n:" opt; do
             ;;
         development | dev | d | D)
             is_dev_exec=true
-            log "WARN" "Skipping upstream reset to local. Also Skip checking out the local branch and output thr details."
-            log "INFO" "This will not reset branch from upstream/master and will ONLY checkout the selected branch to use."
+            log "WARN" "Skipping upstream reset to local. Skip checking out the local Prowlarr branch and output the details."
+            log "INFO" "This will not reset Prowlarrbranch from upstream/master and will ONLY checkout the selected branch to use."
+            log "INFO" "This will pause at various debugging points for human review"
+            ;;
+        jackett | j | J)
+            is_dev_exec=true
+            is_jackett_dev=true
+            log "WARN" "Skipping upstream reset to local. Skip checking out the local Prowlarr branch and output the details."
+            log "INFO" "This will not reset Prowlarr branch from upstream/master and will ONLY checkout the selected branch to use."
+            log "INFO" "This will not reset Jackett branch and will use what it currently locally is."
             log "INFO" "This will pause at various debugging points for human review"
             ;;
         *)
@@ -269,7 +281,11 @@ configure_git() {
     fi
 
     log "INFO" "Configured Git"
-    git fetch --all --prune --progress
+    if [ "$is_jackett_dev" = true ]; then
+        log "DEBUG" "Skipping fetch for jackett development mode"
+    else
+        git fetch --all --prune --progress
+    fi
 }
 
 check_branches() {
@@ -298,7 +314,7 @@ check_branches() {
 git_branch_reset() {
     if [ "$pulls_exists" = false ]; then
         if [ "$local_exist" = true ]; then
-            if [ "$is_dev_exec" = true ]; then
+            if [ "$is_dev_exec" = true ] || [ "$is_jackett_dev" = true ]; then
                 log "DEBUG" "[$is_dev_exec] skipping reset to [$prowlarr_remote_name/$PROWLARR_RELEASE_BRANCH] and checking out local branch [$prowlarr_target_branch]"
                 git checkout -B "$prowlarr_target_branch"
             else
@@ -311,7 +327,7 @@ git_branch_reset() {
         fi
     else
         if [ "$local_exist" = true ]; then
-            if $is_dev_exec; then
+            if [ "$is_dev_exec" = true ] || [ "$is_jackett_dev" = true ]; then
                 git checkout -B "$prowlarr_target_branch"
                 log "INFO" "Checked out out local branch [$prowlarr_target_branch]"
                 log "DEBUG" "Development Mode - Skipping reset to [$prowlarr_remote_name/$prowlarr_target_branch]"
@@ -332,7 +348,7 @@ pull_cherry_and_merge() {
     existing_message_ln1=$(echo "$existing_message" | awk 'NR==1')
     prowlarr_commits=$(git log --format=%B -n1 -n 20 | grep "^$PROWLARR_COMMIT_TEMPLATE")
     prowlarr_jackett_commit_message=$(echo "$prowlarr_commits" | awk 'NR==1')
-    if [ "$is_dev_exec" = true ]; then
+    if [ "$is_dev_exec" = true ] || [ "$is_jackett_dev" = true ]; then
         log "DEBUG" "Jackett Remote is [$JACKETT_REMOTE_NAME/$JACKETT_BRANCH]"
         # read -r -p "Pausing to review commits. Press any key to continue." -n1 -s
     fi
@@ -355,7 +371,7 @@ pull_cherry_and_merge() {
     commit_range=$(eval "$commit_range_cmd")
     commit_count=$(git rev-list --count "$recent_pulled_commit".."$jackett_recent_commit")
     log "INFO" "There are [$commit_count] commits to cherry-pick"
-    if [ "$is_dev_exec" = true ]; then
+    if [ "$is_dev_exec" = true ] || [ "$is_jackett_dev" = true ]; then
         log "DEBUG" "Get Range Command is [$commit_range_cmd]"
         # read -r -p "Pausing to review commits. Press any key to continue." -n1 -s
     fi
