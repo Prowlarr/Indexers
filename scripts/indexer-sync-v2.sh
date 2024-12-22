@@ -24,8 +24,10 @@ JACKETT_BRANCH="master"
 JACKETT_REMOTE_NAME="z_Jackett"
 SKIP_BACKPORT=false
 is_dev_exec=false
+is_jackett_dev=false
 pulls_exists=false
 local_exist=false
+MAX_COMMITS_TO_PICK=50
 
 BLOCKLIST=("uniongang.yml" "uniongangcookie.yml" "sharewood.yml" "ygg-api.yml" "anirena.yml" "torrentgalaxy.yml")
 
@@ -215,15 +217,15 @@ while getopts "frpzb:m:c:u:j:R:J:n:" opt; do
         development | dev | d | D)
             is_dev_exec=true
             log "WARN" "Skipping upstream reset to local. Skip checking out the local Prowlarr branch and output the details."
-            log "INFO" "This will not reset Prowlarrbranch from upstream/master and will ONLY checkout the selected branch to use."
+            log "INFO" "This will not reset Prowlarr branch from upstream/master and will ONLY checkout the selected branch to use."
             log "INFO" "This will pause at various debugging points for human review"
             ;;
         jackett | j | J)
             is_dev_exec=true
             is_jackett_dev=true
             log "WARN" "Skipping upstream reset to local. Skip checking out the local Prowlarr branch and output the details."
-            log "INFO" "This will not reset Prowlarr branch from upstream/master and will ONLY checkout the selected branch to use."
-            log "INFO" "This will not reset Jackett branch and will use what it currently locally is."
+            log "INFO" "This will not reset Prowlarr branch from upstream/master and will ONLY checkout [$prowlarr_target_branch] branch to use."
+            log "INFO" "This will not reset Jackett branch and will use what it currently locally is $JACKETT_REMOTE_NAME_$JACKETT_BRANCH"
             log "INFO" "This will pause at various debugging points for human review"
             ;;
         *)
@@ -392,6 +394,11 @@ pull_cherry_and_merge() {
         # read -r -p "Pausing to review commits. Press any key to continue." -n1 -s
     fi
     log "INFO" "Commit Range is: [$commit_range]"
+    # Enforce maximum commits threshold
+    if [ "$commit_count" -gt "$MAX_COMMITS_TO_PICK" ]; then
+        log "ERROR" "Commit count [$commit_count] is greater than [$MAX_COMMITS_TO_PICK]. Exiting."
+        exit 4
+    fi
     log "INFO" "-- Beginning Cherrypicking ---"
     git config merge.directoryRenames true
     git config merge.verbosity 0
