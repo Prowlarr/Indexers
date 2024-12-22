@@ -58,7 +58,7 @@ usage() {
                                 - Skips upstream reset.
                                 - Uses existing local Jackett and Prowlarr branches.
                                 - Pauses at debugging points for review.
-                                - Local branch used: $JACKETT_REMOTE_NAME_$JACKETT_BRANCH
+                                - Local branch used: $JACKETT_REMOTE_NAME$JACKETT_BRANCH
                              Default: $mode_choice
       -p                     Enable push to remote. Default: $push_mode
       -f                     Force push if pushing. Default: $push_mode_force
@@ -225,7 +225,7 @@ while getopts "frpzb:m:c:u:j:R:J:n:" opt; do
             is_jackett_dev=true
             log "WARN" "Skipping upstream reset to local. Skip checking out the local Prowlarr branch and output the details."
             log "INFO" "This will not reset Prowlarr branch from upstream/master and will ONLY checkout [$prowlarr_target_branch] branch to use."
-            log "INFO" "This will not reset Jackett branch and will use what it currently locally is $JACKETT_REMOTE_NAME_$JACKETT_BRANCH"
+            log "INFO" "This will not reset Jackett branch and will use what it currently locally is $JACKETT_REMOTE_NAME$JACKETT_BRANCH"
             log "INFO" "This will pause at various debugging points for human review"
             ;;
         *)
@@ -361,7 +361,7 @@ pull_cherry_and_merge() {
     prowlarr_jackett_commit_message=$(echo "$prowlarr_commits" | awk 'NR==1')
     if [ "$is_jackett_dev" = true ]; then
         # Use only local Jackett branch (no remote)
-        jackett_ref="$JACKETT_REMOTE_NAME_$JACKETT_BRANCH"
+        jackett_ref="$JACKETT_REMOTE_NAME$JACKETT_BRANCH"
     else
         # Normal usage: remote reference
         jackett_ref="$JACKETT_REMOTE_NAME/$JACKETT_BRANCH"
