@@ -199,7 +199,7 @@ while getopts "frpzb:m:c:u:j:R:J:n:" opt; do
         normal | n | N)
             is_dev_exec=false
             ;;
-        development | d | D)
+        development | dev | d | D)
             is_dev_exec=true
             log "WARN" "Skipping upstream reset to local. Also Skip checking out the local branch and output thr details."
             log "INFO" "This will not reset branch from upstream/master and will ONLY checkout the selected branch to use."
