@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-
+import os
 import argparse
 import datetime
 import fnmatch
 import logging
 import os
+import re
 import shutil
-import subprocess
 import sys
 from pathlib import Path
 from typing import List, Optional
@@ -29,6 +29,7 @@ PUSH_MODE = False
 PUSH_MODE_FORCE = False
 
 PROWLARR_COMMIT_TEMPLATE = "jackett indexers as of"
+PROWLARR_COMMIT_PATTERN = r"{PROWLARR_COMMIT_TEMPLATE} ([0-9a-f]{40})"
 PROWLARR_COMMIT_TEMPLATE_APPEND = ""
 PROWLARR_REPO_URL = "https://github.com/Prowlarr/Indexers.git"
 JACKETT_REPO_URL = "https://github.com/Jackett/Jackett.git"
@@ -40,6 +41,7 @@ IS_DEV_EXEC = False
 IS_JACKETT_DEV = False
 
 MAX_COMMITS_TO_PICK = 50
+NUM_HISTORY_COMMITS = 20
 
 # Enhanced blocklist with wildcard patterns
 BLOCKLIST_PATTERNS = [
@@ -74,22 +76,6 @@ logger.addHandler(ch)
 ##############################################################################
 #             Git + GitHub: Cloning, Branching, Pull Requests
 ##############################################################################
-
-def clone_or_open_repo(url: str, local_dir: str) -> git.Repo:
-    """
-    Clone the repo from 'url' into 'local_dir' if not already cloned.
-    If 'local_dir' exists, open it as a Repo.
-    Returns a GitPython 'Repo' object.
-    """
-    path_obj = Path(local_dir).resolve()
-    if path_obj.exists() and (path_obj / ".git").is_dir():
-        logger.info(f"Opening existing repo at {path_obj}")
-        repo = git.Repo(str(path_obj))
-    else:
-        logger.info(f"Cloning {url} into {path_obj}")
-        repo = git.Repo.clone_from(url, str(path_obj))
-    return repo
-
 
 def ensure_remote(repo: git.Repo, remote_name: str, remote_url: str):
     """
@@ -261,7 +247,7 @@ def mkdir_for_file(filepath: str):
 
 def get_diff_files(repo: git.Repo, diff_filter: str) -> List[str]:
     """
-    Return filenames from 'git diff --cached --diff-filter=X --name-only' 
+    Return filenames from 'git diff --cached --diff-filter=X --name-only'
     using GitPython. That’s a bit manual, so we can do a direct call:
         repo.git.diff("--cached", "--diff-filter=X", "--name-only")
     """
@@ -270,7 +256,7 @@ def get_diff_files(repo: git.Repo, diff_filter: str) -> List[str]:
 
 def list_unmerged_files(repo: git.Repo) -> List[str]:
     """
-    Return lines from 'git ls-files --unmerged' 
+    Return lines from 'git ls-files --unmerged'
     """
     output = repo.git.ls_files("--unmerged")
     return [l for l in output.splitlines() if l.strip()]
@@ -555,8 +541,7 @@ def main():
         return 1
 
     # 1) Clone or open the local repo
-    repo = clone_or_open_repo(PROWLARR_REPO_URL, args.local_repo)
-
+    repo = git.Repo(str(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
     # 2) Ensure remote references exist
     ensure_remote(repo, PROWLARR_REMOTE_NAME, PROWLARR_REPO_URL)
     ensure_remote(repo, JACKETT_REMOTE_NAME, JACKETT_REPO_URL)
@@ -577,17 +562,19 @@ def main():
         checkout_or_create_branch(repo, PROWLARR_TARGET_BRANCH, base_ref=None, force_reset=False)
 
     # 5) Identify the last pulled commit from Prowlarr logs
-    #    We'll look in last ~20 commits for "jackett indexers as of <commit>"
-    commits_log = repo.git.log("--format=%B", "-n", "20")
+    #    We'll look in last ~NUM_HISTORY_COMMITS commits for "jackett indexers as of <commit>"
+    commits_log = repo.git.log("--format=%B", "-n", NUM_HISTORY_COMMITS)
     lines = commits_log.splitlines()
     prowlarr_msgs = [ln for ln in lines if ln.startswith(PROWLARR_COMMIT_TEMPLATE)]
     if not prowlarr_msgs:
-        logger.error("No prior 'jackett indexers as of' commit found in last 20 logs.")
+        logger.error(f"No prior 'jackett indexers as of' commit found in last {NUM_HISTORY_COMMITS} commits .")
         return 1
     recent_pulled_commit = None
-    tokens = prowlarr_msgs[0].split()
-    if len(tokens) >= 6:
-        recent_pulled_commit = tokens[5]
+    match = re.search(PROWLARR_COMMIT_PATTERN, prowlarr_msgs, re.IGNORECASE)
+    if IS_DEV_EXEC:
+        logger.debug(f"Found prior commit: {match}")
+        logger.debug(f"match.group(1)")
+    recent_pulled_commit = match.group(1)
     if not recent_pulled_commit:
         logger.error("Could not parse recent pulled commit from commit message!")
         return 2
@@ -671,7 +658,7 @@ def main():
             logger.error("Cannot create PR: --gh-token and --gh-repo-name are required.")
         else:
             # The "head branch" for the PR might be just the local branch name if it’s the same repo.
-            # If it's a fork, you'd do "YourUsername:branch". 
+            # If it's a fork, you'd do "YourUsername:branch".
             # For simplicity, assume same repo => branch == PROWLARR_TARGET_BRANCH.
             head_branch_for_pr = PROWLARR_TARGET_BRANCH
 

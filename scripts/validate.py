@@ -1,5 +1,3 @@
-import os
-import subprocess
 import sys
 import yaml
 import jsonschema
@@ -18,7 +16,7 @@ def validate_yaml(directory, schema_file):
             with open(yaml_file, 'r') as yaml_fp:
                 data = yaml.safe_load(yaml_fp)
                 jsonschema.validate(instance=data, schema=schema)
-        
+
         if not has_yaml_files:
             print(f"No YAML files found in {directory}. Skipping...")
             return False
@@ -33,7 +31,7 @@ def main():
     try:
         import yaml
         import jsonschema
-    except ImportError as e:
+    except ModuleNotFoundError as e:
         print(f"Missing required Python packages: {e.name}. Run 'pip install -r requirements.txt'")
         sys.exit(2)
 
@@ -52,7 +50,7 @@ def main():
             if not yaml_files:
                 print(f"No .yml files found in {dir_path}. Skipping...")
                 continue
-            
+
             schema_path = dir_path / "schema.json"
             if not schema_path.exists():
                 print(f"Schema file missing: {schema_path}")
