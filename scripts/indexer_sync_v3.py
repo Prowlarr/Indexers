@@ -4,18 +4,18 @@ import argparse
 import datetime
 import fnmatch
 import logging
-import os
 import re
 import shutil
 import sys
 from pathlib import Path
+import json
 from typing import List, Optional
 
 # Third-party libs
 import git                    # GitPython
 from github import Github     # PyGitHub
 import yaml
-from jsonschema import validate, ValidationError
+from jsonschema import ValidationError, Draft7Validator
 
 ##############################################################################
 #                           Global Defaults
@@ -29,7 +29,7 @@ PUSH_MODE = False
 PUSH_MODE_FORCE = False
 
 PROWLARR_COMMIT_TEMPLATE = "jackett indexers as of"
-PROWLARR_COMMIT_PATTERN = r"{PROWLARR_COMMIT_TEMPLATE} ([0-9a-f]{40})"
+PROWLARR_COMMIT_PATTERN = rf"{PROWLARR_COMMIT_TEMPLATE} ([0-9a-fA-F]{{40}})"
 PROWLARR_COMMIT_TEMPLATE_APPEND = ""
 PROWLARR_REPO_URL = "https://github.com/Prowlarr/Indexers.git"
 JACKETT_REPO_URL = "https://github.com/Jackett/Jackett.git"
@@ -164,36 +164,50 @@ def create_pull_request(
 ##############################################################################
 
 def load_schema(schema_path: str) -> dict:
-    if not os.path.exists(schema_path):
-        return {}
     try:
-        import json
+        logger.debug(f"Loading schema from {schema_path}")
         with open(schema_path, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except Exception as e:
-        logger.error(f"Could not load JSON schema {schema_path}: {e}")
-        return {}
+            schema = json.load(f)
+        logger.debug(f"Schema loaded successfully from {schema_path}")
+        return schema
+    except FileNotFoundError:
+        logger.warning(f"Schema file not found: {schema_path}")
+    except json.JSONDecodeError as e:
+        logger.error(f"Invalid JSON schema in {schema_path}: {e}")
+    return {}
+
 
 def validate_definition_yml(def_file: str, schema_path: str) -> bool:
     if not os.path.exists(def_file):
         return False
-
     schema = load_schema(schema_path)
     if not schema:
         return False
 
     try:
-        with open(def_file, "r", encoding="utf-8") as f:
-            data = yaml.safe_load(f)
-        validate(instance=data, schema=schema)
-        return True
-    except (ValidationError, yaml.YAMLError) as e:
-        logger.debug(f"Validation failed for {def_file}: {e}")
-        return False
+        with open(def_file, "r", encoding="utf-8") as yf:
+            data = yaml.safe_load(yf)
+            logger.debug(f"Loaded YAML data from {def_file}")
     except Exception as e:
-        logger.debug(f"Unexpected error: {def_file}: {e}")
+        logger.exception(f"Failed to load YAML file {def_file}: {e}")
         return False
 
+    # Validate the YAML data
+    try:
+        logger.debug(f"Validating {def_file} against schema {schema_path}")
+        validator = Draft7Validator(schema)
+        errors = sorted(validator.iter_errors(data), key=lambda e: e.path)
+        if errors:
+            logger.error(f"Validation failed for {def_file}:")
+            for error in errors:
+                logger.error(f"- {'/'.join(map(str, error.path))}: {error.message}")
+            return False
+
+        logger.info(f"Validation passed for {def_file}")
+        return True
+    except Exception as e:
+        logger.exception(f"Unexpected error during validation of {def_file}: {e}")
+        return False
 
 def determine_schema_version(def_file: str) -> str:
     parts = def_file.split("/")
@@ -201,6 +215,9 @@ def determine_schema_version(def_file: str) -> str:
         return "v0"
     check_version = parts[1]
     schema_path = f"definitions/{check_version}/schema.json"
+    if IS_DEV_EXEC:
+        logger.debug(f"Parts: {parts}")
+        logger.debug(f"Checking {def_file} against schema [{schema_path}]")
     if validate_definition_yml(def_file, schema_path):
         logger.info(f"Definition [{def_file}] matches schema [{schema_path}]")
         return check_version
@@ -209,7 +226,7 @@ def determine_schema_version(def_file: str) -> str:
 
 def determine_best_schema_version(def_file: str) -> int:
     matched_version = 0
-    for i in range(MIN_SCHEMA, MAX_SCHEMA + 1):
+    for i in range(MIN_SCHEMA, MAX_SCHEMA):
         schema_path = f"definitions/v{i}/schema.json"
         if validate_definition_yml(def_file, schema_path):
             logger.info(f"Definition [{def_file}] matches schema v{i}")
@@ -256,46 +273,39 @@ def get_diff_files(repo: git.Repo, diff_filter: str) -> List[str]:
 
 def list_unmerged_files(repo: git.Repo) -> List[str]:
     """
-    Return lines from 'git ls-files --unmerged'
+    Return a list of unmerged file paths from 'git ls-files --unmerged'.
     """
     output = repo.git.ls_files("--unmerged")
-    return [l for l in output.splitlines() if l.strip()]
+    unmerged_files = set()  # Use a set to avoid duplicate file names
+    for line in output.splitlines():
+        if line.strip():
+            # Extract the file path after the last tab character
+            parts = line.split("\t")
+            if len(parts) > 1:
+                unmerged_files.add(parts[-1].strip())
+    return list(unmerged_files)
+
 
 def handle_conflict_resolution(repo: git.Repo):
     unmerged = list_unmerged_files(repo)
     if unmerged:
-        logger.warning(f"Conflicts exist in: {unmerged}. Attempting partial resolution...")
+        logger.warning(f"Conflicts detected in: {unmerged}. Attempting resolution...")
+    # Resolve specific conflicts
+    for file in unmerged:
+        if "README.md" in file:
+            logger.debug(f"README conflict => using ours for {file}")
+            repo.git.checkout("--ours", file)
+            repo.git.add(file)
+        elif "schema.json" in file:
+            logger.debug(f"Resolving schema.json conflict with 'ours': {file}")
+            repo.git.checkout("--ours", file)
+            repo.git.add(file)
+        elif file.endswith(".yml"):
+            handle_yml_conflicts(repo)
+        else:
+            logger.debug(f"Removing other conflict file {file}")
+            repo.git.rm("--force", "--ignore-unmatch", file)
 
-    # We'll still rely on a couple of shell-based checks:
-    conflicts_raw = repo.git.diff("--cached", "--name-only")
-    all_conflicts = [f for f in conflicts_raw.splitlines() if f.strip()]
-
-    # README => ours
-    readme_conflicts = [c for c in all_conflicts if c.endswith("README.md")]
-    for rmd in readme_conflicts:
-        logger.debug(f"README conflict => using ours for {rmd}")
-        repo.git.checkout("--ours", rmd)
-        repo.git.add(rmd)
-
-    # schema => ours
-    schema_conflicts = [c for c in all_conflicts if c.endswith("schema.json")]
-    for scf in schema_conflicts:
-        logger.debug(f"Schema conflict => using ours for {scf}")
-        repo.git.checkout("--ours", scf)
-        repo.git.add(scf)
-
-    # Non-yml => remove them
-    remove_exts = (".cs", ".js", ".iss", ".html")
-    nonyml_conflicts = [c for c in all_conflicts if any(ext in c for ext in remove_exts)]
-    for path in nonyml_conflicts:
-        logger.debug(f"Removing non-yml conflict file {path}")
-        repo.git.rm("--force", "--ignore-unmatch", path)
-
-    # YML => special logic
-    # a quick re-check
-    yml_conflicts = [c for c in all_conflicts if c.endswith(".yml")]
-    if yml_conflicts:
-        handle_yml_conflicts(repo)
 
 
 def handle_yml_conflicts(repo: git.Repo):
@@ -340,15 +350,21 @@ def handle_yml_conflicts(repo: git.Repo):
 
 def process_indexer(repo: git.Repo, indexer_path: str):
     base_name = os.path.basename(indexer_path)
+    if IS_DEV_EXEC:
+        logger.debug(f"Processing indexer {indexer_path} in dev mode.")
+        logger.debug(f"Base name: {base_name}")
+        logger.debug(f"Blocklisted? {is_blocklisted(base_name)}")
     # 1) Blocklist
     if is_blocklisted(base_name):
         logger.info(f"Removing blocklisted indexer {indexer_path}")
         repo.git.rm("--force", "--ignore-unmatch", indexer_path)
         return
-
     # 2) Validate / rename
     if not os.path.isfile(indexer_path):
         return  # possibly removed
+    if IS_DEV_EXEC:
+        logger.debug(f"Blocklist check passed for {indexer_path}")
+        logger.debug(f"Checking schema version for {indexer_path}")
     current_version = determine_schema_version(indexer_path)
     if current_version != "v0":
         logger.debug(f"Schema {current_version} passed for {indexer_path}")
@@ -565,12 +581,17 @@ def main():
     #    We'll look in last ~NUM_HISTORY_COMMITS commits for "jackett indexers as of <commit>"
     commits_log = repo.git.log("--format=%B", "-n", NUM_HISTORY_COMMITS)
     lines = commits_log.splitlines()
-    prowlarr_msgs = [ln for ln in lines if ln.startswith(PROWLARR_COMMIT_TEMPLATE)]
-    if not prowlarr_msgs:
-        logger.error(f"No prior 'jackett indexers as of' commit found in last {NUM_HISTORY_COMMITS} commits .")
+    prowlarr_msg = [ln for ln in lines if ln.startswith(PROWLARR_COMMIT_TEMPLATE)]
+    if not prowlarr_msg:
+        logger.error(f"No prior '{PROWLARR_COMMIT_TEMPLATE}' commit found in last {NUM_HISTORY_COMMITS} commits .")
         return 1
+    # First Commit
+    prowlarr_msg = prowlarr_msg[0]
     recent_pulled_commit = None
-    match = re.search(PROWLARR_COMMIT_PATTERN, prowlarr_msgs, re.IGNORECASE)
+    if IS_DEV_EXEC:
+        logger.debug(f"Found prior commit: {prowlarr_msg}")
+        logger.debug(f"Checking for recent commit pattern: {PROWLARR_COMMIT_PATTERN}")
+    match = re.search(PROWLARR_COMMIT_PATTERN, prowlarr_msg, re.IGNORECASE)
     if IS_DEV_EXEC:
         logger.debug(f"Found prior commit: {match}")
         logger.debug(f"match.group(1)")
