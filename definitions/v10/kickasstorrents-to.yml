@@ -1,0 +1,127 @@
+---
+id: kickasstorrents-to
+name: kickasstorrents.to
+description: "kickasstorrents.to is a Public KickAssTorrent clone for TV / MOVIES / GENERAL"
+language: en-US
+type: public
+encoding: UTF-8
+requestDelay: 2
+links:
+  - https://kickasstorrents.to/
+  - https://kickasstorrent.cr/
+  - https://katcr.to/
+  - https://kickasstorrents.unblockninja.com/
+  - https://kickasstorrents.ninjaproxy1.com/
+  - https://kickasstorrents.proxyninja.org/
+  - https://kickasstorrents.proxyninja.net/
+  - https://kickass.torrentbay.st/
+  - https://kickass.torrentsbay.org/
+legacylinks:
+  - https://kat.root.yt/
+  - https://kickasstorrents.abcproxy.org/
+
+caps:
+  categorymappings:
+    - {id: anime, cat: TV/Anime, desc: Anime}
+    - {id: apps, cat: PC, desc: Apps}
+    - {id: books, cat: Books, desc: Books}
+    - {id: documentaries, cat: TV/Documentary, desc: Documentaries}
+    - {id: games, cat: Console, desc: Games}
+    - {id: movies, cat: Movies, desc: Movies}
+    - {id: music, cat: Audio, desc: Music}
+    - {id: other, cat: Other, desc: Other}
+    - {id: tv, cat: TV, desc: TV}
+    - {id: xxx, cat: XXX, desc: XXX}
+
+  modes:
+    search: [q]
+    tv-search: [q, season, ep]
+    movie-search: [q]
+    music-search: [q]
+    book-search: [q]
+
+settings:
+  - name: useragent
+    type: text
+    label: User-Agent
+  - name: info_useragent
+    type: info
+    label: How to get the User-Agent
+    default: "<ol><li>Access this tracker with your browser</li><li>Open the <b>DevTools</b> panel by pressing <b>F12</b></li><li>Select the <b>Network</b> tab</li><li>Click on the <b>Doc</b> button (Chrome Browser) or <b>HTML</b> button (FireFox)</li><li>Refresh the page by pressing <b>F5</b></li><li>Click on the first row entry</li><li>Select the <b>Headers</b> tab on the Right panel</li><li>Find <b>'user-agent:'</b> in the <b>Request Headers</b> section</li><li><b>Select</b> and <b>Copy</b> the whole user-agent string <i>(everything after 'user-agent: ')</i> and <b>Paste</b> here.</li></ol>"
+  - name: sort
+    type: select
+    label: Sort requested from site
+    default: time
+    options:
+      time: created
+      seeders: seeders
+      size: size
+  - name: type
+    type: select
+    label: Order requested from site
+    default: desc
+    options:
+      desc: desc
+      asc: asc
+
+download:
+  selectors:
+    - selector: a[href^="magnet:?xt="]
+      attribute: href
+
+search:
+  headers:
+    User-Agent: ["{{ .Config.useragent }}"]
+
+  paths:
+    # 20 rows per page
+    - path: "{{ if .Keywords }}usearch/{{ .Keywords }}/{{ else }}new/{{ end }}?sortby={{ .Config.sort }}&sort={{ .Config.type }}"
+    - path: "{{ if .Keywords }}usearch/{{ .Keywords }}/{{ else }}new/{{ end }}2/?sortby={{ .Config.sort }}&sort={{ .Config.type }}"
+    - path: "{{ if .Keywords }}usearch/{{ .Keywords }}/{{ else }}new/{{ end }}3/?sortby={{ .Config.sort }}&sort={{ .Config.type }}"
+    - path: "{{ if .Keywords }}usearch/{{ .Keywords }}/{{ else }}new/{{ end }}4/?sortby={{ .Config.sort }}&sort={{ .Config.type }}"
+    - path: "{{ if .Keywords }}usearch/{{ .Keywords }}/{{ else }}new/{{ end }}5/?sortby={{ .Config.sort }}&sort={{ .Config.type }}"
+
+  error:
+    - selector: h1:contains("403 Forbidden")
+      message:
+        text: "Site returned 403 Forbidden. Try updating your indexer config with a new/different user-agent."
+
+  rows:
+    selector: table.data tr.odd:has(a[class="cellMainLink"]), table.data tr.even:has(a[class="cellMainLink"])
+    filters:
+      - name: andmatch
+
+  fields:
+    category:
+      selector: span > strong > a
+      attribute: href
+      filters:
+        - name: tolower
+        - name: trim
+          args: /
+    title:
+      selector: a[class="cellMainLink"]
+    details:
+      selector: a[class="cellMainLink"]
+      attribute: href
+    download:
+      selector: a[class="cellMainLink"]
+      attribute: href
+    size:
+      selector: td:nth-child(2)
+    date:
+      selector: td:nth-child(4)
+      attribute: title
+      filters:
+        - name: replace
+          args: ["<br/>", " "]
+        - name: timeago
+    seeders:
+      selector: td:nth-child(5)
+    leechers:
+      selector: td:nth-child(6)
+    downloadvolumefactor:
+      text: 0
+    uploadvolumefactor:
+      text: 1
+# engine n/a

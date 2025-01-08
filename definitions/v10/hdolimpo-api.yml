@@ -1,0 +1,211 @@
+---
+id: hdolimpo-api
+name: HD-Olimpo (API)
+description: "HD-Olimpo is a SPANISH site for HD content"
+language: es-ES
+type: private
+encoding: UTF-8
+links:
+  - https://hd-olimpo.club/
+legacylinks:
+  - https://hdolimpo.co/
+
+caps:
+  categorymappings:
+    - {id: 1, cat: Movies, desc: "Películas"}
+    - {id: 2, cat: TV, desc: "Series"}
+    - {id: 3, cat: Audio, desc: "Música"}
+    - {id: 4, cat: TV/Documentary, desc: "Documentales"}
+
+  modes:
+    search: [q]
+    tv-search: [q, season, ep, imdbid, tvdbid, tmdbid]
+    movie-search: [q, imdbid, tmdbid]
+    music-search: [q]
+    book-search: [q]
+
+settings:
+  - name: apikey
+    type: text
+    label: APIKey
+  - name: info_key
+    type: info
+    label: About your API key
+    default: "Find or Generate a new API Token by accessing your account <i>My configuration / Mi configuración => Secutiy / Seguridad</i> page and clicking on the <b>API Token</b> tab."
+  - name: sort
+    type: select
+    label: Sort requested from site
+    default: created_at
+    options:
+      created_at: created
+      seeders: seeders
+      size: size
+      name: title
+  - name: type
+    type: select
+    label: Order requested from site
+    default: desc
+    options:
+      desc: desc
+      asc: asc
+
+login:
+  path: /api/torrents
+  method: get
+  inputs: {} # TODO: remove in v10
+  error:
+    - selector: a[href*="/login"]
+      message:
+        text: "The API key was not accepted by {{ .Config.sitelink }}."
+    - selector: :root:contains("Account is Banned")
+
+search:
+  paths:
+    # https://github.com/HDInnovations/UNIT3D-Community-Edition/wiki/Torrent-API-(UNIT3D-v8.x.x)
+    # https://github.com/HDInnovations/UNIT3D-Community-Edition/blob/master/app/Http/Controllers/API/TorrentController.php#L476
+    - path: api/torrents/filter
+      response:
+        type: json
+
+  headers:
+    Authorization: ["Bearer {{ .Config.apikey }}"]
+
+  inputs:
+  # if we have an id based search, add Season and Episode as query in name for UNIT3D < v6.  Else pass S/E Params for UNIT3D >= v6
+    $raw: "{{ range .Categories }}&categories[]={{.}}{{end}}"
+    name: "{{ .Keywords }}"
+    seasonNumber: "{{ .Query.Season }}"
+    episodeNumber: "{{ .Query.Ep }}"
+    imdbId: "{{ .Query.IMDBIDShort }}"
+    tmdbId: "{{ .Query.TMDBID }}"
+    tvdbId: "{{ .Query.TVDBID }}"
+    sortField: "{{ .Config.sort }}"
+    sortDirection: "{{ .Config.type }}"
+    perPage: 100
+
+  rows:
+    selector: data
+    attribute: attributes
+
+  fields:
+    categorydesc:
+      selector: category
+    title_phase1:
+      selector: name
+      filters:
+        - name: re_replace
+          args: ["(?i)\\b(full uhd|(uhd )?full\\s?(blu-?ray|uhd))\\b", "BRDISK"]
+        - name: re_replace
+          args: ["\\bE-AC-3\\b", "EAC3"]
+        - name: re_replace
+          args: ["(?i)\\b(es-cat?-en|es-en-cat?|en-cat?-es|en-es-cat?|cat?-es-en|cat?-en-es)\\b", "MULTi SPANiSH CATALAN ENGLiSH"]
+        - name: re_replace
+          args: ["(?i)\\b(es-cat?-(ja|ja?p)|es-(ja|ja?p)-cat?|cat?-es-(ja|ja?p)|cat?-(ja|ja?p)-es|(ja|ja?p)-es-cat?|(ja|ja?p)-cat?-es)\\b", "MULTi SPANiSH CATALAN JAPANES"] # misspelled to accomodate negative lookback, corrected later
+        - name: re_replace
+          args: ["(?i)\\b(es-en|en-es)\\b", "MULTi SPANiSH ENGLiSH"]
+        - name: re_replace
+          args: ["(?i)\\b(es-cat?|cat?-es)\\b", "MULTi SPANiSH CATALAN"]
+        - name: re_replace
+          args: ["(?i)\\b(es-(ja|ja?p)|(ja|ja?p)-es)\\b", "MULTi SPANiSH JAPANES"] # misspelled to accomodate negative lookback, corrected later
+        - name: re_replace
+          args: ["(?i)\\b(es-fr[ae]?n?|fr[ae]?n?-es)\\b", "MULTi SPANiSH FRENCHx"] # misspelled to accomodate negative lookback, corrected later
+        - name: re_replace
+          args: ["(?i)\\b(es-ita?|ita?-es)\\b", "MULTi SPANiSH iTALiAN"]
+        - name: re_replace
+          args: ["(?i)\\b(es-rus?|rus?-es)\\b", "MULTi SPANiSH RUSSiAN"]
+        - name: re_replace
+          args: ["(?i)\\b(es-(ger?|al(e|em)?)|(ger?|al(e|em)?)-es)\\b", "MULTi SPANiSH GERMANx"] # misspelled to accomodate negative lookback, corrected later
+        - name: re_replace
+          args: ["(?i)\\btriaudio\\b", "MULTi SPANiSH"]
+        - name: re_replace
+          args: ["(?i)\\b(espa[ñn]ol|castellano|esp)\\b", "SPANiSH"]
+        - name: re_replace
+          args: ["(?i)\\b(ingl[ée]s|[ei]ng)\\b", "ENGLiSH"]
+        - name: re_replace
+          args: ["(?i)\\bcat\\b", "CATALAN"]
+        - name: re_replace
+          args: ["(?i)\\bfr[ae]?n?\\b", "FRENCHx"] # misspelled to accomodate negative lookback, corrected later
+        - name: re_replace
+          args: ["(?i)\\b(jap|jp)\\b", "JAPANES"] # misspelled to accomodate negative lookback, corrected later
+        - name: re_replace
+          args: ["(?i)\\bita\\b", "iTALiAN"]
+        - name: re_replace
+          args: ["(?i)\\brus?\\b", "RUSSiAN"]
+        - name: re_replace
+          args: ["(?i)\\b(ger?|alem)\\b", "GERMANx"] # misspelled to accomodate negative lookback, corrected later
+        - name: re_replace
+          args: ["(\\s|\\.)+", "$1"]
+        # add MULTi SPANiSH if not preceded by another language or followed by SPANiSH
+        - name: re_replace
+          args: ["(?<!(SPANiSH|ENGLiSH|CATALAN|FRENCHx|JAPANES|iTALiAN|RUSSiAN|GERMANx)[\\s.])\\b(ENGLiSH|CATALAN|FRENCHx|JAPANES|iTALiAN|RUSSiAN|GERMANx)\\b(?![\\s.]SPANiSH)", "MULTi SPANiSH $2"]
+        # correct purposefully misspelled languages
+        - name: re_replace
+          args: ["\\bFRENCHx\\b", "FRENCH"]
+        - name: re_replace
+          args: ["\\bJAPANES\\b", "JAPANESE"]
+        - name: re_replace
+          args: ["\\bGERMANx\\b", "GERMAN"]
+    title_spanish:
+      text: "{{ .Result.title_phase1 }}"
+      filters:
+        - name: regexp
+          args: "(?i)(spanish)"
+    title:
+      text: "{{ .Result.title_phase1 }}"
+      filters:
+        # append SPANiSH if title does not contain the word 'spanish'
+        - name: append
+          args: "{{ if .Result.title_spanish }}{{ else }} SPANiSH{{ end }}"
+    details:
+      selector: details_link
+    download:
+      selector: download_link
+    poster:
+      selector: poster
+      filters:
+        - name: replace
+          args: ["https://via.placeholder.com/90x135", ""]
+    imdbid:
+      selector: imdb_id
+    tmdbid:
+      selector: tmdb_id
+    tvdbid:
+      selector: tvdb_id
+    files:
+      selector: num_file
+    seeders:
+      selector: seeders
+    leechers:
+      selector: leechers
+    grabs:
+      selector: times_completed
+    date:
+      # "created_at": "2021-10-18T00:34:50.000000Z" is returned by Newtonsoft.Json.Linq as 18/10/2021 00:34:50
+      selector: created_at
+      filters:
+        - name: append
+          args: " +00:00" # GMT
+        - name: dateparse
+          args: "MM/dd/yyyy HH:mm:ss zzz"
+    size:
+      selector: size
+    downloadvolumefactor:
+      # api returns 0, 25, 50, 75, 100
+      selector: freeleech
+      case:
+        0: 1 # not free
+        25: 0.75
+        50: 0.5
+        75: 0.25
+        100: 0 # freeleech
+        "*": 0 # catch errors
+    uploadvolumefactor:
+      # api returns 0=false, 1=true
+      selector: double_upload
+      case:
+        0: 1 # normal
+        1: 2 # double
+    minimumseedtime:
+      # 4 days (as seconds = 4 x 24 x 60 x 60)
+      text: 345600
+# json UNIT3D 6.0.x (custom)

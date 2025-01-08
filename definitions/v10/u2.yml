@@ -1,0 +1,188 @@
+---
+id: u2
+name: U2
+description: "U2 (U2分享園@動漫花園) is a CHINESE Private Torrent Tracker for ANIME"
+language: zh-CN
+type: private
+encoding: UTF-8
+links:
+  - https://u2.dmhy.org/
+
+caps:
+  categorymappings:
+    - {id: 9, cat: TV/Anime, desc: "U2-Rip"}
+    - {id: 411, cat: TV/Anime, desc: "U2-RBD"}
+    - {id: 413, cat: TV/Anime, desc: "Web"}
+    - {id: 12, cat: TV/Anime, desc: "BDRip"}
+    - {id: 13, cat: TV/Anime, desc: "DVDRip"}
+    - {id: 14, cat: TV/Anime, desc: "HDTV"}
+    - {id: 15, cat: TV/Anime, desc: "DVDISO"}
+    - {id: 16, cat: TV/Anime, desc: "BDMV"}
+    - {id: 17, cat: TV/Anime, desc: "LQRip"}
+    - {id: 410, cat: TV/Anime, desc: "外挂结构 (TV Series)"}
+    - {id: 412, cat: TV/Anime, desc: "加流重灌 (Modded Blu-rays)"}
+    - {id: 21, cat: Books, desc: "原版漫画 (Raw Books)"}
+    - {id: 22, cat: Books, desc: "翻译漫画 (Translated Books)"}
+    - {id: 30, cat: Audio, desc: "Lossless Music"}
+    - {id: 40, cat: Other, desc: "Others"}
+    # Anime as Movies (Radarr uses t=movie):
+    - {id: 9, cat: Movies/Other, desc: "U2-Rip"}
+    - {id: 411, cat: Movies/Other, desc: "U2-RBD"}
+    - {id: 413, cat: Movies/Other, desc: "Web"}
+    - {id: 12, cat: Movies/HD, desc: "BDRip"}
+    - {id: 13, cat: Movies/Other, desc: "DVDRip"}
+    - {id: 14, cat: Movies/Other, desc: "HDTV"}
+    - {id: 15, cat: Movies/Other, desc: "DVDISO"}
+    - {id: 16, cat: Movies/BluRay, desc: "BDMV"}
+    - {id: 17, cat: Movies/Other, desc: "LQRip"}
+    - {id: 412, cat: Movies/BluRay, desc: "加流重灌 (Modded Blu-rays)"}
+
+  modes:
+    search: [q]
+    tv-search: [q, season, ep]
+    movie-search: [q]
+    music-search: [q]
+    book-search: [q]
+
+settings:
+  - name: cookie
+    type: text
+    label: Cookie
+  - name: info_cookie
+    type: info_cookie
+  - name: freeleech
+    type: checkbox
+    label: Search freeleech only
+    default: false
+  - name: sort
+    type: select
+    label: Sort requested from site
+    default: 4
+    options:
+      4: created
+      7: seeders
+      5: size
+      1: title
+  - name: type
+    type: select
+    label: Order requested from site
+    default: desc
+    options:
+      desc: desc
+      asc: asc
+  - name: info_tpp
+    type: info
+    label: Results Per Page
+    default: For best results, change the <b>Torrents per page:</b> setting to <b>100</b> on your account profile.
+
+login:
+  # using the cookie method because the login page uses a custom captcha which is only displayed when you click a button first
+  method: cookie
+  inputs:
+    cookie: "{{ .Config.cookie }}"
+  test:
+    path: index.php
+    selector: a[href^="logout.php?key="]
+
+download:
+  selectors:
+    - selector: a[href^="download.php?id="]
+      attribute: href
+
+search:
+  paths:
+    - path: torrents.php
+  inputs:
+    $raw: "{{ range .Categories }}cat{{.}}=1&{{end}}"
+    search: "{{ .Keywords }}"
+    # 0 incldead, 1 active, 2 dead
+    incldead: 0
+    # 0 all, 1 normal, 2 free, 3 2x, 4 2xfree, 5 50%, 6 2x50%, 7 30%, 8 custom promotion
+    spstate: "{{ if .Config.freeleech }}2{{ else }}0{{ end }}"
+    # 0 title, 1 descr, 3 uploader, 4 AniDB, 5 infohash
+    search_area: 0
+    # 0 AND, 1 OR, 2 exact
+    search_mode: 0
+    sort: "{{ .Config.sort }}"
+    type: "{{ .Config.type }}"
+    notnewword: 1
+
+  rows:
+    selector: table.torrents > tbody > tr:has(table.torrentname)
+
+  fields:
+    category:
+      selector: a[href^="?cat="]
+      attribute: href
+      filters:
+        - name: querystring
+          args: cat
+    title:
+      selector: a[href^="details.php?id="]
+    details:
+      selector: a[href^="details.php?id="]
+      attribute: href
+    download:
+      selector: a[href^="details.php?id="]
+      attribute: href
+    date_elapsed:
+      # time type: time elapsed (default)
+      selector: td.rowfollow:nth-child(3) > time[title]
+      attribute: title
+      optional: true
+      filters:
+        - name: append
+          args: " +08:00" # CST
+        - name: dateparse
+          args: "yyyy-MM-dd HH:mm:ss zzz"
+    date_added:
+      # time added
+      selector: td.rowfollow:nth-child(3):not(time[title])
+      optional: true
+      filters:
+        - name: append
+          args: " +08:00" # CST
+        - name: dateparse
+          args: "yyyy-MM-ddHH:mm:ss zzz"
+    date:
+      text: "{{ if or .Result.date_elapsed .Result.date_added }}{{ or .Result.date_elapsed .Result.date_added }}{{ else }}now{{ end }}"
+    size:
+      selector: td.rowfollow:nth-child(4)
+    seeders:
+      selector: td.rowfollow:nth-child(5)
+    leechers:
+      selector: td.rowfollow:nth-child(6)
+    grabs:
+      selector: td.rowfollow:nth-child(7)
+    downloadvolumefactor_custom:
+      selector: td.embedded > img.arrowdown + b
+      optional: true
+      filters:
+        - name: regexp
+          args: (.*)X
+    uploadvolumefactor_custom:
+      selector: td.embedded > img.arrowup + b
+      optional: true
+      filters:
+        - name: regexp
+          args: (.*)X
+    downloadvolumefactor:
+      case:
+        span.free: 0
+        span.twoupfree: 0
+        span.custompromotion: "{{ .Result.downloadvolumefactor_custom }}"
+        span.halfdown: 0.5
+        span.twouphalfdown: 0.5
+        span.thirtypercent: 0.3
+        "*": 1
+    uploadvolumefactor:
+      case:
+        span.twouphalfdown: 2
+        span.twoupfree: 2
+        span.twoup: 2
+        span.custompromotion: "{{ .Result.uploadvolumefactor_custom }}"
+        "*": 1
+    description:
+      selector: td:nth-child(2)
+      remove: a, b, font, img, span
+# NexusPHP U2-Revision Standard v1.5 Beta 4

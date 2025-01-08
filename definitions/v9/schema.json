@@ -307,7 +307,9 @@
                     "additionalProperties": false,
                     "patternProperties": {
                         "^[A-Za-z0-9_]*$": {
-                            "$ref": "#/definitions/SelectorBlock"
+                            "type": "object",
+                            "$ref": "#/definitions/SelectorBlock",
+                            "not": { "required": ["optional"] }
                         }
                     }
                 },
@@ -316,7 +318,9 @@
                     "additionalProperties": false,
                     "patternProperties": {
                         "^[A-Za-z0-9_]*$": {
-                            "$ref": "#/definitions/SelectorBlock"
+                            "type": "object",
+                            "$ref": "#/definitions/SelectorBlock",
+                            "not": { "required": ["optional"] }
                         }
                     }
                 },
@@ -341,6 +345,17 @@
                         }
                     }
                 }
+            },
+            "if": {
+                "properties": {
+                    "method": {
+                        "const": "get"
+                    }
+                },
+                "required": ["method"]
+            },
+            "then": {
+                "required": ["inputs"]
             },
             "title": "Login"
         },

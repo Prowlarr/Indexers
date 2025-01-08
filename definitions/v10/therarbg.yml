@@ -1,0 +1,121 @@
+---
+id: therarbg
+name: TheRARBG
+description: "TheRARBG is a Public site inspired by RARBG.to for TV / MOVIES / GENERAL"
+language: en-US
+type: public
+encoding: UTF-8
+links:
+  - https://therarbg.to/
+  - https://t-rb.org/
+  - https://the.rarbg.club/
+  - https://trb.archivebay.online/
+  - https://trb.t-pb.org/
+  - https://trb.themirror.wiki/
+  - https://torrentlite.org/ # fork
+  - https://rarbg.unblockninja.com/
+  - https://rarbg.ninjaproxy1.com/
+  - https://rarbg.proxyninja.org/
+  - https://rarbg.proxyninja.net/
+  - https://rarbg.torrentbay.st/
+  - https://rarbg.torrentsbay.org/
+legacylinks:
+  - https://therarbg.com/
+
+caps:
+  categorymappings:
+    - {id: Movies, cat: Movies, desc: "Movies"}
+    - {id: TV, cat: TV, desc: "TV"}
+    - {id: Games, cat: PC/Games, desc: "Games"}
+    - {id: Music, cat: Audio, desc: "Music"}
+    - {id: Anime, cat: TV/Anime, desc: "Anime"}
+    - {id: Documentaries, cat: TV/Documentary, desc: "Documentaries"}
+    - {id: Apps, cat: PC/0day, desc: "Apps"}
+    - {id: Other, cat: Other, desc: "Other"}
+    - {id: Books, cat: Books, desc: "Books"}
+    - {id: XXX, cat: XXX, desc: "XXX"}
+
+  modes:
+    search: [q]
+    tv-search: [q, season, ep]
+    movie-search: [q, imdbid]
+    music-search: [q]
+    book-search: [q]
+
+settings:
+  - name: sort
+    type: select
+    label: Sort requested from site
+    default: -a
+    options:
+      -a: created desc
+      a: created asc
+      -se: seeders desc
+      se: seeders asc
+      -s: size desc
+      s: size asc
+
+download:
+  infohash:
+    hash:
+      selector: :root
+      filters:
+        - name: regexp
+          args: "\"info_hash\": \"([A-F|a-f|0-9]{40})\","
+    title:
+      selector: :root
+      filters:
+        - name: regexp
+          args: "status\": \\w+, \"name\": \"(.+?)\", \"short_name"
+
+search:
+  paths:
+    - path: "get-posts/order:{{ .Config.sort }}{{ range .Categories }}:category:{{.}}{{end}}{{ if or .Query.IMDBID .Keywords }}:keywords:{{ or .Query.IMDBID .Keywords }}{{ else }}:time:10D{{ end }}:paginate_by:100:format:json/"
+      response:
+        type: json
+
+  keywordsfilters:
+    - name: re_replace
+      args: ["\\W+", " "]
+    - name: trim
+
+  rows:
+    selector: results
+
+  fields:
+    category:
+      selector: c
+    title:
+      selector: n
+    _id:
+      selector: pk
+    details_url:
+      selector: n
+      filters:
+        - name: tolower
+        - name: re_replace
+          args: [" ", "-"]
+    details:
+      text: "/post-detail/{{ .Result._id }}/{{ .Result.details_url }}/"
+    download:
+      text: "{{ .Result.details }}?format=json"
+    poster:
+      selector: t
+    imdbid:
+      selector: i
+      filters:
+        - name: replace
+          args: ["B", ""]
+    date:
+      selector: a
+    size:
+      selector: s
+    seeders:
+      selector: se
+    leechers:
+      selector: le
+    downloadvolumefactor:
+      text: 0
+    uploadvolumefactor:
+      text: 1
+# json
