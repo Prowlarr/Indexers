@@ -159,6 +159,7 @@ search:
       selector: td:has(a[href^="download.php?id="]) p:contains("Seeds:") > a:nth-child(2)
     grabs:
       selector: td:has(a[href^="download.php?id="]) p:contains("Seeds:") > a:nth-child(3)
+      optional: true
     downloadvolumefactor:
       case:
         img[src="images/freeleech.gif"]: 0
