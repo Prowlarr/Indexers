@@ -133,7 +133,7 @@ search:
       response:
         type: xml
   inputs:
-    $raw: "{{ .Config.rss_token }}=0&"
+    $raw: "token={{ .Config.rss_token }}&"
     res: "{{ .Config.resolution }}"
     type: "{{ .Config.link_type }}"
     subs: "{{ .Config.subtitles }}"
@@ -155,7 +155,7 @@ search:
       selector: title
       filters:
         - name: regexp
-          args: "^(?:.*) - (Movie(?:\\s\\d+)?)"
+          args: "^(?:.*) \\(?(Movie(?:\\s\\d+)?)\\)?"
       optional: true
     title_is_movie:
       text: "{{ if .Config.include_movie }} - {{ .Result.title_movie }}{{ else }}{{ end }}"
@@ -166,19 +166,19 @@ search:
         - name: regexp
           args: "(?:\\d+ ~ \\d+|\\d+|Movie) (\\(HEVC\\))"
     title_resolution:
-      selector: title
+      selector: resolution
       filters:
         - name: regexp
-          args: "\\[(1080p|720p|SD)\\]"
+          args: "(1080p|720p|SD)"
         - name: replace
           args:
             ["SD", "{{ if .Config.fix_resolution }}480p{{ else }}SD{{ end }}"]
       optional: true
     title_subtitles:
-      selector: title
+      selector: subtitles
       filters:
         - name: regexp
-          args: "\\[(?:1080p|720p|SD)\\]((?:\\[\\w{2}\\])+)"
+          args: "((?:\\[\\w{2}\\])+)"
       optional: true
     title_categories:
       selector: title
