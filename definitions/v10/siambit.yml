@@ -4,7 +4,7 @@ name: SiamBIT
 description: "SiamBIT is a THAI Private Torrent Tracker for GENERAL"
 language: th-TH
 type: private
-encoding: tis-620
+encoding: windows-874
 requestDelay: 2
 links:
   - https://bearbit.org/
