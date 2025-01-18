@@ -110,7 +110,10 @@ search:
     title:
       selector: title
     details:
-      text: "/webui/torrents/permalink/{{ .Result._guid }}"
+      selector: guid
+      filters:
+        - name: prepend
+          args: "/webui/torrents/permalink/"
     date:
       selector: pubDate
     size:
