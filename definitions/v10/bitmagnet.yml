@@ -103,7 +103,6 @@ search:
 
   rows:
     selector: rss > channel > item
-      
   fields:
     title:
       selector: title
