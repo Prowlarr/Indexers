@@ -105,8 +105,6 @@ search:
     selector: rss > channel > item
       
   fields:
-    _guid:
-      selector: guid
     title:
       selector: title
     details:
