@@ -12,15 +12,15 @@ links:
 
 caps:
   categorymappings:
-    - { id: 8, cat: Audio/Audiobook, desc: "Audiobooks" }
-    - { id: 7, cat: Books, desc: "Books" }
-    - { id: 4, cat: PC/Games, desc: "Games" }
-    - { id: 1, cat: Movies, desc: "Movies" }
-    - { id: 3, cat: Audio, desc: "Music" }
-    - { id: 5, cat: PC, desc: "Software" }
-    - { id: 9, cat: Audio/Other, desc: "Podcasts" }
-    - { id: 2, cat: TV, desc: "TV" }
-    - { id: 12, cat: XXX, desc: "XXX" }
+    - {id: 8, cat: Audio/Audiobook, desc: "Audiobooks"}
+    - {id: 7, cat: Books, desc: "Books"}
+    - {id: 4, cat: PC/Games, desc: "Games"}
+    - {id: 1, cat: Movies, desc: "Movies"}
+    - {id: 3, cat: Audio, desc: "Music"}
+    - {id: 5, cat: PC, desc: "Software"}
+    - {id: 9, cat: Audio/Other, desc: "Podcasts"}
+    - {id: 2, cat: TV, desc: "TV"}
+    - {id: 12, cat: XXX, desc: "XXX"}
 
   modes:
     search: [q]
