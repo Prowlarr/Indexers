@@ -144,6 +144,10 @@ login:
     path: index.php
     selector: a[href="logout.php"]
 
+download:
+  headers:
+    Referer: [ "{{ .Config.sitelink }}torrents.php" ]
+
 search:
   paths:
     - path: torrents.php
@@ -159,9 +163,6 @@ search:
     gold: "{{ if .Config.freeleech }}3{{ else }}0{{ end }}"
     order: "{{ .Config.sort }}"
     by: "{{ .Config.type }}"
-
-  headers:
-    Referer: ["{{ .Config.sitelink }}torrents.php"]
 
   rows:
     selector: table.mg-b-0 > tbody > tr:has(a[href^="download.php?id="])
