@@ -60,7 +60,7 @@ login:
 download:
   method: post
   headers:
-    Referer: [ "{{ .Config.sitelink }}torrents.php" ]
+    Referer: ["{{ .Config.sitelink }}torrents.php"]
 
 search:
   paths:
