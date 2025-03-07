@@ -1,95 +1,87 @@
 ---
-id: torrenttip
-name: Torrenttip
-description: "Torrenttip (토렌트팁) is a Public KOREAN tracker for Korean media."
+id: torrentsome
+name: Torrentsome
+description: "Torrentsome is a Public KOREAN tracker for Korean media."
 language: ko-KR
 type: public
 encoding: UTF-8
 followredirect: true
 # to fetch current domain use https://tzip.top/
 links:
-  - https://Torrenttip166.com/
+  - https://torrentsome185.com/
 legacylinks:
-  - https://Torrenttip165.com/
+  - https://torrentsome184.com/
 
 caps:
   categorymappings:
-    - {id: "한국영화", cat: Movies, desc: "한국영화 (Korean Movies)"}
     - {id: "해외영화", cat: Movies/Foreign, desc: "해외영화 (Foreign Movies)"}
+    - {id: "한국영화", cat: Movies, desc: "한국영화 (Korean Movies)"}
     - {id: "해외드라마", cat: TV, desc: "해외드라마 (Foreign TV)"}
     - {id: "한국드라마", cat: TV, desc: "한국드라마 (Korean TV)"}
-    - {id: "넷플릭스 영화", cat: Movies, desc: "넷플릭스 영화 (Netflix Movies)"}
-    - {id: "넷플릭스 시리즈", cat: TV, desc: "넷플릭스 시리즈 (Netflix TV)"}
     - {id: "예능·오락", cat: Audio/Video, desc: "예능·오락 (Entertainment)"}
     - {id: "다큐·교양", cat: TV/Documentary, desc: "다큐·교양 (Documentary)"}
-    - {id: "스포츠", cat: TV/Sport, desc: "스포츠 (Sport)"}
     - {id: "음악", cat: Audio, desc: "음악 (Music)"}
     - {id: "유아·어린이", cat: TV, desc: "유아·어린이 (Children)"}
-    - {id: "유튜브", cat: TV, desc: "유튜브 (Youtube)"}
     - {id: "애니메이션", cat: TV/Anime, desc: "애니메이션 (Anime)"}
     - {id: "만화", cat: Books/Comics, desc: "만화 (Manga)"}
-    - {id: "게임", cat: Console, desc: "게임 (Games)"}
-    - {id: "모바일", cat: PC/Mobile-Other, desc: "모바일 (Mobile)"}
-    - {id: "유틸리티", cat: PC, desc: "유틸리티 (Software)"}
-    - {id: "전자북·강좌", cat: Books/EBook, desc: "전자북·강좌 (EBooks)"}
+    - {id: "넷플릭스 영화", cat: Movies, desc: "넷플릭스 영화 (Netflix Movies)"}
+    - {id: "넷플릭스 시리즈", cat: TV, desc: "넷플릭스 시리즈 (Netflix TV)"}
 
   modes:
     search: [q]
     tv-search: [q, season, ep]
     movie-search: [q]
     music-search: [q]
-    book-search: [q]
 
 settings: []
 
 download:
   infohash:
     hash:
-      selector: div.p-2:has(i.fa-magnet)
+      selector: a[href^="magnet:?xt="]
+      attribute: href
       filters:
         - name: regexp
           args: ([A-F|a-f|0-9]{40})
     title:
-      selector: h1
+      selector: h1.text-base
       filters:
         - name: trim
         - name: validfilename
 
 search:
   paths:
-    # https://torrenttip166.com/search?q=2025&sort=time
-    - path: search
+    # https://torrentsome185.com/search/index?keywords=2025&search_type=0&order=time
+    - path: search/index
   inputs:
-    q: "{{ if .Keywords }}{{ .Keywords }}{{ else }}{{ .Today.Year }}{{ end }}"
-    sort: time
+    keywords: "{{ if .Keywords }}{{ .Keywords }}{{ else }}{{ .Today.Year }}{{ end }}"
+    search_type: 0
+    order: time
 
   rows:
-    selector: ul.page-list > li:has(a[href$=".html"][title])
+    selector: div.topic-item:not(:has(div:nth-child(3):contains("-")))
     filters:
       - name: andmatch
 
   fields:
     category:
-      selector: div:nth-child(2)
-      filters:
-        - name: regexp
-          args: "\\[ (.+?) \\]"
+      selector: a[href^="/v/"] > span
     title:
-      selector: a[href$=".html"][title]
+      selector: a[href^="/v/"]
       attribute: title
     details:
-      selector: a[href$=".html"][title]
+      selector: a[href^="/v/"]
       attribute: href
     download:
-      selector: a[href$=".html"][title]
+      selector: a[href^="/v/"]
       attribute: href
+    size:
+      selector: div:nth-last-child(2)
     date:
-      selector: div:nth-child(3)
+      selector: div:last-child
       filters:
         - name: dateparse
-          args: "yy/MM/dd"
-    size:
-      text: 512MB
+          args: "MM.dd"
     seeders:
       text: 1
     leechers:
