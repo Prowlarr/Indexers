@@ -97,8 +97,10 @@ search:
   keywordsfilters:
     - name: re_replace
       args: ["\\.", " "]
-    - name: re_replace # S2024 to 2024 and S2024E97 to 2024 97
-      args: ["\\b(?:S(\\d{2,4}))(?:E(\\d{2,4}))?\\b", "$1 $2"]
+    # disabled to find better matches as agreed on F1Carreras Discord
+    # searching for "Formula1 2024 97" returns nothing, but "Formula1 S2024E97" works just fine
+    # - name: re_replace # S2024 to 2024 and S2024E97 to 2024 97
+    #   args: ["\\b(?:S(\\d{2,4}))(?:E(\\d{2,4}))?\\b", "$1 $2"]
     - name: trim
 
   rows:
