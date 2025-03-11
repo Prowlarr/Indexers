@@ -705,14 +705,18 @@ cleanup_and_commit() {
 
     # Append to the commit the list of all added, removed, and modified indexers
     if [ -n "$added_indexers" ]; then
-        commit_message+="\nAdded Indexers: $added_indexers"
+        new_commit_msg+=$'\n\n'"Added Indexers: $added_indexers"
     fi
     if [ -n "$removed_indexers" ]; then
-        commit_message+="\nRemoved Indexers: $removed_indexers"
+        new_commit_msg+=$'\n\n'"Removed Indexers: $removed_indexers"
+    fi
+    if [ -n "$modified_indexers" ]; then
+        new_commit_msg+=$'\n\n'"Modified Indexers: $modified_indexers"
     fi
     if [ -n "$newschema_indexers" ]; then
-        commit_message+="\nNew Schema Indexers: $newschema_indexers"
+        new_commit_msg+=$'\n\n'"New Schema Indexers: $newschema_indexers"
     fi
+
     if [ "$pulls_exists" = true ] && [ "$prowlarr_target_branch" != "$PROWLARR_RELEASE_BRANCH" ]; then
         if [ "$existing_message_ln1" = "$prowlarr_jackett_commit_message" ]; then
             git commit --amend -m "$new_commit_msg" -m "$existing_message"
