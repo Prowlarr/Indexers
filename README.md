@@ -40,22 +40,22 @@ To test the definition:
 
 ## Active Versions
 
-- [V11 Indexers](https://github.com/Prowlarr/Prowlarr/commit/886054fdf8e17e27714a8c41911980fff3550e39) - Dev 1.20.0.4590
+- [V11 Indexers](https://github.com/Prowlarr/Prowlarr/commit/886054fdf8e17e27714a8c41911980fff3550e39) - [Dev 1.20.0.4590](https://github.com/Prowlarr/Prowlarr/releases/tag/v1.20.0.4590)
   - Prowlarr Cardigann v11 includes several changes such as
     - Predefined setting type: `info_category_8000`
     - Optional `selectorinputs` and `getselectorinputs` for login section
-- [V10 Indexers](https://github.com/Prowlarr/Prowlarr/commit/f95f67a7ca3e274cd0b5abbac487eb914fccd0bb) - Dev 1.18.0.4543
+- [V10 Indexers](https://github.com/Prowlarr/Prowlarr/commit/f95f67a7ca3e274cd0b5abbac487eb914fccd0bb) - [Dev 1.18.0.4543](https://github.com/Prowlarr/Prowlarr/releases/tag/v1.18.0.4543)
   - Prowlarr Cardigann v10 includes several changes such as
     - Predefined settings type: `info_cookie`, `info_flaresolverr` and `info_useragent`
 
 ## Depreciated Versions
 
-### V1 Indexers
+### V1 Indexers - Legacy Beta
 - Prowlarr Cardigann v1 are base level standard YML
 - No new indexers are to be added to v1 as of 2021-10-13
 - No new updates backported to v1 as of 2021-10-17
 
-### V2 Indexers
+### V2 Indexers - Legacy Beta
 - Prowlarr Cardigann v2 include several changes such as
   - Regex removal for Size parsing
   - Multiple Download Selectors
@@ -66,38 +66,38 @@ To test the definition:
 - No new indexers are to be added to v2 as of 2022-04-18
 - No new updates backported to v2 as of 2022-04-18
 
-### V3 Indexers
+### V3 Indexers - Legacy Beta
 - Prowlarr Cardigann v3 includes support for APIs and JSON
 - Replace `imdb:` selector with `imdbid:`
 - Makes `Description` an optional by default
 - All new Indexers using APIs shall be in v3 as of 2021-10-21
   - Indexers utilizing CategoryDescr or any v4 features MUST be in v4
 
-### [V4 Indexers](https://github.com/Prowlarr/Prowlarr/pull/828) - Dev 0.2.0.1678
+### [V4 Indexers](https://github.com/Prowlarr/Prowlarr/pull/828) - [Dev 0.2.0.1678](https://github.com/Prowlarr/Prowlarr/releases/tag/v0.2.0.1678)
 - Prowlarr Cardigann v4 includes several changes such as
   - TMDBId
   - Genre
   - TraktID
   - CategoryDescr
 
-### [V5 Indexers](https://github.com/Prowlarr/Prowlarr/commit/76afb70b01f4a670d8e402d9a3de05c09611b7ab) - Dev 0.2.0.1678
+### [V5 Indexers](https://github.com/Prowlarr/Prowlarr/commit/76afb70b01f4a670d8e402d9a3de05c09611b7ab) - [Dev 0.2.0.1678](https://github.com/Prowlarr/Prowlarr/releases/tag/v0.2.0.1678)
 - Prowlarr Cardigann v5 includes several changes such as
   - Allow JSON Filters
 
-### [V6 Indexers](https://github.com/Prowlarr/Prowlarr/commit/5ee95e3cc29d1307192320eb82b5a8f1287f00d6) - Dev 0.4.2.1879
+### [V6 Indexers](https://github.com/Prowlarr/Prowlarr/commit/5ee95e3cc29d1307192320eb82b5a8f1287f00d6) - [Dev 0.4.2.1879](https://github.com/Prowlarr/Prowlarr/releases/tag/v0.4.2.1879)
 - Prowlarr Cardigann v6 includes several changes such as
   - `doubanid` support
   - `tmdbid` TV Search Support
 
-### [V7 Indexers](https://github.com/Prowlarr/Prowlarr/commit/ee6467073f64cfaa5ef0de2225f39f0fd0eb5c05) - Dev 0.4.4.1947
+### [V7 Indexers](https://github.com/Prowlarr/Prowlarr/commit/ee6467073f64cfaa5ef0de2225f39f0fd0eb5c05) - [Dev 0.4.4.1947](https://github.com/Prowlarr/Prowlarr/releases/tag/v0.4.4.1947)
 - Prowlarr Cardigann v7 includes several changes such as
     - `Publisher`, `Year`, `Genre`, Query support
 
-### [V8 Indexers](https://github.com/Prowlarr/Prowlarr/commit/1529527af9d2bf09dcd1b540b4c6f95a7dd00bd1) - Dev 1.1.0.2322
+### [V8 Indexers](https://github.com/Prowlarr/Prowlarr/commit/1529527af9d2bf09dcd1b540b4c6f95a7dd00bd1) - [Dev 1.1.0.2322](https://github.com/Prowlarr/Prowlarr/releases/tag/v1.1.0.2322)
 - Prowlarr Cardigann v8 includes several changes such as
     - HtmlEncode and HtmlDecode filters
 
-### [V9 Indexers](https://github.com/Prowlarr/Prowlarr/commit/bceebc34c134db8140a307e25312cb15e0ff5d63) - Dev 1.4.0.3230
+### [V9 Indexers](https://github.com/Prowlarr/Prowlarr/commit/bceebc34c134db8140a307e25312cb15e0ff5d63) - [Dev 1.4.0.3230](https://github.com/Prowlarr/Prowlarr/releases/tag/v1.4.0.3230)
 - Prowlarr Cardigann v9 includes several changes such as
     - AllowEmptyInputs
     - default values
