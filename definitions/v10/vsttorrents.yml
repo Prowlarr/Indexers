@@ -47,10 +47,13 @@ search:
     download:
       selector: .entry-title > a
       attribute: href
+    poster:
+      selector: img[data-src]
+      attribute: data-src
     description:
-      selector: .entry-excerpt
+      selector: .entry-excerpt > p
     date:
-      selector: .entry-meta >  a.post-date
+      selector: .post-date
     size:
       text: "512 MB"
     seeders:
