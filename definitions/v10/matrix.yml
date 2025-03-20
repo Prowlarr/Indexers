@@ -51,12 +51,11 @@ caps:
     music-search: [q]
 
 settings:
-  - name: username
+  - name: cookie
     type: text
-    label: Username
-  - name: password
-    type: password
-    label: Password
+    label: Cookie
+  - name: info_cookie
+    type: info_cookie
   - name: freeleech
     type: checkbox
     label: Search freeleech only
@@ -87,14 +86,10 @@ settings:
     default: "If you do not log in to the site for 6 months, the system will automatically delete it!"
 
 login:
-  path: takelogin.php
-  method: post
+  # using cookie method because login page has embedded Clouflare turnstile
+  method: cookie
   inputs:
-    username: "{{ .Config.username }}"
-    password: "{{ .Config.password }}"
-    logout: ""
-  error:
-    - selector: td.embedded:contains("Hiba")
+    cookie: "{{ .Config.cookie }}"
   test:
     path: /
     selector: a[href*="logout.php?logout="]
@@ -129,6 +124,12 @@ search:
       text: "details.php?id={{ .Result._id }}"
     download:
       text: "download.php?id={{ .Result._id }}"
+    poster:
+      selector: a[onmouseover]
+      attribute: onmouseover
+      filters:
+        - name: regexp
+          args: \\\'(.+?)\\
     imdbid:
       selector: a[href*="imdb.com/title/tt"]
       attribute: href
@@ -147,13 +148,18 @@ search:
       selector: td:nth-child(6)
     leechers:
       selector: td:nth-child(7)
+    _verified:
+      selector: span.torrent-ok, span.torrent-unchecked
+      case:
+        span.torrent-ok: Verified
+        span.torrent-unchecked: Unchecked
     genre:
       selector: td:nth-child(2) > div > i.small
       filters:
         - name: regexp
           args: "\\((.+)\\)"
     description:
-      text: "{{ .Result.genre }}"
+      text: "{{ .Result._verified }} - {{ .Result.genre }}"
     downloadvolumefactor:
       case:
         span.text-red:contains("[x0]"): 0
