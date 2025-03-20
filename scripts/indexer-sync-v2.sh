@@ -697,7 +697,7 @@ cleanup_and_commit() {
             log "ERROR" "THIS IS A NEW CARDIGANN VERSION THAT IS REQUIRED: Version [v$NEW_SCHEMA] is needed."
             log "WARNING" "Review the following definitions for new Cardigann Version: $newschema_indexers"
         else
-            rmdir $NEW_VERS_DIR
+            rmdir "$NEW_VERS_DIR"
         fi
     fi
 
