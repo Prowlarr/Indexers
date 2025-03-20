@@ -36,6 +36,7 @@ removed_indexers=""
 added_indexers=""
 modified_indexers=""
 newschema_indexers=""
+BACKPORT_SKIPPED=false
 declare -A blocklist_map
 for blocked in "${BLOCKLIST[@]}"; do
     blocklist_map["$blocked"]=1
@@ -266,7 +267,7 @@ while getopts "frpzb:m:c:u:j:R:J:n:" opt; do
         # No Arg
         SKIP_BACKPORT=true
         PROWLARR_COMMIT_TEMPLATE_APPEND="[backports skipped - TODO]"
-        log "DEBUG" "SKIP_BACKPORT is $SKIP_BACKPORT. Commit Template will be appended with '$PROWLARR_COMMIT_TEMPLATE_APPEND'"
+        log "DEBUG" "SKIP_BACKPORT is $SKIP_BACKPORT. Commit Template will be appended with '$PROWLARR_COMMIT_TEMPLATE_APPEND' if applicable'"
         ;;
     \?)
         usage
@@ -428,11 +429,7 @@ pull_cherry_and_merge() {
 
     handle_new_indexers
     handle_modified_indexers
-    if [ "$SKIP_BACKPORT" = true ]; then
-        log "DEBUG" "Skipping backporting changes"
-    else
-        handle_backporting_indexers
-    fi
+    handle_backporting_indexers
 }
 
 resolve_conflicts() {
@@ -610,10 +607,17 @@ handle_backporting_indexers() {
                 log "DEBUG" "looking for [$version] indexer of [$indexer]"
                 indexer_check=$(echo "$indexer" | sed -E "s/v[0-9]+/$version/")
                 if [ "$indexer_check" != "$indexer" ] && [ -f "$indexer_check" ]; then
-                    log "INFO" "Found [v$i] indexer for [$indexer] - comparing to [$indexer_check]"
-                    log "WARN" "HUMAN! Review this change and ensure no incompatible updates are backported."
-                    git difftool --no-index "$indexer" "$indexer_check"
-                    git add "$indexer_check"
+                    if [ "$SKIP_BACKPORT" = true ]; then
+                        log "INFO" "Found [v$i] indexer for [$indexer] - Skipping backporting changes"
+                        log "DEBUG" "Skipping backporting changes. Skipping further backport checks."
+                        BACKPORT_SKIPPED=true # Sets the wider variable
+                        return 0              # Exits the function early
+                    else
+                        log "INFO" "Found [v$i] indexer for [$indexer] - comparing to [$indexer_check]"
+                        log "WARN" "HUMAN! Review this change and ensure no incompatible updates are backported."
+                        git difftool --no-index "$indexer" "$indexer_check"
+                        git add "$indexer_check"
+                    fi
                 fi
             done
         done
@@ -701,8 +705,10 @@ cleanup_and_commit() {
 
     log "WARNING" "After review; the script will commit the changes and push as/if specified."
     read -r -p "Press any key to continue or [Ctrl-C] to abort. Waiting for human review..." -n1 -s
-    new_commit_msg="$PROWLARR_COMMIT_TEMPLATE $jackett_recent_commit [$(date -u +'%Y-%m-%dT%H:%M:%SZ')] $PROWLARR_COMMIT_TEMPLATE_APPEND"
-
+    new_commit_msg="$PROWLARR_COMMIT_TEMPLATE $jackett_recent_commit [$(date -u +'%Y-%m-%dT%H:%M:%SZ')]"
+    if [ "$BACKPORT_SKIPPED" = true ]; then
+        new_commit_msg+=" $PROWLARR_COMMIT_TEMPLATE_APPEND"
+    fi
     # Append to the commit the list of all added, removed, and modified indexers
     if [ -n "$added_indexers" ]; then
         new_commit_msg+=$'\n\n'"Added Indexers: $added_indexers"
