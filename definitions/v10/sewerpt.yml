@@ -25,11 +25,19 @@ caps:
     music-search: [q]
 
 settings:
-  - name: cookie
+  - name: username
     type: text
-    label: Cookie
-  - name: info_cookie
-    type: info_cookie
+    label: Username
+  - name: password
+    type: password
+    label: Password
+  - name: 2facode
+    type: text
+    label: 2FA code
+  - name: info_2fa
+    type: info
+    label: "About 2FA code"
+    default: "Only fill in the <b>2FA code</b> box if you have enabled <b>2FA</b> on the SewerPT Web Site. Otherwise just leave it empty."
   - name: freeleech
     type: checkbox
     label: Search freeleech only
@@ -57,12 +65,22 @@ settings:
   - name: info_activity
     type: info
     label: Account Inactivity
-    default: "Account retention rules:<ol><li>Dou Sheng users and above will be retained forever</li><li>Dou Huang and above will not have their account deleted after parking (in the control panel)</li><li>Users with a parked account will be deleted if they do not log in for 180 consecutive days</li><li>Users with a non-parked account will be banned if they do not log in for 45 consecutive days</li><li>Users with no traffic (ie, upload/download data are both 0) will be banned if they do not log in for 7 consecutive days.</li></ol>"
+    default: "Account retention rules:<ol><li>Ultimate User and above will be retained forever</li><li>Veteran Users and above will not be deleted after parking (in the control panel)</li><li>Users with a parked account will be banned if they do not log in for 400 consecutive days</li><li>Users who do not log in for 30 consecutive days will be banned</li><li>Newly registered users with no traffic within 7 days, will be banned.</li></ol>"
 
 login:
-  method: cookie
+  path: login.php
+  method: form
+  form: form[action="takelogin.php"]
   inputs:
-    cookie: "{{ .Config.cookie }}"
+    secret: ""
+    username: "{{ .Config.username }}"
+    password: "{{ .Config.password }}"
+    two_step_code: "{{ .Config.2facode }}"
+    ssl: yes
+    trackerssl: yes
+  error:
+    - selector: td.embedded:has(h2:contains("失败"))
+    - selector: td.embedded:has(:contains("两步验证"))
   test:
     path: index.php
     selector: a[href="logout.php"]
@@ -153,3 +171,4 @@ search:
       selector: td.rowfollow:nth-child(2)
       remove: a, font, img, span
 # NexusPHP v1.8.15 2024-12-23
+
