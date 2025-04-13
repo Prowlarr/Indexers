@@ -42,6 +42,10 @@ settings:
     options:
       desc: desc
       asc: asc
+  - name: info_activity
+    type: info
+    label: Account Inactivity
+    default: "Inactive accounts will be deleted according to the following rules:<ol><li> Power Users and above will never have their accounts deleted.</li><li>Users and above will never have their accounts deleted if they park their accounts (See [User CP]).</li><li>Parked accounts will be deleted if they do not log in within 365 days.</li><li>Unparked accounts will be deleted if they do not log in within 240 days.</li><li>Inactive accounts downloading or uploading on the tracker will be deleted after 240 days of not logging in or after 120 days from the time of registration.</li></ol>"
 
 login:
   # switched from the form method to the cookie method due to https://github.com/Prowlarr/Prowlarr/issues/792
@@ -57,7 +61,7 @@ search:
     # https://tracker.hqmusic.info/torrents.php?search=&search_area=0&search_mode=0&incldead=0&haslog=0&cue=0&cover=0&tracks=0&spstate=0
     - path: torrents.php
   inputs:
-    search: "{{ if .Query.Artist }}{{ .Query.Artist }}{{ else }}{{ end }}{{ if .Query.Album }} {{ .Query.album }}{{ else }}{{ end }}{{ if or .Query.Artist .Query.Album }}{{ else }}{{ .Keywords }}{{ end }}"
+    search: "{{ if .Query.Artist }}{{ .Query.Artist }}{{ else }}{{ end }}{{ if .Query.Album }} {{ .Query.Album }}{{ else }}{{ end }}{{ if or .Query.Artist .Query.Album }}{{ else }}{{ .Keywords }}{{ end }}"
     # 0 title, 1 descr, 3 uploader, 4 imdburl
     search_area: 0
     # 0 AND, 1 OR, 2 exact
