@@ -17,7 +17,7 @@ caps:
     - {id: 405, cat: TV/Anime, desc: "动漫 / Animations"}
     - {id: 408, cat: Audio, desc: "音乐 / Music"}
     - {id: 409, cat: Other, desc: "其他 / Misc"}
-    
+
   modes:
     search: [q]
     tv-search: [q, season, ep]
@@ -171,4 +171,3 @@ search:
       selector: td.rowfollow:nth-child(2)
       remove: a, font, img, span
 # NexusPHP v1.8.15 2024-12-23
-
