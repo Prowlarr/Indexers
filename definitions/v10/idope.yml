@@ -70,6 +70,10 @@ search:
     - path: "{{ if .Keywords }}torrent-list/{{ .Keywords }}?o={{ .Config.sort }}&c={{ range .Categories }}{{.}}{{end}}{{ else }}browse.html{{ end }}"
     - path: "{{ if .Keywords }}torrent-list/{{ .Keywords }}?p=2&o={{ .Config.sort }}&c={{ range .Categories }}{{.}}{{end}}{{ else }}browse.html?&p=2{{ end }}"
 
+  headers:
+    # Using a custom user-agent to return the desktop layout.
+    User-Agent: ["Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.203"]
+
   rows:
     selector: div.resultdiv
 
