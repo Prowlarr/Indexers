@@ -1,0 +1,240 @@
+---
+id: dontorrent
+name: Don Torrent
+description: "Patrocinado por el Ministerio de Bloqueos y Censura de Dominios. Gobierno de España."
+language: es-ES
+type: public
+encoding: UTF-8
+followredirect: false
+testlinktorrent: true
+requestDelay: 2.5
+links:
+  - https://dontorrent.group/
+legacylinks:
+  - https://dontorrent.website/
+  - https://dontorrent.stream/
+  - https://dontorrent.schule/
+  - https://dontorrent.webcam/
+  - https://dontorrent.trade/
+  - https://dontorrent.tube/
+  - https://dontorrent.games/
+  - https://dontorrent.wiki/
+  - https://dontorrent.football/
+  - https://dontorrent.auction/
+  - https://dontorrent.co/
+  - https://dontorrent.foundation/
+  - https://dontorrent.yoga/
+  - https://dontorrent.gallery/
+  - https://dontorrent.fashion/
+  - https://dontorrent.equipment/
+  - https://dontorrent.gratis/
+  - https://dontorrent.faith/
+  - https://dontorrent.exposed/
+  - https://dontorrent.education/
+  - https://dontorrent.email/
+  - https://dontorrent.date/
+  - https://dontorrent.earth/
+  - https://dontorrent.cricket/
+  - https://dontorrent.dance/
+  - https://dontorrent.cologne/
+  - https://dontorrent.city/
+  - https://dontorrent.esq/
+  - https://dontorrent.cc/
+  - https://dontorrent.sbs/
+  - https://dontorrent.fyi/
+  - https://dontorrent.icu/
+  - https://dontorrent.clothing/
+  - https://dontorrent.business/
+  - https://dontorrent.miami/
+  - https://dontorrent.boutique/
+  - https://dontorrent.directory/
+  - https://dontorrent.skin/
+  - https://dontorrent.agency/
+  - https://dontorrent.cyou/
+  - https://dontorrent.cooking/
+  - https://dontorrent.center/
+  - https://dontorrent.band/
+  - https://dontorrent.makeup/
+  - https://dontorrent.yokohama/
+  - https://dontorrent.capetown/
+  - https://dontorrent.nagoya/
+  - https://dontorrent.wales/
+  - https://dontorrent.joburg/
+  - https://dontorrent.party/
+  - https://dontorrent.nexus/
+  - https://dontorrent.quest/
+  - https://dontorrent.rsvp/
+  - https://dontorrent.hair/
+  - https://dontorrent.foo/
+  - https://dontorrent.boo/
+  - https://dontorrent.day/
+  - https://dontorrent.mov/
+  - https://dontorrent.zip/
+  - https://dontorrent.dad/
+  - https://dontorrent.discount/
+  - https://dontorrent.company/
+  - https://dontorrent.observer/
+  - https://dontorrent.cash/
+  - https://dontorrent.care/
+  - https://dontorrent.ms/
+  - https://dontorrent.pictures/
+  - https://dontorrent.africa/
+  - https://dontorrent.cloud/
+  - https://dontorrent.love/
+  - https://dontorrent.ninja/
+  - https://dontorrent.plus/
+  - https://dontorrent.chat/
+  - https://dontorrent.casa/
+  - https://dontorrent.how/
+  - https://dontorrent.surf/
+  - https://dontorrent.beer/
+  - https://dontorrent.blue/
+  - https://dontorrent.army/
+  - https://dontorrent.mba/
+  - https://dontorrent.futbol/
+  - https://dontorrent.fail/
+  - https://donproxies.com/
+  - https://dontorrent.click/
+  - https://dontorrent.gy/
+  - https://dontorrent.gs/
+  - https://dontorrent.me/
+  - https://dontorrent.ltd/
+  - https://dontorrent.fans/
+  - https://dontorrent.uno/
+  - https://dontorrent.ist/
+  - https://dontorrent.vin/
+  - https://dontorrent.tf/
+  - https://dontorrent.pub/
+  - https://dontorrent.moe/
+  - https://dontorrent.soy/
+  - https://dontorrent.pet/
+  - https://dontorrent.bid/
+  - https://dontorrent.dev/
+  - https://dontorrent.dog/
+  - https://dontorrent.vet/
+  - https://dontorrent.yt/
+  - https://dontorrent.kim/
+  - https://dontorrent.ink/
+  - https://dontorrent.fi/
+  - https://dontorrent.wtf/
+  - https://dontorrent.nl/
+  - https://dontorrent.top/
+  - https://dontorrent.si/
+  - https://dontorrent.li/
+  - https://dontorrent.art/
+  - https://dontorrent.men/
+caps:
+  categorymappings: # Dummy category mappings for post-fetch results filtering
+    - {id: "1000", cat: "Movies", desc: "Películas"}
+    - {id: "2000", cat: "TV", desc: "Series"}
+    - {id: "4000", cat: "Audio", desc: "Música"}
+    - {id: "5000", cat: "Console", desc: "Juegos Consola (genérico)"}
+    - {id: "5001", cat: "Console/PSP", desc: "Juegos PSP"}
+    - {id: "5002", cat: "Console/Other", desc: "Juegos PS2 / Otros"}
+    - {id: "5003", cat: "PC/Games", desc: "Juegos PC"}
+    - {id: "6000", cat: "Other", desc: "Variados"}
+    - {id: "2030", cat: "Movies/SD", desc: "DVDRip / HDRip"}
+    - {id: "2040", cat: "Movies/HD", desc: "MicroHD / BluRay"}
+    - {id: "2045", cat: "Movies/UHD", desc: "4K"}
+    - {id: "2050", cat: "Movies/BluRay", desc: "BDRemux"}
+    - {id: "3030", cat: "TV/SD", desc: "HDTV 720p"}
+    - {id: "3040", cat: "TV/HD", desc: "HDTV 1080p"}
+  modes:
+    search: [q]
+settings: []
+search:
+  paths:
+    - path: "buscar/{{ .Keywords }}"
+  inputs:
+    q: "{{ .Keywords }}"
+  rows:
+    selector: "p:has(a.text-decoration-none)"
+  fields:
+    title:
+      selector: "a.text-decoration-none"
+      attribute: "text"
+    details:
+      selector: "a.text-decoration-none"
+      attribute: "href"
+      filters:
+        - name: prepend
+          args: ["https://dontorrent.group"]
+    category:
+      # Used for filtering by category (e.g. Movies, TV, Audio...)
+      selector: "span.badge"
+      attribute: "text"
+      filters:
+        - name: tolower
+        - name: replace
+          args: ["película", "Movies"]
+        - name: replace
+          args: ["serie", "TV"]
+        - name: replace
+          args: ["música", "Audio"]
+        - name: replace
+          args: ["juego psp", "Console/PSP"]
+        - name: replace
+          args: ["juego ps2", "Console/Other"]
+        - name: replace
+          args: ["juego pc", "PC/Games"]
+        - name: replace
+          args: ["juego", "Console"]
+        - name: replace
+          args: ["variado", "Other"]
+    description:
+      # Used for filtering by quality (e.g. 4k, BluRay, DVDRip...)
+      selector: "span:nth-of-type(2)"
+      attribute: "text"
+      filters:
+        - name: tolower
+        - name: replace
+          args: ["[()]", ""]
+        - name: replace
+          args: ["hdtv-1080p", "TV/HD"]
+        - name: replace
+          args: ["hdtv-720p", "TV/SD"]
+        - name: replace
+          args: ["hdtv", "TV/SD"]
+        - name: replace
+          args: ["dvdrip-sonido vhs", "Movies/SD"]
+        - name: replace
+          args: ["br-screener", "Movies/SD"]
+        - name: replace
+          args: ["dvdscreener", "Movies/SD"]
+        - name: replace
+          args: ["hdrip", "Movies/SD"]
+        - name: replace
+          args: ["dvdrip", "Movies/SD"]
+        - name: replace
+          args: ["microhd-1080p", "Movies/HD"]
+        - name: replace
+          args: ["bluray-720p", "Movies/HD"]
+        - name: replace
+          args: ["bluray-1080p", "Movies/HD"]
+        - name: replace
+          args: ["bdremux-1080p", "Movies/BluRay"]
+        - name: replace
+          args: ["4k", "Movies/UHD"]
+    seeders:
+      default: 1
+      optional: true
+    size:
+      default: 1
+      optional: true
+    download:
+      selector: a.text-decoration-none
+      attribute: href
+      filters:
+        - name: prepend
+          args: ["https://dontorrent.group"]
+download:
+  before:
+    pathselector:
+      selector: a[href$='.torrent']
+      attribute: href
+  selectors:
+    - selector: a[href$='.torrent']
+      attribute: href
+      filters:
+        - name: prepend
+          args: ["https://dontorrent.group"]
