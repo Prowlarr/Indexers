@@ -5,9 +5,7 @@ description: "Patrocinado por el Ministerio de Bloqueos y Censura de Dominios. G
 language: es-ES
 type: public
 encoding: UTF-8
-followredirect: false
-testlinktorrent: true
-requestDelay: 2.5
+followredirect: true
 links:
   - https://dontorrent.group/
 legacylinks:
@@ -123,8 +121,9 @@ legacylinks:
   - https://dontorrent.li/
   - https://dontorrent.art/
   - https://dontorrent.men/
+
 caps:
-  categorymappings: # Dummy category mappings for post-fetch results filtering
+  categorymappings:
     - {id: "1000", cat: "Movies", desc: "Películas"}
     - {id: "2000", cat: "TV", desc: "Series"}
     - {id: "4000", cat: "Audio", desc: "Música"}
@@ -133,108 +132,118 @@ caps:
     - {id: "5002", cat: "Console/Other", desc: "Juegos PS2 / Otros"}
     - {id: "5003", cat: "PC/Games", desc: "Juegos PC"}
     - {id: "6000", cat: "Other", desc: "Variados"}
-    - {id: "2030", cat: "Movies/SD", desc: "DVDRip / HDRip"}
-    - {id: "2040", cat: "Movies/HD", desc: "MicroHD / BluRay"}
-    - {id: "2045", cat: "Movies/UHD", desc: "4K"}
-    - {id: "2050", cat: "Movies/BluRay", desc: "BDRemux"}
-    - {id: "3030", cat: "TV/SD", desc: "HDTV 720p"}
-    - {id: "3040", cat: "TV/HD", desc: "HDTV 1080p"}
+    - {id: "1001", cat: "Movies/SD", desc: "DVDRip / HDRip"}
+    - {id: "1002", cat: "Movies/HD", desc: "MicroHD / BluRay"}
+    - {id: "1003", cat: "Movies/UHD", desc: "4K"}
+    - {id: "1004", cat: "Movies/BluRay", desc: "BDRemux"}
+    - {id: "2001", cat: "TV/SD", desc: "HDTV 720p"}
+    - {id: "2002", cat: "TV/HD", desc: "HDTV 1080p"}
+    - {id: "2003", cat: "TV/Documentary", desc: "Documental"}
   modes:
     search: [q]
+    tv-search: [q]
+    movie-search: [q]
+    music-search: [q]
+
 settings: []
-search:
-  paths:
-    - path: "buscar/{{ .Keywords }}"
-  inputs:
-    q: "{{ .Keywords }}"
-  rows:
-    selector: "p:has(a.text-decoration-none)"
-  fields:
-    title:
-      selector: "a.text-decoration-none"
-      attribute: "text"
-    details:
-      selector: "a.text-decoration-none"
-      attribute: "href"
-      filters:
-        - name: prepend
-          args: ["https://dontorrent.group"]
-    category:
-      # Used for filtering by category (e.g. Movies, TV, Audio...)
-      selector: "span.badge"
-      attribute: "text"
-      filters:
-        - name: tolower
-        - name: replace
-          args: ["película", "Movies"]
-        - name: replace
-          args: ["serie", "TV"]
-        - name: replace
-          args: ["música", "Audio"]
-        - name: replace
-          args: ["juego psp", "Console/PSP"]
-        - name: replace
-          args: ["juego ps2", "Console/Other"]
-        - name: replace
-          args: ["juego pc", "PC/Games"]
-        - name: replace
-          args: ["juego", "Console"]
-        - name: replace
-          args: ["variado", "Other"]
-    description:
-      # Used for filtering by quality (e.g. 4k, BluRay, DVDRip...)
-      selector: "span:nth-of-type(2)"
-      attribute: "text"
-      filters:
-        - name: tolower
-        - name: replace
-          args: ["[()]", ""]
-        - name: replace
-          args: ["hdtv-1080p", "TV/HD"]
-        - name: replace
-          args: ["hdtv-720p", "TV/SD"]
-        - name: replace
-          args: ["hdtv", "TV/SD"]
-        - name: replace
-          args: ["dvdrip-sonido vhs", "Movies/SD"]
-        - name: replace
-          args: ["br-screener", "Movies/SD"]
-        - name: replace
-          args: ["dvdscreener", "Movies/SD"]
-        - name: replace
-          args: ["hdrip", "Movies/SD"]
-        - name: replace
-          args: ["dvdrip", "Movies/SD"]
-        - name: replace
-          args: ["microhd-1080p", "Movies/HD"]
-        - name: replace
-          args: ["bluray-720p", "Movies/HD"]
-        - name: replace
-          args: ["bluray-1080p", "Movies/HD"]
-        - name: replace
-          args: ["bdremux-1080p", "Movies/BluRay"]
-        - name: replace
-          args: ["4k", "Movies/UHD"]
-    seeders:
-      default: 1
-      optional: true
-    size:
-      default: 1
-      optional: true
-    download:
-      selector: a.text-decoration-none
-      attribute: href
-      filters:
-        - name: prepend
-          args: ["https://dontorrent.group"]
+
 download:
-  before:
-    pathselector:
-      selector: a[href$='.torrent']
-      attribute: href
   selectors:
     - selector: a[href$='.torrent']
       attribute: href
+
+search:
+  paths:
+    - path: "{{ if .Keywords }}buscar/{{ .Keywords }}{{ else }}ultimos{{ end }}"
+  rows:
+    selector: p:has(a.text-decoration-none), a.text-primary
+  fields:
+    _category:
+      selector: "span.badge"
       filters:
-        - name: prepend
-          args: ["https://dontorrent.group"]
+        - name: tolower
+    _quality:
+      selector: "span:not(:has(a))"
+      default: "unknown"
+      filters:
+        - name: tolower
+        - name: re_replace
+          args: ["[()]", ""]
+    category:
+      filters:
+        - name: re_replace
+          args: [".*", ""]
+        - name: append
+          args: "{{ .Result._category }}/{{ .Result._quality }}"
+        - name: replace
+          args: ["película/dvdrip-sonido vhs", "1001"]
+        - name: replace
+          args: ["película/br-screener", "1001"]
+        - name: replace
+          args: ["película/dvdscreener", "1001"]
+        - name: replace
+          args: ["película/screener", "1001"]
+        - name: replace
+          args: ["película/vhsrip", "1001"]
+        - name: replace
+          args: ["película/vhsscreener", "1001"]
+        - name: replace
+          args: ["película/hdrip", "1001"]
+        - name: replace
+          args: ["película/dvdrip", "1001"]
+        - name: replace
+          args: ["película/microhd-720p", "1002"]
+        - name: replace
+          args: ["película/microhd-1080p", "1002"]
+        - name: replace
+          args: ["película/bluray-720p", "1002"]
+        - name: replace
+          args: ["película/bluray-1080p", "1002"]
+        - name: replace
+          args: ["película/bdremux-1080p", "1004"]
+        - name: replace
+          args: ["película/4k", "1003"]
+        - name: replace
+          args: ["serie/hdtv-1080p", "2002"]
+        - name: replace
+          args: ["serie/hdtv-720p", "2001"]
+        - name: replace
+          args: ["serie/hdtv", "2001"]
+        - name: replace
+          args: ["serie/documental", "2003"]
+        - name: replace
+          args: ["película/unknown", "1000"]
+        - name: replace
+          args: ["serie/unknown", "2000"]
+        - name: replace
+          args: ["música/unknown", "4000"]
+        - name: replace
+          args: ["juego psp/unknown", "5001"]
+        - name: replace
+          args: ["juego ps2/unknown", "5002"]
+        - name: replace
+          args: ["juego pc/unknown", "5003"]
+        - name: replace
+          args: ["juego/unknown", "5000"]
+        - name: replace
+          args: ["variado/unknown", "6000"]
+    title:
+      selector: a.text-decoration-none
+    details:
+      selector: a.text-decoration-none
+      attribute: href
+    download:
+      selector: a.text-decoration-none
+      attribute: href
+    date:
+      text: now
+    files:
+      text: 1
+    files:
+      text: 1
+    size:
+      text: "4.5 GB"
+    seeders:
+      text: 1
+    leechers:
+      text: 1
