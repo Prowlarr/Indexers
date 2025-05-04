@@ -8,119 +8,6 @@ encoding: UTF-8
 followredirect: true
 links:
   - https://dontorrent.group/
-legacylinks:
-  - https://dontorrent.website/
-  - https://dontorrent.stream/
-  - https://dontorrent.schule/
-  - https://dontorrent.webcam/
-  - https://dontorrent.trade/
-  - https://dontorrent.tube/
-  - https://dontorrent.games/
-  - https://dontorrent.wiki/
-  - https://dontorrent.football/
-  - https://dontorrent.auction/
-  - https://dontorrent.co/
-  - https://dontorrent.foundation/
-  - https://dontorrent.yoga/
-  - https://dontorrent.gallery/
-  - https://dontorrent.fashion/
-  - https://dontorrent.equipment/
-  - https://dontorrent.gratis/
-  - https://dontorrent.faith/
-  - https://dontorrent.exposed/
-  - https://dontorrent.education/
-  - https://dontorrent.email/
-  - https://dontorrent.date/
-  - https://dontorrent.earth/
-  - https://dontorrent.cricket/
-  - https://dontorrent.dance/
-  - https://dontorrent.cologne/
-  - https://dontorrent.city/
-  - https://dontorrent.esq/
-  - https://dontorrent.cc/
-  - https://dontorrent.sbs/
-  - https://dontorrent.fyi/
-  - https://dontorrent.icu/
-  - https://dontorrent.clothing/
-  - https://dontorrent.business/
-  - https://dontorrent.miami/
-  - https://dontorrent.boutique/
-  - https://dontorrent.directory/
-  - https://dontorrent.skin/
-  - https://dontorrent.agency/
-  - https://dontorrent.cyou/
-  - https://dontorrent.cooking/
-  - https://dontorrent.center/
-  - https://dontorrent.band/
-  - https://dontorrent.makeup/
-  - https://dontorrent.yokohama/
-  - https://dontorrent.capetown/
-  - https://dontorrent.nagoya/
-  - https://dontorrent.wales/
-  - https://dontorrent.joburg/
-  - https://dontorrent.party/
-  - https://dontorrent.nexus/
-  - https://dontorrent.quest/
-  - https://dontorrent.rsvp/
-  - https://dontorrent.hair/
-  - https://dontorrent.foo/
-  - https://dontorrent.boo/
-  - https://dontorrent.day/
-  - https://dontorrent.mov/
-  - https://dontorrent.zip/
-  - https://dontorrent.dad/
-  - https://dontorrent.discount/
-  - https://dontorrent.company/
-  - https://dontorrent.observer/
-  - https://dontorrent.cash/
-  - https://dontorrent.care/
-  - https://dontorrent.ms/
-  - https://dontorrent.pictures/
-  - https://dontorrent.africa/
-  - https://dontorrent.cloud/
-  - https://dontorrent.love/
-  - https://dontorrent.ninja/
-  - https://dontorrent.plus/
-  - https://dontorrent.chat/
-  - https://dontorrent.casa/
-  - https://dontorrent.how/
-  - https://dontorrent.surf/
-  - https://dontorrent.beer/
-  - https://dontorrent.blue/
-  - https://dontorrent.army/
-  - https://dontorrent.mba/
-  - https://dontorrent.futbol/
-  - https://dontorrent.fail/
-  - https://donproxies.com/
-  - https://dontorrent.click/
-  - https://dontorrent.gy/
-  - https://dontorrent.gs/
-  - https://dontorrent.me/
-  - https://dontorrent.ltd/
-  - https://dontorrent.fans/
-  - https://dontorrent.uno/
-  - https://dontorrent.ist/
-  - https://dontorrent.vin/
-  - https://dontorrent.tf/
-  - https://dontorrent.pub/
-  - https://dontorrent.moe/
-  - https://dontorrent.soy/
-  - https://dontorrent.pet/
-  - https://dontorrent.bid/
-  - https://dontorrent.dev/
-  - https://dontorrent.dog/
-  - https://dontorrent.vet/
-  - https://dontorrent.yt/
-  - https://dontorrent.kim/
-  - https://dontorrent.ink/
-  - https://dontorrent.fi/
-  - https://dontorrent.wtf/
-  - https://dontorrent.nl/
-  - https://dontorrent.top/
-  - https://dontorrent.si/
-  - https://dontorrent.li/
-  - https://dontorrent.art/
-  - https://dontorrent.men/
 
 caps:
   categorymappings:
@@ -160,13 +47,9 @@ search:
     _quality:
       selector: "span:not(.badge)"
       filters:
-        - name: strdump
-          args: dl_href_in
         - name: regexp
           args: "\\(([^()]+)\\)(?= *(Película|Serie)\\s*$)"
         - name: tolower
-        - name: strdump
-          args: dl_href_in
     category:
       text: "{{ .Result._category }}/{{ .Result._quality }}"
       filters:
