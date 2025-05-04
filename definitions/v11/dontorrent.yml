@@ -147,11 +147,6 @@ caps:
 
 settings: []
 
-download:
-  selectors:
-    - selector: a[href$='.torrent']
-      attribute: href
-
 search:
   paths:
     - path: "{{ if .Keywords }}buscar/{{ .Keywords }}{{ else }}ultimos{{ end }}"
@@ -163,18 +158,18 @@ search:
       filters:
         - name: tolower
     _quality:
-      selector: "span:not(:has(a))"
-      default: "unknown"
+      selector: "span:not(.badge)"
       filters:
+        - name: strdump
+          args: dl_href_in
+        - name: regexp
+          args: "\\(([^()]+)\\)(?= *(Película|Serie)\\s*$)"
         - name: tolower
-        - name: re_replace
-          args: ["[()]", ""]
+        - name: strdump
+          args: dl_href_in
     category:
+      text: "{{ .Result._category }}/{{ .Result._quality }}"
       filters:
-        - name: re_replace
-          args: [".*", ""]
-        - name: append
-          args: "{{ .Result._category }}/{{ .Result._quality }}"
         - name: replace
           args: ["película/dvdrip-sonido vhs", "1001"]
         - name: replace
@@ -210,23 +205,23 @@ search:
         - name: replace
           args: ["serie/hdtv", "2001"]
         - name: replace
-          args: ["serie/documental", "2003"]
+          args: ["documental/", "2003"]
         - name: replace
-          args: ["película/unknown", "1000"]
+          args: ["película/", "1000"]
         - name: replace
-          args: ["serie/unknown", "2000"]
+          args: ["serie/", "2000"]
         - name: replace
-          args: ["música/unknown", "4000"]
+          args: ["música/", "4000"]
         - name: replace
-          args: ["juego psp/unknown", "5001"]
+          args: ["juego psp/", "5001"]
         - name: replace
-          args: ["juego ps2/unknown", "5002"]
+          args: ["juego ps2/", "5002"]
         - name: replace
-          args: ["juego pc/unknown", "5003"]
+          args: ["juego pc/", "5003"]
         - name: replace
-          args: ["juego/unknown", "5000"]
+          args: ["juego/", "5000"]
         - name: replace
-          args: ["variado/unknown", "6000"]
+          args: ["variado/", "6000"]
     title:
       selector: a.text-decoration-none
     details:
@@ -247,3 +242,8 @@ search:
       text: 1
     leechers:
       text: 1
+
+download:
+  selectors:
+    - selector: a[href$='.torrent']
+      attribute: href
