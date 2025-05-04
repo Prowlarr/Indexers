@@ -234,8 +234,6 @@ search:
       text: now
     files:
       text: 1
-    files:
-      text: 1
     size:
       text: "4.5 GB"
     seeders:
