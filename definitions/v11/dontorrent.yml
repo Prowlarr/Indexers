@@ -28,7 +28,6 @@ caps:
     - {id: "2003", cat: "TV/Documentary", desc: "Documental"}
   modes:
     search: [q]
-    tv-search: [q]
     movie-search: [q]
     music-search: [q]
 
