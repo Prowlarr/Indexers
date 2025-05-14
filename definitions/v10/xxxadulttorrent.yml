@@ -23,13 +23,13 @@ download:
       attribute: href
 
 search:
-  headers:
-    User-Agent: ["Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.203"]
-
   paths:
     # https://xxxadulttorrent.org/search/vika
     # https://xxxadulttorrent.org/browse/0/0/0/0
     - path: "{{ if .Keywords }}search/{{ .Keywords }}{{ else }}browse/0/0/0/0{{ end }}"
+
+  headers:
+    User-Agent: ["Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.203"]
 
   rows:
     # filter out torrents with 0B for issue #9756
