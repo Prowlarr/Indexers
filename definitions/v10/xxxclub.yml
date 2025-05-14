@@ -54,8 +54,7 @@ search:
     - path: "torrents/{{ if .Keywords }}search?q={{ .Keywords }}&{{ else }}browse/all/?{{ end }}sort={{ .Config.sort }}&order={{ .Config.type }}"
 
   headers:
-    # site blocks Prowlarr's UAs
-    User-Agent: ["Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.35"]
+    User-Agent: ["Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.203"]
 
   rows:
     selector: div.browsetableinside > ul > li:not(:first-child)
