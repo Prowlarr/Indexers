@@ -1,12 +1,14 @@
 ---
 id: ncore
 name: nCore
-description: "nCore is a Hungarian Private Torrent Tracker for Movies/Series/General"
+description: "nCore is a HUNGARIAN Private Torrent Tracker for MOVIES / TV / GENERAL"
 language: hu-HU
 type: private
 encoding: UTF-8
 links:
   - https://ncore.pro/
+legacylinks:
+  - https://ncore.cc/
 
 caps:
   categorymappings:
@@ -51,10 +53,10 @@ caps:
 
   modes:
     search: [q]
-    tv-search: [q, season, ep]
-    movie-search: [q, imdbid]
-    music-search: [q]
-    book-search: [q]
+    tv-search: [q, season, ep, imdbid, genre]
+    movie-search: [q, imdbid, genre]
+    music-search: [q, genre]
+    book-search: [q, genre]
 
 settings:
   - name: username
@@ -70,11 +72,18 @@ settings:
     type: info
     label: "About 2FA code"
     default: "Only fill in the <b>2FA code</b> box if you have enabled <b>2FA</b> on the nCore Web Site. Otherwise just leave it empty."
+  - name: info_tpp
+    type: info
+    label: Results Per Page
+    default: For best results, change the <b>Torrent oldalanként:</b> setting to <b>100</b> on your account profile.
+  - name: info_activity
+    type: info
+    label: Account Inactivity
+    default: "Anyone who does not access the site for 8 weeks from registration or has been more than 8 weeks since their last stay will be automatically suspended. Anyone who does not log in (stays inactive) for 12 weeks after registration or after their last visit will be removed automatically."
 
 login:
-  method: form
-  path: login.php?set_lang=en
-  submitpath: login.php
+  method: post
+  path: login.php
   inputs:
     nev: "{{ .Config.username }}"
     pass: "{{ .Config.password }}"
@@ -83,88 +92,98 @@ login:
     set_lang: "en"
     submitted: "1"
   error:
-    - selector: div#hibauzenet table td:contains("!")
+    - selector: div#hibauzenet table tbody tr
   test:
     path: index.php
     selector: a[href*="profile.php"]
 
 download:
   selectors:
-    - selector: a[href^="torrents.php"]
+    - selector: a[href^="torrents.php?action=download&id="]
       attribute: href
 
 search:
   paths:
     - path: torrents.php
-      followredirect: true
   inputs:
-    nyit_filmek_resz: "true"
-    nyit_sorozat_resz: "true"
-    nyit_zene_resz: "true"
-    nyit_xxx_resz: "true"
-    nyit_jatek_resz: "true"
-    nyit_prog_resz: "true"
-    nyit_konyv_resz: "true"
     mire: "{{ if .Query.IMDBID }}{{ .Query.IMDBID }}{{ else }}{{ .Keywords }}{{ end }}"
     miben: "{{ if .Query.IMDBID }}imdb{{ else }}name{{ end }}"
     tipus: "{{ if .Categories }}kivalasztottak_kozott{{ else }}all_own{{ end }}"
-    submit.x: "1"
-    submit.y: "18"
-    tags: ""
-    $raw: "{{range .Categories}}&kivalasztott_tipus%5B%5D={{.}}{{end}}"
+    submit.x: 1
+    submit.y: 1
+    tags: "{{ .Query.Genre }}"
+    $raw: "{{ range .Categories }}&kivalasztott_tipus[]={{.}}{{end}}"
 
   rows:
     selector: .box_torrent_all .box_torrent
 
   fields:
     category:
-      selector: .box_alap_img > a[href^="/torrents.php?tipus="]
+      selector: .box_alap_img > a
       attribute: href
       filters:
         - name: querystring
           args: tipus
-        - name: trim
     title:
       selector: div[class^="torrent_txt"] > a
       attribute: title
     details:
       selector: div[class^="torrent_txt"] > a
       attribute: href
-      filters:
-        - name: querystring
-          args: id
-        - name: prepend
-          args: "torrents.php?action=details&id="
     download:
       selector: div[class^="torrent_txt"] > a
       attribute: href
       filters:
-        - name: querystring
-          args: id
-        - name: prepend
-          args: "ajax.php?action=torrent_drop&id="
-    poster:
-      selector: img.infobar_ico[onmouseover]
-      attribute: onmouseover
-      filters:
-        - name: regexp
-          args: "'(.+?)'"
-    size:
-      selector: .box_meret2
-    seeders:
-      selector: .box_s2
-    leechers:
-      selector: .box_l2
-    date:
-      selector: .box_feltoltve2
+        - name: replace
+          args: ["torrents.php?action=details", "ajax.php?action=torrent_drop"]
+# image is returned with invalid Content-Type header 'image'
+#    poster:
+#      selector: div.infobar > img
+#      attribute: onmouseover
+#      filters:
+#        - name: regexp
+#          args: "'(.+?)'"
+    imdbid:
+      selector: a[href*="imdb.com/title/tt"]
+      attribute: href
       filters:
         - name: replace
-          args: ["<br>", " "]
+          args: ["https://dereferer.link/?", ""]
+    size:
+      selector: div.box_meret2
+    seeders:
+      selector: div.box_s2
+    leechers:
+      selector: div.box_l2
+    date:
+      selector: div.box_feltoltve2
+      filters:
+        - name: append
+          args: " +01:00" # CET
         - name: dateparse
-          args: "yyyy-MM-ddHH:mm:ss"
+          args: "yyyy-MM-ddHH:mm:ss zzz"
+    downloadvolumefactor:
+      text: 0
+    uploadvolumefactor:
+      text: 1
     minimumratio:
       text: 1.0
-    minimumseedtime:
-      text: 172800
-
+# MST is 48 hours + 24 minutes (.4 hours) per GB of downloaded size
+#    minimumseedtime:
+#      # 2 days (as seconds = 2 x 24 x 60 x 60)
+#      text: 172800
+    description_imdb:
+      selector: a.infolink
+      optional: true
+    description_alt:
+      selector: div.siterank > span
+      attribute: title
+      optional: true
+    description:
+      case:
+        div.torrent_ok: "Verified"
+        div.torrent_unchecked: "Unverified"
+      filters:
+        - name: append
+          args: "{{ if or .Result.description_alt .Result.description_imdb }}: {{ else }}{{ end }}{{ .Result.description_alt }}{{ if and .Result.description_alt .Result.description_imdb }} {{ else }}{{ end }}{{ .Result.description_imdb }}"
 # engine n/a
