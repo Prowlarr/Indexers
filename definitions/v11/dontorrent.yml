@@ -1,0 +1,129 @@
+---
+id: dontorrent
+name: Don Torrent
+description: "Patrocinado por el Ministerio de Bloqueos y Censura de Dominios. Gobierno de España."
+language: es-ES
+type: public
+encoding: UTF-8
+followredirect: true
+links:
+  - https://dontorrent.group/
+
+caps:
+  categorymappings:
+    - {id: "1000", cat: "Movies", desc: "Películas"}
+    - {id: "2000", cat: "TV", desc: "Series"}
+    - {id: "4000", cat: "Audio", desc: "Música"}
+    - {id: "5000", cat: "Console", desc: "Juegos Consola (genérico)"}
+    - {id: "5001", cat: "Console/PSP", desc: "Juegos PSP"}
+    - {id: "5002", cat: "Console/Other", desc: "Juegos PS2 / Otros"}
+    - {id: "5003", cat: "PC/Games", desc: "Juegos PC"}
+    - {id: "6000", cat: "Other", desc: "Variados"}
+    - {id: "1001", cat: "Movies/SD", desc: "DVDRip / HDRip"}
+    - {id: "1002", cat: "Movies/HD", desc: "MicroHD / BluRay"}
+    - {id: "1003", cat: "Movies/UHD", desc: "4K"}
+    - {id: "1004", cat: "Movies/BluRay", desc: "BDRemux"}
+    - {id: "2001", cat: "TV/SD", desc: "HDTV 720p"}
+    - {id: "2002", cat: "TV/HD", desc: "HDTV 1080p"}
+    - {id: "2003", cat: "TV/Documentary", desc: "Documental"}
+  modes:
+    search: [q]
+    movie-search: [q]
+    music-search: [q]
+
+settings: []
+
+search:
+  paths:
+    - path: "{{ if .Keywords }}buscar/{{ .Keywords }}{{ else }}ultimos{{ end }}"
+  rows:
+    selector: p:has(a.text-decoration-none), a.text-primary
+  fields:
+    _category:
+      selector: "span.badge"
+      filters:
+        - name: tolower
+    _quality:
+      selector: "span:not(.badge)"
+      filters:
+        - name: regexp
+          args: "\\(([^()]+)\\)(?= *(Película|Serie)\\s*$)"
+        - name: tolower
+    category:
+      text: "{{ .Result._category }}/{{ .Result._quality }}"
+      filters:
+        - name: replace
+          args: ["película/dvdrip-sonido vhs", "1001"]
+        - name: replace
+          args: ["película/br-screener", "1001"]
+        - name: replace
+          args: ["película/dvdscreener", "1001"]
+        - name: replace
+          args: ["película/screener", "1001"]
+        - name: replace
+          args: ["película/vhsrip", "1001"]
+        - name: replace
+          args: ["película/vhsscreener", "1001"]
+        - name: replace
+          args: ["película/hdrip", "1001"]
+        - name: replace
+          args: ["película/dvdrip", "1001"]
+        - name: replace
+          args: ["película/microhd-720p", "1002"]
+        - name: replace
+          args: ["película/microhd-1080p", "1002"]
+        - name: replace
+          args: ["película/bluray-720p", "1002"]
+        - name: replace
+          args: ["película/bluray-1080p", "1002"]
+        - name: replace
+          args: ["película/bdremux-1080p", "1004"]
+        - name: replace
+          args: ["película/4k", "1003"]
+        - name: replace
+          args: ["serie/hdtv-1080p", "2002"]
+        - name: replace
+          args: ["serie/hdtv-720p", "2001"]
+        - name: replace
+          args: ["serie/hdtv", "2001"]
+        - name: replace
+          args: ["documental/", "2003"]
+        - name: replace
+          args: ["película/", "1000"]
+        - name: replace
+          args: ["serie/", "2000"]
+        - name: replace
+          args: ["música/", "4000"]
+        - name: replace
+          args: ["juego psp/", "5001"]
+        - name: replace
+          args: ["juego ps2/", "5002"]
+        - name: replace
+          args: ["juego pc/", "5003"]
+        - name: replace
+          args: ["juego/", "5000"]
+        - name: replace
+          args: ["variado/", "6000"]
+    title:
+      selector: a.text-decoration-none
+    details:
+      selector: a.text-decoration-none
+      attribute: href
+    download:
+      selector: a.text-decoration-none
+      attribute: href
+    date:
+      text: now
+    files:
+      text: 1
+    size:
+      text: "4.5 GB"
+    seeders:
+      text: 1
+    leechers:
+      text: 1
+
+download:
+  selectors:
+    - selector: a[href$='.torrent']
+      attribute: href
