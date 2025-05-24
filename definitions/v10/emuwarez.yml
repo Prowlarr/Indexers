@@ -19,10 +19,6 @@ caps:
     movie-search: [q, imdbid, tmdbid]
 
 settings:
-  - name: ip_filtering
-    type: info
-    label: "IP Filtering"
-    default: "eMuwarez blocks Non-Spanish IP addresses. A <b>FlareSolverr</b> error means your IP was not accepted."
   - name: apikey
     type: text
     label: APIKey
@@ -183,4 +179,4 @@ search:
     minimumseedtime:
       # 3 days (as seconds = 3 x 24 x 60 x 60)
       text: 259200
-# json UNIT3D 8.2.0
+# json UNIT3D 9.0.8

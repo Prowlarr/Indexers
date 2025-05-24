@@ -63,13 +63,12 @@ search:
     year: "{{ .Query.Year }}"
   keywordsfilters:
     - name: re_replace # remove year
-      args: ["\\b(20\\d{2})\\b", ""]
-    - name: re_replace
-      args: ["\\b(19\\d{2})\\b", ""]
+      args: ["\\b((19|20)\\d{2})\\b", ""]
     - name: re_replace # strip season
       args: ["(?i)\\b(S\\d+)\\b", ""]
     - name: re_replace # strip El
       args: ["(?i)\\b(el)\\b", ""]
+    - name: tolower
 
   rows:
     selector: div.search-results > ul > li
