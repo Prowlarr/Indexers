@@ -7,7 +7,7 @@ type: public
 encoding: UTF-8
 followredirect: true
 links:
-  - https://dontorrent.group/
+  - https://dontorrent.report/
 
 caps:
   categorymappings:
@@ -122,6 +122,10 @@ search:
       text: 1
     leechers:
       text: 1
+    downloadvolumefactor:
+      '*': 0
+    uploadvolumefactor:
+      '*': 0
 
 download:
   selectors:
