@@ -122,10 +122,6 @@ search:
       text: 1
     leechers:
       text: 1
-    downloadvolumefactor:
-      '*': 0
-    uploadvolumefactor:
-      '*': 0
 
 download:
   selectors:
