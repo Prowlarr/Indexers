@@ -29,7 +29,7 @@ pulls_exists=false
 local_exist=false
 MAX_COMMITS_TO_PICK=50
 
-BLOCKLIST=("uniongang.yml" "uniongangcookie.yml" "sharewood.yml" "ygg-api.yml" "anirena.yml" "torrentgalaxy.yml" "torrent-heaven.yml")
+BLOCKLIST=("uniongang.yml" "uniongangcookie.yml" "sharewood.yml" "ygg-api.yml" "anirena.yml" "torrentgalaxy.yml" "torrent-heaven.yml" "scenelinks.yml")
 
 # Initialize Defaults
 removed_indexers=""
