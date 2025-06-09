@@ -48,13 +48,13 @@ usage() {
       -r <remote>            Set the Prowlarr remote name. Default: $prowlarr_remote_name
       -b <branch>            Set the Prowlarr target branch. Default: $prowlarr_target_branch
        -m <mode>             Set the operational mode:
-                             - $(normal): Default mode with regular operations.
-                             - $(dev | development | D | d):
+                             - (normal): Default mode with regular operations.
+                             - (dev | development | D | d):
                                 Enables development mode:
                                 - Skips upstream reset.
                                 - Uses local branches.
                                 - Pauses at debugging points for review.
-                            - $(jackett | j | J):
+                            - (jackett | j | J):
                                 Enables Jackett development mode:
                                 - Skips upstream reset.
                                 - Uses existing local Jackett and Prowlarr branches.
