@@ -433,10 +433,10 @@ pull_cherry_and_merge() {
 }
 
 resolve_conflicts() {
-    readme_conflicts=$(git diff --cached --name-only | grep "README.md")
-    nonyml_conflicts=$(git diff --cached --name-only | grep "\.cs\|\.js\|\.iss\|\.html")
-    yml_conflicts=$(git diff --cached --name-only | grep ".yml")
-    schema_conflicts=$(git diff --cached --name-only | grep ".schema.json")
+    readme_conflicts=$(git diff --cached --name-only | grep -E '^README\.md$')
+    nonyml_conflicts=$(git diff --cached --name-only | grep -E '\.(cs|js|iss|html|ico|png)$')
+    yml_conflicts=$(git diff --cached --name-only | grep -E '\.ya?ml$')
+    schema_conflicts=$(git diff --cached --name-only | grep -E '\.schema\.json$')
 
     log "WARN" "conflicts exist"
     if [ -n "$readme_conflicts" ]; then
