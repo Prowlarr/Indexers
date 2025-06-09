@@ -441,25 +441,27 @@ resolve_conflicts() {
     log "WARN" "conflicts exist"
     if [ -n "$readme_conflicts" ]; then
         log "DEBUG" "README conflict exists; using Prowlarr README"
-        git checkout --ours "README.md"
-        git add --f "README.md"
+        git checkout --ours README.md
+        git add --force README.md
     fi
+
     if [ -n "$schema_conflicts" ]; then
         log "DEBUG" "Schema conflict exists; using Prowlarr schema"
-        git checkout --ours "*schema.json"
-        git add --f "*schema.json"
+        for file in $schema_conflicts; do
+            git checkout --ours "$file"
+            git add --force "$file"
+        done
     fi
 
     if [ -n "$nonyml_conflicts" ]; then
-        log "DEBUG" "Non-YML conflicts exist; removing cs, js, iss, html"
-        git rm --f --q --ignore-unmatch "*.cs*"
-        git rm --f --q --ignore-unmatch "*.js"
-        git rm --f --q --ignore-unmatch "*.iss*"
-        git rm --f --q --ignore-unmatch "*.html*"
-        git checkout --ours "package.json"
-        git checkout --ours "package-lock.json"
-        git checkout --ours ".editorconfig"
+        log "DEBUG" "Non-YML conflicts exist; removing [\n$nonyml_conflicts\n] files and restoring [package.json package-lock.json .editorconfig]"
+        while IFS= read -r file; do
+            git rm --force --quiet --ignore-unmatch "$file"
+        done <<< "$nonyml_conflicts"
+        git checkout --ours package.json package-lock.json .editorconfig
+        git add --force package.json package-lock.json .editorconfig
     fi
+
     if [ -n "$yml_conflicts" ]; then
         log "DEBUG" "YML conflict exists; [$yml_conflicts]"
         handle_yml_conflicts
