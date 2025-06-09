@@ -326,9 +326,10 @@ check_branches() {
 git_branch_reset() {
     if [ "$pulls_exists" = false ]; then
         if [ "$local_exist" = true ]; then
+        	git checkout -B "$prowlarr_target_branch"
+        	log "INFO" "Checked out out local branch [$prowlarr_target_branch]"
             if [ "$is_dev_exec" = true ] || [ "$is_jackett_dev" = true ]; then
-                log "DEBUG" "[$is_dev_exec] skipping reset to [$prowlarr_remote_name/$PROWLARR_RELEASE_BRANCH] and checking out local branch [$prowlarr_target_branch]"
-                git checkout -B "$prowlarr_target_branch"
+                log "DEBUG" "[$is_dev_exec] skipping reset to [$prowlarr_remote_name/$PROWLARR_RELEASE_BRANCH]"
             else
                 git reset --hard "$prowlarr_remote_name"/"$PROWLARR_RELEASE_BRANCH"
                 log "WARN" "local branch [$prowlarr_target_branch] hard reset based on remote/branch [$prowlarr_remote_name/$PROWLARR_RELEASE_BRANCH]"
@@ -339,9 +340,9 @@ git_branch_reset() {
         fi
     else
         if [ "$local_exist" = true ]; then
+        	git checkout -B "$prowlarr_target_branch"
+        	log "INFO" "Checked out out local branch [$prowlarr_target_branch]"
             if [ "$is_dev_exec" = true ] || [ "$is_jackett_dev" = true ]; then
-                git checkout -B "$prowlarr_target_branch"
-                log "INFO" "Checked out out local branch [$prowlarr_target_branch]"
                 log "DEBUG" "Development Mode - Skipping reset to [$prowlarr_remote_name/$prowlarr_target_branch]"
             else
                 git reset --hard "$prowlarr_remote_name"/"$prowlarr_target_branch"
