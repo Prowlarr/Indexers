@@ -30,13 +30,14 @@ local_exist=false
 MAX_COMMITS_TO_PICK=50
 
 BLOCKLIST=("uniongang.yml" "uniongangcookie.yml" "sharewood.yml" "ygg-api.yml" "anirena.yml" "torrentgalaxy.yml" "torrent-heaven.yml" "scenelinks.yml")
-
+CONFLICTS_NONYML_EXTENSIONS='\.(cs|js|iss|html|ico|png|csproj)$'
 # Initialize Defaults
 removed_indexers=""
 added_indexers=""
 modified_indexers=""
 newschema_indexers=""
 BACKPORT_SKIPPED=false
+GIT_DIFF_CMD="git diff --cached --name-only"
 declare -A blocklist_map
 for blocked in "${BLOCKLIST[@]}"; do
     blocklist_map["$blocked"]=1
@@ -434,10 +435,10 @@ pull_cherry_and_merge() {
 }
 
 resolve_conflicts() {
-    readme_conflicts=$(git diff --cached --name-only | grep -E '^README\.md$')
-    nonyml_conflicts=$(git diff --cached --name-only | grep -E '\.(cs|js|iss|html|ico|png)$')
-    yml_conflicts=$(git diff --cached --name-only | grep -E '\.ya?ml$')
-    schema_conflicts=$(git diff --cached --name-only | grep -E '\.schema\.json$')
+    readme_conflicts=$($GIT_DIFF_CMD | grep -E '^README\.md$')
+    nonyml_conflicts=$($GIT_DIFF_CMD | grep -E "$CONFLICTS_NONYML_EXTENSIONS")
+    yml_conflicts=$($GIT_DIFF_CMD | grep -E '\.ya?ml$')
+    schema_conflicts=$($GIT_DIFF_CMD | grep -E '\.schema\.json$')
 
     log "WARN" "conflicts exist"
     if [ -n "$readme_conflicts" ]; then
@@ -474,7 +475,7 @@ handle_yml_conflicts() {
     for def in $yml_remove; do
         log "DEBUG" "Removing non-definition yml; [$yml_remove]"
         git rm --f --ignore-unmatch "$yml_remove"
-        yml_conflicts=$(git diff --cached --name-only | grep ".yml")
+        yml_conflicts=$(GIT_DIFF_CMD | grep ".yml")
     done
     if [ -n "$yml_conflicts" ]; then
         yml_defs=$(git status --porcelain | grep yml | grep -i "definitions/")
