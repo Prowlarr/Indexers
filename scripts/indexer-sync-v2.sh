@@ -327,8 +327,8 @@ check_branches() {
 git_branch_reset() {
     if [ "$pulls_exists" = false ]; then
         if [ "$local_exist" = true ]; then
-        	git checkout -B "$prowlarr_target_branch"
-        	log "INFO" "Checked out out local branch [$prowlarr_target_branch]"
+            git checkout -B "$prowlarr_target_branch"
+            log "INFO" "Checked out out local branch [$prowlarr_target_branch]"
             if [ "$is_dev_exec" = true ] || [ "$is_jackett_dev" = true ]; then
                 log "DEBUG" "[$is_dev_exec] skipping reset to [$prowlarr_remote_name/$PROWLARR_RELEASE_BRANCH]"
             else
@@ -341,8 +341,8 @@ git_branch_reset() {
         fi
     else
         if [ "$local_exist" = true ]; then
-        	git checkout -B "$prowlarr_target_branch"
-        	log "INFO" "Checked out out local branch [$prowlarr_target_branch]"
+            git checkout -B "$prowlarr_target_branch"
+            log "INFO" "Checked out out local branch [$prowlarr_target_branch]"
             if [ "$is_dev_exec" = true ] || [ "$is_jackett_dev" = true ]; then
                 log "DEBUG" "Development Mode - Skipping reset to [$prowlarr_remote_name/$prowlarr_target_branch]"
             else
@@ -459,7 +459,7 @@ resolve_conflicts() {
         log "DEBUG" "Non-YML conflicts exist; removing [\n$nonyml_conflicts\n] files and restoring [package.json package-lock.json .editorconfig]"
         while IFS= read -r file; do
             git rm --force --quiet --ignore-unmatch "$file"
-        done <<< "$nonyml_conflicts"
+        done <<<"$nonyml_conflicts"
         git checkout --ours package.json package-lock.json .editorconfig
         git add --force package.json package-lock.json .editorconfig
     fi
