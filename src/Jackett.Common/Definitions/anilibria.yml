@@ -6,6 +6,8 @@ language: ru-RU
 type: public
 encoding: UTF-8
 links:
+  - https://anilibria.top/
+legacylinks:
   - https://www.anilibria.tv/
 
 caps:
