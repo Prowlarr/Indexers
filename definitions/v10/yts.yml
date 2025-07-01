@@ -2,7 +2,7 @@
 id: yts
 name: YTS
 description: "YTS is a Public torrent site specialising in HD movies of small size"
-type: public
+type: semi-private
 language: en-US
 encoding: UTF-8
 requestDelay: 2.5 # 2.5 requests per second (2 causes problems)
