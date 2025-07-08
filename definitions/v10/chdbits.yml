@@ -6,8 +6,8 @@ language: zh-CN
 type: private
 encoding: UTF-8
 links:
-  - https://chdbits.co/
   - https://ptchdbits.co/
+  - https://chdbits.co/
 
 caps:
   categorymappings:
@@ -82,9 +82,12 @@ login:
   error:
     - selector: td.embedded:has(h2:contains("失败"))
     - selector: td.embedded:has(h2:contains("failed"))
+    - selector: td.embedded:has(h2:contains("错误"))
+    - selector: td.embedded:has(h2:contains("error"))
+    - selector: font[color="red"]
   test:
     path: torrents.php
-    selector: a[href*="logout.php"]
+    selector: a[href*="logout"]
 
 download:
   selectors:
