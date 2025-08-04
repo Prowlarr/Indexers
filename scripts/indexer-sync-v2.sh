@@ -287,6 +287,7 @@ configure_git() {
     git config advice.statusHints false
     git_remotes=$(git remote -v)
     prowlarr_remote_exists=$(echo "$git_remotes" | grep "$prowlarr_remote_name")
+    prowlarr_push_remote_exists=$(echo "$git_remotes" | grep "$prowlarr_push_remote")
     jackett_remote_exists=$(echo "$git_remotes" | grep "$JACKETT_REMOTE_NAME")
 
     if [ -z "$prowlarr_remote_exists" ]; then
