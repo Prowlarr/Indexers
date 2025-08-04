@@ -32,9 +32,10 @@ With [some differences](https://github.com/Prowlarr/Indexers/issues/370) and a f
 1. Execute sync script
     ```bash
     chmod +x scripts/indexer-sync-v2.sh
-    ./scripts/indexer-sync-v2.sh -b jackett-pulls -p
+    ./scripts/indexer-sync-v2.sh -r upstream -p
     ```
-1. Create pull request from your fork to this repository
+
+1. Create pull request using the output link to create a PR from your fork to this repository
 
 ## Definition Versions
 
