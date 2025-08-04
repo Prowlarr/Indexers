@@ -15,6 +15,7 @@ prowlarr_target_branch="master"
 mode_choice="normal"
 push_mode=false
 push_mode_force=false
+prowlarr_push_remote="origin"
 PROWLARR_COMMIT_TEMPLATE="jackett indexers as of"
 PROWLARR_COMMIT_TEMPLATE_APPEND=""
 PROWLARR_REPO_URL="https://github.com/Prowlarr/Indexers.git"
@@ -46,9 +47,10 @@ done
 usage() {
     echo "Usage: $0 [options]
     Options:
-      -r <remote>            Set the Prowlarr remote name. Default: $prowlarr_remote_name
-      -b <branch>            Set the Prowlarr target branch. Default: $prowlarr_target_branch
-       -m <mode>             Set the operational mode:
+      -r <remote(pull)>     Set the Prowlarr remote name (for pulling/syncing). Default: '$prowlarr_remote_name'
+      -o <remote(push)>     Set the push remote name (for pushing changes). Default: '$prowlarr_push_remote'
+      -b <branch>           Set the Prowlarr target branch. Default: '$prowlarr_target_branch'
+      -m <mode>             Set the operational mode:
                              - (normal): Default mode with regular operations.
                              - (dev | development | D | d):
                                 Enables development mode:
@@ -194,7 +196,7 @@ initialize_script() {
     fi
 }
 
-while getopts "frpzb:m:c:u:j:R:J:n:" opt; do
+while getopts "frpzb:m:c:u:j:R:J:n:o:" opt; do
     case ${opt} in
     f)
         # No Arg
@@ -209,6 +211,10 @@ while getopts "frpzb:m:c:u:j:R:J:n:" opt; do
         prowlarr_target_branch=$OPTARG
         log "DEBUG" "prowlarr_target_branch using argument $prowlarr_target_branch"
         ;;
+    o)
+        prowlarr_push_remote=$OPTARG
+        log "DEBUG" "prowlarr_push_remote using argument $prowlarr_push_remote"
+        ;;    
     m)
         mode_choice=$OPTARG
         log "DEBUG" "mode_choice using argument $mode_choice"
@@ -293,11 +299,26 @@ configure_git() {
         log "DEBUG" "git remote add $JACKETT_REMOTE_NAME $JACKETT_REPO_URL"
     fi
 
+    if [ "$prowlarr_push_remote" != "$prowlarr_remote_name" ] && [ -z "$prowlarr_push_remote_exists" ]; then
+        log "ERROR" "Push remote [$prowlarr_push_remote] does not exist. Please add it manually or use an existing remote."
+        exit 1
+    fi
+
     log "INFO" "Configured Git"
     if [ "$is_jackett_dev" = true ]; then
         log "DEBUG" "Skipping fetch for jackett development mode"
     else
         git fetch --all --prune --progress
+    fi
+    # Set default target branch based on push remote URL (only if using default)
+    push_remote_url=$(git remote get-url "$prowlarr_push_remote" 2>/dev/null || echo "")
+    if [ "$prowlarr_target_branch" = "master" ]; then
+        if [[ "$push_remote_url" == *"Prowlarr/Indexers"* ]]; then
+            log "DEBUG" "Hello Servarr - Using target [master] branch for Prowlarr repo"
+        else
+            prowlarr_target_branch="jackett-pulls"
+            log "DEBUG" "Hello User - Unable to target [master]. Using target [jackett-pulls] branch for Fork repo"
+        fi
     fi
 }
 
@@ -747,13 +768,26 @@ push_changes() {
     log "DEBUG" " Push Modes for Branch: $push_branch"
     log "DEBUG" "Push To Remote: $push_mode with Force Push With Lease: $push_mode_force"
     if [ "$push_mode" = true ] && [ "$push_mode_force" = true ]; then
-        git push "$prowlarr_remote_name" "$push_branch" --force-if-includes --force-with-lease
-        log "WARN" "[$prowlarr_remote_name $push_branch] Branch Force Pushed"
+        git push "$prowlarr_push_remote" "$push_branch" --force-if-includes --force-with-lease
+        log "WARN" "[$prowlarr_push_remote $push_branch] Branch Force Pushed"
     elif [ "$push_mode" = true ]; then
-        git push "$prowlarr_remote_name" "$push_branch" --force-if-includes
-        log "SUCCESS" "[$prowlarr_remote_name $push_branch] Branch Pushed"
+        git push "$prowlarr_push_remote" "$push_branch" --force-if-includes
+        log "SUCCESS" "[$prowlarr_push_remote $push_branch] Branch Pushed"
     else
-        log "SUCCESS" "Skipping Push to [$prowlarr_remote_name/$push_branch] you should consider pushing manually and/or submitting a pull-request."
+        log "SUCCESS" "Skipping Push to [$prowlarr_push_remote/$push_branch] you should consider pushing manually and/or submitting a pull-request."
+    fi
+    
+    # Output pull request URL if push was successful
+    if [ "$push_mode" = true ]; then
+        fork_url=$(git remote get-url "$prowlarr_push_remote" 2>/dev/null | sed 's/\.git$//' | sed 's/git@github\.com:/https:\/\/github.com\//')
+        if [[ "$fork_url" == *"github.com"* ]]; then
+            fork_owner=$(echo "$fork_url" | sed 's/.*github\.com[\/:]*//' | cut -d'/' -f1)
+            # Only show PR URL if not pushing to Prowlarr repo itself
+            if [ "$fork_owner" != "Prowlarr" ]; then
+                pr_url="https://github.com/Prowlarr/Indexers/compare/master...$fork_owner:$push_branch"
+                log "SUCCESS" "Create pull request: $pr_url"
+            fi
+        fi
     fi
 }
 
