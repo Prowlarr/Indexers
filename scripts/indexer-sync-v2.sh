@@ -432,6 +432,10 @@ pull_cherry_and_merge() {
     for pick_commit in ${commit_range}; do
         has_conflicts=$(git ls-files --unmerged; git status --porcelain | grep "^UU\|^AA\|^DD\|^AU\|^UA\|^DU\|^UD" || true)
         if [ -n "$has_conflicts" ]; then
+            resolve_conflicts
+        fi
+        has_conflicts=$(git ls-files --unmerged; git status --porcelain | grep "^UU\|^AA\|^DD\|^AU\|^UA\|^DU\|^UD" || true)
+        if [ -n "$has_conflicts" ]; then
             log "ERROR" "Conflicts Exist [$has_conflicts] - Cannot Cherrypick"
             git status
             read -r -p "Pausing due to conflicts. Press any key to continue when resolved." -n1 -s
@@ -439,7 +443,7 @@ pull_cherry_and_merge() {
         fi
         log "INFO" "cherrypicking Jackett commit [$pick_commit]"
         git cherry-pick --no-commit --rerere-autoupdate --allow-empty --keep-redundant-commits "$pick_commit"
-        has_conflicts=$(git ls-files --unmerged)
+        has_conflicts=$(git ls-files --unmerged; git status --porcelain | grep "^UU\|^AA\|^DD\|^AU\|^UA\|^DU\|^UD" || true)
         if [ -n "$has_conflicts" ]; then
             resolve_conflicts
         fi
