@@ -477,8 +477,10 @@ resolve_conflicts() {
     if [ -n "$schema_conflicts" ]; then
         log "DEBUG" "Schema conflict exists; using Prowlarr schema"
         for file in $schema_conflicts; do
-            git checkout --ours "$file"
-            git add --force "$file"
+            if git ls-files | grep -q "^$file$"; then
+                git checkout --ours "$file"
+                git add --force "$file"
+            fi
         done
     fi
 
@@ -487,8 +489,12 @@ resolve_conflicts() {
         while IFS= read -r file; do
             git rm --force --quiet --ignore-unmatch "$file"
         done <<<"$nonyml_conflicts"
-        git checkout --ours package.json package-lock.json .editorconfig
-        git add --force package.json package-lock.json .editorconfig
+        for file in package.json package-lock.json .editorconfig; do
+            if git ls-files | grep -q "^$file$"; then
+                git checkout --ours "$file"
+                git add --force "$file"
+            fi
+        done
     fi
 
     if [ -n "$yml_conflicts" ]; then
@@ -501,7 +507,9 @@ handle_yml_conflicts() {
     yml_remove=$(git status --porcelain | grep yml | grep -vi "definitions/" | awk -F '[ADUMRC]{1,2} ' '{print $2}' | awk '{ gsub(/^[ \t]+|[ \t]+$/, ""); print }')
     for def in $yml_remove; do
         log "DEBUG" "Removing non-definition yml; [$yml_remove]"
-        git rm --f --ignore-unmatch "$yml_remove"
+        if git ls-files | grep -q "^$yml_remove$"; then
+            git rm --f --ignore-unmatch "$yml_remove"
+        fi
         yml_conflicts=$(GIT_DIFF_CMD | grep ".yml")
     done
     if [ -n "$yml_conflicts" ]; then
