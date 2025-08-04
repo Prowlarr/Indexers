@@ -430,7 +430,7 @@ pull_cherry_and_merge() {
     sleep 2
 
     for pick_commit in ${commit_range}; do
-        has_conflicts=$(git ls-files --unmerged)
+        has_conflicts=$(git ls-files --unmerged; git status --porcelain | grep "^UU\|^AA\|^DD\|^AU\|^UA\|^DU\|^UD" || true)
         if [ -n "$has_conflicts" ]; then
             log "ERROR" "Conflicts Exist [$has_conflicts] - Cannot Cherrypick"
             git status
