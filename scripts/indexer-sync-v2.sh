@@ -427,12 +427,13 @@ pull_cherry_and_merge() {
     log "INFO" "-- Beginning Cherrypicking ---"
     git config merge.directoryRenames true
     git config merge.verbosity 0
-    sleep 5
+    sleep 2
 
     for pick_commit in ${commit_range}; do
         has_conflicts=$(git ls-files --unmerged)
         if [ -n "$has_conflicts" ]; then
             log "ERROR" "Conflicts Exist [$has_conflicts] - Cannot Cherrypick"
+            git status
             read -r -p "Pausing due to conflicts. Press any key to continue when resolved." -n1 -s
             log "INFO" "Continuing Cherrypicking"
         fi
