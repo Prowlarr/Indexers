@@ -8,25 +8,71 @@ encoding: UTF-8
 links:
   - http://127.0.0.1:3333/
   - http://bitmagnet:3333/
+  - http://192.168.1.2:3333/
+  - http://192.168.1.3:3333/
+  - http://192.168.1.4:3333/
+  - http://192.168.1.5:3333/
+  - http://192.168.1.6:3333/
+  - http://192.168.1.7:3333/
+  - http://192.168.1.8:3333/
+  - http://192.168.1.9:3333/
+  - http://192.168.1.10:3333/
+  - http://192.168.1.11:3333/
+  - http://192.168.1.12:3333/
+  - http://192.168.1.13:3333/
+  - http://192.168.1.14:3333/
+  - http://192.168.1.15:3333/
+  - http://192.168.1.16:3333/
+  - http://192.168.1.17:3333/
+  - http://192.168.1.18:3333/
+  - http://192.168.1.19:3333/
+  - http://192.168.1.20:3333/
+  - http://192.168.1.21:3333/
+  - http://192.168.1.22:3333/
+  - http://192.168.1.23:3333/
+  - http://192.168.1.24:3333/
+  - http://10.0.1.2:3333/
+  - http://10.0.1.3:3333/
+  - http://10.0.1.4:3333/
+  - http://10.0.1.5:3333/
+  - http://10.0.1.6:3333/
+  - http://10.0.1.7:3333/
+  - http://10.0.1.8:3333/
+  - http://10.0.1.9:3333/
+  - http://10.0.1.10:3333/
+  - http://10.0.1.11:3333/
+  - http://10.0.1.12:3333/
+  - http://10.0.1.13:3333/
+  - http://10.0.1.14:3333/
+  - http://10.0.1.15:3333/
+  - http://10.0.1.16:3333/
+  - http://10.0.1.17:3333/
+  - http://10.0.1.18:3333/
+  - http://10.0.1.19:3333/
+  - http://10.0.1.20:3333/
+  - http://10.0.1.21:3333/
+  - http://10.0.1.22:3333/
+  - http://10.0.1.23:3333/
+  - http://10.0.1.24:3333/
 
 caps:
   categorymappings:
     - {id: 2000, cat: Movies, desc: "movie"}
-    - {id: 2030, cat: Movies/SD, desc: "movie_sd"} # unverified
-    - {id: 2040, cat: Movies/HD, desc: "movie_hd"} # unverified
-    - {id: 2045, cat: Movies/UHD, desc: "movie_uhd"} # unverified
-    - {id: 2060, cat: Movies/3D, desc: "movie_3d"} # unverified
+    - {id: 2030, cat: Movies/SD, desc: "movie_sd"}  # unverified
+    - {id: 2040, cat: Movies/HD, desc: "movie_hd"}  # unverified
+    - {id: 2045, cat: Movies/UHD, desc: "movie_uhd"}  # unverified
+    - {id: 2060, cat: Movies/3D, desc: "movie_3d"}  # unverified
     - {id: 3000, cat: Audio, desc: "music"}
     - {id: 3030, cat: Audio/Audiobook, desc: "audiobook"}
     - {id: 4000, cat: PC, desc: "software"}
-    - {id: 4050, cat: PC/Games, desc: "game"} # unverified
+    - {id: 4050, cat: PC/Games, desc: "game"}  # unverified
     - {id: 5000, cat: TV, desc: "tv_show"}
-    - {id: 5030, cat: TV/SD, desc: "tv_show_sd"} # unverified
-    - {id: 5040, cat: TV/HD, desc: "tv_show_hd"} # unverified
-    - {id: 5045, cat: TV/UHD, desc: "tv_show_uhd"} # unverified
+    - {id: 5030, cat: TV/SD, desc: "tv_show_sd"}  # unverified
+    - {id: 5040, cat: TV/HD, desc: "tv_show_hd"}  # unverified
+    - {id: 5045, cat: TV/UHD, desc: "tv_show_uhd"}  # unverified
     - {id: 6000, cat: XXX, desc: "xxx"}
-    - {id: 6070, cat: XXX/Other, desc: "xxx_other"} # unverified
-    - {id: 7000, cat: Books, desc: "book"} # unverified
+    - {id: 6070, cat: XXX/Other, desc: "xxx_other"}  # unverified
+    - {id: 7000, cat: Books, desc: "book"}  # unverified
     - {id: 7020, cat: Books/EBook, desc: "ebook"}
     - {id: 7030, cat: Books/Comics, desc: "comic"}
     - {id: 8000, cat: Other, desc: "Unknown"}
@@ -48,7 +94,7 @@ search:
   inputs:
     t: "{{ .Query.Type }}"
     q: "{{ .Keywords }}"
-    cat: "{{ join .Categories \",\" }}"
+    cat: '{{ join .Categories "," }}'
     imdbId: "{{ .Query.IMDBIDShort }}"
     tmdbId: "{{ .Query.TMDBID }}"
     season: "{{ .Query.Season }}"
@@ -57,26 +103,62 @@ search:
 
   rows:
     selector: rss > channel > item
-
   fields:
-    categorydesc:
-      selector: category
     title:
       selector: title
     details:
-      text: /
+      selector: guid
+      filters:
+        - name: prepend
+          args: "/webui/torrents/permalink/"
     date:
       selector: pubDate
-    infohash:
-      selector: guid
     size:
       selector: size
+    infohash:
+      selector: attr[name="infohash"]
+      attribute: value
+    category:
+      selector: attr[name="category"]
+      attribute: value
     seeders:
-      text: 1
+      selector: attr[name="seeders"]
+      attribute: value
     leechers:
-      text: 1
-    downloadvolumefactor:
-      text: 0
-    uploadvolumefactor:
-      text: 1
+      selector: attr[name="peers"]
+      attribute: value
+    files:
+      selector: attr[name="files"]
+      attribute: value
+    year:
+      selector: attr[name="year"]
+      attribute: value
+    imdb:
+      selector: attr[name="imdb"]
+      attribute: value
+    # yamllint disable rule:comments-indentation
+    # unmapped attributes
+    # magneturl:
+    #   selector: attr[name="magneturl"]
+    #   attribute: value
+    # publishdate:
+    #   selector: attr[name="publishdate"]
+    #   attribute: value
+    # season:
+    #   selector: attr[name="season"]
+    #   attribute: value
+    # episode:
+    #   selector: attr[name="episode"]
+    #   attribute: value
+    # video:
+    #   selector: attr[name="video"]
+    #   attribute: value
+    # resolution:
+    #   selector: attr[name="resolution"]
+    #   attribute: value
+    # team:
+    #   selector: attr[name="team"]
+    #   attribute: value
+    # yamllint enable rule:comments-indentation
+
 # torznab xml
