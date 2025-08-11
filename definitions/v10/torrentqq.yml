@@ -5,16 +5,11 @@ description: "TorrentQQ (토렌트큐큐) is a Public KOREAN tracker for Korean 
 language: ko-KR
 type: public
 encoding: UTF-8
-certificates:
-  - af82dbd7e018a9c958899e9b7cf0286c3314c645 # docker linuxserver.io CA package glitch?
 followredirect: true
 links:
-  - https://torrentqq379.com/
-  - https://torrentegg70.com/
+  - https://torrentqq380.com/
+  - https://torrentegg71.com/
 legacylinks:
-  - https://torrentegg56.com/
-  - https://torrentqq365.com/
-  - https://torrentegg57.com/
   - https://torrentqq366.com/
   - https://torrentegg58.com/
   - https://torrentqq367.com/
@@ -40,6 +35,8 @@ legacylinks:
   - https://torrentqq377.com/
   - https://torrentqq378.com/
   - https://torrentegg69.com/
+  - https://torrentqq379.com/
+  - https://torrentegg70.com/
 
 caps:
   categorymappings:
