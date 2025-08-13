@@ -1,0 +1,217 @@
+---
+name: Indexer Sync Automation
+
+on:
+  schedule:
+    # Run daily at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      force_sync:
+        description: 'Force sync even if up to date'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  sync-indexers:
+    name: Sync Indexers from Jackett
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Configure git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Check for existing sync PR
+        id: check-pr
+        run: |
+          # Check if there's already an open PR for indexer sync
+          EXISTING_PR=$(gh pr list --head "automated-indexer-sync" --state open --json number --jq '.[0].number' || echo "")
+          if [ -n "$EXISTING_PR" ]; then
+            echo "existing_pr=$EXISTING_PR" >> $GITHUB_OUTPUT
+            echo "Found existing PR #$EXISTING_PR"
+          else
+            echo "existing_pr=" >> $GITHUB_OUTPUT
+            echo "No existing PR found"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run indexer sync with -z mode
+        id: sync
+        run: |
+          # Create branch for automated sync
+          BRANCH_NAME="automated-indexer-sync"
+          git checkout -B "$BRANCH_NAME"
+          
+          # Run the sync script with -z mode (skip backporting), automation mode, and push enabled
+          set +e
+          ./scripts/indexer-sync-v2.sh -z -a -p -b "$BRANCH_NAME" -o origin
+          SYNC_EXIT_CODE=$?
+          set -e
+          
+          echo "sync_exit_code=$SYNC_EXIT_CODE" >> $GITHUB_OUTPUT
+          
+          case $SYNC_EXIT_CODE in
+            0)
+              echo "result=up_to_date" >> $GITHUB_OUTPUT
+              echo "Indexers are already up to date"
+              ;;
+            1|2|3|4)
+              echo "result=error" >> $GITHUB_OUTPUT
+              echo "Sync script failed with exit code $SYNC_EXIT_CODE"
+              exit $SYNC_EXIT_CODE
+              ;;
+            *)
+              # Check if there are any staged changes
+              if git diff --cached --quiet; then
+                echo "result=no_changes" >> $GITHUB_OUTPUT
+                echo "No changes to commit"
+              else
+                echo "result=changes" >> $GITHUB_OUTPUT
+                echo "Changes detected and committed"
+              fi
+              ;;
+          esac
+
+      - name: Create or update pull request
+        if: steps.sync.outputs.result == 'changes' || (steps.sync.outputs.result == 'up_to_date' && github.event.inputs.force_sync == 'true')
+        run: |
+          BRANCH_NAME="automated-indexer-sync"
+          
+          # Get the latest commit message for PR details
+          LATEST_COMMIT=$(git log -1 --format=%B)
+          
+          # Extract indexer changes from commit message
+          ADDED_INDEXERS=$(echo "$LATEST_COMMIT" | grep "^Added Indexers:" | sed 's/Added Indexers: //' || echo "")
+          MODIFIED_INDEXERS=$(echo "$LATEST_COMMIT" | grep "^Modified Indexers:" | sed 's/Modified Indexers: //' || echo "")
+          REMOVED_INDEXERS=$(echo "$LATEST_COMMIT" | grep "^Removed Indexers:" | sed 's/Removed Indexers: //' || echo "")
+          NEW_SCHEMA_INDEXERS=$(echo "$LATEST_COMMIT" | grep "^New Schema Indexers:" | sed 's/New Schema Indexers: //' || echo "")
+          
+          # Create PR body
+          PR_BODY="## Automated Indexer Sync
+          
+          This PR contains automated updates from the Jackett repository.
+          
+          **⚠️ Backporting was skipped** - Manual review may be required for older schema versions.
+          
+          ### Changes Summary:
+          "
+          
+          if [ -n "$ADDED_INDEXERS" ]; then
+            PR_BODY="$PR_BODY
+          #### ✅ Added Indexers:
+          \`\`\`
+          $ADDED_INDEXERS
+          \`\`\`
+          "
+          fi
+          
+          if [ -n "$MODIFIED_INDEXERS" ]; then
+            PR_BODY="$PR_BODY
+          #### 🔄 Modified Indexers:
+          \`\`\`
+          $MODIFIED_INDEXERS
+          \`\`\`
+          "
+          fi
+          
+          if [ -n "$REMOVED_INDEXERS" ]; then
+            PR_BODY="$PR_BODY
+          #### ❌ Removed Indexers:
+          \`\`\`
+          $REMOVED_INDEXERS
+          \`\`\`
+          "
+          fi
+          
+          if [ -n "$NEW_SCHEMA_INDEXERS" ]; then
+            PR_BODY="$PR_BODY
+          #### 🆕 New Schema Indexers (Requires Review):
+          \`\`\`
+          $NEW_SCHEMA_INDEXERS
+          \`\`\`
+          "
+          fi
+          
+          PR_BODY="$PR_BODY
+          
+          ### Automation Details:
+          - Sync performed with \`-z\` flag (backports skipped)
+          - Triggered by: ${{ github.event_name }}
+          - Workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          
+          Please review the changes carefully before merging, especially any new schema indexers that may require Cardigann updates."
+          
+          # Check if PR already exists
+          if [ -n "${{ steps.check-pr.outputs.existing_pr }}" ]; then
+            echo "Updating existing PR #${{ steps.check-pr.outputs.existing_pr }}"
+            gh pr edit "${{ steps.check-pr.outputs.existing_pr }}" --body "$PR_BODY"
+          else
+            echo "Creating new pull request"
+            gh pr create \
+              --title "🤖 Automated Indexer Sync ($(date +%Y-%m-%d))" \
+              --body "$PR_BODY" \
+              --head "$BRANCH_NAME" \
+              --base master \
+              --label "automated" \
+              --label "indexer-sync"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Comment on failure
+        if: failure() && steps.sync.outputs.sync_exit_code != '0'
+        run: |
+          if [ -n "${{ steps.check-pr.outputs.existing_pr }}" ]; then
+            gh pr comment "${{ steps.check-pr.outputs.existing_pr }}" --body "❌ **Sync Failed**
+            
+            The automated indexer sync failed with exit code ${{ steps.sync.outputs.sync_exit_code }}.
+            
+            Please check the [workflow logs](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for more details."
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Summary
+        run: |
+          case "${{ steps.sync.outputs.result }}" in
+            "up_to_date")
+              echo "✅ Indexers are already up to date with Jackett"
+              ;;
+            "no_changes")
+              echo "ℹ️ Sync completed but no changes were made"
+              ;;
+            "changes")
+              echo "✅ Indexer sync completed successfully with changes"
+              if [ -n "${{ steps.check-pr.outputs.existing_pr }}" ]; then
+                echo "📝 Updated existing PR #${{ steps.check-pr.outputs.existing_pr }}"
+              else
+                echo "📝 Created new pull request"
+              fi
+              ;;
+            "error")
+              echo "❌ Sync failed - check logs for details"
+              exit 1
+              ;;
+          esac
