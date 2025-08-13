@@ -8,10 +8,16 @@ if ! command -v python3 &> /dev/null; then
     exit 1
 fi
 
-# Check if we have a virtual environment
+# Check if we have a virtual environment and activate it
 if [ -d ".venv" ]; then
     echo "Activating virtual environment"
-    source .venv/bin/activate
+    if [ -f ".venv/bin/activate" ]; then
+        # Linux/Mac
+        source .venv/bin/activate
+    elif [ -f ".venv/Scripts/activate" ]; then
+        # Windows
+        source .venv/Scripts/activate
+    fi
 fi
 
 # Check if required Python packages are available

@@ -28,8 +28,13 @@ With [some differences](https://github.com/Prowlarr/Indexers/issues/370) and a f
 1. Install dependencies
     ```bash
     # Create virtual environment (recommended)
-    python3 -m venv .venv
+    python -m venv .venv
+    
+    # Activate virtual environment
+    # On Linux/Mac:
     source .venv/bin/activate
+    # On Windows:
+    source .venv/Scripts/activate
     
     # Install Python dependencies
     pip install -r requirements.txt
@@ -58,15 +63,21 @@ To test a definition file against a specific schema use the command below.
 
 ```bash
 # Setup (one time)
-python3 -m venv .venv
+python -m venv .venv
+
+# Activate virtual environment
+# On Linux/Mac:
 source .venv/bin/activate
+# On Windows:
+source .venv/Scripts/activate
+
 pip install -r requirements.txt
 
 # Validate all definitions
-python3 scripts/validate.py
+python scripts/validate.py
 
 # Validate single file
-python3 scripts/validate.py --single "definitions/v{VERSION}/{INDEXER FILE NAME}.yml" "definitions/v{VERSION}/schema.json"
+python scripts/validate.py --single "definitions/v{VERSION}/{INDEXER FILE NAME}.yml" "definitions/v{VERSION}/schema.json"
 
 # Or use convenience script
 ./scripts/validate-python.sh
