@@ -28,6 +28,7 @@ is_dev_exec=false
 is_jackett_dev=false
 pulls_exists=false
 local_exist=false
+automation_mode=false
 MAX_COMMITS_TO_PICK=50
 
 BLOCKLIST=("uniongang.yml" "uniongangcookie.yml" "sharewood.yml" "ygg-api.yml" "anirena.yml" "torrentgalaxy.yml" "torrent-heaven.yml" "scenelinks.yml")
@@ -72,7 +73,8 @@ usage() {
       -R <release_branch>    Set the Prowlarr release branch. Default: $PROWLARR_RELEASE_BRANCH
       -J <jackett_branch>    Set the Jackett branch. Default: $JACKETT_BRANCH
       -n <remote_name>       Set the Jackett remote name. Default: $JACKETT_REMOTE_NAME
-      -z                     Skip backporting. Default: $SKIP_BACKPORT"
+      -z                     Skip backporting. Default: $SKIP_BACKPORT
+      -a                     Enable automation mode (skip interactive prompts). Default: $automation_mode"
     exit 1
 }
 
@@ -196,7 +198,7 @@ initialize_script() {
     fi
 }
 
-while getopts "frpzb:m:c:u:j:R:J:n:o:" opt; do
+while getopts "frpzab:m:c:u:j:R:J:n:o:" opt; do
     case ${opt} in
     f)
         # No Arg
@@ -275,6 +277,11 @@ while getopts "frpzb:m:c:u:j:R:J:n:o:" opt; do
         SKIP_BACKPORT=true
         PROWLARR_COMMIT_TEMPLATE_APPEND="[backports skipped - TODO]"
         log "DEBUG" "SKIP_BACKPORT is $SKIP_BACKPORT. Commit Template will be appended with '$PROWLARR_COMMIT_TEMPLATE_APPEND' if applicable'"
+        ;;
+    a)
+        # No Arg
+        automation_mode=true
+        log "DEBUG" "automation_mode is $automation_mode - interactive prompts will be skipped"
         ;;
     \?)
         usage
@@ -438,8 +445,13 @@ pull_cherry_and_merge() {
         if [ -n "$has_conflicts" ]; then
             log "ERROR" "Conflicts Exist [$has_conflicts] - Cannot Cherrypick"
             git status
-            read -r -p "Pausing due to conflicts. Press any key to continue when resolved." -n1 -s
-            log "INFO" "Continuing Cherrypicking"
+            if [ "$automation_mode" = true ]; then
+                log "ERROR" "Automation mode: Cannot continue with unresolved conflicts"
+                exit 5
+            else
+                read -r -p "Pausing due to conflicts. Press any key to continue when resolved." -n1 -s
+                log "INFO" "Continuing Cherrypicking"
+            fi
         fi
         log "INFO" "cherrypicking Jackett commit [$pick_commit]"
         git cherry-pick --no-commit --rerere-autoupdate --allow-empty --keep-redundant-commits "$pick_commit"
@@ -742,8 +754,12 @@ cleanup_and_commit() {
 
     git rm -r -f -q --ignore-unmatch --cached node_modules
 
-    log "WARNING" "After review; the script will commit the changes and push as/if specified."
-    read -r -p "Press any key to continue or [Ctrl-C] to abort. Waiting for human review..." -n1 -s
+    if [ "$automation_mode" = true ]; then
+        log "INFO" "Automation mode: Proceeding with commit and push automatically"
+    else
+        log "WARNING" "After review; the script will commit the changes and push as/if specified."
+        read -r -p "Press any key to continue or [Ctrl-C] to abort. Waiting for human review..." -n1 -s
+    fi
     new_commit_msg="$PROWLARR_COMMIT_TEMPLATE $jackett_recent_commit [$(date -u +'%Y-%m-%dT%H:%M:%SZ')]"
     if [ "$BACKPORT_SKIPPED" = true ]; then
         new_commit_msg+=" $PROWLARR_COMMIT_TEMPLATE_APPEND"
