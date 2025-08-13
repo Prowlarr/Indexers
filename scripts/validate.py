@@ -16,6 +16,39 @@ import yaml
 DEFAULT_DEFINITIONS_DIR = "definitions"
 SCHEMA_FILENAME = "schema.json"
 YAML_EXTENSIONS = ["*.yml", "*.yaml"]
+VERSIONS_FILE = "VERSIONS"
+schema_cache = {}  # Cache for loaded schemas
+
+def load_version_config():
+    """Load version configuration from VERSIONS file."""
+    versions = {
+        'MIN_VERSION': 10,
+        'MAX_VERSION': 11, 
+        'CURRENT_VERSION': 11,
+        'NEXT_VERSION': 12
+    }
+    
+    try:
+        with open(VERSIONS_FILE, 'r') as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith('#'):
+                    if '=' in line:
+                        key, value = line.split('=', 1)
+                        try:
+                            versions[key] = int(value)
+                        except ValueError:
+                            pass
+    except FileNotFoundError:
+        print(f"Warning: {VERSIONS_FILE} not found, using defaults", file=sys.stderr)
+    
+    return versions
+
+# Load version configuration
+VERSION_CONFIG = load_version_config()
+MIN_SCHEMA_VERSION = VERSION_CONFIG['MIN_VERSION']
+MAX_SCHEMA_VERSION = VERSION_CONFIG['MAX_VERSION']
+CURRENT_SCHEMA_VERSION = VERSION_CONFIG['CURRENT_VERSION']
 
 try:
     from jsonschema import validate, ValidationError, Draft201909Validator
@@ -24,11 +57,22 @@ except ImportError:
     print("Error: jsonschema package is required. Install with: pip install jsonschema", file=sys.stderr)
     sys.exit(1)
 
-def load_json_schema(schema_path):
-    """Load and return JSON schema from file."""
+def load_json_schema(schema_path, use_cache=None):
+    """Load and return JSON schema from file with optional caching."""
+    # Default to True unless explicitly disabled or cache is empty (indicating no-cache mode)
+    if use_cache is None:
+        use_cache = len(schema_cache) != 0 or not hasattr(load_json_schema, '_cache_disabled')
+    
+    # Check cache first if enabled
+    if use_cache and schema_path in schema_cache:
+        return schema_cache[schema_path]
+    
     try:
         with open(schema_path, 'r', encoding='utf-8') as f:
-            return json.load(f)
+            schema = json.load(f)
+            if use_cache and not hasattr(load_json_schema, '_cache_disabled'):
+                schema_cache[schema_path] = schema  # Cache the schema
+            return schema
     except (json.JSONDecodeError, FileNotFoundError) as e:
         print(f"Error loading schema {schema_path}: {e}", file=sys.stderr)
         return None
@@ -109,12 +153,20 @@ def validate_directory(definitions_dir):
     for version_dir in version_dirs:
         if not os.path.isdir(version_dir):
             continue
+        
+        # Extract version number to check against minimum
+        version_str = os.path.basename(version_dir)[1:]  # Remove 'v' prefix
+        try:
+            version_num = int(version_str)
+        except ValueError:
+            version_num = 0
             
         print(f"Validating {version_dir}")
         
         schema_path = os.path.join(version_dir, SCHEMA_FILENAME)
         if not os.path.exists(schema_path):
-            print(f"Warning: No schema.json found in {version_dir}")
+            if version_num >= MIN_SCHEMA_VERSION:
+                print(f"Warning: No schema.json found in {version_dir}")
             continue
             
         schema = load_json_schema(schema_path)
@@ -129,7 +181,9 @@ def validate_directory(definitions_dir):
             yaml_files.extend(glob.glob(os.path.join(version_dir, extension)))
         
         if not yaml_files:
-            print(f"No YAML files found in {version_dir}")
+            # Only log "no files" for versions at or above minimum
+            if version_num >= MIN_SCHEMA_VERSION:
+                print(f"No YAML files found in {version_dir}")
             continue
             
         for yaml_file in sorted(yaml_files):
@@ -150,6 +204,29 @@ def validate_directory(definitions_dir):
     
     return success
 
+def find_best_schema_version(yaml_file, definitions_dir=DEFAULT_DEFINITIONS_DIR):
+    """Find the best schema version for a YAML file."""
+    matched_version = 0
+    
+    for version in range(MIN_SCHEMA_VERSION, MAX_SCHEMA_VERSION + 1):
+        schema_path = os.path.join(definitions_dir, f"v{version}", SCHEMA_FILENAME)
+        if not os.path.exists(schema_path):
+            continue
+            
+        schema = load_json_schema(schema_path)
+        if schema is None:
+            continue
+            
+        is_valid, _ = validate_file_against_schema(yaml_file, schema)
+        if is_valid:
+            matched_version = version
+        else:
+            if version == MAX_SCHEMA_VERSION:
+                print(f"Warning: {yaml_file} does not match max schema v{MAX_SCHEMA_VERSION}", file=sys.stderr)
+                print(f"Cardigann update likely needed. Version v{VERSION_CONFIG['NEXT_VERSION']} may be required.", file=sys.stderr)
+    
+    return matched_version
+
 def validate_single_file(yaml_file, schema_file):
     """Validate a single file against a schema."""
     schema = load_json_schema(schema_file)
@@ -169,6 +246,10 @@ def main():
                        help=f"Path to definitions directory (default: {DEFAULT_DEFINITIONS_DIR})")
     parser.add_argument("--single", "-s", nargs=2, metavar=("YAML_FILE", "SCHEMA_FILE"),
                        help="Validate a single YAML file against a schema")
+    parser.add_argument("--find-best-version", "-f", metavar="YAML_FILE",
+                       help="Find the best schema version for a YAML file")
+    parser.add_argument("--no-cache", action="store_true",
+                       help="Disable schema caching")
     parser.add_argument("--verbose", "-v", action="store_true",
                        help="Enable verbose output")
     parser.add_argument("--version", "-V", action="version", version="%(prog)s 1.0")
@@ -176,10 +257,29 @@ def main():
     args = parser.parse_args()
     
     try:
+        # Handle caching override
+        if args.no_cache:
+            global schema_cache
+            schema_cache = {}  # Clear cache
+            load_json_schema._cache_disabled = True  # Disable caching
+            
         if args.single:
             # Single file validation mode
             yaml_file, schema_file = args.single
             success = validate_single_file(yaml_file, schema_file)
+        elif args.find_best_version:
+            # Find best schema version mode
+            yaml_file = args.find_best_version
+            if not os.path.exists(yaml_file):
+                print(f"Error: YAML file '{yaml_file}' not found", file=sys.stderr)
+                sys.exit(1)
+            best_version = find_best_schema_version(yaml_file, args.definitions_dir)
+            if best_version > 0:
+                print(f"v{best_version}")
+                sys.exit(0)
+            else:
+                print("v0")  # No matching schema found
+                sys.exit(1)
         else:
             # Directory validation mode
             if not os.path.exists(args.definitions_dir):
@@ -187,14 +287,15 @@ def main():
                 sys.exit(1)
             success = validate_directory(args.definitions_dir)
             
-        if success:
-            if not args.single:
-                print("Success")
-            sys.exit(0)
-        else:
-            if not args.single:
-                print("Failed")
-            sys.exit(1)
+        if args.single or not hasattr(args, 'find_best_version'):
+            if success:
+                if not args.single:
+                    print("Success")
+                sys.exit(0)
+            else:
+                if not args.single:
+                    print("Failed")
+                sys.exit(1)
     except KeyboardInterrupt:
         print("\nValidation interrupted by user")
         sys.exit(1)
