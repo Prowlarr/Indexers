@@ -90,9 +90,26 @@ usage() {
 ## v7 purged and frozen 2024-04-27
 ## v8 purged and frozen 2024-04-27
 ## v9 purged and frozen 2024-10-13
-MIN_SCHEMA=10
-MAX_SCHEMA=11
-NEW_SCHEMA=$((MAX_SCHEMA + 1))
+# Load schema versions from VERSIONS file
+load_versions() {
+    MIN_SCHEMA=10
+    MAX_SCHEMA=11
+    CURRENT_SCHEMA=11
+    
+    if [ -f "VERSIONS" ]; then
+        while IFS='=' read -r key value; do
+            case "$key" in
+                MIN_VERSION) MIN_SCHEMA="$value" ;;
+                MAX_VERSION) MAX_SCHEMA="$value" ;;
+                CURRENT_VERSION) CURRENT_SCHEMA="$value" ;;
+            esac
+        done < <(grep -v '^#' VERSIONS | grep '=')
+    fi
+    
+    NEW_SCHEMA=$((MAX_SCHEMA + 1))
+}
+
+load_versions
 NEW_VERS_DIR="definitions/v$NEW_SCHEMA"
 mkdir -p "$NEW_VERS_DIR"
 
@@ -162,28 +179,20 @@ determine_best_schema_version() {
     local def_file="$1"
     log "INFO" "Determining best schema version for [$def_file]"
 
-    matched_version=0
-    for ((i = MIN_SCHEMA; i <= MAX_SCHEMA; i++)); do
-        dir="definitions/v$i"
-        schema="$dir/schema.json"
-        log "DEBUG" "Checking file [$def_file] against schema [$schema]"
-        local test_output
-        python3 "$VALIDATION_SCRIPT" --single "$def_file" "$schema"
-        test_output=$?
-
-        if [ "$test_output" = 0 ]; then
-            log "INFO" "Definition [$def_file] matches schema [$schema]"
-            matched_version=$i
-        else
-            if [ $i -eq $MAX_SCHEMA ]; then
-                log "WARN" "Definition [$def_file] does not match max schema [$MAX_SCHEMA]."
-                log "ERROR" "Cardigann update likely needed. Version [$NEW_SCHEMA] required. Review definition."
-            else
-                log "INFO" "Definition [$def_file] does not match schema [$schema]"
-            fi
-        fi
-        export matched_version=$matched_version
-    done
+    # Use Python function to find best schema version
+    local best_version
+    best_version=$(python3 "$VALIDATION_SCRIPT" --find-best-version "$def_file")
+    
+    if [[ "$best_version" =~ ^v([0-9]+)$ ]]; then
+        matched_version="${BASH_REMATCH[1]}"
+        log "INFO" "Definition [$def_file] best matches schema [$best_version]"
+    else
+        matched_version=0
+        log "WARN" "Definition [$def_file] does not match any schema"
+        log "ERROR" "Cardigann update likely needed. Version [v$NEW_SCHEMA] required. Review definition."
+    fi
+    
+    export matched_version=$matched_version
 }
 
 initialize_script() {
