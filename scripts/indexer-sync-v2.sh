@@ -568,7 +568,7 @@ resolve_conflicts() {
 }
 
 handle_yml_conflicts() {
-    yml_remove=$(git status --porcelain | grep yml | grep -vi "definitions/" | awk -F '[ADUMRC]{1,2} ' '{print $2}' | awk '{ gsub(/^[ \t]+|[ \t]+$/, ""); print }')
+    yml_remove=$(git status --porcelain | grep yml | grep -vi "definitions/" | grep -v "definitions-update" | awk -F '[ADUMRC]{1,2} ' '{print $2}' | awk '{ gsub(/^[ \t]+|[ \t]+$/, ""); print }')
     for def in $yml_remove; do
         log "DEBUG" "Removing non-definition yml; [$yml_remove]"
         if git ls-files | grep -q "^$yml_remove$"; then

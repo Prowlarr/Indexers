@@ -12,6 +12,11 @@ on:
         required: false
         default: false
         type: boolean
+      debug_mode:
+        description: 'Enable debug logging'
+        required: false
+        default: false
+        type: boolean
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -52,7 +57,11 @@ jobs:
       - name: Run indexer sync
         run: |
           # Run the sync script with -z mode, automation mode, and push enabled
-          ./scripts/indexer-sync-v2.sh -z -a -p -b automated-indexer-sync -o origin
+          if [ "${{ github.event.inputs.debug_mode }}" = "true" ]; then
+            ./scripts/indexer-sync-v2.sh -z -a -p -b automated-indexer-sync -o origin -m debug
+          else
+            ./scripts/indexer-sync-v2.sh -z -a -p -b automated-indexer-sync -o origin
+          fi
 
       - name: Create or update pull request
         run: |
