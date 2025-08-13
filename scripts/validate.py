@@ -242,8 +242,10 @@ def validate_single_file(yaml_file, schema_file):
 
 def main():
     parser = argparse.ArgumentParser(description="Validate Prowlarr indexer definitions against JSON schemas")
-    parser.add_argument("--definitions-dir", "-d", default=DEFAULT_DEFINITIONS_DIR, 
+    parser.add_argument("definitions_dir", nargs="?", default=DEFAULT_DEFINITIONS_DIR,
                        help=f"Path to definitions directory (default: {DEFAULT_DEFINITIONS_DIR})")
+    parser.add_argument("--definitions-dir", "-d", dest="definitions_dir_override", 
+                       help="Path to definitions directory (overrides positional argument)")
     parser.add_argument("--single", "-s", nargs=2, metavar=("YAML_FILE", "SCHEMA_FILE"),
                        help="Validate a single YAML file against a schema")
     parser.add_argument("--find-best-version", "-f", metavar="YAML_FILE",
@@ -257,6 +259,9 @@ def main():
     args = parser.parse_args()
     
     try:
+        # Determine the definitions directory to use
+        definitions_dir = args.definitions_dir_override or args.definitions_dir
+        
         # Handle caching override
         if args.no_cache:
             global schema_cache
@@ -273,7 +278,7 @@ def main():
             if not os.path.exists(yaml_file):
                 print(f"Error: YAML file '{yaml_file}' not found", file=sys.stderr)
                 sys.exit(1)
-            best_version = find_best_schema_version(yaml_file, args.definitions_dir)
+            best_version = find_best_schema_version(yaml_file, definitions_dir)
             if best_version > 0:
                 print(f"v{best_version}")
                 sys.exit(0)
@@ -282,10 +287,10 @@ def main():
                 sys.exit(1)
         else:
             # Directory validation mode
-            if not os.path.exists(args.definitions_dir):
-                print(f"Error: Definitions directory '{args.definitions_dir}' not found", file=sys.stderr)
+            if not os.path.exists(definitions_dir):
+                print(f"Error: Definitions directory '{definitions_dir}' not found", file=sys.stderr)
                 sys.exit(1)
-            success = validate_directory(args.definitions_dir)
+            success = validate_directory(definitions_dir)
             
         if args.single or not hasattr(args, 'find_best_version'):
             if success:
