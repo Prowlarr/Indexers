@@ -58,7 +58,7 @@ jobs:
         run: |
           # Run the sync script with -z mode, automation mode, and push enabled
           if [ "${{ github.event.inputs.debug_mode }}" = "true" ]; then
-            ./scripts/indexer-sync-v2.sh -z -a -p -b automated-indexer-sync -o origin -m debug
+            ./scripts/indexer-sync-v2.sh -z -a -p -b automated-indexer-sync -o origin -m dev
           else
             ./scripts/indexer-sync-v2.sh -z -a -p -b automated-indexer-sync -o origin
           fi
