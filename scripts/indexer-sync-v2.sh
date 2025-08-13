@@ -408,7 +408,7 @@ pull_cherry_and_merge() {
     log "INFO" "Reviewing Commits"
     existing_message=$(git log --format=%B -n1)
     existing_message_ln1=$(echo "$existing_message" | awk 'NR==1')
-    prowlarr_commits=$(git log --format=%B -n1 -n 20 | grep "^$PROWLARR_COMMIT_TEMPLATE")
+    prowlarr_commits=$(git log --format=%B -n 20 | grep "^$PROWLARR_COMMIT_TEMPLATE")
     prowlarr_jackett_commit_message=$(echo "$prowlarr_commits" | awk 'NR==1')
     if [ "$is_jackett_dev" = true ]; then
         # Use only local Jackett branch (no remote)
