@@ -164,7 +164,7 @@ determine_schema_version() {
 
     log "DEBUG" "Checking file against schema [$schema]"
     local test_output
-    python3 "$VALIDATION_SCRIPT" --single "$def_file" "$schema"
+    $PYTHON_CMD "$VALIDATION_SCRIPT" --single "$def_file" "$schema"
     test_output=$?
 
     if [ "$test_output" = 0 ]; then
@@ -181,7 +181,7 @@ determine_best_schema_version() {
 
     # Use Python function to find best schema version
     local best_version
-    best_version=$(python3 "$VALIDATION_SCRIPT" --find-best-version "$def_file")
+    best_version=$($PYTHON_CMD "$VALIDATION_SCRIPT" --find-best-version "$def_file")
     
     if [[ "$best_version" =~ ^v([0-9]+)$ ]]; then
         matched_version="${BASH_REMATCH[1]}"
@@ -197,19 +197,33 @@ determine_best_schema_version() {
 
 initialize_script() {
     # Check for Python and virtual environment
-    if ! command -v python3 &>/dev/null; then
-        log "ERROR" "python3 could not be found. check your python installation"
+    # Check for Python and determine command to use
+    PYTHON_CMD=""
+    if command -v python3 &> /dev/null; then
+        PYTHON_CMD="python3"
+    elif command -v python &> /dev/null; then
+        PYTHON_CMD="python"
+    else
+        log "ERROR" "Python could not be found. Check your Python installation"
         exit 1
     fi
+    
+    log "DEBUG" "Using Python command: $PYTHON_CMD"
 
-    # Check if we have a virtual environment
+    # Check if we have a virtual environment and activate it
     if [ -d ".venv" ]; then
         log "INFO" "Activating virtual environment"
-        source .venv/bin/activate
+        if [ -f ".venv/bin/activate" ]; then
+            # Linux/Mac
+            source .venv/bin/activate
+        elif [ -f ".venv/Scripts/activate" ]; then
+            # Windows
+            source .venv/Scripts/activate
+        fi
     fi
     
     # Check if required Python packages are available
-    if ! python3 -c "import jsonschema, yaml" &>/dev/null; then
+    if ! $PYTHON_CMD -c "import jsonschema, yaml" &>/dev/null; then
         log "ERROR" "required python packages are missing. Install with: pip install -r requirements.txt"
         exit 2
     fi
