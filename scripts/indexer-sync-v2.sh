@@ -29,7 +29,8 @@ is_jackett_dev=false
 pulls_exists=false
 local_exist=false
 automation_mode=false
-MAX_COMMITS_TO_PICK=100
+MAX_COMMITS_TO_PICK=50
+MAX_COMMITS_TO_SEARCH=100
 VALIDATION_SCRIPT="scripts/validate.py"
 
 BLOCKLIST=("uniongang.yml" "uniongangcookie.yml" "sharewood.yml" "ygg-api.yml" "anirena.yml" "torrentgalaxy.yml" "torrent-heaven.yml" "scenelinks.yml")
@@ -422,7 +423,7 @@ pull_cherry_and_merge() {
     log "INFO" "Reviewing Commits"
     existing_message=$(git log --format=%B -n1)
     existing_message_ln1=$(echo "$existing_message" | awk 'NR==1')
-    prowlarr_commits=$(git log --format=%B -n 20 | grep "^$PROWLARR_COMMIT_TEMPLATE")
+    prowlarr_commits=$(git log --format=%B -n "$MAX_COMMITS_TO_SEARCH" | grep "^$PROWLARR_COMMIT_TEMPLATE")
     prowlarr_jackett_commit_message=$(echo "$prowlarr_commits" | awk 'NR==1')
     if [ "$is_jackett_dev" = true ]; then
         # Use only local Jackett branch (no remote)
