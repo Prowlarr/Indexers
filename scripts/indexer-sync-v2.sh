@@ -30,6 +30,7 @@ pulls_exists=false
 local_exist=false
 automation_mode=false
 MAX_COMMITS_TO_PICK=50
+VALIDATION_SCRIPT="scripts/validate.py"
 
 BLOCKLIST=("uniongang.yml" "uniongangcookie.yml" "sharewood.yml" "ygg-api.yml" "anirena.yml" "torrentgalaxy.yml" "torrent-heaven.yml" "scenelinks.yml")
 CONFLICTS_NONYML_EXTENSIONS='\.(cs|js|iss|html|ico|png|csproj)$'
@@ -146,7 +147,7 @@ determine_schema_version() {
 
     log "DEBUG" "Checking file against schema [$schema]"
     local test_output
-    npx ajv test -d "$def_file" -s "$schema" --valid -c ajv-formats --spec=draft2019
+    python3 "$VALIDATION_SCRIPT" --single "$def_file" "$schema"
     test_output=$?
 
     if [ "$test_output" = 0 ]; then
@@ -167,7 +168,7 @@ determine_best_schema_version() {
         schema="$dir/schema.json"
         log "DEBUG" "Checking file [$def_file] against schema [$schema]"
         local test_output
-        npx ajv test -d "$def_file" -s "$schema" --valid -c ajv-formats --spec=draft2019
+        python3 "$VALIDATION_SCRIPT" --single "$def_file" "$schema"
         test_output=$?
 
         if [ "$test_output" = 0 ]; then
@@ -186,16 +187,25 @@ determine_best_schema_version() {
 }
 
 initialize_script() {
-    if ! command -v npx &>/dev/null; then
-        log "ERROR" "npx could not be found. check your node installation"
+    # Check for Python and virtual environment
+    if ! command -v python3 &>/dev/null; then
+        log "ERROR" "python3 could not be found. check your python installation"
         exit 1
     fi
 
-    # Check if Required NPM Modules are installed
-    if ! npm list --depth=0 ajv-cli-servarr &>/dev/null || ! npm list --depth=0 ajv-formats &>/dev/null; then
-        log "ERROR" "required npm packages are missing, you should run \"npm install\""
+    # Check if we have a virtual environment
+    if [ -d ".venv" ]; then
+        log "INFO" "Activating virtual environment"
+        source .venv/bin/activate
+    fi
+    
+    # Check if required Python packages are available
+    if ! python3 -c "import jsonschema, yaml" &>/dev/null; then
+        log "ERROR" "required python packages are missing. Install with: pip install -r requirements.txt"
         exit 2
     fi
+    
+    log "INFO" "Using Python validation"
 }
 
 while getopts "frpzab:m:c:u:j:R:J:n:o:" opt; do
