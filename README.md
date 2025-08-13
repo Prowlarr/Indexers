@@ -10,9 +10,9 @@ To develop and test definitions, you may use the [Custom Definition Folder](http
 
 For Prowlarr Indexer Requests; please see [our request forum on Discord](https://requests.prowlarr.com/)
 
-## Defintions from Jackett
+## Definitions from Jackett
 
-With [some differences](https://github.com/Prowlarr/Indexers/issues/370) and a few exceptions Prowlarr Cardigann Indexers are synced upstream with [Jackett](https://github.com/Jackett/Jackett) via the [indexer-sync script in this repository](https://github.com/Prowlarr/Indexers/blob/master/scripts/indexer-sync-v2.sh). Syncs are executed manually by the Prowlarr Team and Contributors; however, any user may [pull request](https://github.com/Prowlarr/Indexers/compare) a sync.
+With [some differences](https://github.com/Prowlarr/Indexers/issues/370) and a few exceptions Prowlarr Cardigann Indexers are synced upstream with [Jackett](https://github.com/Jackett/Jackett) via the [indexer-sync script in this repository](https://github.com/Prowlarr/Indexers/blob/master/scripts/indexer-sync-v2.sh). Syncs are automated daily via GitHub Actions, but can also be triggered manually. Any user may also [pull request](https://github.com/Prowlarr/Indexers/compare) a manual sync.
 
 ### Sync Jackett Indexers
 
