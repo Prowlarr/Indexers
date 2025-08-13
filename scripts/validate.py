@@ -33,17 +33,33 @@ def load_json_schema(schema_path):
         print(f"Error loading schema {schema_path}: {e}", file=sys.stderr)
         return None
 
-def convert_numeric_keys_to_strings(obj):
-    """Recursively convert numeric keys to strings to fix jsonschema regex issues."""
+def convert_keys_and_values_to_strings(obj, path=''):
+    """Recursively convert numeric/boolean keys and option values to strings for jsonschema compatibility."""
     if isinstance(obj, dict):
         new_dict = {}
         for key, value in obj.items():
-            # Convert numeric keys to strings
-            new_key = str(key) if isinstance(key, int) else key
-            new_dict[new_key] = convert_numeric_keys_to_strings(value)
+            # Convert numeric and boolean keys to strings
+            if isinstance(key, (int, bool)):
+                new_key = str(key).lower() if isinstance(key, bool) else str(key)
+            else:
+                new_key = key
+            
+            # Special handling for options and case dictionaries - convert boolean values to strings
+            if new_key in ('options', 'case') and isinstance(value, dict):
+                new_value = {}
+                for opt_key, opt_value in value.items():
+                    # Convert option keys to strings if needed
+                    str_key = str(opt_key).lower() if isinstance(opt_key, bool) else str(opt_key) if isinstance(opt_key, int) else opt_key
+                    # Convert boolean option values to strings
+                    str_value = str(opt_value).lower() if isinstance(opt_value, bool) else opt_value
+                    new_value[str_key] = str_value
+                new_dict[new_key] = new_value
+            else:
+                new_dict[new_key] = convert_keys_and_values_to_strings(value, f"{path}.{new_key}")
+                
         return new_dict
     elif isinstance(obj, list):
-        return [convert_numeric_keys_to_strings(item) for item in obj]
+        return [convert_keys_and_values_to_strings(item, f"{path}[{i}]") for i, item in enumerate(obj)]
     else:
         return obj
 
@@ -53,7 +69,7 @@ def load_yaml_file(yaml_path):
         with open(yaml_path, 'r', encoding='utf-8') as f:
             data = yaml.safe_load(f)
             # Convert numeric keys to strings to avoid jsonschema regex issues
-            return convert_numeric_keys_to_strings(data)
+            return convert_keys_and_values_to_strings(data)
     except (yaml.YAMLError, FileNotFoundError) as e:
         print(f"Error loading YAML {yaml_path}: {e}", file=sys.stderr)
         return None
