@@ -101,8 +101,6 @@ jobs:
               Please review the changes carefully before merging." \
               --head "$BRANCH_NAME" \
               --base master \
-              --label "automated" \
-              --label "indexer-sync"
           fi
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
