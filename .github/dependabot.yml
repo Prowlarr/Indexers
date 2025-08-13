@@ -1,14 +1,34 @@
 version: 2
 
 updates:
-    -   package-ecosystem: "github-actions"
-        directory: "/"
-        schedule:
-            interval: "weekly"
-            day: "friday"
-            time: "12:00"
-        target-branch: "master"
-        groups:
-            github:
-                patterns:
-                    - "*"
+  - package-ecosystem: "github-actions"
+    directory: "/.github"
+    schedule:
+      interval: "weekly"
+      day: "friday"
+      time: "12:00"
+    target-branch: "master"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+    open-pull-requests-limit: 5
+
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "friday"  
+      time: "12:00"
+    target-branch: "master"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    groups:
+      python-deps:
+        patterns:
+          - "*"
+    open-pull-requests-limit: 3
