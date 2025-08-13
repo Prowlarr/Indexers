@@ -423,8 +423,17 @@ pull_cherry_and_merge() {
     log "INFO" "Reviewing Commits"
     existing_message=$(git log --format=%B -n1)
     existing_message_ln1=$(echo "$existing_message" | awk 'NR==1')
+    
+    log "DEBUG" "Searching for commits with template: '$PROWLARR_COMMIT_TEMPLATE'"
+    log "DEBUG" "Searching in last $MAX_COMMITS_TO_SEARCH commits"
+    
     prowlarr_commits=$(git log --format=%B -n "$MAX_COMMITS_TO_SEARCH" | grep "^$PROWLARR_COMMIT_TEMPLATE")
+    log "DEBUG" "Found prowlarr commits count: $(echo "$prowlarr_commits" | wc -l)"
+    log "DEBUG" "First prowlarr commit found: $(echo "$prowlarr_commits" | head -1)"
+    
     prowlarr_jackett_commit_message=$(echo "$prowlarr_commits" | awk 'NR==1')
+    log "DEBUG" "Prowlarr jackett commit message: '$prowlarr_jackett_commit_message'"
+    
     if [ "$is_jackett_dev" = true ]; then
         # Use only local Jackett branch (no remote)
         jackett_ref="$JACKETT_REMOTE_NAME$JACKETT_BRANCH"
@@ -436,11 +445,20 @@ pull_cherry_and_merge() {
         log "DEBUG" "Jackett Remote is [$jackett_ref]"
         # read -r -p "Pausing to review commits. Press any key to continue." -n1 -s
     fi
+    
     jackett_recent_commit=$(git rev-parse "$jackett_ref")
+    log "DEBUG" "Jackett recent commit: '$jackett_recent_commit'"
+    
     recent_pulled_commit=$(echo "$prowlarr_commits" | awk 'NR==1{print $5}')
+    log "DEBUG" "Recent pulled commit (field 5): '$recent_pulled_commit'"
+    log "DEBUG" "Full first commit line: '$(echo "$prowlarr_commits" | awk 'NR==1')'"
 
     if [ -z "$recent_pulled_commit" ]; then
         log "ERROR" "Recent Pulled Commit is empty. Failing."
+        log "ERROR" "Debug info:"
+        log "ERROR" "  - prowlarr_commits found: '$(echo "$prowlarr_commits" | head -3)'"
+        log "ERROR" "  - Template used: '$PROWLARR_COMMIT_TEMPLATE'"
+        log "ERROR" "  - Trying to extract field 5 from first line"
         exit 3
     fi
     if [ "$jackett_recent_commit" = "$recent_pulled_commit" ]; then
