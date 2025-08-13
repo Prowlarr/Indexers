@@ -1,0 +1,14 @@
+# Prowlarr Cardigann Schema Versions
+# This file defines the supported schema versions for indexer definitions
+
+# Current active schema version (latest stable)
+CURRENT_VERSION=11
+
+# Maximum supported schema version 
+MAX_VERSION=11
+
+# Minimum supported schema version (below this are deprecated/frozen)
+MIN_VERSION=10
+
+# Development/next schema version (if being worked on)
+NEXT_VERSION=12
