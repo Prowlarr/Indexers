@@ -5,9 +5,14 @@ on:
   push:
     branches:
       - master
+      - automated-sync
+    paths:
+      - 'definitions/**'
   pull_request:
     branches:
       - master
+    paths:
+      - 'definitions/**'
 
 jobs:
   lint:
