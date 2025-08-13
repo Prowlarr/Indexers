@@ -33,11 +33,27 @@ def load_json_schema(schema_path):
         print(f"Error loading schema {schema_path}: {e}", file=sys.stderr)
         return None
 
+def convert_numeric_keys_to_strings(obj):
+    """Recursively convert numeric keys to strings to fix jsonschema regex issues."""
+    if isinstance(obj, dict):
+        new_dict = {}
+        for key, value in obj.items():
+            # Convert numeric keys to strings
+            new_key = str(key) if isinstance(key, int) else key
+            new_dict[new_key] = convert_numeric_keys_to_strings(value)
+        return new_dict
+    elif isinstance(obj, list):
+        return [convert_numeric_keys_to_strings(item) for item in obj]
+    else:
+        return obj
+
 def load_yaml_file(yaml_path):
     """Load and return YAML file content."""
     try:
         with open(yaml_path, 'r', encoding='utf-8') as f:
-            return yaml.safe_load(f)
+            data = yaml.safe_load(f)
+            # Convert numeric keys to strings to avoid jsonschema regex issues
+            return convert_numeric_keys_to_strings(data)
     except (yaml.YAMLError, FileNotFoundError) as e:
         print(f"Error loading YAML {yaml_path}: {e}", file=sys.stderr)
         return None
@@ -56,7 +72,7 @@ def validate_file_against_schema(yaml_path, schema):
         validator.validate(data)
         return True, None
     except ValidationError as e:
-        return False, f"Validation error in {yaml_path}: {e.message}"
+        return False, f"Validation error in {yaml_path}: {str(e)}"
     except Exception as e:
         return False, f"Error validating {yaml_path}: {str(e)}"
 
