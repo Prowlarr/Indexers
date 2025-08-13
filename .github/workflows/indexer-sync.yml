@@ -65,31 +65,31 @@ jobs:
             echo "Updating existing PR #$EXISTING_PR"
             gh pr edit "$EXISTING_PR" --body "## Automated Indexer Sync
 
-This PR contains automated updates from the Jackett repository.
+            This PR contains automated updates from the Jackett repository.
 
-**⚠️ Backporting was skipped** - Manual review may be required for older schema versions.
+            **⚠️ Backporting was skipped** - Manual review may be required for older schema versions.
 
-### Latest Update: $(date --iso-8601=seconds)
-- Triggered by: ${{ github.event_name }}
-- Workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            ### Latest Update: $(date --iso-8601=seconds)
+            - Triggered by: ${{ github.event_name }}
+            - Workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
-Please review the changes carefully before merging."
+            Please review the changes carefully before merging."
           else
             echo "Creating new pull request"
             gh pr create \
               --title "🤖 Automated Indexer Sync ($(date +%Y-%m-%d))" \
               --body "## Automated Indexer Sync
 
-This PR contains automated updates from the Jackett repository.
+              This PR contains automated updates from the Jackett repository.
 
-**⚠️ Backporting was skipped** - Manual review may be required for older schema versions.
+              **⚠️ Backporting was skipped** - Manual review may be required for older schema versions.
 
-### Automation Details:
-- Sync performed with \`-z\` flag (backports skipped)
-- Triggered by: ${{ github.event_name }}
-- Workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+              ### Automation Details:
+              - Sync performed with \`-z\` flag (backports skipped)
+              - Triggered by: ${{ github.event_name }}
+              - Workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
-Please review the changes carefully before merging." \
+              Please review the changes carefully before merging." \
               --head "$BRANCH_NAME" \
               --base master \
               --label "automated" \
