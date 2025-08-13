@@ -27,7 +27,12 @@ With [some differences](https://github.com/Prowlarr/Indexers/issues/370) and a f
     ```
 1. Install dependencies
     ```bash
-    npm install
+    # Create virtual environment (recommended)
+    python3 -m venv .venv
+    source .venv/bin/activate
+    
+    # Install Python dependencies
+    pip install -r requirements.txt
     ```
 1. Execute sync script
     ```bash
@@ -49,16 +54,22 @@ For more specific details between versions the schema files can be compared.
 
 To test a definition file against a specific schema use the command below.
 
-Note that the following npm packages are required `ajv-cli-servarr ajv-formats`  These can be installed globally on your system with
+### Python Validation
 
 ```bash
-npm install -g ajv-cli-servarr ajv-formats
-```
+# Setup (one time)
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
 
-To test the definition:
+# Validate all definitions
+python3 scripts/validate.py
 
-```bash
- ajv test -d "definitions/v{VERSION}/{INDEXER FILE NAME}.yml" -s "definitions/v{VERSION}/schema.json" --valid -c ajv-formats --spec=draft2019
+# Validate single file
+python3 scripts/validate.py --single "definitions/v{VERSION}/{INDEXER FILE NAME}.yml" "definitions/v{VERSION}/schema.json"
+
+# Or use convenience script
+./scripts/validate-python.sh
 ```
 
 ## Active Versions
