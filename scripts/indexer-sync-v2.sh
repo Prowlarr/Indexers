@@ -29,7 +29,7 @@ is_jackett_dev=false
 pulls_exists=false
 local_exist=false
 automation_mode=false
-MAX_COMMITS_TO_PICK=50
+MAX_COMMITS_TO_PICK=100
 VALIDATION_SCRIPT="scripts/validate.py"
 
 BLOCKLIST=("uniongang.yml" "uniongangcookie.yml" "sharewood.yml" "ygg-api.yml" "anirena.yml" "torrentgalaxy.yml" "torrent-heaven.yml" "scenelinks.yml")
