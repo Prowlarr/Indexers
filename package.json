@@ -1,8 +1,0 @@
-{
-  "name": "prowlarr-indexers",
-  "private": true,
-  "dependencies": {
-    "ajv-cli-servarr": "^5.0.1",
-    "ajv-formats": "^2.1.1"
-  }
-}
