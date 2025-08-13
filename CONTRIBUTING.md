@@ -127,7 +127,7 @@ All pull requests are automatically tested with:
 
 ## Indexer Sync Process
 
-Indexers are primarily synced from [Jackett](https://github.com/Jackett/Jackett) using the automated sync script:
+Indexers are primarily synced from [Jackett](https://github.com/Jackett/Jackett) automatically via GitHub Actions that run daily at 2 AM UTC. The sync can also be triggered manually through the GitHub Actions interface or by running the sync script locally:
 
 ```bash
 # Manual sync (with automation mode)
@@ -137,7 +137,13 @@ Indexers are primarily synced from [Jackett](https://github.com/Jackett/Jackett)
 ./scripts/indexer-sync-v2.sh -z -m dev
 ```
 
-### Sync Options
+### Automated Sync Details
+- **Schedule**: Daily at 2 AM UTC via GitHub Actions
+- **Manual Trigger**: Available through GitHub Actions workflow dispatch
+- **Mode**: Uses `-z` flag (skips backporting) for automated runs
+- **Pull Requests**: Automatically creates/updates PRs with sync results
+
+### Manual Sync Options
 - `-z` - Skip backporting (recommended for automation)
 - `-a` - Automation mode (skip interactive prompts)
 - `-p` - Push changes to remote
