@@ -100,7 +100,7 @@ jobs:
 
               Please review the changes carefully before merging." \
               --head "$BRANCH_NAME" \
-              --base master \
+              --base master
           fi
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
