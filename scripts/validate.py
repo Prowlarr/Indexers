@@ -118,7 +118,7 @@ def load_yaml_file(yaml_path):
         print(f"Error loading YAML {yaml_path}: {e}", file=sys.stderr)
         return None
 
-def validate_file_against_schema(yaml_path, schema):
+def validate_file_against_schema(yaml_path, schema, all_errors=False):
     """Validate a single YAML file against the schema."""
     data = load_yaml_file(yaml_path)
     if data is None:
@@ -129,14 +129,42 @@ def validate_file_against_schema(yaml_path, schema):
         validator_class = validator_for(schema)
         validator_class.check_schema(schema)
         validator = validator_class(schema)
-        validator.validate(data)
-        return True, None
+        
+        if all_errors:
+            # Collect all validation errors
+            errors = sorted(validator.iter_errors(data), key=str)
+            if errors:
+                error_messages = []
+                for error in errors:
+                    # Create concise error message
+                    path = "['" + "']['".join(str(p) for p in error.absolute_path) + "']" if error.absolute_path else "root"
+                    schema_path = ".".join(str(p) for p in error.schema_path) if error.schema_path else ""
+                    
+                    error_msg = f"\nFailed validating '{error.validator}' in schema"
+                    if schema_path:
+                        error_msg += f"['{schema_path.replace('.', '\'][\'')}\']"
+                    error_msg += f"\n\nOn instance{path}:\n    {repr(error.instance)}"
+                    error_messages.append(error_msg)
+                return False, "\n".join(error_messages)
+            return True, None
+        else:
+            # Stop at first error (original behavior)
+            validator.validate(data)
+            return True, None
     except ValidationError as e:
-        return False, f"Validation error in {yaml_path}: {str(e)}"
+        # Create concise error message for single error mode
+        path = "['" + "']['".join(str(p) for p in e.absolute_path) + "']" if e.absolute_path else "root"
+        schema_path = ".".join(str(p) for p in e.schema_path) if e.schema_path else ""
+        
+        error_msg = f"\nFailed validating '{e.validator}' in schema"
+        if schema_path:
+            error_msg += f"['{schema_path.replace('.', '\'][\'')}\']"
+        error_msg += f"\n\nOn instance{path}:\n    {repr(e.instance)}"
+        return False, error_msg
     except Exception as e:
         return False, f"Error validating {yaml_path}: {str(e)}"
 
-def validate_directory(definitions_dir):
+def validate_directory(definitions_dir, all_errors=False):
     """Validate all YAML files in a definitions directory."""
     success = True
     error_count = 0
@@ -188,7 +216,7 @@ def validate_directory(definitions_dir):
             
         for yaml_file in sorted(yaml_files):
             total_files += 1
-            is_valid, error_msg = validate_file_against_schema(yaml_file, schema)
+            is_valid, error_msg = validate_file_against_schema(yaml_file, schema, all_errors)
             
             if not is_valid:
                 print(f"FAIL: {error_msg}")
@@ -217,7 +245,7 @@ def find_best_schema_version(yaml_file, definitions_dir=DEFAULT_DEFINITIONS_DIR)
         if schema is None:
             continue
             
-        is_valid, _ = validate_file_against_schema(yaml_file, schema)
+        is_valid, _ = validate_file_against_schema(yaml_file, schema, False)
         if is_valid:
             matched_version = version
         else:
@@ -227,13 +255,13 @@ def find_best_schema_version(yaml_file, definitions_dir=DEFAULT_DEFINITIONS_DIR)
     
     return matched_version
 
-def validate_single_file(yaml_file, schema_file):
+def validate_single_file(yaml_file, schema_file, all_errors=False):
     """Validate a single file against a schema."""
     schema = load_json_schema(schema_file)
     if schema is None:
         return False
     
-    is_valid, error_msg = validate_file_against_schema(yaml_file, schema)
+    is_valid, error_msg = validate_file_against_schema(yaml_file, schema, all_errors)
     if not is_valid:
         print(error_msg, file=sys.stderr)
         return False
@@ -252,6 +280,10 @@ def main():
                        help="Find the best schema version for a YAML file")
     parser.add_argument("--no-cache", action="store_true",
                        help="Disable schema caching")
+    parser.add_argument("--all-errors", action="store_true", default=True,
+                       help="Show all validation errors instead of stopping at the first one (default: True)")
+    parser.add_argument("--first-error-only", action="store_true",
+                       help="Stop at first validation error instead of showing all errors")
     parser.add_argument("--verbose", "-v", action="store_true",
                        help="Enable verbose output")
     parser.add_argument("--version", "-V", action="version", version="%(prog)s 1.0")
@@ -268,10 +300,13 @@ def main():
             schema_cache = {}  # Clear cache
             load_json_schema._cache_disabled = True  # Disable caching
             
+        # Determine error reporting mode
+        all_errors = args.all_errors and not args.first_error_only
+            
         if args.single:
             # Single file validation mode
             yaml_file, schema_file = args.single
-            success = validate_single_file(yaml_file, schema_file)
+            success = validate_single_file(yaml_file, schema_file, all_errors)
         elif args.find_best_version:
             # Find best schema version mode
             yaml_file = args.find_best_version
@@ -290,7 +325,7 @@ def main():
             if not os.path.exists(definitions_dir):
                 print(f"Error: Definitions directory '{definitions_dir}' not found", file=sys.stderr)
                 sys.exit(1)
-            success = validate_directory(definitions_dir)
+            success = validate_directory(definitions_dir, all_errors)
             
         if args.single or not hasattr(args, 'find_best_version'):
             if success:
