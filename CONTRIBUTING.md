@@ -35,9 +35,27 @@ To validate all indexer definitions:
 ./scripts/validate-python.sh
 ```
 
-To validate a single file:
+The validation script automatically detects directory structure and validates accordingly:
+- **Prowlarr structure**: Uses versioned directories (`v10/`, `v11/`) with individual schemas
+- **Jackett structure**: Uses flat directory with root `schema.json`
+
+### Validation Commands
+
 ```bash
-python3 scripts/validate.py --single definitions/v10/example.yml definitions/v10/schema.json
+# Validate all definitions (auto-detects structure)
+python3 scripts/validate.py
+
+# Validate specific directory
+python3 scripts/validate.py /path/to/definitions
+
+# Validate single file against schema
+python3 scripts/validate.py --single file.yml schema.json
+
+# Show only first error (default shows all errors)
+python3 scripts/validate.py --first-error-only
+
+# Find best schema version for a file
+python3 scripts/validate.py --find-best-version file.yml
 ```
 
 ### Schema Versions
@@ -109,14 +127,23 @@ YAML parsing can introduce type conversions that don't occur in JSON:
 
 ### Local Testing
 ```bash
-# Test all definitions
+# Test all definitions (supports both Prowlarr and Jackett structures)
 ./scripts/validate-python.sh
 
-# Test specific version
-python3 scripts/validate.py -d definitions/v10
+# Test specific directory
+python3 scripts/validate.py definitions/v10
+
+# Test external projects (like Jackett)
+python3 scripts/validate.py ../jackett/src/Jackett.Common/Definitions
 
 # Test single file
-python3 scripts/validate.py --single definitions/v10/yourindexer.yml definitions/v10/schema.json
+python3 scripts/validate.py --single yourindexer.yml schema.json
+
+# Show all errors for comprehensive debugging
+python3 scripts/validate.py  # default behavior
+
+# Show only first error for quick fixes
+python3 scripts/validate.py --first-error-only
 ```
 
 ### CI Testing
