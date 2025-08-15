@@ -73,15 +73,30 @@ source .venv/Scripts/activate
 
 pip install -r requirements.txt
 
-# Validate all definitions
+# Validate all definitions (supports both Prowlarr versioned and Jackett flat structures)
 python scripts/validate.py
 
-# Validate single file
-python scripts/validate.py --single "definitions/v{VERSION}/{INDEXER FILE NAME}.yml" "definitions/v{VERSION}/schema.json"
+# Validate specific directory
+python scripts/validate.py /path/to/definitions
+
+# Validate single file against schema
+python scripts/validate.py --single "file.yml" "schema.json"
+
+# Show only first error (default shows all errors)
+python scripts/validate.py --first-error-only
+
+# Find best schema version for a file
+python scripts/validate.py --find-best-version "file.yml"
 
 # Or use convenience script
 ./scripts/validate-python.sh
 ```
+
+The validation script supports:
+- **Flexible directory structures**: Works with Prowlarr's versioned directories (`v10/`, `v11/`) and Jackett's flat structure with root `schema.json`
+- **All errors by default**: Shows all validation issues at once instead of stopping at the first error
+- **Concise error messages**: Clean output showing only validation type, schema path, and invalid values
+- **Auto-detection**: Automatically detects directory structure and uses appropriate validation method
 
 ## Active Versions
 
