@@ -198,7 +198,68 @@ All workflows include:
 
 ## Indexer Sync Process
 
-Indexers are primarily synced from [Jackett](https://github.com/Jackett/Jackett) automatically via GitHub Actions that run 3 times daily (2 AM, 10 AM, 6 PM UTC). The sync can also be triggered manually through the GitHub Actions interface or by running the sync script locally:
+Indexers are primarily synced from [Jackett](https://github.com/Jackett/Jackett) automatically via GitHub Actions that run 3 times daily (2 AM, 10 AM, 6 PM UTC). The sync can also be triggered manually through the GitHub Actions interface or by running the sync script locally.
+
+### Quick Start
+
+1. Fork this repository on GitHub
+1. Clone your fork
+    ```bash
+    git clone https://github.com/YOUR_USERNAME/Indexers.git
+    cd Indexers
+    ```
+1. Install dependencies
+    ```bash
+    # Create virtual environment (recommended)
+    python -m venv .venv
+    
+    # Activate virtual environment
+    # On Linux/Mac:
+    source .venv/bin/activate
+    # On Windows:
+    source .venv/Scripts/activate
+    
+    # Install Python dependencies
+    pip install -r requirements.txt
+    ```
+1. Execute sync script
+    ```bash
+    chmod +x scripts/indexer-sync-v2.sh
+    ./scripts/indexer-sync-v2.sh -r upstream -p
+    ```
+
+### Script Features
+
+The indexer sync script includes several performance and usability improvements:
+
+- **Sparse Checkout**: Automatically configures git sparse checkout to only download Jackett indexer definitions (`src/Jackett.Common/Definitions/*`), significantly reducing bandwidth and disk usage
+- **Controlled Logging**: Three logging levels for better troubleshooting:
+  - Default: Clean output (INFO, WARN, ERROR only)
+  - `-v` or `VERBOSE=true`: Shows detailed parameter and operation information
+  - `-d` or `DEBUG=true`: Shows all logging including debug traces
+- **Efficient Syncing**: Only fetches the necessary files from the large Jackett repository
+
+### Script Usage
+
+```bash
+# Basic sync
+./scripts/indexer-sync-v2.sh
+
+# With debug logging
+./scripts/indexer-sync-v2.sh -d
+
+# With verbose logging  
+./scripts/indexer-sync-v2.sh -v
+
+# Environment variables
+DEBUG=true ./scripts/indexer-sync-v2.sh
+VERBOSE=true ./scripts/indexer-sync-v2.sh
+
+# See all options
+./scripts/indexer-sync-v2.sh --help
+```
+
+### Manual Sync Options
 
 ```bash
 # Manual sync (with automation mode)
@@ -215,11 +276,14 @@ Indexers are primarily synced from [Jackett](https://github.com/Jackett/Jackett)
 - **Pull Requests**: Automatically creates/updates PRs with sync results
 - **Caching**: Separate caches for Python dependencies and Jackett data for faster runs
 
-### Manual Sync Options
+### Command Line Options
 - `-z` - Skip backporting (recommended for automation)
 - `-a` - Automation mode (skip interactive prompts)
 - `-p` - Push changes to remote
 - `-m dev` - Development mode with pauses for review
+- `-v` - Verbose logging
+- `-d` - Debug logging
+- `-r upstream` - Set remote name
 
 ## Submitting Changes
 
