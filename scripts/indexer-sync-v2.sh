@@ -320,19 +320,16 @@ while getopts "frpzab:m:c:u:j:R:J:n:o:dv" opt; do
         ;;
     r)
         prowlarr_remote_name=$OPTARG
-        log "TRACE" "prowlarr_remote_name using argument $prowlarr_remote_name"
         ;;
     b)
         prowlarr_target_branch=$OPTARG
-        log "TRACE" "prowlarr_target_branch using argument $prowlarr_target_branch"
         ;;
     o)
         prowlarr_push_remote=$OPTARG
-        log "TRACE" "prowlarr_push_remote using argument $prowlarr_push_remote"
         ;;    
     m)
         mode_choice=$OPTARG
-        log "TRACE" "mode_choice using argument $mode_choice"
+        log "DEBUG" "mode_choice using argument $mode_choice"
         case "$mode_choice" in
         normal | n | N)
             is_dev_exec=false
@@ -363,27 +360,21 @@ while getopts "frpzab:m:c:u:j:R:J:n:o:dv" opt; do
         ;;
     c)
         PROWLARR_COMMIT_TEMPLATE=$OPTARG
-        log "TRACE" "PROWLARR_COMMIT_TEMPLATE using argument $PROWLARR_COMMIT_TEMPLATE"
         ;;
     u)
         PROWLARR_REPO_URL=$OPTARG
-        log "TRACE" "PROWLARR_REPO_URL using argument $PROWLARR_REPO_URL"
         ;;
     j)
         JACKETT_REPO_URL=$OPTARG
-        log "TRACE" "JACKETT_REPO_URL using argument $JACKETT_REPO_URL"
         ;;
     R)
         PROWLARR_RELEASE_BRANCH=$OPTARG
-        log "TRACE" "PROWLARR_RELEASE_BRANCH using argument $PROWLARR_RELEASE_BRANCH"
         ;;
     J)
         JACKETT_BRANCH=$OPTARG
-        log "TRACE" "JACKETT_BRANCH using argument $JACKETT_BRANCH"
         ;;
     n)
         JACKETT_REMOTE_NAME=$OPTARG
-        log "TRACE" "JACKETT_REMOTE_NAME using argument $JACKETT_REMOTE_NAME"
         ;;
     z)
         # No Arg
