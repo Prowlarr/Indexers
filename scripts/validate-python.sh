@@ -20,9 +20,11 @@ if [ -d ".venv" ]; then
     echo "Activating virtual environment"
     if [ -f ".venv/bin/activate" ]; then
         # Linux/Mac
+        # shellcheck disable=SC1091
         source .venv/bin/activate
     elif [ -f ".venv/Scripts/activate" ]; then
         # Windows
+        # shellcheck disable=SC1091
         source .venv/Scripts/activate
     fi
 fi
