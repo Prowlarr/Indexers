@@ -16,67 +16,7 @@ With [some differences](https://github.com/Prowlarr/Indexers/issues/370) and a f
 
 ### Sync Jackett Indexers
 
-#### Quick Start
-
-
-1. Fork this repository on GitHub
-1. Clone your fork
-    ```bash
-    git clone https://github.com/YOUR_USERNAME/Indexers.git
-    cd Indexers
-    ```
-1. Install dependencies
-    ```bash
-    # Create virtual environment (recommended)
-    python -m venv .venv
-    
-    # Activate virtual environment
-    # On Linux/Mac:
-    source .venv/bin/activate
-    # On Windows:
-    source .venv/Scripts/activate
-    
-    # Install Python dependencies
-    pip install -r requirements.txt
-    ```
-1. Execute sync script
-    ```bash
-    chmod +x scripts/indexer-sync-v2.sh
-    ./scripts/indexer-sync-v2.sh -r upstream -p
-    ```
-
-#### Script Features
-
-The indexer sync script includes several performance and usability improvements:
-
-- **Sparse Checkout**: Automatically configures git sparse checkout to only download Jackett indexer definitions (`src/Jackett.Common/Definitions/*`), significantly reducing bandwidth and disk usage
-- **Controlled Logging**: Three logging levels for better troubleshooting:
-  - Default: Clean output (INFO, WARN, ERROR only)
-  - `-v` or `VERBOSE=true`: Shows detailed parameter and operation information
-  - `-d` or `DEBUG=true`: Shows all logging including debug traces
-- **Efficient Syncing**: Only fetches the necessary files from the large Jackett repository
-
-#### Script Usage
-
-```bash
-# Basic sync
-./scripts/indexer-sync-v2.sh
-
-# With debug logging
-./scripts/indexer-sync-v2.sh -d
-
-# With verbose logging  
-./scripts/indexer-sync-v2.sh -v
-
-# Environment variables
-DEBUG=true ./scripts/indexer-sync-v2.sh
-VERBOSE=true ./scripts/indexer-sync-v2.sh
-
-# See all options
-./scripts/indexer-sync-v2.sh --help
-```
-
-1. Create pull request using the output link to create a PR from your fork to this repository
+For detailed instructions on syncing Jackett indexers, including script features, usage examples, and command-line options, see the [Contributing Guide](CONTRIBUTING.md#indexer-sync-process).
 
 ## Definition Versions
 
