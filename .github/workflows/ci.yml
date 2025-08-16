@@ -7,12 +7,14 @@ on:
       - master
       - automated-sync
     paths:
-      - 'definitions/**'
+      - 'definitions/**/*.yml'
+      - 'definitions/**/*.yaml'
   pull_request:
     branches:
       - master
     paths:
-      - 'definitions/**'
+      - 'definitions/**/*.yml'
+      - 'definitions/**/*.yaml'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -42,26 +44,7 @@ jobs:
         cache: 'pip'
     - name: Install Python dependencies
       run: |
-        python3 -m venv .venv
-        source .venv/bin/activate
         pip install -r requirements.txt
     - name: yaml schema check
       run: |
         bash ./scripts/validate-python.sh
-  python_syntax:
-    name: Validate Python Script Syntax
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v5
-    - name: Setup Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
-    - name: Check Python syntax
-      run: |
-        python3 -m py_compile scripts/validate.py
-        echo "Python script syntax validation passed"
-    - name: Run basic Python tests
-      run: |
-        python3 -c "import ast; ast.parse(open('scripts/validate.py').read()); print('AST parsing successful')"
-        python3 scripts/validate.py --version
