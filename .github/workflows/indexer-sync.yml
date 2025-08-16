@@ -37,6 +37,14 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
+      - name: Cache Python dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/pip
+            .venv
+          key: python-deps-${{ hashFiles('requirements.txt') }}
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
@@ -45,7 +53,9 @@ jobs:
 
       - name: Create virtual environment and install dependencies
         run: |
-          python3 -m venv .venv
+          if [ ! -d ".venv" ]; then
+            python3 -m venv .venv
+          fi
           source .venv/bin/activate
           pip install -r requirements.txt
 
