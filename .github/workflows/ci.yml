@@ -31,7 +31,7 @@ jobs:
           yamllint --version
       - name: yamllint run
         run: |
-          yamllint definitions/**/*.yml definitions/**/*.yaml --format github
+          yamllint definitions --format github
   schema_validate:
     name: Validate Schema
     runs-on: ubuntu-latest
