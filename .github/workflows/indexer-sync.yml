@@ -57,8 +57,6 @@ jobs:
           key: jackett-data-${{ runner.os }}-${{ hashFiles('**/indexer-sync-v2.sh') }}-${{ steps.date.outputs.week }}
           restore-keys: |
             jackett-data-${{ runner.os }}-${{ hashFiles('**/indexer-sync-v2.sh') }}-
-            jackett-data-${{ runner.os }}-
-            jackett-data-
 
       - name: Setup Python
         uses: actions/setup-python@v5
