@@ -40,6 +40,7 @@ removed_indexers=""
 added_indexers=""
 modified_indexers=""
 newschema_indexers=""
+both_added_new_indexers=""
 BACKPORT_SKIPPED=false
 GIT_DIFF_CMD="git diff --cached --name-only"
 declare -A blocklist_map
@@ -596,6 +597,7 @@ resolve_conflicts() {
         log "DEBUG" "Both added definition conflicts exist; using Jackett's version: [$both_added_defs]"
         for file in $both_added_defs; do
             log "INFO" "NEW INDEXER: Resolving both-added conflict for [$file]"
+            both_added_new_indexers="$both_added_new_indexers $file"
             git checkout --theirs "$file"
             git add --force "$file"
         done
@@ -836,7 +838,9 @@ cleanup_and_commit() {
     fi
 
     # Recalculated Added / Modified / Removed - include renames (R) for directory rename detection
-    added_indexers=$(git diff --cached --diff-filter=AR --name-only | grep ".yml" | grep -E "v[[:digit:]]+")
+    staged_added=$(git diff --cached --diff-filter=AR --name-only | grep ".yml" | grep -E "v[[:digit:]]+")
+    # Combine with both-added indexers resolved during conflicts
+    added_indexers=$(echo "$staged_added $both_added_new_indexers" | xargs -n1 | sort -u | xargs)
     modified_indexers=$(git diff --cached --diff-filter=M --name-only | grep ".yml" | grep -E "v[[:digit:]]+")
     removed_indexers=$(git diff --cached --diff-filter=D --name-only | grep ".yml" | grep -E "v[[:digit:]]+")
     newschema_indexers=$(git diff --cached --diff-filter=A --name-only | grep ".yml" | grep -E "v$NEW_SCHEMA")
