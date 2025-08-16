@@ -159,7 +159,8 @@ def validate_file_against_schema(yaml_path, schema, all_errors=False):
         
         error_msg = f"\nFailed validating '{e.validator}' in schema"
         if schema_path:
-            error_msg += f"['{schema_path.replace('.', '\'][\'')}\']"
+            schema_parts = schema_path.replace('.', "']['")
+            error_msg += f"['{schema_parts}']"
         error_msg += f"\n\nOn instance{path}:\n    {repr(e.instance)}"
         return False, error_msg
     except Exception as e:
