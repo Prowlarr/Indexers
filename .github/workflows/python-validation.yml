@@ -36,6 +36,7 @@ jobs:
         pip install -r requirements.txt
     - name: Validate Python files
       run: |
+        shopt -s globstar
         for file in scripts/**/*.py; do
           if [ -f "$file" ]; then
             echo "Validating $file"
