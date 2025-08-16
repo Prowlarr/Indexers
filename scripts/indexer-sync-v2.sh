@@ -626,6 +626,11 @@ handle_yml_conflicts() {
         log "DEBUG" "YML Definitions Process: [$yml_defs]"
         for def in $yml_add; do
             log "DEBUG" "Using & Adding Jackett's definition yml; [$def]"
+            # Check if the file actually exists before proceeding
+            if [ ! -f "$def" ] && ! git ls-files --error-unmatch "$def" >/dev/null 2>&1; then
+                log "DEBUG" "File [$def] does not exist, skipping"
+                continue
+            fi
             # 1) Create a new path by replacing "src/Jackett.Common/Definitions/"
             #    with "definitions/$MIN_SCHEMA/".
             #    - In Bash parameter expansion, the syntax is:
@@ -638,15 +643,15 @@ handle_yml_conflicts() {
                 # Use git mv so that Git tracks the file rename
                 log "DEBUG" "Moving definition to new path; [$def] to [$new_def]"
                 mv "$def" "$new_def"
-                # Then checkout "theirs" to accept Jackett’s content
-                git checkout --theirs "$new_def"
+                # Then checkout "theirs" to accept Jackett's content
+                git checkout --theirs "$new_def" 2>/dev/null || true
                 # Stage the new path
-                git add --force "$new_def"
+                git add --force "$new_def" 2>/dev/null || true
                 git rm --f --ignore-unmatch "$def"
             else
                 # Fallback if the path didn't actually change
-                git checkout --theirs "$def"
-                git add --force "$def"
+                git checkout --theirs "$def" 2>/dev/null || true
+                git add --force "$def" 2>/dev/null || true
             fi
         done
         for def in $yml_delete; do
