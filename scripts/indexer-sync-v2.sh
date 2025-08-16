@@ -40,6 +40,8 @@ removed_indexers=""
 added_indexers=""
 modified_indexers=""
 newschema_indexers=""
+# Track indexers moved during conflict resolution
+moved_new_indexers=""
 BACKPORT_SKIPPED=false
 GIT_DIFF_CMD="git diff --cached --name-only"
 declare -A blocklist_map
@@ -647,6 +649,8 @@ handle_yml_conflicts() {
                 mkdir -p "$(dirname "$new_def")"
                 # Use git mv so that Git tracks the file rename
                 log "INFO" "NEW INDEXER: Moving [$def] to [$new_def]"
+                # Track this as a new indexer
+                moved_new_indexers="$moved_new_indexers $new_def"
                 mv "$def" "$new_def"
                 # Then checkout "theirs" to accept Jackett's content
                 git checkout --theirs "$new_def" 2>/dev/null || true
@@ -678,9 +682,13 @@ handle_new_indexers() {
     added_indexers=$(git diff --cached --diff-filter=A --name-only | grep ".yml" | grep -E "v[[:digit:]]+")
     log "DEBUG" "New indexers detected (A filter + v[digit]+): [$added_indexers]"
     
-    if [ -n "$added_indexers" ]; then
-        log "INFO" "New Indexers detected: [$added_indexers]"
-        for indexer in ${added_indexers}; do
+    # Combine regular added indexers with those moved during conflict resolution
+    all_new_indexers="$added_indexers $moved_new_indexers"
+    all_new_indexers=$(echo "$all_new_indexers" | xargs -n1 | sort -u | xargs)
+    
+    if [ -n "$all_new_indexers" ]; then
+        log "INFO" "New Indexers detected: [$all_new_indexers]"
+        for indexer in ${all_new_indexers}; do
             base_indexer=$(basename "$indexer")
             log "DEBUG" "Evaluating [$indexer] against BLOCKLIST with name [$base_indexer]"
             # Check if the indexer is in the BLOCKLIST
@@ -833,7 +841,9 @@ cleanup_and_commit() {
     fi
 
     # Recalculated Added / Modified / Removed
-    added_indexers=$(git diff --cached --diff-filter=A --name-only | grep ".yml" | grep -E "v[[:digit:]]+")
+    staged_added=$(git diff --cached --diff-filter=A --name-only | grep ".yml" | grep -E "v[[:digit:]]+")
+    # Combine staged added with moved new indexers
+    added_indexers=$(echo "$staged_added $moved_new_indexers" | xargs -n1 | sort -u | xargs)
     modified_indexers=$(git diff --cached --diff-filter=M --name-only | grep ".yml" | grep -E "v[[:digit:]]+")
     removed_indexers=$(git diff --cached --diff-filter=D --name-only | grep ".yml" | grep -E "v[[:digit:]]+")
     newschema_indexers=$(git diff --cached --diff-filter=A --name-only | grep ".yml" | grep -E "v$NEW_SCHEMA")
