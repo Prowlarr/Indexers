@@ -45,12 +45,18 @@ jobs:
             .venv
           key: python-deps-${{ hashFiles('requirements.txt') }}
 
+      - name: Get current date
+        id: date
+        run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+
       - name: Cache Jackett data
         uses: actions/cache@v4
         with:
           path: z_Jackett
-          key: jackett-data-${{ github.run_id }}
+          key: jackett-data-${{ runner.os }}-${{ hashFiles('**/indexer-sync-v2.sh') }}-${{ steps.date.outputs.date }}
           restore-keys: |
+            jackett-data-${{ runner.os }}-${{ hashFiles('**/indexer-sync-v2.sh') }}-
+            jackett-data-${{ runner.os }}-
             jackett-data-
 
       - name: Setup Python
