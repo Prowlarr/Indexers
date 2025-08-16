@@ -49,14 +49,14 @@ jobs:
         id: date
         run: echo "week=$(date +'%Y-W%U')" >> $GITHUB_OUTPUT
 
-      - name: Restore Jackett data cache
+      - name: Restore Jackett git cache
         id: cache-jackett
         uses: actions/cache/restore@v4
         with:
-          path: z_Jackett
-          key: jackett-data-${{ runner.os }}-${{ hashFiles('**/indexer-sync-v2.sh') }}-${{ steps.date.outputs.week }}
+          path: .git/refs/remotes/z_Jackett
+          key: jackett-refs-${{ runner.os }}-${{ hashFiles('**/indexer-sync-v2.sh') }}-${{ steps.date.outputs.week }}
           restore-keys: |
-            jackett-data-${{ runner.os }}-${{ hashFiles('**/indexer-sync-v2.sh') }}-
+            jackett-refs-${{ runner.os }}-${{ hashFiles('**/indexer-sync-v2.sh') }}-
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -86,12 +86,12 @@ jobs:
             ./scripts/indexer-sync-v2.sh -z -a -p -b automated-indexer-sync -o origin
           fi
 
-      - name: Save Jackett data cache
+      - name: Save Jackett git cache
         if: always()
         uses: actions/cache/save@v4
         with:
-          path: z_Jackett
-          key: jackett-data-${{ runner.os }}-${{ hashFiles('**/indexer-sync-v2.sh') }}-${{ steps.date.outputs.week }}
+          path: .git/refs/remotes/z_Jackett
+          key: jackett-refs-${{ runner.os }}-${{ hashFiles('**/indexer-sync-v2.sh') }}-${{ steps.date.outputs.week }}
 
       - name: Summary
         run: |
