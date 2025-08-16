@@ -10,6 +10,8 @@
 ## Using the Script
 ### Suggested to run from the current directory being Prowlarr/Indexers local Repo using Git Bash `./scripts/indexer-sync-v2.sh`
 # Default values
+DEBUG=${DEBUG:-false}
+VERBOSE=${VERBOSE:-false}
 prowlarr_remote_name="origin"
 prowlarr_target_branch="master"
 mode_choice="normal"
@@ -124,7 +126,18 @@ log() {
     local color_info="\033[0;36m"    # Cyan
     local color_warn="\033[0;33m"    # Yellow
     local color_debug="\033[0;34m"   # Blue
+    local color_trace="\033[0;35m"   # Magenta
     local color_error="\033[0;31m"   # Red
+
+    # Check if logging level should be output
+    case "$level" in
+    DEBUG)
+        [[ "$DEBUG" != "true" ]] && return
+        ;;
+    VERBOSE|TRACE)
+        [[ "$VERBOSE" != "true" && "$DEBUG" != "true" ]] && return
+        ;;
+    esac
 
     local color
     case "$level" in
@@ -146,6 +159,12 @@ log() {
     DEBUG)
         color=$color_debug
         ;;
+    VERBOSE)
+        color=$color_info
+        ;;
+    TRACE)
+        color=$color_trace
+        ;;
     ERROR)
         color=$color_error
         ;;
@@ -155,6 +174,34 @@ log() {
     esac
 
     echo -e "${color}$(date +'%Y-%m-%dT%H:%M:%S%z')|$level|$message${color_reset}"
+}
+
+usage() {
+    echo "Usage: $0 [OPTIONS]"
+    echo "Sync Prowlarr indexers with Jackett"
+    echo ""
+    echo "Options:"
+    echo "  -d          Enable DEBUG logging"
+    echo "  -v          Enable VERBOSE logging"
+    echo "  -f          Force push with lease"
+    echo "  -r REMOTE   Prowlarr remote name (default: origin)"
+    echo "  -b BRANCH   Target branch (default: master)"
+    echo "  -o REMOTE   Push remote (default: origin)"
+    echo "  -m MODE     Mode: normal, development (default: normal)"
+    echo "  -p          Enable push mode"
+    echo "  -z          Skip backport"
+    echo "  -a          Automation mode (skip interactive prompts)"
+    echo "  -c TEMPLATE Commit template"
+    echo "  -u URL      Prowlarr repo URL"
+    echo "  -j URL      Jackett repo URL"
+    echo "  -R BRANCH   Prowlarr release branch"
+    echo "  -J BRANCH   Jackett branch"
+    echo "  -n NAME     Jackett remote name"
+    echo ""
+    echo "Environment variables:"
+    echo "  DEBUG=true     Enable debug logging"
+    echo "  VERBOSE=true   Enable verbose logging"
+    exit 1
 }
 
 determine_schema_version() {
@@ -236,7 +283,7 @@ initialize_script() {
     log "INFO" "Using Python validation"
 }
 
-while getopts "frpzab:m:c:u:j:R:J:n:o:" opt; do
+while getopts "frpzab:m:c:u:j:R:J:n:o:dv" opt; do
     case ${opt} in
     f)
         # No Arg
@@ -321,6 +368,14 @@ while getopts "frpzab:m:c:u:j:R:J:n:o:" opt; do
         automation_mode=true
         log "DEBUG" "automation_mode is $automation_mode - interactive prompts will be skipped"
         ;;
+    d)
+        DEBUG=true
+        log "INFO" "DEBUG logging enabled"
+        ;;
+    v)
+        VERBOSE=true
+        log "INFO" "VERBOSE logging enabled"
+        ;;
     \?)
         usage
         ;;
@@ -337,12 +392,10 @@ configure_git() {
 
     if [ -z "$prowlarr_remote_exists" ]; then
         git remote add "$prowlarr_remote_name" "$PROWLARR_REPO_URL"
-        log "DEBUG" "git remote add $prowlarr_remote_name $PROWLARR_REPO_URL"
     fi
 
     if [ -z "$jackett_remote_exists" ]; then
         git remote add "$JACKETT_REMOTE_NAME" "$JACKETT_REPO_URL"
-        log "DEBUG" "git remote add $JACKETT_REMOTE_NAME $JACKETT_REPO_URL"
     fi
 
     if [ "$prowlarr_push_remote" != "$prowlarr_remote_name" ] && [ -z "$prowlarr_push_remote_exists" ]; then
