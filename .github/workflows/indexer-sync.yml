@@ -37,17 +37,21 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
-      - name: Cache Python dependencies and Jackett data
+      - name: Cache Python dependencies
         uses: actions/cache@v4
         with:
           path: |
             ~/.cache/pip
             .venv
-            jackett-cache
-          key: python-deps-jackett-${{ hashFiles('requirements.txt') }}-${{ github.run_id }}
+          key: python-deps-${{ hashFiles('requirements.txt') }}
+
+      - name: Cache Jackett data
+        uses: actions/cache@v4
+        with:
+          path: z_Jackett
+          key: jackett-data-${{ github.run_id }}
           restore-keys: |
-            python-deps-jackett-${{ hashFiles('requirements.txt') }}-
-            python-deps-jackett-
+            jackett-data-
 
       - name: Setup Python
         uses: actions/setup-python@v5
