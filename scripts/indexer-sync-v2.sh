@@ -241,7 +241,6 @@ determine_schema_version() {
     schema="$dir/schema.json"
 
     log "DEBUG" "Checking file against schema [$schema]"
-    log "TRACE" "Schema path resolved to: $schema"
     local test_output
     $PYTHON_CMD "$VALIDATION_SCRIPT" --single "$def_file" "$schema"
     test_output=$?
