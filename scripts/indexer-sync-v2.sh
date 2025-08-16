@@ -629,16 +629,16 @@ handle_yml_conflicts() {
         log "DEBUG" "YML Definitions Process: [$yml_defs]"
         for def in $yml_add; do
             log "DEBUG" "Using & Adding Jackett's definition yml; [$def]"
-            # Check if the file actually exists before proceeding
-            if [ ! -f "$def" ] && ! git ls-files --error-unmatch "$def" >/dev/null 2>&1; then
-                log "DEBUG" "File [$def] does not exist, skipping"
+            # Check if the file exists in working directory OR in git index before proceeding
+            if [ ! -f "$def" ] && ! git ls-files --cached "$def" 2>/dev/null | grep -q "^$def$"; then
+                log "DEBUG" "File [$def] does not exist in working directory or git index, skipping"
                 continue
             fi
             # 1) Create a new path by replacing "src/Jackett.Common/Definitions/"
             #    with "definitions/$MIN_SCHEMA/".
             #    - In Bash parameter expansion, the syntax is:
             #      ${variable/search/replace}
-            new_def="${def/src\/Jackett\.Common\/Definitions\//definitions/v$MIN_SCHEMA/}"
+            new_def="${def/src\/Jackett.Common\/Definitions\//definitions/v$MIN_SCHEMA/}"
             # 2) If the path has changed, we do a rename; otherwise, just do normal checkout
             if [ "$new_def" != "$def" ]; then
                 # Make sure the target directory exists
