@@ -204,15 +204,36 @@ usage() {
     exit 1
 }
 
+configure_sparse_checkout() {
+    log "INFO" "Configuring sparse checkout for Jackett definitions only"
+    log "DEBUG" "This will significantly reduce bandwidth and disk usage"
+    
+    # Enable sparse checkout
+    git config core.sparseCheckout true
+    
+    # Create sparse checkout file for Jackett remote  
+    mkdir -p ".git/info"
+    if ! grep -q "src/Jackett.Common/Definitions/" ".git/info/sparse-checkout" 2>/dev/null; then
+        echo "src/Jackett.Common/Definitions/*" >> ".git/info/sparse-checkout"
+        log "TRACE" "Added Jackett definitions path to sparse-checkout"
+        log "DEBUG" "Only src/Jackett.Common/Definitions/* will be checked out from Jackett"
+    else
+        log "DEBUG" "Sparse checkout already configured for Jackett definitions"
+    fi
+}
+
 determine_schema_version() {
     local def_file="$1"
     log "DEBUG" "Testing schema version of [$def_file]"
+    log "TRACE" "Extracting version from file path: $def_file"
 
     check_version=$(echo "$def_file" | cut -d'/' -f2)
+    log "TRACE" "Extracted version: $check_version"
     dir="definitions/$check_version"
     schema="$dir/schema.json"
 
     log "DEBUG" "Checking file against schema [$schema]"
+    log "TRACE" "Schema path resolved to: $schema"
     local test_output
     $PYTHON_CMD "$VALIDATION_SCRIPT" --single "$def_file" "$schema"
     test_output=$?
@@ -292,19 +313,19 @@ while getopts "frpzab:m:c:u:j:R:J:n:o:dv" opt; do
         ;;
     r)
         prowlarr_remote_name=$OPTARG
-        log "DEBUG" "prowlarr_remote_name using argument $prowlarr_remote_name"
+        log "TRACE" "prowlarr_remote_name using argument $prowlarr_remote_name"
         ;;
     b)
         prowlarr_target_branch=$OPTARG
-        log "DEBUG" "prowlarr_target_branch using argument $prowlarr_target_branch"
+        log "TRACE" "prowlarr_target_branch using argument $prowlarr_target_branch"
         ;;
     o)
         prowlarr_push_remote=$OPTARG
-        log "DEBUG" "prowlarr_push_remote using argument $prowlarr_push_remote"
+        log "TRACE" "prowlarr_push_remote using argument $prowlarr_push_remote"
         ;;    
     m)
         mode_choice=$OPTARG
-        log "DEBUG" "mode_choice using argument $mode_choice"
+        log "TRACE" "mode_choice using argument $mode_choice"
         case "$mode_choice" in
         normal | n | N)
             is_dev_exec=false
@@ -335,27 +356,27 @@ while getopts "frpzab:m:c:u:j:R:J:n:o:dv" opt; do
         ;;
     c)
         PROWLARR_COMMIT_TEMPLATE=$OPTARG
-        log "DEBUG" "PROWLARR_COMMIT_TEMPLATE using argument $PROWLARR_COMMIT_TEMPLATE"
+        log "TRACE" "PROWLARR_COMMIT_TEMPLATE using argument $PROWLARR_COMMIT_TEMPLATE"
         ;;
     u)
         PROWLARR_REPO_URL=$OPTARG
-        log "DEBUG" "PROWLARR_REPO_URL using argument $PROWLARR_REPO_URL"
+        log "TRACE" "PROWLARR_REPO_URL using argument $PROWLARR_REPO_URL"
         ;;
     j)
         JACKETT_REPO_URL=$OPTARG
-        log "DEBUG" "JACKETT_REPO_URL using argument $JACKETT_REPO_URL"
+        log "TRACE" "JACKETT_REPO_URL using argument $JACKETT_REPO_URL"
         ;;
     R)
         PROWLARR_RELEASE_BRANCH=$OPTARG
-        log "DEBUG" "PROWLARR_RELEASE_BRANCH using argument $PROWLARR_RELEASE_BRANCH"
+        log "TRACE" "PROWLARR_RELEASE_BRANCH using argument $PROWLARR_RELEASE_BRANCH"
         ;;
     J)
         JACKETT_BRANCH=$OPTARG
-        log "DEBUG" "JACKETT_BRANCH using argument $JACKETT_BRANCH"
+        log "TRACE" "JACKETT_BRANCH using argument $JACKETT_BRANCH"
         ;;
     n)
         JACKETT_REMOTE_NAME=$OPTARG
-        log "DEBUG" "JACKETT_REMOTE_NAME using argument $JACKETT_REMOTE_NAME"
+        log "TRACE" "JACKETT_REMOTE_NAME using argument $JACKETT_REMOTE_NAME"
         ;;
     z)
         # No Arg
@@ -395,7 +416,14 @@ configure_git() {
     fi
 
     if [ -z "$jackett_remote_exists" ]; then
+        configure_sparse_checkout
         git remote add "$JACKETT_REMOTE_NAME" "$JACKETT_REPO_URL"
+    else
+        # Check if sparse checkout is already configured
+        if [ "$(git config core.sparseCheckout)" != "true" ]; then
+            log "DEBUG" "Jackett remote exists but sparse checkout not configured"
+            configure_sparse_checkout
+        fi
     fi
 
     if [ "$prowlarr_push_remote" != "$prowlarr_remote_name" ] && [ -z "$prowlarr_push_remote_exists" ]; then
