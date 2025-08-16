@@ -45,15 +45,16 @@ jobs:
             .venv
           key: python-deps-${{ hashFiles('requirements.txt') }}
 
-      - name: Get current date
+      - name: Get current week
         id: date
-        run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+        run: echo "week=$(date +'%Y-W%U')" >> $GITHUB_OUTPUT
 
-      - name: Cache Jackett data
-        uses: actions/cache@v4
+      - name: Restore Jackett data cache
+        id: cache-jackett
+        uses: actions/cache/restore@v4
         with:
           path: z_Jackett
-          key: jackett-data-${{ runner.os }}-${{ hashFiles('**/indexer-sync-v2.sh') }}-${{ steps.date.outputs.date }}
+          key: jackett-data-${{ runner.os }}-${{ hashFiles('**/indexer-sync-v2.sh') }}-${{ steps.date.outputs.week }}
           restore-keys: |
             jackett-data-${{ runner.os }}-${{ hashFiles('**/indexer-sync-v2.sh') }}-
             jackett-data-${{ runner.os }}-
@@ -86,6 +87,13 @@ jobs:
           else
             ./scripts/indexer-sync-v2.sh -z -a -p -b automated-indexer-sync -o origin
           fi
+
+      - name: Save Jackett data cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: z_Jackett
+          key: jackett-data-${{ runner.os }}-${{ hashFiles('**/indexer-sync-v2.sh') }}-${{ steps.date.outputs.week }}
 
       - name: Summary
         run: |
