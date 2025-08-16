@@ -146,15 +146,48 @@ python3 scripts/validate.py  # default behavior
 python3 scripts/validate.py --first-error-only
 ```
 
-### CI Testing
+### CI/CD Workflows
 
-All pull requests are automatically tested with:
-- YAML lint validation (`yamllint`)
-- JSON Schema validation (Python-based)
+The repository uses several automated workflows to ensure code quality:
+
+#### 1. YAML Validation (`ci.yml`)
+- **Triggers**: Push/PR to `master` on YAML files in `definitions/`
+- **Purpose**: Validates YAML syntax and formatting
+- **Tools**: `yamllint` with GitHub annotations
+- **Runs**: On every change to definition files
+
+#### 2. Python Validation (`python-validation.yml`) 
+- **Triggers**: Push/PR to `master` on Python files in `scripts/` or `requirements.txt`
+- **Purpose**: Validates Python script syntax and functionality
+- **Tools**: `py_compile` syntax checking
+- **Runs**: On script changes only
+
+#### 3. Schema Validation (part of `ci.yml`)
+- **Purpose**: Validates all indexer definitions against JSON schemas
+- **Tool**: Python-based validation using `scripts/validate.py`
+- **Coverage**: All definition files in versioned directories
+
+#### 4. Indexer Sync Automation (`indexer-sync.yml`)
+- **Schedule**: 3 times daily (2 AM, 10 AM, 6 PM UTC)
+- **Purpose**: Automatically syncs indexers from Jackett repository
+- **Features**: 
+  - Automated PR creation for updates
+  - Manual trigger with debug options
+  - Caching for performance (Python deps + Jackett data)
+- **Output**: Creates/updates `automated-indexer-sync` branch
+
+#### 5. Label Actions (`label-actions.yml`)
+- **Triggers**: Label changes on issues/PRs
+- **Purpose**: Automated issue/PR management based on labels
+
+All workflows include:
+- Concurrency controls to prevent duplicate runs
+- Proper caching for dependencies
+- GitHub status checks integration
 
 ## Indexer Sync Process
 
-Indexers are primarily synced from [Jackett](https://github.com/Jackett/Jackett) automatically via GitHub Actions that run daily at 2 AM UTC. The sync can also be triggered manually through the GitHub Actions interface or by running the sync script locally:
+Indexers are primarily synced from [Jackett](https://github.com/Jackett/Jackett) automatically via GitHub Actions that run 3 times daily (2 AM, 10 AM, 6 PM UTC). The sync can also be triggered manually through the GitHub Actions interface or by running the sync script locally:
 
 ```bash
 # Manual sync (with automation mode)
@@ -165,10 +198,11 @@ Indexers are primarily synced from [Jackett](https://github.com/Jackett/Jackett)
 ```
 
 ### Automated Sync Details
-- **Schedule**: Daily at 2 AM UTC via GitHub Actions
+- **Schedule**: 3 times daily (2 AM, 10 AM, 6 PM UTC) via GitHub Actions
 - **Manual Trigger**: Available through GitHub Actions workflow dispatch
 - **Mode**: Uses `-z` flag (skips backporting) for automated runs
 - **Pull Requests**: Automatically creates/updates PRs with sync results
+- **Caching**: Separate caches for Python dependencies and Jackett data for faster runs
 
 ### Manual Sync Options
 - `-z` - Skip backporting (recommended for automation)
