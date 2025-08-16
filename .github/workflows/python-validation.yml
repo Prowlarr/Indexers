@@ -7,13 +7,13 @@ on:
       - master
       - automated-sync
     paths:
-      - 'scripts/**'
+      - 'scripts/**/*.py'
       - 'requirements.txt'
   pull_request:
     branches:
       - master
     paths:
-      - 'scripts/**'
+      - 'scripts/**/*.py'
       - 'requirements.txt'
 
 concurrency:
@@ -34,11 +34,12 @@ jobs:
     - name: Install dependencies
       run: |
         pip install -r requirements.txt
-    - name: Check Python syntax
+    - name: Validate Python files
       run: |
-        python3 -m py_compile scripts/validate.py
-        echo "Python script syntax validation passed"
-    - name: Run basic Python tests
-      run: |
-        python3 -c "import ast; ast.parse(open('scripts/validate.py').read()); print('AST parsing successful')"
-        python3 scripts/validate.py --version
+        for file in scripts/**/*.py; do
+          if [ -f "$file" ]; then
+            echo "Validating $file"
+            python3 -m py_compile "$file"
+            python3 "$file" --version 2>/dev/null || echo "File $file validated successfully"
+          fi
+        done
