@@ -1,0 +1,44 @@
+---
+name: Python Validation
+
+on:
+  push:
+    branches:
+      - master
+      - automated-sync
+    paths:
+      - 'scripts/**'
+      - 'requirements.txt'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'scripts/**'
+      - 'requirements.txt'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  python_syntax:
+    name: Validate Python Script Syntax
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v5
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+    - name: Check Python syntax
+      run: |
+        python3 -m py_compile scripts/validate.py
+        echo "Python script syntax validation passed"
+    - name: Run basic Python tests
+      run: |
+        python3 -c "import ast; ast.parse(open('scripts/validate.py').read()); print('AST parsing successful')"
+        python3 scripts/validate.py --version
