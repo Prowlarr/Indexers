@@ -63,49 +63,8 @@ jobs:
             ./scripts/indexer-sync-v2.sh -z -a -p -b automated-indexer-sync -o origin
           fi
 
-      - name: Create or update pull request
-        run: |
-          BRANCH_NAME="automated-indexer-sync"
-          
-          # Check if PR already exists
-          EXISTING_PR=$(gh pr list --head "$BRANCH_NAME" --state open --json number --jq '.[0].number' 2>/dev/null || echo "")
-          
-          if [ -n "$EXISTING_PR" ]; then
-            echo "Updating existing PR #$EXISTING_PR"
-            gh pr edit "$EXISTING_PR" --body "## Automated Indexer Sync
-
-            This PR contains automated updates from the Jackett repository.
-
-            **⚠️ Backporting was skipped** - Manual review may be required for older schema versions.
-
-            ### Latest Update: $(date --iso-8601=seconds)
-            - Triggered by: ${{ github.event_name }}
-            - Workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-
-            Please review the changes carefully before merging."
-          else
-            echo "Creating new pull request"
-            gh pr create \
-              --title "🤖 Automated Indexer Sync ($(date +%Y-%m-%d))" \
-              --body "## Automated Indexer Sync
-
-              This PR contains automated updates from the Jackett repository.
-
-              **⚠️ Backporting was skipped** - Manual review may be required for older schema versions.
-
-              ### Automation Details:
-              - Sync performed with \`-z\` flag (backports skipped)
-              - Triggered by: ${{ github.event_name }}
-              - Workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-
-              Please review the changes carefully before merging." \
-              --head "$BRANCH_NAME" \
-              --base master
-          fi
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Summary
         run: |
           echo "✅ Indexer sync workflow completed"
-          echo "📝 PR created/updated if changes were found"
+          echo "📝 Changes pushed to automated-indexer-sync branch"
+          echo "🔗 PR creation moved to separate workflow (currently on ice)"
