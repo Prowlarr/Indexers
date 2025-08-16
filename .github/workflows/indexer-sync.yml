@@ -3,8 +3,8 @@ name: Indexer Sync Automation
 
 on:
   schedule:
-    # Run daily at 2 AM UTC
-    - cron: '0 2 * * *'
+    # Run 3 times daily at 2 AM, 10 AM, and 6 PM UTC
+    - cron: '0 2,10,18 * * *'
   workflow_dispatch:
     inputs:
       force_sync:
@@ -37,13 +37,17 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
-      - name: Cache Python dependencies
+      - name: Cache Python dependencies and Jackett data
         uses: actions/cache@v4
         with:
           path: |
             ~/.cache/pip
             .venv
-          key: python-deps-${{ hashFiles('requirements.txt') }}
+            jackett-cache
+          key: python-deps-jackett-${{ hashFiles('requirements.txt') }}-${{ github.run_id }}
+          restore-keys: |
+            python-deps-jackett-${{ hashFiles('requirements.txt') }}-
+            python-deps-jackett-
 
       - name: Setup Python
         uses: actions/setup-python@v5
