@@ -57,13 +57,13 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-          cache: 'pip'
 
       - name: Create virtual environment and install dependencies
         run: |
           if [ ! -d ".venv" ]; then
             python3 -m venv .venv
           fi
+          # shellcheck disable=SC1091
           source .venv/bin/activate
           pip install -r requirements.txt
 
