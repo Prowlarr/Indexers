@@ -590,6 +590,17 @@ resolve_conflicts() {
         done
     fi
 
+    # Handle "both added" definition files (when Git auto-moves files from Jackett paths)
+    both_added_defs=$(git status --porcelain | grep "^AA" | grep "definitions/v[0-9].*\.yml$" | awk '{print $2}')
+    if [ -n "$both_added_defs" ]; then
+        log "DEBUG" "Both added definition conflicts exist; using Jackett's version: [$both_added_defs]"
+        for file in $both_added_defs; do
+            log "INFO" "NEW INDEXER: Resolving both-added conflict for [$file]"
+            git checkout --theirs "$file"
+            git add --force "$file"
+        done
+    fi
+
     if [ -n "$nonyml_conflicts" ]; then
         log "DEBUG" "Non-YML conflicts exist; removing [\n$nonyml_conflicts\n] files and restoring [package.json package-lock.json .editorconfig]"
         while IFS= read -r file; do
