@@ -627,6 +627,8 @@ handle_yml_conflicts() {
         yml_add=$(echo "$yml_defs" | grep -v "UD\|D|DU" | awk -F '[ADUMRC]{1,2} ' '{print $2}' | awk '{ gsub(/^[ \t]+|[ \t]+$/, ""); print }')
         yml_delete=$(echo "$yml_defs" | grep "UD" | awk -F '[ADUMRC]{1,2} ' '{print $2}' | awk '{ gsub(/^[ \t]+|[ \t]+$/, ""); print }')
         log "DEBUG" "YML Definitions Process: [$yml_defs]"
+        log "DEBUG" "YML files to add/process: [$yml_add]"
+        log "DEBUG" "YML files to delete: [$yml_delete]"
         for def in $yml_add; do
             log "DEBUG" "Using & Adding Jackett's definition yml; [$def]"
             # Check if the file exists in working directory OR in git index before proceeding
@@ -644,7 +646,7 @@ handle_yml_conflicts() {
                 # Make sure the target directory exists
                 mkdir -p "$(dirname "$new_def")"
                 # Use git mv so that Git tracks the file rename
-                log "DEBUG" "Moving definition to new path; [$def] to [$new_def]"
+                log "INFO" "NEW INDEXER: Moving [$def] to [$new_def]"
                 mv "$def" "$new_def"
                 # Then checkout "theirs" to accept Jackett's content
                 git checkout --theirs "$new_def" 2>/dev/null || true
@@ -665,9 +667,19 @@ handle_yml_conflicts() {
 }
 
 handle_new_indexers() {
+    # Debug: Show all staged files first
+    all_staged=$(git diff --cached --name-only)
+    log "DEBUG" "All staged files: [$all_staged]"
+    
+    # Debug: Show yml files specifically  
+    yml_staged=$(git diff --cached --name-only | grep ".yml" || true)
+    log "DEBUG" "All staged yml files: [$yml_staged]"
+    
     added_indexers=$(git diff --cached --diff-filter=A --name-only | grep ".yml" | grep -E "v[[:digit:]]+")
+    log "DEBUG" "New indexers detected (A filter + v[digit]+): [$added_indexers]"
+    
     if [ -n "$added_indexers" ]; then
-        log "INFO" "New Indexers detected"
+        log "INFO" "New Indexers detected: [$added_indexers]"
         for indexer in ${added_indexers}; do
             base_indexer=$(basename "$indexer")
             log "DEBUG" "Evaluating [$indexer] against BLOCKLIST with name [$base_indexer]"
