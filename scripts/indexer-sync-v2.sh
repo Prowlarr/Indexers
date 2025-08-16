@@ -525,6 +525,39 @@ pull_cherry_and_merge() {
     handle_backporting_indexers
 }
 
+resolve_unmerged_files() {
+    # Check for any remaining unmerged files and resolve them
+    unmerged_files=$(git diff --name-only --diff-filter=U 2>/dev/null || true)
+    
+    if [ -n "$unmerged_files" ]; then
+        log "WARN" "Unmerged files detected: [$unmerged_files]"
+        echo "$unmerged_files" | while IFS= read -r file; do
+            if [ -n "$file" ]; then
+                if [[ "$file" == .github/* ]] || [[ "$file" == src/* ]] || [[ "$file" == *.md ]] || [[ "$file" == package*.json ]] || [[ "$file" == .editorconfig ]]; then
+                    # For non-definition files, prefer our version or remove
+                    log "DEBUG" "Resolving unmerged non-definition file: [$file]"
+                    if git ls-files | grep -q "^$file$"; then
+                        git checkout --ours "$file" 2>/dev/null || git rm --force "$file" 2>/dev/null || true
+                    else
+                        git rm --force "$file" 2>/dev/null || true
+                    fi
+                    git add "$file" 2>/dev/null || true
+                elif [[ "$file" == definitions/* ]]; then
+                    # For definition files, prefer their version
+                    log "DEBUG" "Resolving unmerged definition file: [$file]"
+                    git checkout --theirs "$file" 2>/dev/null || true
+                    git add "$file" 2>/dev/null || true
+                else
+                    # Default: prefer our version
+                    log "DEBUG" "Resolving unmerged file (default): [$file]"
+                    git checkout --ours "$file" 2>/dev/null || git rm --force "$file" 2>/dev/null || true
+                    git add "$file" 2>/dev/null || true
+                fi
+            fi
+        done
+    fi
+}
+
 resolve_conflicts() {
     readme_conflicts=$($GIT_DIFF_CMD | grep -E '^README\.md$')
     nonyml_conflicts=$($GIT_DIFF_CMD | grep -E "$CONFLICTS_NONYML_EXTENSIONS")
@@ -565,17 +598,27 @@ resolve_conflicts() {
         log "DEBUG" "YML conflict exists; [$yml_conflicts]"
         handle_yml_conflicts
     fi
+    
+    # Final check and resolution of any remaining unmerged files
+    resolve_unmerged_files
 }
 
 handle_yml_conflicts() {
+    # Handle non-definition YAML conflicts first
     yml_remove=$(git status --porcelain | grep yml | grep -vi "definitions/" | grep -v "definitions-update" | awk -F '[ADUMRC]{1,2} ' '{print $2}' | awk '{ gsub(/^[ \t]+|[ \t]+$/, ""); print }')
-    for def in $yml_remove; do
-        log "DEBUG" "Removing non-definition yml; [$yml_remove]"
-        if git ls-files | grep -q "^$yml_remove$"; then
-            git rm --f --ignore-unmatch "$yml_remove"
-        fi
-        yml_conflicts=$(GIT_DIFF_CMD | grep ".yml")
-    done
+    
+    if [ -n "$yml_remove" ]; then
+        log "DEBUG" "Removing non-definition yml files: [$yml_remove]"
+        echo "$yml_remove" | while IFS= read -r file; do
+            if [ -n "$file" ]; then
+                log "DEBUG" "Removing non-definition yml file: [$file]"
+                git rm --force --ignore-unmatch "$file" 2>/dev/null || true
+            fi
+        done
+    fi
+    
+    # Re-check for remaining conflicts after cleanup
+    yml_conflicts=$($GIT_DIFF_CMD | grep "\.yml" || true)
     if [ -n "$yml_conflicts" ]; then
         yml_defs=$(git status --porcelain | grep yml | grep -i "definitions/")
         yml_add=$(echo "$yml_defs" | grep -v "UD\|D|DU" | awk -F '[ADUMRC]{1,2} ' '{print $2}' | awk '{ gsub(/^[ \t]+|[ \t]+$/, ""); print }')
