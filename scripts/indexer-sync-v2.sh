@@ -618,15 +618,16 @@ resolve_conflicts() {
 
     if [ -n "$yml_conflicts" ]; then
         log "DEBUG" "YML conflict exists; [$yml_conflicts]"
-        handle_yml_conflicts
+        handle_general_yml_conflicts
+        handle_definition_conflicts
     fi
     
     # Final check and resolution of any remaining unmerged files
     resolve_unmerged_files
 }
 
-handle_yml_conflicts() {
-    # Handle non-definition YAML conflicts first
+handle_general_yml_conflicts() {
+    # Remove non-definition YAML files (config files, workflows, etc.)
     yml_remove=$(git status --porcelain | grep yml | grep -vi "definitions/" | grep -vi "Definitions/" | grep -v "definitions-update" | awk -F '[ADUMRC]{1,2} ' '{print $2}' | awk '{ gsub(/^[ \t]+|[ \t]+$/, ""); print }')
     
     if [ -n "$yml_remove" ]; then
@@ -638,8 +639,10 @@ handle_yml_conflicts() {
             fi
         done
     fi
-    
-    # Re-check for remaining conflicts after cleanup
+}
+
+handle_definition_conflicts() {
+    # Handle indexer definition conflicts with special logic
     yml_conflicts=$($GIT_DIFF_CMD | grep "\.yml" || true)
     if [ -n "$yml_conflicts" ]; then
         yml_defs=$(git status --porcelain | grep yml | grep -i "definitions/")
