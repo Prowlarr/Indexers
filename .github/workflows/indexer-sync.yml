@@ -67,4 +67,3 @@ jobs:
         run: |
           echo "✅ Indexer sync workflow completed"
           echo "📝 Changes pushed to automated-indexer-sync branch"
-          echo "🔗 PR creation moved to separate workflow (currently on ice)"
