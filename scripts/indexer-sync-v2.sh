@@ -637,32 +637,17 @@ handle_yml_conflicts() {
         log "DEBUG" "YML files to delete: [$yml_delete]"
         for def in $yml_add; do
             log "DEBUG" "Using & Adding Jackett's definition yml; [$def]"
-            # Check if the file exists in working directory OR in git index before proceeding
-            if [ ! -f "$def" ] && ! git ls-files --cached "$def" 2>/dev/null | grep -q "^$def$"; then
-                log "DEBUG" "File [$def] does not exist in working directory or git index, skipping"
-                continue
-            fi
-            # 1) Create a new path by replacing "src/Jackett.Common/Definitions/"
-            #    with "definitions/$MIN_SCHEMA/".
-            #    - In Bash parameter expansion, the syntax is:
-            #      ${variable/search/replace}
             new_def="${def/src\/Jackett.Common\/Definitions\//definitions/v$MIN_SCHEMA/}"
-            # 2) If the path has changed, we do a rename; otherwise, just do normal checkout
             if [ "$new_def" != "$def" ]; then
-                # Make sure the target directory exists
                 mkdir -p "$(dirname "$new_def")"
-                # Use git mv so that Git tracks the file rename
                 log "INFO" "NEW INDEXER: Moving [$def] to [$new_def]"
                 mv "$def" "$new_def"
-                # Then checkout "theirs" to accept Jackett's content
-                git checkout --theirs "$new_def" 2>/dev/null || true
-                # Stage the new path
-                git add --force "$new_def" 2>/dev/null || true
+                git checkout --theirs "$new_def"
+                git add --force "$new_def"
                 git rm --f --ignore-unmatch "$def"
             else
-                # Fallback if the path didn't actually change
-                git checkout --theirs "$def" 2>/dev/null || true
-                git add --force "$def" 2>/dev/null || true
+                git checkout --theirs "$def"
+                git add --force "$def"
             fi
         done
         for def in $yml_delete; do
@@ -681,8 +666,9 @@ handle_new_indexers() {
     yml_staged=$(git diff --cached --name-only | grep ".yml" || true)
     log "DEBUG" "All staged yml files: [$yml_staged]"
     
-    added_indexers=$(git diff --cached --diff-filter=A --name-only | grep ".yml" | grep -E "v[[:digit:]]+")
-    log "DEBUG" "New indexers detected (A filter + v[digit]+): [$added_indexers]"
+    # Git's automatic directory rename may classify new files as renames (R) instead of additions (A)
+    added_indexers=$(git diff --cached --diff-filter=AR --name-only | grep ".yml" | grep -E "v[[:digit:]]+")
+    log "DEBUG" "New indexers detected (AR filter + v[digit]+): [$added_indexers]"
     
     if [ -n "$added_indexers" ]; then
         log "INFO" "New Indexers detected: [$added_indexers]"
@@ -838,8 +824,8 @@ cleanup_and_commit() {
         unset indexer_remove
     fi
 
-    # Recalculated Added / Modified / Removed
-    added_indexers=$(git diff --cached --diff-filter=A --name-only | grep ".yml" | grep -E "v[[:digit:]]+")
+    # Recalculated Added / Modified / Removed - include renames (R) for directory rename detection
+    added_indexers=$(git diff --cached --diff-filter=AR --name-only | grep ".yml" | grep -E "v[[:digit:]]+")
     modified_indexers=$(git diff --cached --diff-filter=M --name-only | grep ".yml" | grep -E "v[[:digit:]]+")
     removed_indexers=$(git diff --cached --diff-filter=D --name-only | grep ".yml" | grep -E "v[[:digit:]]+")
     newschema_indexers=$(git diff --cached --diff-filter=A --name-only | grep ".yml" | grep -E "v$NEW_SCHEMA")
