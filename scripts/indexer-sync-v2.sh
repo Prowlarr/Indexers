@@ -98,6 +98,7 @@ load_versions() {
     CURRENT_SCHEMA=11
     
     if [ -f "VERSIONS" ]; then
+        # shellcheck disable=SC2034
         while IFS='=' read -r key value; do
             case "$key" in
                 MIN_VERSION) MIN_SCHEMA="$value" ;;
@@ -216,9 +217,11 @@ initialize_script() {
         log "INFO" "Activating virtual environment"
         if [ -f ".venv/bin/activate" ]; then
             # Linux/Mac
+            # shellcheck disable=SC1091
             source .venv/bin/activate
         elif [ -f ".venv/Scripts/activate" ]; then
             # Windows
+            # shellcheck disable=SC1091
             source .venv/Scripts/activate
         fi
     fi
