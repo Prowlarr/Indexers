@@ -5,7 +5,6 @@
 ## Created by Bakerboy448
 ## 
 ## Features:
-### - Sparse checkout: Only downloads Jackett indexer definitions (saves bandwidth/disk space)
 ### - Controlled logging: DEBUG/VERBOSE modes for troubleshooting
 ### - Automated conflict resolution for indexer syncing
 ##
@@ -16,7 +15,6 @@
 ## Using the Script
 ### Suggested to run from the current directory being Prowlarr/Indexers local Repo using Git Bash `./scripts/indexer-sync-v2.sh`
 ### Use -d for DEBUG logging, -v for VERBOSE logging
-### First run will configure sparse checkout for efficient Jackett sync
 # Default values
 DEBUG=${DEBUG:-false}
 VERBOSE=${VERBOSE:-false}
@@ -212,23 +210,6 @@ usage() {
     exit 1
 }
 
-configure_sparse_checkout() {
-    log "INFO" "Configuring sparse checkout for Jackett definitions only"
-    log "DEBUG" "This will significantly reduce bandwidth and disk usage"
-    
-    # Enable sparse checkout
-    git config core.sparseCheckout true
-    
-    # Create sparse checkout file for Jackett remote  
-    mkdir -p ".git/info"
-    if ! grep -q "src/Jackett.Common/Definitions/" ".git/info/sparse-checkout" 2>/dev/null; then
-        echo "src/Jackett.Common/Definitions/*" >> ".git/info/sparse-checkout"
-        log "TRACE" "Added Jackett definitions path to sparse-checkout"
-        log "DEBUG" "Only src/Jackett.Common/Definitions/* will be checked out from Jackett"
-    else
-        log "DEBUG" "Sparse checkout already configured for Jackett definitions"
-    fi
-}
 
 determine_schema_version() {
     local def_file="$1"
@@ -414,14 +395,7 @@ configure_git() {
     fi
 
     if [ -z "$jackett_remote_exists" ]; then
-        configure_sparse_checkout
         git remote add "$JACKETT_REMOTE_NAME" "$JACKETT_REPO_URL"
-    else
-        # Check if sparse checkout is already configured
-        if [ "$(git config core.sparseCheckout)" != "true" ]; then
-            log "DEBUG" "Jackett remote exists but sparse checkout not configured"
-            configure_sparse_checkout
-        fi
     fi
 
     if [ "$prowlarr_push_remote" != "$prowlarr_remote_name" ] && [ -z "$prowlarr_push_remote_exists" ]; then
@@ -1014,16 +988,34 @@ cleanup_and_commit() {
         new_commit_msg+=$'\n\n'"New Schema Indexers: $newschema_indexers"
     fi
 
+    # Check for unresolved conflicts before committing
+    unresolved_conflicts=$(git status --porcelain | grep "^UU\|^AA\|^DD\|^AU\|^UA\|^DU\|^UD" || true)
+    if [ -n "$unresolved_conflicts" ]; then
+        log "ERROR" "Cannot commit: Unresolved conflicts detected:"
+        echo "$unresolved_conflicts"
+        git status
+        exit 6
+    fi
+
     if [ "$pulls_exists" = true ] && [ "$prowlarr_target_branch" != "$PROWLARR_RELEASE_BRANCH" ]; then
         if [ "$existing_message_ln1" = "$prowlarr_jackett_commit_message" ]; then
-            git commit --amend -m "$new_commit_msg" -m "$existing_message"
+            if ! git commit --amend -m "$new_commit_msg" -m "$existing_message"; then
+                log "ERROR" "Failed to amend commit"
+                exit 7
+            fi
             log "INFO" "Commit Appended - [$new_commit_msg]"
         else
-            git commit -m "$new_commit_msg"
+            if ! git commit -m "$new_commit_msg"; then
+                log "ERROR" "Failed to create new commit"
+                exit 7
+            fi
             log "INFO" "New Commit made - [$new_commit_msg]"
         fi
     else
-        git commit -m "$new_commit_msg"
+        if ! git commit -m "$new_commit_msg"; then
+            log "ERROR" "Failed to create new commit"
+            exit 7
+        fi
         log "INFO" "New Commit made - [$new_commit_msg]"
     fi
 }
