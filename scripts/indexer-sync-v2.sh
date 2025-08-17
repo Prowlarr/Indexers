@@ -778,6 +778,38 @@ handle_new_indexers() {
             fi
             log "DEBUG" "Evaluating [$indexer] Cardigann Version"
             if [ -f "$indexer" ]; then
+                # Check if this indexer replaces any existing indexers
+                if command -v yq &> /dev/null; then
+                    replaced_indexers=$(yq eval '.replaces[]?' "$indexer" 2>/dev/null || true)
+                elif $PYTHON_CMD -c "import yaml" &>/dev/null; then
+                    replaced_indexers=$($PYTHON_CMD -c "
+import yaml, sys
+try:
+    with open('$indexer', 'r') as f:
+        data = yaml.safe_load(f)
+    replaces = data.get('replaces', [])
+    if replaces:
+        for item in replaces:
+            print(item)
+except:
+    pass
+" 2>/dev/null || true)
+                fi
+                
+                if [ -n "$replaced_indexers" ]; then
+                    log "INFO" "Indexer [$indexer] replaces: [$replaced_indexers]"
+                    for replaced in $replaced_indexers; do
+                        # Find and remove all versions of the replaced indexer
+                        for ((i = MAX_SCHEMA; i >= MIN_SCHEMA; i--)); do
+                            replaced_file="definitions/v$i/${replaced}.yml"
+                            if [ -f "$replaced_file" ]; then
+                                log "INFO" "Removing replaced indexer: [$replaced_file]"
+                                git rm --f --ignore-unmatch "$replaced_file"
+                            fi
+                        done
+                    done
+                fi
+                
                 determine_schema_version "$indexer"
                 log "DEBUG" "Checked Version Output is $check_version"
                 if [ "$check_version" != "v0" ]; then
