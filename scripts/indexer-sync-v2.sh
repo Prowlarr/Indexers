@@ -56,38 +56,6 @@ for blocked in "${BLOCKLIST[@]}"; do
     blocklist_map["$blocked"]=1
 done
 
-usage() {
-    echo "Usage: $0 [options]
-    Options:
-      -r <remote(pull)>     Set the Prowlarr remote name (for pulling/syncing). Default: '$prowlarr_remote_name'
-      -o <remote(push)>     Set the push remote name (for pushing changes). Default: '$prowlarr_push_remote'
-      -b <branch>           Set the Prowlarr target branch. Default: '$prowlarr_target_branch'
-      -m <mode>             Set the operational mode:
-                             - (normal): Default mode with regular operations.
-                             - (dev | development | D | d):
-                                Enables development mode:
-                                - Skips upstream reset.
-                                - Uses local branches.
-                                - Pauses at debugging points for review.
-                            - (jackett | j | J):
-                                Enables Jackett development mode:
-                                - Skips upstream reset.
-                                - Uses existing local Jackett and Prowlarr branches.
-                                - Pauses at debugging points for review.
-                                - Local branch used: $JACKETT_REMOTE_NAME$JACKETT_BRANCH
-                             Default: $mode_choice
-      -p                     Enable push to remote. Default: $push_mode
-      -f                     Force push if pushing. Default: $push_mode_force
-      -c <commit_template>   Set the commit template for Prowlarr. Default: $PROWLARR_COMMIT_TEMPLATE
-      -u <repo_url>          Set the Prowlarr repository URL. Default: $PROWLARR_REPO_URL
-      -j <repo_url>          Set the Jackett repository URL. Default: $JACKETT_REPO_URL
-      -R <release_branch>    Set the Prowlarr release branch. Default: $PROWLARR_RELEASE_BRANCH
-      -J <jackett_branch>    Set the Jackett branch. Default: $JACKETT_BRANCH
-      -n <remote_name>       Set the Jackett remote name. Default: $JACKETT_REMOTE_NAME
-      -z                     Skip backporting. Default: $SKIP_BACKPORT
-      -a                     Enable automation mode (skip interactive prompts). Default: $automation_mode"
-    exit 1
-}
 
 # Prowlarr Schema Versions
 ## v1 frozen 2021-10-13
