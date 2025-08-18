@@ -44,7 +44,9 @@ jobs:
           path: |
             ~/.cache/pip
             .venv
-          key: python-deps-${{ hashFiles('requirements.txt') }}
+          key: python-deps-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            python-deps-${{ runner.os }}-
 
       - name: Get current week
         id: date
@@ -55,9 +57,9 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: .git/refs/remotes/z_Jackett
-          key: jackett-refs-${{ runner.os }}-${{ hashFiles('**/indexer-sync-v2.sh') }}-${{ steps.date.outputs.week }}
+          key: jackett-refs-${{ runner.os }}-${{ hashFiles('.github/workflows/indexer-sync.yml') }}-${{ steps.date.outputs.week }}
           restore-keys: |
-            jackett-refs-${{ runner.os }}-${{ hashFiles('**/indexer-sync-v2.sh') }}-
+            jackett-refs-${{ runner.os }}-${{ hashFiles('.github/workflows/indexer-sync.yml') }}-
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -99,7 +101,7 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: .git/refs/remotes/z_Jackett
-          key: jackett-refs-${{ runner.os }}-${{ hashFiles('**/indexer-sync-v2.sh') }}-${{ steps.date.outputs.week }}
+          key: jackett-refs-${{ runner.os }}-${{ hashFiles('.github/workflows/indexer-sync.yml') }}-${{ steps.date.outputs.week }}
 
       - name: Summary
         run: |
