@@ -78,6 +78,7 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global fetch.prune true
+          git config advice.mergeConflict false
           # Add Jackett remote if it doesn't exist
           if ! git remote get-url z_Jackett >/dev/null 2>&1; then
             git remote add z_Jackett https://github.com/Jackett/Jackett.git
