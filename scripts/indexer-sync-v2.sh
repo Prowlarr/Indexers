@@ -536,6 +536,12 @@ pull_cherry_and_merge() {
             fi
         fi
         log "INFO" "cherrypicking Jackett commit [$pick_commit]"
+        
+        # Get and log the commit message for this specific commit
+        pick_commit_message=$(git log --format=%s -n1 "$pick_commit")
+        pick_commit_message_truncated=$(echo "$pick_commit_message" | cut -c1-80)
+        log "INFO" "Commit message: '$pick_commit_message_truncated'"
+        
         git cherry-pick --no-commit --rerere-autoupdate --allow-empty --keep-redundant-commits "$pick_commit"
         
         # Detect new indexers from this commit before conflict resolution
