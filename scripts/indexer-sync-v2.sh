@@ -474,6 +474,11 @@ pull_cherry_and_merge() {
     jackett_recent_commit=$(git rev-parse "$jackett_ref")
     log "DEBUG" "Jackett recent commit: '$jackett_recent_commit'"
     
+    # Get and log truncated Jackett commit message
+    jackett_commit_message=$(git log --format=%s -n1 "$jackett_recent_commit")
+    jackett_commit_message_truncated=$(echo "$jackett_commit_message" | cut -c1-80)
+    log "INFO" "Jackett commit message: '$jackett_commit_message_truncated'"
+    
     recent_pulled_commit=$(echo "$prowlarr_commits" | awk 'NR==1{print $5}')
     log "DEBUG" "Recent pulled commit (field 5): '$recent_pulled_commit'"
     log "DEBUG" "Full first commit line: '$(echo "$prowlarr_commits" | awk 'NR==1')'"
