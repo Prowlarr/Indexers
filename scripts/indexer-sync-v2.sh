@@ -987,6 +987,7 @@ cleanup_and_commit() {
                 exit 7
             fi
             log "INFO" "Commit Appended - [$new_commit_msg]"
+            push_mode_force=true  # Auto-enable force push after amend
         else
             if ! git commit -m "$new_commit_msg"; then
                 log "ERROR" "Failed to create new commit"
@@ -1008,6 +1009,14 @@ push_changes() {
     log "INFO" "Evaluating for Push to Remote"
     log "DEBUG" " Push Modes for Branch: $push_branch"
     log "DEBUG" "Push To Remote: $push_mode with Force Push With Lease: $push_mode_force"
+    
+    # Safety check: NEVER force push to master
+    if [ "$push_mode_force" = true ] && [ "$push_branch" = "master" ]; then
+        log "ERROR" "Force push to master branch is forbidden for safety"
+        push_mode_force=false
+        log "WARN" "Disabled force push - will attempt regular push instead"
+    fi
+    
     if [ "$push_mode" = true ] && [ "$push_mode_force" = true ]; then
         if git push "$prowlarr_push_remote" "$push_branch" --force-if-includes --force-with-lease; then
             log "WARN" "[$prowlarr_push_remote $push_branch] Branch Force Pushed"
