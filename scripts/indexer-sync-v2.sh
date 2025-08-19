@@ -435,11 +435,15 @@ git_branch_reset() {
                 log "DEBUG" "Development Mode - Skipping reset to [$prowlarr_remote_name/$prowlarr_target_branch]"
             else
                 git reset --hard "$prowlarr_remote_name"/"$prowlarr_target_branch"
-                log "INFO" "local [$prowlarr_target_branch] hard reset based on [$prowlarr_remote_name/$PROWLARR_RELEASE_BRANCH]"
+                git pull "$prowlarr_remote_name" "$prowlarr_target_branch" --rebase
+                log "INFO" "local [$prowlarr_target_branch] reset and rebased on latest upstream"
             fi
         else
             git checkout -B "$prowlarr_target_branch" "$prowlarr_remote_name"/"$prowlarr_target_branch"
             log "INFO" "local [$prowlarr_target_branch] created from [$prowlarr_remote_name/$prowlarr_target_branch]"
+            # Ensure we have the latest changes by rebasing on upstream
+            git pull "$prowlarr_remote_name" "$prowlarr_target_branch" --rebase
+            log "INFO" "rebased [$prowlarr_target_branch] on latest upstream"
         fi
     fi
 }
@@ -1015,19 +1019,8 @@ push_changes() {
         if git push "$prowlarr_push_remote" "$push_branch" --force-if-includes; then
             log "SUCCESS" "[$prowlarr_push_remote $push_branch] Branch Pushed"
         else
-            log "WARN" "Push failed, attempting to pull and retry..."
-            if git pull "$prowlarr_push_remote" "$push_branch" --rebase; then
-                log "INFO" "Successfully pulled changes, retrying push..."
-                if git push "$prowlarr_push_remote" "$push_branch" --force-if-includes; then
-                    log "SUCCESS" "[$prowlarr_push_remote $push_branch] Branch Pushed after pull"
-                else
-                    log "ERROR" "Failed to push to [$prowlarr_push_remote $push_branch] after pull"
-                    exit 8
-                fi
-            else
-                log "ERROR" "Failed to pull from [$prowlarr_push_remote $push_branch] and push failed"
-                exit 8
-            fi
+            log "ERROR" "Failed to push to [$prowlarr_push_remote $push_branch]"
+            exit 8
         fi
     else
         log "SUCCESS" "Skipping Push to [$prowlarr_push_remote/$push_branch] you should consider pushing manually and/or submitting a pull-request."
