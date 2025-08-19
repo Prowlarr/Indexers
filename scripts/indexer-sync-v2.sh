@@ -1005,11 +1005,19 @@ push_changes() {
     log "DEBUG" " Push Modes for Branch: $push_branch"
     log "DEBUG" "Push To Remote: $push_mode with Force Push With Lease: $push_mode_force"
     if [ "$push_mode" = true ] && [ "$push_mode_force" = true ]; then
-        git push "$prowlarr_push_remote" "$push_branch" --force-if-includes --force-with-lease
-        log "WARN" "[$prowlarr_push_remote $push_branch] Branch Force Pushed"
+        if git push "$prowlarr_push_remote" "$push_branch" --force-if-includes --force-with-lease; then
+            log "WARN" "[$prowlarr_push_remote $push_branch] Branch Force Pushed"
+        else
+            log "ERROR" "Failed to force push to [$prowlarr_push_remote $push_branch]"
+            exit 8
+        fi
     elif [ "$push_mode" = true ]; then
-        git push "$prowlarr_push_remote" "$push_branch" --force-if-includes
-        log "SUCCESS" "[$prowlarr_push_remote $push_branch] Branch Pushed"
+        if git push "$prowlarr_push_remote" "$push_branch" --force-if-includes; then
+            log "SUCCESS" "[$prowlarr_push_remote $push_branch] Branch Pushed"
+        else
+            log "ERROR" "Failed to push to [$prowlarr_push_remote $push_branch]"
+            exit 8
+        fi
     else
         log "SUCCESS" "Skipping Push to [$prowlarr_push_remote/$push_branch] you should consider pushing manually and/or submitting a pull-request."
     fi
