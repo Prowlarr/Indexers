@@ -77,10 +77,13 @@ jobs:
 
       - name: Fetch repositories
         run: |
-          # Fetch Jackett repository
+          echo "🔄 Fetching Jackett repository..."
           git fetch z_Jackett master --depth=50
-          # Fetch prowlarr/indexers repository
+          echo "✅ Jackett repository fetched successfully"
+          
+          echo "🔄 Fetching prowlarr/indexers repository..."
           git fetch origin master --depth=50
+          echo "✅ prowlarr/indexers repository fetched successfully"
 
       - name: Run indexer sync
         run: |
