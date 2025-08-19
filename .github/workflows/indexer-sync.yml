@@ -75,6 +75,13 @@ jobs:
           fi
           git config --global remote.z_Jackett.tagOpt --no-tags
 
+      - name: Fetch repositories
+        run: |
+          # Fetch Jackett repository
+          git fetch z_Jackett master --depth=50
+          # Fetch prowlarr/indexers repository
+          git fetch origin master --depth=50
+
       - name: Run indexer sync
         run: |
           # Run the sync script with -z mode, automation mode, and push enabled
