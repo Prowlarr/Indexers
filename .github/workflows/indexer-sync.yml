@@ -3,7 +3,7 @@ name: Indexer Sync Automation
 
 on:
   schedule:
-    # Run 2 times daily at 7 PM UTC-5 (12 AM UTC) and 10 AM UTC-5 (3 PM UTC)
+    # Run 2 times daily at 12 AM UTC (0:00) and 3 PM UTC (15:00)
     - cron: '0 0,15 * * *'
   workflow_dispatch:
     inputs:
@@ -48,18 +48,6 @@ jobs:
           restore-keys: |
             python-deps-${{ runner.os }}-
 
-      - name: Get current week
-        id: date
-        run: echo "week=$(date +'%Y-W%U')" >> $GITHUB_OUTPUT
-
-      - name: Restore Jackett git cache
-        id: cache-jackett
-        uses: actions/cache/restore@v4
-        with:
-          path: .git/refs/remotes/z_Jackett
-          key: jackett-refs-${{ runner.os }}-${{ hashFiles('.github/workflows/indexer-sync.yml') }}-${{ steps.date.outputs.week }}
-          restore-keys: |
-            jackett-refs-${{ runner.os }}-${{ hashFiles('.github/workflows/indexer-sync.yml') }}-
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -96,12 +84,6 @@ jobs:
             ./scripts/indexer-sync-v2.sh -z -a -p -b automated-indexer-sync -o origin
           fi
 
-      - name: Save Jackett git cache
-        if: always()
-        uses: actions/cache/save@v4
-        with:
-          path: .git/refs/remotes/z_Jackett
-          key: jackett-refs-${{ runner.os }}-${{ hashFiles('.github/workflows/indexer-sync.yml') }}-${{ steps.date.outputs.week }}
 
       - name: Summary
         run: |
