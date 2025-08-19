@@ -1016,7 +1016,7 @@ push_changes() {
             log "SUCCESS" "[$prowlarr_push_remote $push_branch] Branch Pushed"
         else
             log "WARN" "Push failed, attempting to pull and retry..."
-            if git pull "$prowlarr_push_remote" "$push_branch" --no-edit; then
+            if git pull "$prowlarr_push_remote" "$push_branch" --no-edit --no-rebase; then
                 log "INFO" "Successfully pulled changes, retrying push..."
                 if git push "$prowlarr_push_remote" "$push_branch" --force-if-includes; then
                     log "SUCCESS" "[$prowlarr_push_remote $push_branch] Branch Pushed after pull"
