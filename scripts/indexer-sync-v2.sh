@@ -1015,8 +1015,19 @@ push_changes() {
         if git push "$prowlarr_push_remote" "$push_branch" --force-if-includes; then
             log "SUCCESS" "[$prowlarr_push_remote $push_branch] Branch Pushed"
         else
-            log "ERROR" "Failed to push to [$prowlarr_push_remote $push_branch]"
-            exit 8
+            log "WARN" "Push failed, attempting to pull and retry..."
+            if git pull "$prowlarr_push_remote" "$push_branch" --no-edit; then
+                log "INFO" "Successfully pulled changes, retrying push..."
+                if git push "$prowlarr_push_remote" "$push_branch" --force-if-includes; then
+                    log "SUCCESS" "[$prowlarr_push_remote $push_branch] Branch Pushed after pull"
+                else
+                    log "ERROR" "Failed to push to [$prowlarr_push_remote $push_branch] after pull"
+                    exit 8
+                fi
+            else
+                log "ERROR" "Failed to pull from [$prowlarr_push_remote $push_branch] and push failed"
+                exit 8
+            fi
         fi
     else
         log "SUCCESS" "Skipping Push to [$prowlarr_push_remote/$push_branch] you should consider pushing manually and/or submitting a pull-request."
