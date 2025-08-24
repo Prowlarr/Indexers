@@ -200,9 +200,13 @@ search:
     grabs:
       selector: td:nth-child(7)
     seeders:
-      selector: a[href*="#seeders"]
+      selector: a[href$="#seeders"]
+      optional: true
+      default: 0
     leechers:
-      selector: a[href*="#leechers"]
+      selector: a[href$="#leechers"]
+      optional: true
+      default: 0
     downloadvolumefactor:
       case:
         div:contains("50% DL"): 0.5
