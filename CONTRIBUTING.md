@@ -92,22 +92,22 @@ python3 scripts/validate.py --find-best-version file.yml
 ## Validation Process
 
 The validation script automatically detects directory structure and validates accordingly:
-- **Prowlarr structure**: Uses versioned directories (currently `v10/`, `v11/`) with individual schemas
+- **Prowlarr structure**: Uses versioned directories (currently `v11/`) with individual schemas
 - **Jackett structure**: Uses flat directory with root `schema.json`
 
 ### Schema Versions
 
-Each Cardigann version has its own schema in `definitions/v{VERSION}/schema.json`. Current active versions are:
+Each Cardigann version has its own schema in `definitions/v{VERSION}/schema.json`. Current active version is:
 
-- **v11** - Latest version with newest features including:
+- **v11** - Active version with all indexer definitions (522+ indexers) including:
   - Predefined setting type: `info_category_8000`
   - Optional `selectorinputs` and `getselectorinputs` for login section
   - Extended language support and enhanced SelectorBlock validation
 
-- **v10** - Current stable version including:
-  - Predefined settings type: `info_cookie`, `info_flaresolverr` and `info_useragent`
-  - Enhanced login validation with conditional requirements
-  - Extended SelectorBlock functionality
+> [!WARNING]
+> **v10** - DEPRECATED as of 2025-08-24
+> - All indexers migrated to v11
+> - Schema remains for historical reference only
 
 > [!NOTE]
 > For historical version information and deprecated schemas (v1-v9), see the main [README.md](README.md).
@@ -316,14 +316,14 @@ git push origin feature/new-indexer
 ### Adding New Fields
 
 When adding fields to schemas:
-1. Update the appropriate `definitions/v{VERSION}/schema.json` (currently v10 or v11)
+1. Update the appropriate `definitions/v{VERSION}/schema.json` (currently v11)
 2. Test against existing indexer definitions
 3. Consider backward compatibility
 
 ### Version Management
 
 - New breaking changes require a new schema version (v12+)
-- Current active versions (v10, v11) should remain stable
+- Current active version (v11) should remain stable
 - Deprecated versions (v1-v9) are frozen and no longer updated
 - Test schema changes against the full definition set
 

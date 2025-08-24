@@ -70,7 +70,7 @@ python scripts/validate.py --find-best-version "file.yml"
 ```
 
 The validation script supports:
-- **Flexible directory structures**: Works with Prowlarr's versioned directories (`v10/`, `v11/`) and Jackett's flat structure with root `schema.json`
+- **Flexible directory structures**: Works with Prowlarr's versioned directories (`v11/`) and Jackett's flat structure with root `schema.json`
 - **All errors by default**: Shows all validation issues at once instead of stopping at the first error
 - **Concise error messages**: Clean output showing only validation type, schema path, and invalid values
 - **Auto-detection**: Automatically detects directory structure and uses appropriate validation method
@@ -78,25 +78,31 @@ The validation script supports:
 ## Active Versions
 
 > [!NOTE]
-> The repository currently supports indexer definition schemas from v1 through v11. The latest available versions are:
+> The repository currently supports indexer definition schemas from v1 through v11. The active version is:
 
-- **V11 Indexers** - [Dev 1.20.0.4590](https://github.com/Prowlarr/Prowlarr/releases/tag/v1.20.0.4590)
+- **V11 Indexers** - [Dev 1.20.0.4590](https://github.com/Prowlarr/Prowlarr/releases/tag/v1.20.0.4590) - **ACTIVE**
+  - Contains all active indexer definitions (522+ indexers)
   - Prowlarr Cardigann v11 includes several changes such as:
     - Predefined setting type: `info_category_8000`
     - Optional `selectorinputs` and `getselectorinputs` for login section
     - Extended language support with duplicated language codes
     - Enhanced SelectorBlock validation with dependency rules
 
-- **V10 Indexers** - [Dev 1.18.0.4543](https://github.com/Prowlarr/Prowlarr/releases/tag/v1.18.0.4543)
-  - Prowlarr Cardigann v10 includes several changes such as:
-    - Predefined settings type: `info_cookie`, `info_flaresolverr` and `info_useragent`
-    - Enhanced login validation with conditional requirements
-    - Extended SelectorBlock functionality with type restrictions
-
 ## Deprecated Versions
 
 > [!WARNING]
 > These versions are deprecated and no longer maintained
+
+### V10 Indexers - DEPRECATED
+
+- **V10 Indexers** - [Dev 1.18.0.4543](https://github.com/Prowlarr/Prowlarr/releases/tag/v1.18.0.4543)
+  - All indexers migrated to v11 as of 2025-08-24
+  - Schema remains for historical reference
+  - No active indexer definitions
+  - Prowlarr Cardigann v10 included:
+    - Predefined settings type: `info_cookie`, `info_flaresolverr` and `info_useragent`
+    - Enhanced login validation with conditional requirements
+    - Extended SelectorBlock functionality with type restrictions
 
 ### V1 Indexers - Legacy Beta
 

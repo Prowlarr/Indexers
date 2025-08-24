@@ -8,7 +8,7 @@ CURRENT_VERSION=11
 MAX_VERSION=11
 
 # Minimum supported schema version (below this are deprecated/frozen)
-MIN_VERSION=10
+MIN_VERSION=11
 
 # Development/next schema version (if being worked on)
 NEXT_VERSION=12
