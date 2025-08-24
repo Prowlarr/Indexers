@@ -96,9 +96,11 @@ search:
 
   keywordsfilters:
     - name: re_replace
-      args: ["\\.", " "]
-    - name: re_replace # S2024 to 2024 and S2024E97 to 2024 97
-      args: ["\\b(?:S(\\d{2,4}))(?:E(\\d{2,4}))?\\b", "$1 $2"]
+      args: ["\\.", " "]  # Replace dots with spaces
+    - name: re_replace  # Convert S2024E97 → S2024x97
+      args: ["\\bS(\\d{2,4})E(\\d{2,4})\\b", "S$1x$2"]
+    - name: re_replace  # Convert S2024 to 2024
+      args: ["\\bS(\\d{2,4})\\b", "$1"]
     - name: trim
 
   rows:
