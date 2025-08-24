@@ -4,7 +4,9 @@ This guide covers how to contribute to the Prowlarr Indexers repository, includi
 
 ## Prerequisites
 
-- Python 3.11 or higher
+> [!IMPORTANT]
+> **Python 3.11 or higher** is required - must be installed and accessible via `python3` command
+
 - Git
 - Basic understanding of YAML and JSON Schema
 
@@ -26,21 +28,17 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Validation Process
+## Script Commands
 
-### Quick Validation
+### Validation Scripts
 
-To validate all indexer definitions:
+#### Quick Validation
 ```bash
+# Validate all indexer definitions (recommended)
 ./scripts/validate-python.sh
 ```
 
-The validation script automatically detects directory structure and validates accordingly:
-- **Prowlarr structure**: Uses versioned directories (currently `v10/`, `v11/`) with individual schemas
-- **Jackett structure**: Uses flat directory with root `schema.json`
-
-### Validation Commands
-
+#### Python Validation Script
 ```bash
 # Validate all definitions (auto-detects structure)
 python3 scripts/validate.py
@@ -58,6 +56,45 @@ python3 scripts/validate.py --first-error-only
 python3 scripts/validate.py --find-best-version file.yml
 ```
 
+#### Indexer Sync Script
+```bash
+# Basic sync from Jackett
+./scripts/indexer-sync-v2.sh
+
+# With verbose logging
+./scripts/indexer-sync-v2.sh -v
+
+# With debug logging
+./scripts/indexer-sync-v2.sh -d
+
+# Automation mode (no prompts)
+./scripts/indexer-sync-v2.sh -a
+
+# Skip backporting (recommended for automation)
+./scripts/indexer-sync-v2.sh -z
+
+# Push changes to remote
+./scripts/indexer-sync-v2.sh -p
+
+# Set remote name
+./scripts/indexer-sync-v2.sh -r upstream
+
+# Development mode with pauses
+./scripts/indexer-sync-v2.sh -m dev
+
+# Combined: automation mode with push
+./scripts/indexer-sync-v2.sh -z -a -p
+
+# See all available options
+./scripts/indexer-sync-v2.sh --help
+```
+
+## Validation Process
+
+The validation script automatically detects directory structure and validates accordingly:
+- **Prowlarr structure**: Uses versioned directories (currently `v10/`, `v11/`) with individual schemas
+- **Jackett structure**: Uses flat directory with root `schema.json`
+
 ### Schema Versions
 
 Each Cardigann version has its own schema in `definitions/v{VERSION}/schema.json`. Current active versions are:
@@ -72,7 +109,8 @@ Each Cardigann version has its own schema in `definitions/v{VERSION}/schema.json
   - Enhanced login validation with conditional requirements
   - Extended SelectorBlock functionality
 
-**Note**: For historical version information and deprecated schemas (v1-v9), see the main [README.md](README.md).
+> [!NOTE]
+> For historical version information and deprecated schemas (v1-v9), see the main [README.md](README.md).
 
 ### Validation Requirements
 
@@ -83,7 +121,8 @@ Each Cardigann version has its own schema in `definitions/v{VERSION}/schema.json
 
 #### Common Issues and Solutions
 
-**Boolean Keys/Values**
+> [!WARNING]
+> **Boolean Keys/Values**
 ```yaml
 # ❌ Problematic
 options:
@@ -96,7 +135,9 @@ options:
   "false": no
 ```
 
-**Numeric Keys**
+> [!WARNING]
+> **Numeric Keys**
+
 ```yaml
 # ❌ Problematic
 options:
@@ -228,7 +269,7 @@ Indexers are primarily synced from [Jackett](https://github.com/Jackett/Jackett)
     ./scripts/indexer-sync-v2.sh -r upstream -p
     ```
 
-### Script Features
+### Sync Script Features
 
 The indexer sync script includes several performance and usability improvements:
 
@@ -239,51 +280,12 @@ The indexer sync script includes several performance and usability improvements:
   - `-d` or `DEBUG=true`: Shows all logging including debug traces
 - **Efficient Syncing**: Only fetches the necessary files from the large Jackett repository
 
-### Script Usage
-
-```bash
-# Basic sync
-./scripts/indexer-sync-v2.sh
-
-# With debug logging
-./scripts/indexer-sync-v2.sh -d
-
-# With verbose logging  
-./scripts/indexer-sync-v2.sh -v
-
-# Environment variables
-DEBUG=true ./scripts/indexer-sync-v2.sh
-VERBOSE=true ./scripts/indexer-sync-v2.sh
-
-# See all options
-./scripts/indexer-sync-v2.sh --help
-```
-
-### Manual Sync Options
-
-```bash
-# Manual sync (with automation mode)
-./scripts/indexer-sync-v2.sh -z -a -p
-
-# Development mode sync
-./scripts/indexer-sync-v2.sh -z -m dev
-```
-
 ### Automated Sync Details
 - **Schedule**: 3 times daily (2 AM, 10 AM, 6 PM UTC) via GitHub Actions
 - **Manual Trigger**: Available through GitHub Actions workflow dispatch
 - **Mode**: Uses `-z` flag (skips backporting) for automated runs
 - **Pull Requests**: Automatically creates/updates PRs with sync results
 - **Caching**: Separate caches for Python dependencies and Jackett data for faster runs
-
-### Command Line Options
-- `-z` - Skip backporting (recommended for automation)
-- `-a` - Automation mode (skip interactive prompts)
-- `-p` - Push changes to remote
-- `-m dev` - Development mode with pauses for review
-- `-v` - Verbose logging
-- `-d` - Debug logging
-- `-r upstream` - Set remote name
 
 ## Submitting Changes
 
@@ -343,15 +345,19 @@ When adding fields to schemas:
 
 ### Getting Help
 
-- Check existing issues: https://github.com/Prowlarr/Indexers/issues
-- Review schema documentation: https://wiki.servarr.com/prowlarr/cardigann-yml-definition
-- Ask on Discord: https://requests.prowlarr.com/
+> [!TIP]
+> Need assistance? Here are your best resources:
+> - Check existing issues: https://github.com/Prowlarr/Indexers/issues
+> - Review schema documentation: https://wiki.servarr.com/prowlarr/cardigann-yml-definition
+> - Ask on Discord: https://requests.prowlarr.com/
 
 ## Best Practices
 
-1. Always validate before submitting
-2. Use descriptive commit messages
-3. Test changes thoroughly
-4. Follow existing patterns in similar indexers
-5. Quote YAML keys that might be interpreted as booleans/numbers
-6. Keep indexer definitions focused and minimal
+> [!TIP]
+> Follow these guidelines for successful contributions:
+> 1. Always validate before submitting
+> 2. Use descriptive commit messages
+> 3. Test changes thoroughly
+> 4. Follow existing patterns in similar indexers
+> 5. Quote YAML keys that might be interpreted as booleans/numbers
+> 6. Keep indexer definitions focused and minimal

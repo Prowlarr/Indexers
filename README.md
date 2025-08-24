@@ -12,16 +12,19 @@ For Prowlarr Indexer Requests; please see [our request forum on Discord](https:/
 
 ## Definitions from Jackett
 
-With [some differences](https://github.com/Prowlarr/Indexers/issues/370) and a few exceptions Prowlarr Cardigann Indexers are synced upstream with [Jackett](https://github.com/Jackett/Jackett) via the [indexer-sync script in this repository](https://github.com/Prowlarr/Indexers/blob/master/scripts/indexer-sync-v2.sh). Syncs are automated daily via GitHub Actions, but can also be triggered manually. Any user may also [pull request](https://github.com/Prowlarr/Indexers/compare) a manual sync.
+> [!NOTE]
+> With [some differences](https://github.com/Prowlarr/Indexers/issues/370) and a few exceptions Prowlarr Cardigann Indexers are synced upstream with [Jackett](https://github.com/Jackett/Jackett) via the [indexer-sync script in this repository](https://github.com/Prowlarr/Indexers/blob/master/scripts/indexer-sync-v2.sh). Syncs are automated daily via GitHub Actions, but can also be triggered manually. Any user may also [pull request](https://github.com/Prowlarr/Indexers/compare) a manual sync.
 
 ### Sync Jackett Indexers
 
-For detailed instructions on syncing Jackett indexers, including script features, usage examples, and command-line options, see the [Contributing Guide](CONTRIBUTING.md#indexer-sync-process).
+> [!TIP]
+> For detailed instructions on syncing Jackett indexers, including script features, usage examples, and command-line options, see the [Contributing Guide](CONTRIBUTING.md#indexer-sync-process).
 
 ## Definition Versions
 
-Versions require Prowlarr Cardigann C# modifications.
-Prowlarr will fall back to a previous version if no YML exists for the current version.
+> [!IMPORTANT]
+> Versions require Prowlarr Cardigann C# modifications.
+> Prowlarr will fall back to a previous version if no YML exists for the current version.
 
 ## Schemas
 
@@ -31,6 +34,9 @@ For more specific details between versions the schema files can be compared.
 To test a definition file against a specific schema use the command below.
 
 ### Python Validation
+
+> [!IMPORTANT]
+> Python 3.11 or higher is required for validation scripts
 
 ```bash
 # Setup (one time)
@@ -71,7 +77,8 @@ The validation script supports:
 
 ## Active Versions
 
-The repository currently supports indexer definition schemas from v1 through v11. The latest available versions are:
+> [!NOTE]
+> The repository currently supports indexer definition schemas from v1 through v11. The latest available versions are:
 
 - **V11 Indexers** - [Dev 1.20.0.4590](https://github.com/Prowlarr/Prowlarr/releases/tag/v1.20.0.4590)
   - Prowlarr Cardigann v11 includes several changes such as:
@@ -88,6 +95,9 @@ The repository currently supports indexer definition schemas from v1 through v11
 
 ## Deprecated Versions
 
+> [!WARNING]
+> These versions are deprecated and no longer maintained
+
 ### V1 Indexers - Legacy Beta
 
 - Prowlarr Cardigann v1 are base level standard YML
@@ -103,8 +113,10 @@ The repository currently supports indexer definition schemas from v1 through v11
   - Testlink Torrents
   - InfoHash links
   - AllowRawSearch property in caps
-- No new indexers are to be added to v2 as of 2022-04-18
-- No new updates backported to v2 as of 2022-04-18
+  
+> [!WARNING]
+> No new indexers are to be added to v2 as of 2022-04-18
+> No new updates backported to v2 as of 2022-04-18
 
 ### V3 Indexers - Legacy Beta
 
