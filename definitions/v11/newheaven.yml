@@ -193,12 +193,10 @@ search:
           args: "dd.MM.yyyy HH:mm zzz"
     date:
       text: "{{ if or .Result.date_year .Result.date_day }}{{ or .Result.date_year .Result.date_day }}{{ else }}now{{ end }}"
-    files:
-      selector: td:nth-child(5)
     size:
       selector: td:nth-child(4)
     grabs:
-      selector: td:nth-child(7)
+      selector: td:nth-child(6)
     seeders:
       selector: a[href$="#seeders"]
       optional: true
