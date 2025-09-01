@@ -251,23 +251,26 @@ We sync indexer definitions from [Jackett](https://github.com/Jackett/Jackett). 
 
 **Option 2: Run Sync Script Manually**
 1. Fork this repository and clone it
-2. Run these commands to sync from Jackett:
-   ```bash
-   # Basic sync - downloads latest indexers from Jackett and updates definitions
-   ./scripts/indexer-sync-v2.sh
-   
-   # Sync with verbose output - shows detailed progress and changes
-   ./scripts/indexer-sync-v2.sh -v
-   
-   # Sync and push to your fork - syncs changes and pushes to your remote
-   ./scripts/indexer-sync-v2.sh -p
-   
-   # Automation mode - runs without prompts, good for scripting
-   ./scripts/indexer-sync-v2.sh -a
-   
-   # Skip backporting - faster sync, skips older version updates
-   ./scripts/indexer-sync-v2.sh -z
-   ```
+2. Use the sync script `scripts/indexer-sync-v2.sh` with available options:
+
+   | Flag | Env Variable | Description |
+   |------|-------------|-------------|
+   | `-a` | | Automation mode - runs without interactive prompts |
+   | `-b BRANCH` | | Target branch to sync to (default: master) |
+   | `-c TEMPLATE` | | Custom commit message template |
+   | `-d` | `DEBUG=true` | Enable DEBUG logging - shows detailed execution traces |
+   | `-f` | | Force push with lease - overwrites remote branch safely |
+   | `-j URL` | | Jackett repository URL to sync from |
+   | `-J BRANCH` | | Jackett branch to sync from (default: master) |
+   | `-m MODE` | | Execution mode: `normal` (default), `development`, `jackett` |
+   | `-n NAME` | | Jackett remote name in git |
+   | `-o REMOTE` | | Remote to push changes to (default: origin) |
+   | `-p` | | Enable push mode - automatically pushes changes |
+   | `-r REMOTE` | | Prowlarr remote name (default: origin) |
+   | `-R BRANCH` | | Prowlarr release branch (default: master) |
+   | `-u URL` | | Prowlarr repository URL |
+   | `-v` | `VERBOSE=true` | Enable VERBOSE logging - shows detailed progress info |
+   | `-z` | | Skip backport - faster sync, skips older version updates |
 3. Create PR to `master` with your sync results
 
 ### Quick Start
