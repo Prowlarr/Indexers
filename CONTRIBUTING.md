@@ -239,7 +239,36 @@ All workflows include:
 
 ## Indexer Sync Process
 
-Indexers are primarily synced from [Jackett](https://github.com/Jackett/Jackett) automatically via GitHub Actions that run 3 times daily (2 AM, 10 AM, 6 PM UTC). The sync can also be triggered manually through the GitHub Actions interface or by running the sync script locally.
+Indexers are primarily synced from [Jackett](https://github.com/Jackett/Jackett) automatically via GitHub Actions that run 3 times daily (2 AM, 10 AM, 6 PM UTC). 
+
+### Community Sync Options
+
+We sync indexer definitions from [Jackett](https://github.com/Jackett/Jackett). The community can help with updates using either approach:
+
+**Option 1: PR the Automated Sync Branch**
+1. Monitor automated updates: [View Latest Sync](https://github.com/Prowlarr/Indexers/compare/master...automated-indexer-sync)
+2. Create a PR from `automated-indexer-sync` branch to `master`
+
+**Option 2: Run Sync Script Manually**
+1. Fork this repository and clone it
+2. Run these commands to sync from Jackett:
+   ```bash
+   # Basic sync - downloads latest indexers from Jackett and updates definitions
+   ./scripts/indexer-sync-v2.sh
+   
+   # Sync with verbose output - shows detailed progress and changes
+   ./scripts/indexer-sync-v2.sh -v
+   
+   # Sync and push to your fork - syncs changes and pushes to your remote
+   ./scripts/indexer-sync-v2.sh -p
+   
+   # Automation mode - runs without prompts, good for scripting
+   ./scripts/indexer-sync-v2.sh -a
+   
+   # Skip backporting - faster sync, skips older version updates
+   ./scripts/indexer-sync-v2.sh -z
+   ```
+3. Create PR to `master` with your sync results
 
 ### Quick Start
 
