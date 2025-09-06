@@ -3,7 +3,7 @@
 
 ## Script to keep Prowlarr/Indexers up to date with Jackett/Jackett
 ## Created by Bakerboy448
-## 
+##
 ## Features:
 ### - Controlled logging: DEBUG/VERBOSE modes for troubleshooting
 ### - Automated conflict resolution for indexer syncing
@@ -73,7 +73,7 @@ load_versions() {
     MIN_SCHEMA=10
     MAX_SCHEMA=11
     CURRENT_SCHEMA=11
-    
+
     if [ -f "VERSIONS" ]; then
         # shellcheck disable=SC2034
         while IFS='=' read -r key value; do
@@ -84,7 +84,7 @@ load_versions() {
             esac
         done < <(grep -v '^#' VERSIONS | grep '=')
     fi
-    
+
     NEW_SCHEMA=$((MAX_SCHEMA + 1))
 }
 
@@ -209,7 +209,7 @@ determine_best_schema_version() {
     # Use Python function to find best schema version
     local best_version
     best_version=$($PYTHON_CMD "$VALIDATION_SCRIPT" --find-best-version "$def_file")
-    
+
     if [[ "$best_version" =~ ^v([0-9]+)$ ]]; then
         matched_version="${BASH_REMATCH[1]}"
         log "INFO" "Definition [$def_file] best matches schema [$best_version]"
@@ -218,7 +218,7 @@ determine_best_schema_version() {
         log "WARN" "Definition [$def_file] does not match any schema"
         log "ERROR" "Cardigann update likely needed. Version [v$NEW_SCHEMA] required. Review definition."
     fi
-    
+
     export matched_version=$matched_version
 }
 
@@ -234,7 +234,7 @@ initialize_script() {
         log "ERROR" "Python could not be found. Check your Python installation"
         exit 1
     fi
-    
+
     log "DEBUG" "Using Python command: $PYTHON_CMD"
 
     # Check if we have a virtual environment and activate it
@@ -250,13 +250,13 @@ initialize_script() {
             source .venv/Scripts/activate
         fi
     fi
-    
+
     # Check if required Python packages are available
     if ! $PYTHON_CMD -c "import jsonschema, yaml" &>/dev/null; then
         log "ERROR" "required python packages are missing. Install with: pip install -r requirements.txt"
         exit 2
     fi
-    
+
     log "INFO" "Using Python validation"
 }
 
@@ -275,7 +275,7 @@ while getopts "frpzab:m:c:u:j:R:J:n:o:dv" opt; do
         ;;
     o)
         prowlarr_push_remote=$OPTARG
-        ;;    
+        ;;
     m)
         mode_choice=$OPTARG
         log "DEBUG" "mode_choice using argument $mode_choice"
@@ -435,15 +435,16 @@ git_branch_reset() {
                 log "DEBUG" "Development Mode - Skipping reset to [$prowlarr_remote_name/$prowlarr_target_branch]"
             else
                 git reset --hard "$prowlarr_remote_name"/"$prowlarr_target_branch"
-                git pull "$prowlarr_remote_name" "$prowlarr_target_branch" --rebase
-                log "INFO" "local [$prowlarr_target_branch] reset and rebased on latest upstream"
+                # Rebase on master to ensure we're up to date with merged changes
+                git rebase "$prowlarr_remote_name"/"$PROWLARR_RELEASE_BRANCH"
+                log "INFO" "local [$prowlarr_target_branch] reset and rebased on [$prowlarr_remote_name/$PROWLARR_RELEASE_BRANCH]"
             fi
         else
             git checkout -B "$prowlarr_target_branch" "$prowlarr_remote_name"/"$prowlarr_target_branch"
             log "INFO" "local [$prowlarr_target_branch] created from [$prowlarr_remote_name/$prowlarr_target_branch]"
-            # Ensure we have the latest changes by rebasing on upstream
-            git pull "$prowlarr_remote_name" "$prowlarr_target_branch" --rebase
-            log "INFO" "rebased [$prowlarr_target_branch] on latest upstream"
+            # Rebase on master to ensure we're up to date with merged changes
+            git rebase "$prowlarr_remote_name"/"$PROWLARR_RELEASE_BRANCH"
+            log "INFO" "rebased [$prowlarr_target_branch] on [$prowlarr_remote_name/$PROWLARR_RELEASE_BRANCH]"
         fi
     fi
 }
@@ -452,17 +453,17 @@ pull_cherry_and_merge() {
     log "INFO" "Reviewing Commits"
     existing_message=$(git log --format=%B -n1)
     existing_message_ln1=$(echo "$existing_message" | awk 'NR==1')
-    
+
     log "DEBUG" "Searching for commits with template: '$PROWLARR_COMMIT_TEMPLATE'"
     log "DEBUG" "Searching in last $MAX_COMMITS_TO_SEARCH commits"
-    
+
     prowlarr_commits=$(git log --format=%B -n "$MAX_COMMITS_TO_SEARCH" | grep "^$PROWLARR_COMMIT_TEMPLATE")
     log "DEBUG" "Found prowlarr commits count: $(echo "$prowlarr_commits" | wc -l)"
     log "DEBUG" "First prowlarr commit found: $(echo "$prowlarr_commits" | head -1)"
-    
+
     prowlarr_jackett_commit_message=$(echo "$prowlarr_commits" | awk 'NR==1')
     log "DEBUG" "Prowlarr jackett commit message: '$prowlarr_jackett_commit_message'"
-    
+
     if [ "$is_jackett_dev" = true ]; then
         # Use only local Jackett branch (no remote)
         jackett_ref="$JACKETT_REMOTE_NAME$JACKETT_BRANCH"
@@ -474,15 +475,15 @@ pull_cherry_and_merge() {
         log "DEBUG" "Jackett Remote is [$jackett_ref]"
         # read -r -p "Pausing to review commits. Press any key to continue." -n1 -s
     fi
-    
+
     jackett_recent_commit=$(git rev-parse "$jackett_ref")
     log "DEBUG" "Jackett recent commit: '$jackett_recent_commit'"
-    
+
     # Get and log truncated Jackett commit message
     jackett_commit_message=$(git log --format=%s -n1 "$jackett_recent_commit")
     jackett_commit_message_truncated=$(echo "$jackett_commit_message" | cut -c1-80)
     log "INFO" "Jackett commit message: '$jackett_commit_message_truncated'"
-    
+
     recent_pulled_commit=$(echo "$prowlarr_commits" | awk 'NR==1{print $5}')
     log "DEBUG" "Recent pulled commit (field 5): '$recent_pulled_commit'"
     log "DEBUG" "Full first commit line: '$(echo "$prowlarr_commits" | awk 'NR==1')'"
@@ -540,14 +541,14 @@ pull_cherry_and_merge() {
             fi
         fi
         log "INFO" "cherrypicking Jackett commit [$pick_commit]"
-        
+
         # Get and log the commit message for this specific commit
         pick_commit_message=$(git log --format=%s -n1 "$pick_commit")
         pick_commit_message_truncated=$(echo "$pick_commit_message" | cut -c1-80)
         log "INFO" "Commit message: '$pick_commit_message_truncated'"
-        
+
         git cherry-pick --no-commit --rerere-autoupdate --allow-empty --keep-redundant-commits "$pick_commit"
-        
+
         # Detect new indexers from this commit before conflict resolution
         new_jackett_indexers=$(git diff --cached --diff-filter=A --name-only | grep "src/Jackett.Common/Definitions/.*\.yml$" || true)
         if [ -n "$new_jackett_indexers" ]; then
@@ -574,7 +575,7 @@ pull_cherry_and_merge() {
 resolve_unmerged_files() {
     # Check for any remaining unmerged files and resolve them
     unmerged_files=$(git diff --name-only --diff-filter=U 2>/dev/null || true)
-    
+
     if [ -n "$unmerged_files" ]; then
         log "WARN" "Unmerged files detected: [$unmerged_files]"
         echo "$unmerged_files" | while IFS= read -r file; do
@@ -657,7 +658,7 @@ resolve_conflicts() {
         handle_general_yml_conflicts
         handle_definition_conflicts
     fi
-    
+
     # Final check and resolution of any remaining unmerged files
     resolve_unmerged_files
 }
@@ -665,7 +666,7 @@ resolve_conflicts() {
 handle_general_yml_conflicts() {
     # Remove non-definition YAML files (config files, workflows, etc.)
     yml_remove=$(git status --porcelain | grep yml | grep -vi "definitions/" | grep -vi "Definitions/" | grep -v "definitions-update" | awk -F '[ADUMRC]{1,2} ' '{print $2}' | awk '{ gsub(/^[ \t]+|[ \t]+$/, ""); print }')
-    
+
     if [ -n "$yml_remove" ]; then
         log "DEBUG" "Removing non-definition yml files: [$yml_remove]"
         echo "$yml_remove" | while IFS= read -r file; do
@@ -713,15 +714,15 @@ handle_new_indexers() {
     # Debug: Show all staged files first
     all_staged=$(git diff --cached --name-only)
     log "DEBUG" "All staged files: [$all_staged]"
-    
-    # Debug: Show yml files specifically  
+
+    # Debug: Show yml files specifically
     yml_staged=$(git diff --cached --name-only | grep ".yml" || true)
     log "DEBUG" "All staged yml files: [$yml_staged]"
-    
+
     # Git's automatic directory rename may classify new files as renames (R) instead of additions (A)
     added_indexers=$(git diff --cached --diff-filter=AR --name-only | grep ".yml" | grep -E "v[[:digit:]]+")
     log "DEBUG" "New indexers detected (AR filter + v[digit]+): [$added_indexers]"
-    
+
     if [ -n "$added_indexers" ]; then
         log "INFO" "New Indexers detected: [$added_indexers]"
         for indexer in ${added_indexers}; do
@@ -752,7 +753,7 @@ except:
     pass
 " 2>/dev/null || true)
                 fi
-                
+
                 if [ -n "$replaced_indexers" ]; then
                     log "INFO" "Indexer [$indexer] replaces: [$replaced_indexers]"
                     for replaced in $replaced_indexers; do
@@ -766,7 +767,7 @@ except:
                         done
                     done
                 fi
-                
+
                 determine_schema_version "$indexer"
                 log "DEBUG" "Checked Version Output is $check_version"
                 if [ "$check_version" != "v0" ]; then
@@ -1009,14 +1010,14 @@ push_changes() {
     log "INFO" "Evaluating for Push to Remote"
     log "DEBUG" " Push Modes for Branch: $push_branch"
     log "DEBUG" "Push To Remote: $push_mode with Force Push With Lease: $push_mode_force"
-    
+
     # Safety check: NEVER force push to master
     if [ "$push_mode_force" = true ] && [ "$push_branch" = "master" ]; then
         log "ERROR" "Force push to master branch is forbidden for safety"
         push_mode_force=false
         log "WARN" "Disabled force push - will attempt regular push instead"
     fi
-    
+
     if [ "$push_mode" = true ] && [ "$push_mode_force" = true ]; then
         if git push "$prowlarr_push_remote" "$push_branch" --force-if-includes --force-with-lease; then
             log "WARN" "[$prowlarr_push_remote $push_branch] Branch Force Pushed"
@@ -1034,7 +1035,7 @@ push_changes() {
     else
         log "SUCCESS" "Skipping Push to [$prowlarr_push_remote/$push_branch] you should consider pushing manually and/or submitting a pull-request."
     fi
-    
+
     # Output pull request URL if push was successful
     if [ "$push_mode" = true ]; then
         fork_url=$(git remote get-url "$prowlarr_push_remote" 2>/dev/null | sed 's/\.git$//' | sed 's/git@github\.com:/https:\/\/github.com\//')
