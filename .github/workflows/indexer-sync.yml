@@ -29,7 +29,7 @@ jobs:
     if: github.repository == 'Prowlarr/Indexers'
     permissions:
       contents: write
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -47,7 +47,6 @@ jobs:
           key: python-deps-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
           restore-keys: |
             python-deps-${{ runner.os }}-
-
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -80,7 +79,7 @@ jobs:
           echo "🔄 Fetching Jackett repository..."
           git fetch z_Jackett master --depth=50
           echo "✅ Jackett repository fetched successfully"
-          
+
           echo "🔄 Fetching prowlarr/indexers repository..."
           git fetch origin master --depth=50
           echo "✅ prowlarr/indexers repository fetched successfully"
@@ -93,7 +92,6 @@ jobs:
           else
             ./scripts/indexer-sync-v2.sh -z -a -p -b automated-indexer-sync -o origin
           fi
-
 
       - name: Summary
         run: |
