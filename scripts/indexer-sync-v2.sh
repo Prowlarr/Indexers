@@ -565,7 +565,15 @@ pull_cherry_and_merge() {
     log "SUCCESS" "--- Completed cherry picking ---"
     log "INFO" "Evaluating and Reviewing Changes"
 
-    git checkout HEAD -- "definitions/v*/schema.json"
+    # Checkout schema files if they exist - expand the glob pattern first
+    schema_files=$(find definitions -type f -name "schema.json" -path "*/v[0-9]*/schema.json" 2>/dev/null)
+    if [ -n "$schema_files" ]; then
+        for schema_file in $schema_files; do
+            git checkout HEAD -- "$schema_file" 2>/dev/null || true
+        done
+    else
+        log "DEBUG" "No schema.json files found to checkout"
+    fi
 
     handle_new_indexers
     handle_modified_indexers
