@@ -3,8 +3,8 @@ name: Indexer Sync Automation
 
 on:
   schedule:
-    # Run 2 times daily at 12 AM UTC (0:00) and 3 PM UTC (15:00)
-    - cron: '0 0,15 * * *'
+    # Run 3 times daily every 8 hours
+    - cron: '0 */8 * * *'
   workflow_dispatch:
     inputs:
       force_sync:
