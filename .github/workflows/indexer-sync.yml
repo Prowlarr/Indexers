@@ -17,6 +17,14 @@ on:
         required: false
         default: false
         type: boolean
+      target_branch:
+        description: 'Target branch for sync (automated-indexer-sync/master)'
+        required: false
+        default: 'automated-indexer-sync'
+        type: choice
+        options:
+          - automated-indexer-sync
+          - master
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -87,10 +95,11 @@ jobs:
       - name: Run indexer sync
         run: |
           # Run the sync script with -z mode, automation mode, and push enabled
+          TARGET_BRANCH="${{ github.event.inputs.target_branch || 'automated-indexer-sync' }}"
           if [ "${{ github.event.inputs.debug_mode }}" = "true" ]; then
-            ./scripts/indexer-sync-v2.sh -z -a -p -b automated-indexer-sync -o origin -m dev
+            ./scripts/indexer-sync-v2.sh -z -a -p -b "$TARGET_BRANCH" -o origin -m dev
           else
-            ./scripts/indexer-sync-v2.sh -z -a -p -b automated-indexer-sync -o origin
+            ./scripts/indexer-sync-v2.sh -z -a -p -b "$TARGET_BRANCH" -o origin
           fi
 
       - name: Summary
