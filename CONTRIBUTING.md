@@ -239,7 +239,7 @@ All workflows include:
 
 ## Indexer Sync Process
 
-Indexers are primarily synced from [Jackett](https://github.com/Jackett/Jackett). There is an automated branch - `automated-indexer-sync` updated via GitHub Actions that run 3 times daily (2 AM, 10 AM, 6 PM UTC). However, this must be manually merged to `master`.
+Indexers are primarily synced from [Jackett](https://github.com/Jackett/Jackett). There is an automated branch - `automated-indexer-sync` updated via GitHub Actions that run 3 times daily (12 AM, 8 AM, 4 PM UTC). However, this must be manually merged to `master`.
 
 ### Community Sync Options
 
