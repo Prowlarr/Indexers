@@ -436,14 +436,22 @@ git_branch_reset() {
             else
                 git reset --hard "$prowlarr_remote_name"/"$prowlarr_target_branch"
                 # Rebase on master to ensure we're up to date with merged changes
-                git rebase "$prowlarr_remote_name"/"$PROWLARR_RELEASE_BRANCH"
+                if ! git rebase "$prowlarr_remote_name"/"$PROWLARR_RELEASE_BRANCH"; then
+                    log "ERROR" "Rebase failed due to conflicts with [$prowlarr_remote_name/$PROWLARR_RELEASE_BRANCH]"
+                    git rebase --abort
+                    exit 9
+                fi
                 log "INFO" "local [$prowlarr_target_branch] reset and rebased on [$prowlarr_remote_name/$PROWLARR_RELEASE_BRANCH]"
             fi
         else
             git checkout -B "$prowlarr_target_branch" "$prowlarr_remote_name"/"$prowlarr_target_branch"
             log "INFO" "local [$prowlarr_target_branch] created from [$prowlarr_remote_name/$prowlarr_target_branch]"
             # Rebase on master to ensure we're up to date with merged changes
-            git rebase "$prowlarr_remote_name"/"$PROWLARR_RELEASE_BRANCH"
+            if ! git rebase "$prowlarr_remote_name"/"$PROWLARR_RELEASE_BRANCH"; then
+                log "ERROR" "Rebase failed due to conflicts with [$prowlarr_remote_name/$PROWLARR_RELEASE_BRANCH]"
+                git rebase --abort
+                exit 9
+            fi
             log "INFO" "rebased [$prowlarr_target_branch] on [$prowlarr_remote_name/$PROWLARR_RELEASE_BRANCH]"
         fi
     fi
