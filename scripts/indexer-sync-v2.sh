@@ -1042,22 +1042,38 @@ push_changes() {
     log "DEBUG" " Push Modes for Branch: $push_branch"
     log "DEBUG" "Push To Remote: $push_mode with Force Push With Lease: $push_mode_force"
 
-    # Safety check: NEVER force push to master
-    if [ "$push_mode_force" = true ] && [ "$push_branch" = "master" ]; then
-        log "ERROR" "Force push to master branch is forbidden for safety"
+    # Safety check: NEVER force push to master or main branches
+    if [ "$push_mode_force" = true ] && { [ "$push_branch" = "master" ] || [ "$push_branch" = "main" ]; }; then
+        log "ERROR" "Force push to $push_branch branch is forbidden for safety"
         push_mode_force=false
         log "WARN" "Disabled force push - will attempt regular push instead"
     fi
 
+    # For automated-indexer-sync branch in automation mode, enable force push if needed
+    if [ "$automation_mode" = true ] && [ "$push_branch" = "automated-indexer-sync" ]; then
+        # Check if the remote branch exists and if we're behind
+        if git rev-parse --verify "$prowlarr_push_remote/$push_branch" >/dev/null 2>&1; then
+            local_commit=$(git rev-parse HEAD)
+            remote_commit=$(git rev-parse "$prowlarr_push_remote/$push_branch")
+            if [ "$local_commit" != "$remote_commit" ]; then
+                # Check if we're behind (remote has commits we don't have)
+                if ! git merge-base --is-ancestor "$remote_commit" "$local_commit"; then
+                    log "INFO" "Local branch has diverged from remote automated-indexer-sync, enabling force push"
+                    push_mode_force=true
+                fi
+            fi
+        fi
+    fi
+
     if [ "$push_mode" = true ] && [ "$push_mode_force" = true ]; then
-        if git push "$prowlarr_push_remote" "$push_branch" --force-if-includes --force-with-lease; then
+        if git push "$prowlarr_push_remote" "$push_branch" --force-if-includes --force-with-lease --set-upstream; then
             log "WARN" "[$prowlarr_push_remote $push_branch] Branch Force Pushed"
         else
             log "ERROR" "Failed to force push to [$prowlarr_push_remote $push_branch]"
             exit 8
         fi
     elif [ "$push_mode" = true ]; then
-        if git push "$prowlarr_push_remote" "$push_branch" --force-if-includes; then
+        if git push "$prowlarr_push_remote" "$push_branch" --force-if-includes --set-upstream; then
             log "SUCCESS" "[$prowlarr_push_remote $push_branch] Branch Pushed"
         else
             log "ERROR" "Failed to push to [$prowlarr_push_remote $push_branch]"
