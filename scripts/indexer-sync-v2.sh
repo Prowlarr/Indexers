@@ -108,7 +108,7 @@ log() {
     DEBUG)
         [[ "$DEBUG" != "true" ]] && return
         ;;
-    VERBOSE|TRACE)
+    VERBOSE)
         [[ "$VERBOSE" != "true" && "$DEBUG" != "true" ]] && return
         ;;
     esac
@@ -134,9 +134,6 @@ log() {
         color=$color_debug
         ;;
     VERBOSE)
-        color=$color_info
-        ;;
-    TRACE)
         color=$color_trace
         ;;
     ERROR)
@@ -182,10 +179,10 @@ usage() {
 determine_schema_version() {
     local def_file="$1"
     log "DEBUG" "Testing schema version of [$def_file]"
-    log "TRACE" "Extracting version from file path: $def_file"
+    log "VERBOSE" "Extracting version from file path: $def_file"
 
     check_version=$(echo "$def_file" | cut -d'/' -f2)
-    log "TRACE" "Extracted version: $check_version"
+    log "VERBOSE" "Extracted version: $check_version"
     dir="definitions/$check_version"
     schema="$dir/schema.json"
 
