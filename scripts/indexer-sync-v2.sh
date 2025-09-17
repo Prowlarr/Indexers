@@ -285,11 +285,13 @@ while getopts "frpzab:m:c:u:j:R:J:n:o:dv" opt; do
             ;;
         development | dev | d | D)
             is_dev_exec=true
+            log "WARN" "Mode: Development"
             log "WARN" "Skipping upstream reset to local. Skip checking out the local Prowlarr branch and output the details."
             log "INFO" "This will not reset Prowlarr branch from upstream/master and will ONLY checkout the selected branch to use."
             log "INFO" "This will pause at various debugging points for human review"
             ;;
         jackett | j | J)
+            log "WARN" "Mode: Jackett"
             is_dev_exec=true
             is_jackett_dev=true
             log "WARN" "Skipping upstream reset to local. Skip checking out the local Prowlarr branch and output the details."
