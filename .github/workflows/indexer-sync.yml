@@ -12,8 +12,21 @@ on:
         required: false
         default: false
         type: boolean
+      mode:
+        description: 'Execution mode'
+        required: false
+        default: 'normal'
+        type: choice
+        options:
+          - normal
+          - development
       debug_mode:
-        description: 'Enable debug logging'
+        description: 'Enable debug logging (DEBUG=true)'
+        required: false
+        default: false
+        type: boolean
+      verbose_mode:
+        description: 'Enable verbose logging (VERBOSE=true)'
         required: false
         default: false
         type: boolean
@@ -96,11 +109,25 @@ jobs:
         run: |
           # Run the sync script with -z mode, automation mode, and push enabled
           TARGET_BRANCH="${{ github.event.inputs.target_branch || 'automated-indexer-sync' }}"
+          MODE="${{ github.event.inputs.mode || 'normal' }}"
+
+          # Build flags based on inputs
+          FLAGS="-z -a -p -b $TARGET_BRANCH -o origin -m $MODE"
+
           if [ "${{ github.event.inputs.debug_mode }}" = "true" ]; then
-            ./scripts/indexer-sync-v2.sh -z -a -p -b "$TARGET_BRANCH" -o origin -m dev
-          else
-            ./scripts/indexer-sync-v2.sh -z -a -p -b "$TARGET_BRANCH" -o origin
+            FLAGS="$FLAGS -d"
           fi
+
+          if [ "${{ github.event.inputs.verbose_mode }}" = "true" ]; then
+            FLAGS="$FLAGS -v"
+          fi
+
+          if [ "${{ github.event.inputs.force_sync }}" = "true" ]; then
+            FLAGS="$FLAGS -f"
+          fi
+
+          echo "Running: ./scripts/indexer-sync-v2.sh $FLAGS"
+          ./scripts/indexer-sync-v2.sh $FLAGS
 
       - name: Summary
         run: |
