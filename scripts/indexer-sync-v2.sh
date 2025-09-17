@@ -1066,6 +1066,7 @@ push_changes() {
     fi
 
     if [ "$push_mode" = true ] && [ "$push_mode_force" = true ]; then
+        log "DEBUG" "Push To Remote: $push_mode with Force Push With Lease: $push_mode_force"
         if git push "$prowlarr_push_remote" "$push_branch" --force-if-includes --force-with-lease --set-upstream; then
             log "WARN" "[$prowlarr_push_remote $push_branch] Branch Force Pushed"
         else
