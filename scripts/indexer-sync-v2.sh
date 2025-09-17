@@ -437,24 +437,40 @@ git_branch_reset() {
                 log "DEBUG" "Development Mode - Skipping reset to [$prowlarr_remote_name/$prowlarr_target_branch]"
             else
                 git reset --hard "$prowlarr_remote_name"/"$prowlarr_target_branch"
-                # Rebase on master to ensure we're up to date with merged changes
+                # Try to rebase on master
                 if ! git rebase "$prowlarr_remote_name"/"$PROWLARR_RELEASE_BRANCH"; then
-                    log "ERROR" "Rebase failed due to conflicts with [$prowlarr_remote_name/$PROWLARR_RELEASE_BRANCH]"
-                    git rebase --abort
-                    exit 9
+                    if [ "$automation_mode" = true ]; then
+                        log "WARN" "Rebase failed in automation mode, starting fresh from master instead"
+                        git rebase --abort
+                        git reset --hard "$prowlarr_remote_name"/"$PROWLARR_RELEASE_BRANCH"
+                        log "INFO" "local [$prowlarr_target_branch] reset to master [$prowlarr_remote_name/$PROWLARR_RELEASE_BRANCH]"
+                    else
+                        log "ERROR" "Rebase failed due to conflicts with [$prowlarr_remote_name/$PROWLARR_RELEASE_BRANCH]"
+                        git rebase --abort
+                        exit 9
+                    fi
+                else
+                    log "INFO" "local [$prowlarr_target_branch] reset and rebased on [$prowlarr_remote_name/$PROWLARR_RELEASE_BRANCH]"
                 fi
-                log "INFO" "local [$prowlarr_target_branch] reset and rebased on [$prowlarr_remote_name/$PROWLARR_RELEASE_BRANCH]"
             fi
         else
             git checkout -B "$prowlarr_target_branch" "$prowlarr_remote_name"/"$prowlarr_target_branch"
             log "INFO" "local [$prowlarr_target_branch] created from [$prowlarr_remote_name/$prowlarr_target_branch]"
-            # Rebase on master to ensure we're up to date with merged changes
+            # Try to rebase on master
             if ! git rebase "$prowlarr_remote_name"/"$PROWLARR_RELEASE_BRANCH"; then
-                log "ERROR" "Rebase failed due to conflicts with [$prowlarr_remote_name/$PROWLARR_RELEASE_BRANCH]"
-                git rebase --abort
-                exit 9
+                if [ "$automation_mode" = true ]; then
+                    log "WARN" "Rebase failed in automation mode, starting fresh from master instead"
+                    git rebase --abort
+                    git checkout -B "$prowlarr_target_branch" "$prowlarr_remote_name"/"$PROWLARR_RELEASE_BRANCH" --no-track
+                    log "INFO" "local [$prowlarr_target_branch] created fresh from master [$prowlarr_remote_name/$PROWLARR_RELEASE_BRANCH]"
+                else
+                    log "ERROR" "Rebase failed due to conflicts with [$prowlarr_remote_name/$PROWLARR_RELEASE_BRANCH]"
+                    git rebase --abort
+                    exit 9
+                fi
+            else
+                log "INFO" "rebased [$prowlarr_target_branch] on [$prowlarr_remote_name/$PROWLARR_RELEASE_BRANCH]"
             fi
-            log "INFO" "rebased [$prowlarr_target_branch] on [$prowlarr_remote_name/$PROWLARR_RELEASE_BRANCH]"
         fi
     fi
 }
