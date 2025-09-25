@@ -41,7 +41,7 @@ MAX_COMMITS_TO_PICK=50
 MAX_COMMITS_TO_SEARCH=100
 VALIDATION_SCRIPT="scripts/validate.py"
 
-BLOCKLIST=("uniongang.yml" "uniongangcookie.yml" "sharewood.yml" "ygg-api.yml" "yggtorrent.yml" "yggcookie.yml" "anirena.yml" "torrentgalaxy.yml" "torrent-heaven.yml" "scenelinks.yml" "cgpeers.yml")
+BLOCKLIST=("uniongang.yml" "uniongangcookie.yml" "sharewood.yml" "ygg-api.yml" "yggtorrent.yml" "yggcookie.yml" "anirena.yml" "torrentgalaxy.yml" "torrent-heaven.yml" "scenelinks.yml")
 CONFLICTS_NONYML_EXTENSIONS='\.(cs|js|iss|html|ico|png|csproj)$'
 # Initialize Defaults
 removed_indexers=""
