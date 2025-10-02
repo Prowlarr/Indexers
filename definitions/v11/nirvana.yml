@@ -1,25 +1,26 @@
 ---
-id: tocashare
-name: Toca Share (API)
-description: "Toca Share is a PORTUGUESE Private Torrent Tracker for EBOOKS / AUDIOBOOKS / COURSES"
-language: pt-PT
+id: nirvana
+name: Nirvana (API)
+description: "Nirvana is a Private RUSSIAN Tracker for MOVIES / TV"
+language: ru-RU
 type: private
 encoding: UTF-8
 links:
-  - https://tocashare.biz/ # due to expired 31 Mar 2025, new domain tba
-legacylinks:
-  - https://tocashare.com/ # expired 2nd Jan 2025
+  - https://nirvana.li/
 
 caps:
   categorymappings:
-    - {id: 6, cat: Books/EBook, desc: "E-Books"}
-    - {id: 7, cat: Other, desc: "Cursos"}
-    - {id: 9, cat: Audio/Audiobook, desc: "Audio E-Book"}
+    - {id: 1, cat: Movies, desc: "Фильмы"}
+    - {id: 2, cat: TV, desc: "Сериалы"}
+    - {id: 6, cat: Movies/Other, desc: "Аниме-фильмы"}
+    - {id: 7, cat: TV/Anime, desc: "Аниме-сериалы"}
+    - {id: 8, cat: Movies/Other, desc: "35mm"}
+    - {id: 4, cat: Other, desc: "No"}
 
   modes:
     search: [q]
-    book-search: [q]
-    music-search: [q]
+    tv-search: [q, season, ep, imdbid, tvdbid, tmdbid]
+    movie-search: [q, imdbid, tmdbid]
 
 settings:
   - name: apikey
@@ -28,7 +29,7 @@ settings:
   - name: info_key
     type: info
     label: About your API key
-    default: "Find or Generate a new API Token by accessing your <a href=\"https://tocashare.biz/\" target=\"_blank\">Toca Share</a> account <i>My Settings</i> page and clicking on the <b>API Key</b> tab."
+    default: "Find or Generate a new API Token by accessing your <a href=\"https://nirvana.li/\" target=\"_blank\">Nirvana</a> account <i>My Settings</i> page and clicking on the <b>API Key</b> tab."
   - name: freeleech
     type: checkbox
     label: Search freeleech only
@@ -56,12 +57,11 @@ settings:
   - name: info_activity
     type: info
     label: Account Inactivity
-    default: "The inactivation system was created with the purpose of encouraging member participation. This way, after 7 days without accessing the website, 30 BONs will be deducted per day. If your account balance reaches 0 and you don't have any torrents being seeded, it will be automatically deactivated."
+    default: "Inactive users are regularly deleted. To keep an account, you must visit the site at least once a season."
 
 login:
   path: /api/torrents
   method: get
-  inputs: {} # TODO: remove in v10
   error:
     - selector: a[href*="/login"]
       message:
@@ -83,6 +83,11 @@ search:
   # if we have an id based search, add Season and Episode as query in name for UNIT3D < v6.  Else pass S/E Params for UNIT3D >= v6
     $raw: "{{ range .Categories }}&categories[]={{.}}{{end}}"
     name: "{{ .Keywords }}"
+    seasonNumber: "{{ .Query.Season }}"
+    episodeNumber: "{{ .Query.Ep }}"
+    imdbId: "{{ .Query.IMDBIDShort }}"
+    tmdbId: "{{ .Query.TMDBID }}"
+    tvdbId: "{{ .Query.TVDBID }}"
     "free[]": "{{ if .Config.freeleech }}100{{ else }}{{ end }}"
     sortField: "{{ .Config.sort }}"
     sortDirection: "{{ .Config.type }}"
@@ -112,13 +117,17 @@ search:
       selector: details_link
     download:
       selector: download_link
-    infohash:
-      selector: info_hash
     poster:
       selector: meta.poster
       filters:
         - name: replace
           args: ["https://via.placeholder.com/90x135", ""]
+    imdbid:
+      selector: imdb_id
+    tmdbid:
+      selector: tmdb_id
+    tvdbid:
+      selector: tvdb_id
     genre:
       selector: meta.genres
     _internal:
@@ -169,10 +178,10 @@ search:
         True: 2 # double
     uploadvolumefactor:
       text: "{{ if .Result._featured }}2{{ else }}{{ .Result.uploadvolumefactor_double_upload }}{{ end }}"
-# global MR is 0.4 but torrents must be seeded for 5 days regardless of ratio
+# global MR is 0.4 but torrents must be seeded for 7 days regardless of ratio
 #    minimumratio:
 #      text: 0.4
     minimumseedtime:
-      # 5 days (as seconds = 5 x 24 x 60 x 60)
-      text: 432000
-# json UNIT3D 9.1.5
+      # 7 days (as seconds = 7 x 24 x 60 x 60)
+      text: 604800
+# json UNIT3D 9.1.7
