@@ -1,0 +1,118 @@
+---
+id: shakaw
+name: Shakaw
+description: "Shakaw is a PRIVATE Brazilian torrent tracker for ANIME"
+language: pt-BR
+type: private
+encoding: UTF-8
+requestDelay: 2
+links:
+  - https://tracker.shakaw.com.br/
+
+caps:
+  categorymappings:
+    - {id: 0, cat: TV/Anime, desc: "Selecione", default: True}
+    - {id: 1, cat: TV/Anime, desc: "Completo", default: True}
+    - {id: 2, cat: TV/Anime, desc: "Série", default: false}
+    - {id: 3, cat: Movies, desc: "Filme", default: false}
+    - {id: 4, cat: TV/Anime, desc: "OVA", default: false}
+    - {id: 5, cat: Books, desc: "Manga", default: false}
+    - {id: 6, cat: TV/Anime, desc: "Especial", default: false}
+    - {id: 7, cat: TV/Anime, desc: "Promo", default: false}
+    - {id: 8, cat: TV, desc: "Tokusatsu", default: false}
+    - {id: 9, cat: TV, desc: "Live Action", default: false}
+    - {id: 12, cat: TV, desc: "Dorama", default: True}
+
+  modes:
+    search: [q]
+    book-search: [q]
+
+settings:
+  - name: cookie
+    type: text
+    label: Cookie
+  - name: info_cookie
+    type: info_cookie
+  - name: freeleech
+    type: checkbox
+    label: Search freeleech only
+    default: false
+
+login:
+  method: cookie
+  inputs:
+    cookie: "{{ .Config.cookie }}"
+  test:
+    path: pagina_inicial.php
+    selector: a[href="torrents.php"]
+
+search:
+  paths:
+    - path: /torrents.php
+  
+  allowEmptyInputs: true
+  
+  inputs:
+    palavra_chave: "{{ .Keywords }}"
+    search: "{{ .Keywords }}"
+    query: "{{ .Keywords }}"
+    situacao: "{{ if .Config.freeleech }}golden{{ else }}selecione{{ end }}"
+
+  keywordsfilters:
+    - name: trim
+    - name: re_replace # replace special characters with " "
+      args: ["[^a-zA-Z0-9]+", " "]
+
+  rows:
+    selector: tbody > tr
+
+  fields:
+    category:
+      selector: div.div_categoria_torrent > a
+      attribute: href
+      filters:
+        - name: querystring
+          args: categoria_id
+    title:
+      selector: a.link_torrent, a.link_golden_torrent
+    details:
+      selector: a.link_torrent, a.link_golden_torrent
+      attribute: href
+    download:
+      selector: a.link_download
+      attribute: href
+    date:
+      selector: td:nth-child(4)
+      filters:
+        - name: trim
+        - name: replace
+          args: ["h", ":"]
+        - name: re_replace
+          args: ["^(.{5})", "$1 "]
+        - name: append
+          args: " -03:00" # America/Sao_Paulo
+        - name: dateparse
+          args: "HH:mm dd/MM/yyyy zzz"
+    size:
+      selector: td[title="Tamanho"]
+    files:
+      selector: td[title="Quantidade de Arquivos"] > a
+    grabs:
+      selector: td[title="Quantos Completaram"]
+    seeders:
+      selector: td[title="Quantidade de Seeders"] > a
+    leechers:
+      selector: td[title="Quantidade de Leechers"] > a
+    genre:
+      selector: div.tags_da_linha_da_tabela
+      filters:
+        - name: regexp
+          args: "\\[(.+?)\\]"
+    downloadvolumefactor:
+      case:
+        span.icone_golden_torrent: 0
+        # default to 1
+        "*": 1
+    description:
+      selector: td:nth-child(10)
+# engine n/a
