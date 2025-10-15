@@ -64,7 +64,6 @@ login:
 search:
   paths:
     - path: torrents.php
-    
   inputs:
     palavra_chave: "{{ .Keywords }}"
     situacao: "{{ if .Config.freeleech }}golden{{ else }}selecione{{ end }}"
@@ -117,11 +116,11 @@ search:
     downloadvolumefactor:
       case:
         span.icone_golden_torrent: 0
-        # default to 1
         "*": 1
-    description:
-      selector: td:nth-child(10)
     uploadvolumefactor:
       text: 1
     minimumratio:
       text: 0.6
+    description:
+      selector: td:nth-child(10)
+# engine n/a
