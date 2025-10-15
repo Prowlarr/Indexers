@@ -7,9 +7,10 @@ type: private
 encoding: UTF-8
 followredirect: true
 links:
-  - https://xthor.tk/
+  - https://xthor.help/
 legacylinks:
   - https://xthor.tk
+  - https://xthor.tk/
 
 caps:
   categorymappings:
