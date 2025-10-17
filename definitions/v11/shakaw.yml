@@ -69,7 +69,7 @@ search:
     situacao: "{{ if .Config.freeleech }}golden{{ else }}selecione{{ end }}"
 
   rows:
-    selector: tbody > tr
+    selector: table#tabela_torrents > tbody > tr
 
   fields:
     category:
