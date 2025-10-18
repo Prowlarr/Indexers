@@ -81,7 +81,10 @@ jobs:
           fi
           # shellcheck disable=SC1091
           source .venv/bin/activate
-          pip install -r requirements.txt
+          # Ensure pip is installed and upgraded
+          python -m ensurepip --upgrade || true
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
 
       - name: Configure git
         run: |
@@ -107,6 +110,12 @@ jobs:
 
       - name: Run indexer sync
         run: |
+          # Activate virtual environment if it exists
+          if [ -d ".venv" ]; then
+            # shellcheck disable=SC1091
+            source .venv/bin/activate
+          fi
+
           # Run the sync script with -z mode, automation mode, and push enabled
           TARGET_BRANCH="${{ github.event.inputs.target_branch || 'automated-indexer-sync' }}"
           MODE="${{ github.event.inputs.mode || 'normal' }}"
