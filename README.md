@@ -13,7 +13,7 @@ For Prowlarr Indexer Requests; please see [our request forum on Discord](https:/
 ## Definitions from Jackett
 
 > [!NOTE]
-> With [some differences](https://github.com/Prowlarr/Indexers/issues/370) and a few exceptions Prowlarr Cardigann Indexers are synced upstream with [Jackett](https://github.com/Jackett/Jackett) via the [indexer-sync script in this repository](https://github.com/Prowlarr/Indexers/blob/master/scripts/indexer-sync-v2.sh). Syncs are automated daily via GitHub Actions, but can also be triggered manually. Any user may also [pull request](https://github.com/Prowlarr/Indexers/compare) a manual sync.
+> With [some differences](https://github.com/Prowlarr/Indexers/issues/370) and a few exceptions Prowlarr Cardigann Indexers are synced upstream with [Jackett](https://github.com/Jackett/Jackett) via the [indexer-sync script in this repository](https://github.com/Prowlarr/Indexers/blob/master/scripts/indexer-sync-v2.sh). Syncs are automated daily via GitHub Actions, but can also be triggered manually. Any user may also [pull request](https://github.com/Prowlarr/Indexers/compare) a manual sync. Problematic indexers are automatically excluded using a configurable blocklist.
 
 ### Sync Jackett Indexers
 

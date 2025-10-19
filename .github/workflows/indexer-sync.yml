@@ -109,6 +109,7 @@ jobs:
           echo "✅ prowlarr/indexers repository fetched successfully"
 
       - name: Run indexer sync
+        id: sync_attempt
         run: |
           # Activate virtual environment if it exists
           if [ -d ".venv" ]; then
@@ -135,8 +136,58 @@ jobs:
             FLAGS="$FLAGS -f"
           fi
 
-          echo "Running: ./scripts/indexer-sync-v2.sh $FLAGS"
+          echo "🔄 Running: ./scripts/indexer-sync-v2.sh $FLAGS"
+          echo "📝 Target branch: $TARGET_BRANCH"
+          echo "⚙️ Mode: $MODE"
+
+          # Run with error handling
+          set +e
           ./scripts/indexer-sync-v2.sh $FLAGS
+          EXIT_CODE=$?
+          set -e
+
+          # Handle specific exit codes
+          case $EXIT_CODE in
+            0)
+              echo "✅ Sync completed successfully"
+              exit 0
+              ;;
+            3)
+              echo "⚠️ Failed to parse Prowlarr commits - may need manual investigation"
+              exit $EXIT_CODE
+              ;;
+            4)
+              echo "⚠️ Too many commits to cherry-pick - exceeds safety limit"
+              exit $EXIT_CODE
+              ;;
+            5)
+              echo "⚠️ Unresolved conflicts in automation mode"
+              exit $EXIT_CODE
+              ;;
+            6)
+              echo "⚠️ Unresolved conflicts before commit"
+              exit $EXIT_CODE
+              ;;
+            7)
+              echo "⚠️ Failed to create commit - possibly no changes or git error"
+              # This could be a transient failure or mean we're already up to date
+              # Check if there are actually any differences
+              if git diff --quiet origin/master...HEAD; then
+                echo "ℹ️ No actual changes detected - already up to date"
+                exit 0
+              else
+                exit $EXIT_CODE
+              fi
+              ;;
+            8)
+              echo "⚠️ Failed to push changes"
+              exit $EXIT_CODE
+              ;;
+            *)
+              echo "⚠️ Unknown error occurred (exit code: $EXIT_CODE)"
+              exit $EXIT_CODE
+              ;;
+          esac
 
       - name: Summary
         run: |
