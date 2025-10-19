@@ -41,8 +41,34 @@ MAX_COMMITS_TO_PICK=50
 MAX_COMMITS_TO_SEARCH=100
 VALIDATION_SCRIPT="scripts/validate.py"
 
-BLOCKLIST=("uniongang.yml" "uniongangcookie.yml" "sharewood.yml" "ygg-api.yml" "yggtorrent.yml" "yggcookie.yml" "anirena.yml" "torrentgalaxy.yml" "torrent-heaven.yml" "scenelinks.yml" "therarbg.yml")
-CONFLICTS_NONYML_EXTENSIONS='\.(cs|js|iss|html|ico|png|csproj)$'
+# Load blocklist from external file or use defaults
+BLOCKLIST_FILE="${BLOCKLIST_FILE:-scripts/blocklist.txt}"
+BLOCKLIST=()
+declare -A blocklist_map
+
+load_blocklist() {
+    if [ -f "$BLOCKLIST_FILE" ]; then
+        log "DEBUG" "Loading blocklist from $BLOCKLIST_FILE"
+        while IFS= read -r line; do
+            # Skip comments and empty lines
+            if [[ ! "$line" =~ ^[[:space:]]*# ]] && [[ -n "$line" ]]; then
+                # Trim whitespace
+                line=$(echo "$line" | xargs)
+                if [ -n "$line" ]; then
+                    BLOCKLIST+=("$line")
+                    blocklist_map["$line"]=1
+                    log "DEBUG" "Added to blocklist: $line"
+                fi
+            fi
+        done < "$BLOCKLIST_FILE"
+        log "INFO" "Loaded ${#BLOCKLIST[@]} entries from blocklist"
+        log "DEBUG" "Blocklist contents: ${BLOCKLIST[*]}"
+    else
+        log "INFO" "Blocklist file not found at $BLOCKLIST_FILE, no indexers will be blocked"
+    fi
+}
+
+CONFLICTS_NONYML_EXTENSIONS='\.(cs|js|iss|html|ico|png|jpg|jpeg|gif|svg|csproj|sln|md|txt|json|xml|config)$'
 # Initialize Defaults
 removed_indexers=""
 added_indexers=""
@@ -51,10 +77,6 @@ newschema_indexers=""
 both_added_new_indexers=""
 BACKPORT_SKIPPED=false
 GIT_DIFF_CMD="git diff --cached --name-only"
-declare -A blocklist_map
-for blocked in "${BLOCKLIST[@]}"; do
-    blocklist_map["$blocked"]=1
-done
 
 
 # Prowlarr Schema Versions
@@ -588,6 +610,23 @@ pull_cherry_and_merge() {
     log "SUCCESS" "--- Completed cherry picking ---"
     log "INFO" "Evaluating and Reviewing Changes"
 
+    # Remove unwanted file types that Jackett might have added
+    unwanted_files=$(git diff --cached --name-only | grep -E "$CONFLICTS_NONYML_EXTENSIONS" || true)
+    if [ -n "$unwanted_files" ]; then
+        log "INFO" "Removing unwanted file types from Jackett"
+        echo "$unwanted_files" | while IFS= read -r file; do
+            log "DEBUG" "Removing: $file"
+            git rm --cached "$file" 2>/dev/null || true
+        done
+    fi
+
+    # Also remove any src/ directories that might have been added
+    src_files=$(git diff --cached --name-only | grep '^src/' || true)
+    if [ -n "$src_files" ]; then
+        log "INFO" "Removing src/ files from Jackett"
+        git rm --cached -r src/ 2>/dev/null || true
+    fi
+
     # Checkout schema files if they exist - expand the glob pattern first
     schema_files=$(find definitions -type f -name "schema.json" -path "*/v[0-9]*/schema.json" 2>/dev/null)
     if [ -n "$schema_files" ]; then
@@ -637,24 +676,27 @@ resolve_unmerged_files() {
 }
 
 resolve_conflicts() {
-    readme_conflicts=$($GIT_DIFF_CMD | grep -E '^README\.md$')
-    nonyml_conflicts=$($GIT_DIFF_CMD | grep -E "$CONFLICTS_NONYML_EXTENSIONS")
-    yml_conflicts=$($GIT_DIFF_CMD | grep -E '\.ya?ml$')
-    schema_conflicts=$($GIT_DIFF_CMD | grep -E '\.schema\.json$')
+    # Get list of actual conflicted files
+    conflicted_files=$(git diff --name-only --diff-filter=U)
+
+    readme_conflicts=$(echo "$conflicted_files" | grep -E '^README\.md$' || true)
+    nonyml_conflicts=$(echo "$conflicted_files" | grep -E "$CONFLICTS_NONYML_EXTENSIONS" || true)
+    yml_conflicts=$(echo "$conflicted_files" | grep -E '\.ya?ml$' || true)
+    schema_conflicts=$(echo "$conflicted_files" | grep -E '\.schema\.json$' || true)
 
     log "WARN" "conflicts exist"
     if [ -n "$readme_conflicts" ]; then
         log "DEBUG" "README conflict exists; using Prowlarr README"
-        git checkout --ours README.md
-        git add --force README.md
+        git checkout --ours README.md 2>/dev/null || git rm -f README.md 2>/dev/null || true
+        git add --force README.md 2>/dev/null || true
     fi
 
     if [ -n "$schema_conflicts" ]; then
         log "DEBUG" "Schema conflict exists; using Prowlarr schema"
         for file in $schema_conflicts; do
             if git ls-files | grep -q "^$file$"; then
-                git checkout --ours "$file"
-                git add --force "$file"
+                git checkout --ours "$file" 2>/dev/null || true
+                git add --force "$file" 2>/dev/null || true
             fi
         done
     fi
@@ -662,12 +704,14 @@ resolve_conflicts() {
     # Handle "both added" definition files (when Git auto-moves files from Jackett paths)
     both_added_defs=$(git status --porcelain | grep "^AA" | grep "definitions/v[0-9].*\.yml$" | awk '{print $2}')
     if [ -n "$both_added_defs" ]; then
-        log "DEBUG" "Both added definition conflicts exist; using Jackett's version: [$both_added_defs]"
+        log "DEBUG" "Both added definition conflicts exist; using Jackett's version"
         for file in $both_added_defs; do
             log "INFO" "NEW INDEXER: Resolving both-added conflict for [$file]"
             both_added_new_indexers="$both_added_new_indexers $file"
-            git checkout --theirs "$file"
-            git add --force "$file"
+            # For AA conflicts, we need to remove and re-add
+            git rm "$file" 2>/dev/null || true
+            git checkout --theirs "$file" 2>/dev/null || true
+            git add "$file" 2>/dev/null || true
         done
     fi
 
@@ -690,7 +734,7 @@ resolve_conflicts() {
         handle_definition_conflicts
     fi
 
-    # Final check and resolution of any remaining unmerged files
+    # Final cleanup of any remaining unmerged files
     resolve_unmerged_files
 }
 
@@ -1012,6 +1056,14 @@ cleanup_and_commit() {
         exit 6
     fi
 
+    # Check if there are any staged changes to commit
+    staged_changes=$(git diff --cached --name-only)
+    if [ -z "$staged_changes" ]; then
+        log "WARN" "No changes to commit - all changes may have been filtered by blocklist or conflicts"
+        log "INFO" "Exiting gracefully as we're already up to date"
+        exit 0
+    fi
+
     if [ "$pulls_exists" = true ] && [ "$prowlarr_target_branch" != "$PROWLARR_RELEASE_BRANCH" ]; then
         if [ "$existing_message_ln1" = "$prowlarr_jackett_commit_message" ]; then
             if ! git commit --amend -m "$new_commit_msg" -m "$existing_message"; then
@@ -1065,6 +1117,7 @@ push_changes() {
         fi
     fi
 
+
     if [ "$push_mode" = true ] && [ "$push_mode_force" = true ]; then
         log "DEBUG" "Push To Remote: $push_mode with Force Push With Lease: $push_mode_force"
         if git push "$prowlarr_push_remote" "$push_branch" --force-if-includes --force-with-lease --set-upstream; then
@@ -1100,6 +1153,7 @@ push_changes() {
 
 main() {
     initialize_script
+    load_blocklist
     configure_git
     check_branches
     git_branch_reset

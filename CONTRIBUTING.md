@@ -311,6 +311,7 @@ The indexer sync script includes several performance and usability improvements:
   - `-v` or `VERBOSE=true`: Shows detailed parameter and operation information
   - `-d` or `DEBUG=true`: Shows all logging including debug traces
 - **Efficient Syncing**: Only fetches the necessary files from the large Jackett repository
+- **Blocklist Support**: Excludes problematic indexers via `scripts/blocklist.txt` (no hardcoded defaults)
 
 ### Automated Sync Details
 - **Schedule**: 3 times daily (2 AM, 10 AM, 6 PM UTC) via GitHub Actions
