@@ -611,7 +611,8 @@ pull_cherry_and_merge() {
     log "INFO" "Evaluating and Reviewing Changes"
 
     # Remove unwanted file types that Jackett might have added
-    unwanted_files=$(git diff --cached --name-only | grep -E "$CONFLICTS_NONYML_EXTENSIONS" || true)
+    # Explicitly exclude important repository files and schema files
+    unwanted_files=$(git diff --cached --name-only | grep -E "$CONFLICTS_NONYML_EXTENSIONS" | grep -v -E '^(README\.md|CONTRIBUTING\.md|LICENSE\.md)$' | grep -v 'schema\.json$' || true)
     if [ -n "$unwanted_files" ]; then
         log "INFO" "Removing unwanted file types from Jackett"
         echo "$unwanted_files" | while IFS= read -r file; do
@@ -619,6 +620,14 @@ pull_cherry_and_merge() {
             git rm --cached "$file" 2>/dev/null || true
         done
     fi
+
+    # Always use Prowlarr's version of important repository markdown files
+    for repo_file in README.md CONTRIBUTING.md LICENSE.md; do
+        if git diff --cached --name-only | grep -q "^${repo_file}$"; then
+            log "DEBUG" "Ensuring Prowlarr version of $repo_file is used"
+            git checkout HEAD -- "$repo_file" 2>/dev/null || true
+        fi
+    done
 
     # Also remove any src/ directories that might have been added
     src_files=$(git diff --cached --name-only | grep '^src/' || true)
@@ -680,15 +689,16 @@ resolve_conflicts() {
     conflicted_files=$(git diff --name-only --diff-filter=U)
 
     readme_conflicts=$(echo "$conflicted_files" | grep -E '^README\.md$' || true)
-    nonyml_conflicts=$(echo "$conflicted_files" | grep -E "$CONFLICTS_NONYML_EXTENSIONS" || true)
+    # Explicitly exclude important repository files and schema files from nonyml conflicts
+    nonyml_conflicts=$(echo "$conflicted_files" | grep -E "$CONFLICTS_NONYML_EXTENSIONS" | grep -v -E '^(README\.md|CONTRIBUTING\.md|LICENSE\.md)$' | grep -v 'schema\.json$' || true)
     yml_conflicts=$(echo "$conflicted_files" | grep -E '\.ya?ml$' || true)
     schema_conflicts=$(echo "$conflicted_files" | grep -E '\.schema\.json$' || true)
 
     log "WARN" "conflicts exist"
     if [ -n "$readme_conflicts" ]; then
         log "DEBUG" "README conflict exists; using Prowlarr README"
-        git checkout --ours README.md 2>/dev/null || git rm -f README.md 2>/dev/null || true
-        git add --force README.md 2>/dev/null || true
+        git checkout --ours README.md
+        git add --force README.md
     fi
 
     if [ -n "$schema_conflicts" ]; then
