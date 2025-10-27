@@ -1,42 +1,57 @@
 ---
-id: bitturk
-name: BiTTuRK
-description: "BiTTuRK is a TURKISH Private Torrent Tracker for HD MOVIES / TV / GENERAL. This Indexer is for English only."
-language: en-US
+id: uhdtorrent
+name: uHDTorrent
+description: "uHDTorrent is a TURKISH Private Torrent Tracker for HD MOVIES / TV / GENERAL"
+language: tr-TR
 type: private
 encoding: UTF-8
 links:
-  - https://bitturk.net/
-legacylinks:
-  - http://www.bitturk.net/
-  - http://bitturk.net/
+  - https://uhdtorrent.club/
 
 caps:
   categorymappings:
-    - {id: 1, cat: Movies, desc: "Filmler"}
-    - {id: 38, cat: Movies, desc: "Türk Filmi"}
-    - {id: 40, cat: Movies, desc: "Türkçe Film"}
-    - {id: 113, cat: Movies, desc: "Yabancı Dil"}
-    - {id: 77, cat: Movies/UHD, desc: "4K UHD / 3D"}
-    - {id: 16, cat: Movies, desc: "Animasyon"}
-    - {id: 31, cat: Movies, desc: "Belgesel"}
-    - {id: 112, cat: XXX, desc: "XxX"}
-    - {id: 48, cat: TV, desc: "Televizyon"}
-    - {id: 49, cat: TV/HD, desc: "Tv HD"}
-    - {id: 50, cat: TV, desc: "Yab@ncı Dizi"}
-    - {id: 51, cat: TV, desc: "Yerli Dizi"}
-    - {id: 7, cat: Audio, desc: "Müzik"}
-    - {id: 20, cat: Audio, desc: "Türkçe MüziK"}
-    - {id: 46, cat: Audio, desc: "Yab@ncı MüziK"}
-    - {id: 2, cat: Console, desc: "Oyun / Program"}
-    - {id: 44, cat: Books, desc: "E-BooK / Eğitim"}
+    - {id: 32, cat: Movies, desc: "Digital Platform İçerikleri"}
+    - {id: 32, cat: TV, desc: "Digital Platform İçerikleri"}
+    - {id: 39, cat: Movies, desc: "NETFLİX"}
+    - {id: 39, cat: TV, desc: "NETFLİX"}
+    - {id: 38, cat: Movies, desc: "AMAZON PRİME"}
+    - {id: 38, cat: TV, desc: "AMAZON PRİME"}
+    - {id: 41, cat: Movies, desc: "DİSNEY+"}
+    - {id: 41, cat: TV, desc: "DİSNEY+"}
+    - {id: 37, cat: Movies, desc: "HBOMAX"}
+    - {id: 37, cat: TV, desc: "HBOMAX"}
+    - {id: 40, cat: Movies, desc: "TOD"}
+    - {id: 40, cat: TV, desc: "TOD"}
+    - {id: 42, cat: Movies, desc: "GAİN"}
+    - {id: 42, cat: TV, desc: "GAİN"}
+    - {id: 43, cat: Movies, desc: "MUBI"}
+    - {id: 43, cat: TV, desc: "MUBI"}
+    - {id: 44, cat: Movies, desc: "TV+"}
+    - {id: 44, cat: TV, desc: "TV+"}
+    - {id: 45, cat: Movies, desc: "EXXEN"}
+    - {id: 45, cat: TV, desc: "EXXEN"}
+    - {id: 46, cat: Movies, desc: "TABİİ"}
+    - {id: 46, cat: TV, desc: "TABİİ"}
+    - {id: 47, cat: Movies, desc: "ATVP"}
+    - {id: 47, cat: TV, desc: "ATVP"}
+    - {id: 59, cat: Movies, desc: "DİĞER"}
+    - {id: 59, cat: TV, desc: "DİĞER"}
+    - {id: 48, cat: TV, desc: "Diziler"}
+    - {id: 49, cat: TV, desc: "Yerli Diziler"}
+    - {id: 50, cat: TV, desc: "Yerli Dizi Boxset"}
+    - {id: 52, cat: Audio, desc: "Müzikler"}
+    - {id: 52, cat: Audio, desc: "Müzikler Yerli"}
+    - {id: 52, cat: Audio, desc: "Müzikler Yabancı"}
+    - {id: 55, cat: PC/0day, desc: "Programlar"}
+    - {id: 56, cat: PC/0day, desc: "Programlar Windows"}
+    - {id: 57, cat: PC/Games, desc: "Oyunlar"}
+    - {id: 58, cat: PC/Games, desc: "Oyunla PC"}
 
   modes:
     search: [q]
     tv-search: [q, season, ep]
     movie-search: [q]
     music-search: [q]
-    book-search: [q]
 
 settings:
   - name: username
@@ -52,7 +67,7 @@ settings:
   - name: info
     type: info
     label: Layout
-    default: "<ul><li>Only the English Classic profile is supported.</li><li>Make sure to set the <b>Torrent Listing (Listeleme Biçimi)</b> option in your profile to <b>Classic (Klasik)</b></li><li>And set the <b>Language (Dil)</b> to <b>English</b></li><li>Using the <i>Modern</i> theme will prevent results, and using <i>Turkish</i> will prevent upload dates.</li></ul>"
+    default: "<ul><li>Only the English Classic profile is supported.</li><li>Make sure to set the <b>Torrent Listing (Torrent Listes)</b> option in your profile to <b>Classic</b></li><li>Using the <i>Modern</i> theme will prevent results.</li></ul>"
   - name: sort
     type: select
     label: Sort requested from site
@@ -110,12 +125,9 @@ search:
     search_type: name
     "sortOptions[sortBy]": "{{ .Config.sort }}"
     "sortOptions[sortOrder]": "{{ .Config.type }}"
-# Drop error trap to stop Sonarr disabling indexer, see https://github.com/Jackett/Jackett/issues/1415
-#  error:
-#    - selector: div.error:not(:contains("Gösterilecek sonuç bulunamadı."))
 
   rows:
-    selector: "table#torrents_table_classic tr:has(td.torrent_name){{ if .Config.freeleech }}:has(img[src$=\"/torrent_free.png\"]){{ else }}{{ end }}"
+    selector: "table#torrents_table_classic tr:has(td.torrent_name){{ if .Config.freeleech }}:has(img[src$=\"/freedownload.gif\"]){{ else }}{{ end }}"
 
   fields:
     title:
@@ -133,24 +145,42 @@ search:
       selector: a[href*="?p=torrents&pid=10&action=download"]
       attribute: href
     date_day:
-      # Uploaded Friday at 05:11 by
-      # Uploaded Today at 00:48 by
-      # Uploaded Yesterday at 23:57 by
-      selector: td.torrent_name:contains(" at "):not(:has(abbr[data-time]))
+      # Yüklendi Bugün saat 05:11 by
+      # Yüklendi Dün saat 05:11 by
+      # Yüklendi Cumartesi at 23:57 by
+      selector: td.torrent_name:contains("at"):not(:has(abbr[data-time]))
       # auto adjusted by site account profile
       optional: true
       filters:
         - name: regexp
-          args: "Uploaded (.+?) by"
+          args: "Yüklendi (.+?) by"
+        - name: replace
+          args: ["Bugün saat", "today"]
+        - name: replace
+          args: ["Dün saat", "yesterday"]
+        - name: replace
+          args: ["Pazartesi", "monday"]
+        - name: replace
+          args: ["Salı", "tuesday"]
+        - name: replace
+          args: ["Çarşamba", "wednesday"]
+        - name: replace
+          args: ["Perşembe", "thursday"]
+        - name: replace
+          args: ["Cumartesi", "saturday"]
+        - name: replace
+          args: ["Cuma", "friday"]
+        - name: replace
+          args: ["Pazar", "sunday"]
         - name: fuzzytime
     date_year:
-      # Uploaded 30-01-2019 15:02 by
-      selector: td.torrent_name:not(:contains(" at ")):not(:has(abbr[data-time]))
+      # Yüklendi 20-10-2025 11:15 by
+      selector: td.torrent_name:not(:contains("at")):not(:has(abbr[data-time]))
       # auto adjusted by site account profile
       optional: true
       filters:
         - name: regexp
-          args: "Uploaded (.+?) by"
+          args: "Yüklendi (.+?) by"
         - name: dateparse
           args: "dd-MM-yyyy HH:mm"
     date_unix:
@@ -173,15 +203,15 @@ search:
       attribute: href
     downloadvolumefactor:
       case:
-        "img[src$=\"/silver.gif\"]": 0.5
-        "img[src$=\"/torrent_free.png\"]": 0
+        "img[src$=\"/silver.gif\"]": 0.5 # not confirmed if there is a silver at this site
+        "img[src$=\"/freedownload.gif\"]": 0
         "*": 1
     uploadvolumefactor:
       case:
-        "img[src$=\"/torrent_multiple_upload.png\"]": 2
+        "img[src$=\"/torrent_x2.png\"]": 2
         "*": 1
     minimumratio:
-      text: 1.0
+      text: 0.8
     minimumseedtime:
       # 3 day (as seconds = 3 x 24 x 60 x 60)
       text: 259200
