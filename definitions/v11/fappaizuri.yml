@@ -83,8 +83,20 @@ download:
 
 search:
   paths:
-    # https://fappaizuri.me/torrents-search.php?search=&c8=1&c6=1&incldead=1&freeleech=0&lang=0
+    # page returns only 25 entries
+    # https://fappaizuri.me/torrents-search.php?search=&c8=1&c6=1&incldead=1&freeleech=0&lang=0&page=0
     - path: torrents-search.php
+      inputs:
+        page: 0
+    - path: torrents-search.php
+      inputs:
+        page: 1
+    - path: torrents-search.php
+      inputs:
+        page: 2
+    - path: torrents-search.php
+      inputs:
+        page: 3
 
   inputs:
     $raw: "{{ range .Categories }}&c{{.}}=1&{{end}}"
