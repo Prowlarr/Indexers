@@ -11,6 +11,5 @@ yggcookie.yml
 sharewood.yml
 anirena.yml
 torrentgalaxy.yml
-torrent-heaven.yml
 scenelinks.yml
 therarbg.yml
