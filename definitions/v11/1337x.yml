@@ -1,7 +1,7 @@
 ---
-id: 1337x
-name: 1337x
-description: "1337X is a Public torrent site that offers verified torrent downloads"
+id: 1337x-custom
+name: 1337x-custom
+description: "1337X is a Public torrent site that offers verified torrent downloads (Custom definition with Games support)"
 language: en-US
 type: public
 encoding: UTF-8
@@ -13,20 +13,6 @@ links:
   - https://x1337x.ws/
   - https://x1337x.eu/
   - https://x1337x.cc/
-legacylinks:
-  - https://1337x.is/
-  - https://1337x.gd/
-  - https://1337x.mrunblock.bond/
-  - https://1337x.abcproxy.org/
-  - https://1337x.so/
-  - https://1337x.unblockit.download/
-  - https://1337x.unblockninja.com/ # keyword search not working
-  - https://1337x.ninjaproxy1.com/ # keyword search not working
-  - https://1337x.proxyninja.org/ # keyword search not working
-  - https://1337x.proxyninja.net/ # keyword search not working
-  - https://1337x.torrentbay.st/ # keyword search not working
-  - https://1337x.torrentsbay.org/ # keyword search not working
-  - https://x1337x.se/
 
 caps:
   categorymappings:
@@ -147,21 +133,6 @@ settings:
     type: info
     label: About the Download links
     default: As the iTorrents .torrent download link on this site is known to fail from time to time, we suggest using the magnet link as a fallback. The BTCache and Torrage services are not supported because they require additional user interaction (a captcha for BTCache and a download button on Torrage.)
-  - name: sort
-    type: select
-    label: Sort requested from site
-    default: time
-    options:
-      time: created
-      seeders: seeders
-      size: size
-  - name: type
-    type: select
-    label: Order requested from site
-    default: desc
-    options:
-      desc: desc
-      asc: asc
 
 download:
   # the .torrent URL and magnet URI are on the details page
@@ -173,12 +144,8 @@ download:
 
 search:
   paths:
-    # present first page of movies tv and music results if there are no search parms supplied (20 hits per page)
-    - path: "{{ if or .Query.Album .Query.Artist .Keywords }}sort-search{{ else }}cat/Movies{{ end }}{{ if or .Query.Album .Query.Artist }}/{{ or .Query.Album .Query.Artist }}{{ else }}/{{ .Keywords }}{{ end }}{{ if or .Query.Album .Query.Artist .Keywords }}/{{ else }}{{ end }}{{ .Config.sort }}/{{ .Config.type }}/1/"
-    - path: "{{ if or .Query.Album .Query.Artist .Keywords }}sort-search{{ else }}cat/TV{{ end }}{{ if or .Query.Album .Query.Artist }}/{{ or .Query.Album .Query.Artist }}{{ else }}/{{ .Keywords }}{{ end }}{{ if or .Query.Album .Query.Artist .Keywords }}/{{ else }}{{ end }}{{ .Config.sort }}/{{ .Config.type }}/{{ if or .Query.Album .Query.Artist .Keywords }}2{{ else }}1{{ end }}/"
-    - path: "{{ if or .Query.Album .Query.Artist .Keywords }}sort-search{{ else }}cat/Music{{ end }}{{ if or .Query.Album .Query.Artist }}/{{ or .Query.Album .Query.Artist }}{{ else }}/{{ .Keywords }}{{ end }}{{ if or .Query.Album .Query.Artist .Keywords }}/{{ else }}{{ end }}{{ .Config.sort }}/{{ .Config.type }}/{{ if or .Query.Album .Query.Artist .Keywords }}3{{ else }}1{{ end }}/"
-    - path: "{{ if or .Query.Album .Query.Artist .Keywords }}sort-search{{ else }}cat/Other{{ end }}{{ if or .Query.Album .Query.Artist }}/{{ or .Query.Album .Query.Artist }}{{ else }}/{{ .Keywords }}{{ end }}{{ if or .Query.Album .Query.Artist .Keywords }}/{{ else }}{{ end }}{{ .Config.sort }}/{{ .Config.type }}/{{ if or .Query.Album .Query.Artist .Keywords }}4{{ else }}1{{ end }}/"
-
+    - path: "{{ if .Keywords }}search/{{ .Keywords }}/1/{{ else }}cat/Games/1/{{ end }}"
+  
   keywordsfilters:
     - name: re_replace # daily standard S2023 > 2023
       args: ["\\bS(20\\d{2})\\b", "$1"]
