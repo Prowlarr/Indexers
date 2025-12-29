@@ -8,6 +8,7 @@ ygg-api.yml
 yggtorrent.yml
 yggcookie.yml
 yggtorrent-turbo.yml
+yggcookie-turbo.yml
 
 sharewood.yml
 anirena.yml
