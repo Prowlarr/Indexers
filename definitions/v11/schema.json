@@ -123,8 +123,7 @@
                 "allowrawsearch": {
                     "type": "boolean"
                 },
-
-                "allowtvsearchimdb":{
+                "allowtvsearchimdb": {
                     "type":"boolean"
                 }
             },
