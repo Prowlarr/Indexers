@@ -1,0 +1,126 @@
+---
+id: nzbfrance-tv
+name: NZB NEWZ FRANCE (TV)
+description: "French private forum - TV shows only"
+language: fr-FR
+type: private
+encoding: UTF-8
+followredirect: true
+testlinktorrent: false
+
+links:
+  - https://www.nzbnewzfrance.ninja/
+
+caps:
+  categorymappings:
+    - {id: 5000, cat: TV, desc: "Séries TV"}
+
+  modes:
+    search: [q]
+    tv-search: [q, season, ep]
+
+settings:
+  - name: username
+    type: text
+    label: Email or Username
+  - name: password
+    type: password
+    label: Password
+  - name: info
+    type: info
+    label: Information
+    default: "Use your email as username"
+
+login:
+  path: /login/
+  method: form
+  form: form
+  headers:
+    User-Agent: ["Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:146.0) Gecko/20100101 Firefox/146.0"]
+  inputs:
+    auth: "{{ .Config.username }}"
+    password: "{{ .Config.password }}"
+    remember_me: "1"
+    _processLogin: "usernamepassword"
+  selectorinputs:
+    csrfKey:
+      selector: input[name="csrfKey"]
+      attribute: value
+    ref:
+      selector: input[name="ref"]
+      attribute: value
+      optional: true
+  error:
+    - selector: p.ipsMessage_error
+    - selector: div.ipsMessage_error
+  test:
+    path: /
+    selector: a[href*="logout"]
+
+download:
+  selectors:
+    - selector: a[href*="attachment.php"]
+      attribute: href
+
+search:
+  paths:
+    # Filter by TV forums: 378 (PACK TV Shows), 331 (4K/BluRay), 146 (French Audio), 277 (Original Audio)
+    - path: "{{ if .Keywords }}/search/{{ else }}/discover/{{ end }}"
+      inputs:
+        q: "{{ if .Query.IMDBID }}{{ .Query.IMDBID }}{{ else }}{{ .Keywords }}{{ end }}"
+        type: "{{ if .Keywords }}forums_topic{{ else }}{{ end }}"
+        nodes: "{{ if .Keywords }}378,331,146,277{{ else }}{{ end }}"
+        quick: "{{ if .Keywords }}1{{ else }}{{ end }}"
+        search_and_or: "{{ if .Keywords }}and{{ else }}{{ end }}"
+        search_in: "{{ if .Keywords }}titles{{ else }}{{ end }}"
+        sortby: "{{ if .Keywords }}newest{{ else }}{{ end }}"
+
+  keywordsfilters:
+    - name: re_replace
+      args: ["[^a-zA-Z0-9]+", " "]
+
+  rows:
+    selector: li.ipsStreamItem
+
+  fields:
+    details:
+      selector: a[data-linktype="link"]
+      attribute: href
+
+    title:
+      selector: a[data-linktype="link"]
+
+    category:
+      text: "5000"
+
+    date:
+      selector: time
+      attribute: datetime
+      filters:
+        - name: dateparse
+          args: "yyyy-MM-ddTHH:mm:ssZ"
+
+    size:
+      selector: a[data-linktype="link"]
+      filters:
+        - name: regexp
+          args: "(\\d+\\.?\\d*\\s*[GMK][Oo])"
+        - name: replace
+          args: ["Go", "GB"]
+        - name: replace
+          args: ["Mo", "MB"]
+        - name: replace
+          args: ["Ko", "KB"]
+
+    download:
+      selector: a[data-linktype="link"]
+      attribute: href
+
+    seeders:
+      text: 1
+    leechers:
+      text: 1
+    downloadvolumefactor:
+      text: 0
+    uploadvolumefactor:
+      text: 1
