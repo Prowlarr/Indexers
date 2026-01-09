@@ -784,6 +784,10 @@ settings:
     label: Cookie
   - name: info_cookie
     type: info_cookie
+  - name: userAgent
+    type: text
+    label: User-Agent
+    default: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 YaBrowser/25.8.0.0 Safari/537.36"
   - name: stripcyrillic
     type: checkbox
     label: Strip Cyrillic Letters
@@ -886,7 +890,7 @@ search:
       args: ["(?i)\\bS0*(\\d+)E0*(\\d+)\\b", "сезон $1 сери $2"]
 
   headers:
-    Cookie: ["godbayadblock=godbayadblock"]
+    User-Agent: ["{{ .Config.userAgent }}"]
 
   rows:
     selector: tr[id^="tor_"]:has(a[href^="./download.php?id="])
