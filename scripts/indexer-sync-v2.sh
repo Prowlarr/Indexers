@@ -279,7 +279,7 @@ initialize_script() {
     log "INFO" "Using Python validation"
 }
 
-while getopts "frpzab:m:c:u:j:R:J:n:o:dv" opt; do
+while getopts "fpzar:b:m:c:u:j:R:J:n:o:dv" opt; do
     case ${opt} in
     f)
         # No Arg
