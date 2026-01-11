@@ -886,7 +886,8 @@ search:
       args: ["(?i)\\bS0*(\\d+)E0*(\\d+)\\b", "сезон $1 сери $2"]
 
   headers:
-    User-Agent: ["{{ .Config.userAgent }}"]
+    Cookie: ["godbayadblock=godbayadblock"]
+    User-Agent: ["Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.203"]
 
   rows:
     selector: tr[id^="tor_"]:has(a[href^="./download.php?id="])
