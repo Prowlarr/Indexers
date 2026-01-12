@@ -138,6 +138,8 @@ search:
     download:
       selector: link
       filters:
+        - name: replace
+          args: ["http://localhost:3000", "https://la-cale.space"]
         - name: append
           args: "?passkey={{ .Config.passkey }}"
     size:
