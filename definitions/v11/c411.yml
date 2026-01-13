@@ -6,7 +6,7 @@ language: fr-FR
 type: private
 encoding: UTF-8
 links:
-  - https://staging-68d548c5bd4.c411.org/
+  - https://c411.org/
 
 caps:
   categorymappings:
