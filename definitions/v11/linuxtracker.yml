@@ -229,6 +229,7 @@ caps:
     - {id: 2118, cat: PC/ISO, desc: "Salentos"}
     - {id: 477, cat: PC/ISO, desc: "Salix"}
     - {id: 482, cat: PC/ISO, desc: "Scientific Linux"}
+    - {id: 2304, cat: PC/ISO, desc: "Security Onion"}
     - {id: 2250, cat: PC/ISO, desc: "Septor"}
     - {id: 489, cat: PC/ISO, desc: "SharkLinux"}
     - {id: 2121, cat: PC/ISO, desc: "Siduction"}
@@ -237,6 +238,7 @@ caps:
     - {id: 493, cat: PC/ISO, desc: "Slackel"}
     - {id: 495, cat: PC/ISO, desc: "Slackware"}
     - {id: 499, cat: PC/ISO, desc: "Slax"}
+    - {id: 2303, cat: PC/ISO, desc: "Slimbook OS"}
     - {id: 2124, cat: PC/ISO, desc: "SmartOS"}
     - {id: 2125, cat: PC/ISO, desc: "Smeserver"}
     - {id: 505, cat: PC/ISO, desc: "Smoothwall Express"}
