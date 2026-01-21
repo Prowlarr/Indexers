@@ -115,7 +115,7 @@ download:
       comment: "{{ .Config.thankyou }}"
       confirm: Confirm
   selectors:
-    - selector: td a[href^="download.php"]
+    - selector: a[href*="download.php?id="]
       attribute: href
 
 search:
@@ -154,7 +154,7 @@ search:
       selector: td.torrent-first a
       attribute: href
     download:
-      selector: td.download > a
+      selector: td.torrent-first a
       attribute: href
     poster:
       selector: td.torrent-first a
