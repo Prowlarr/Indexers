@@ -612,7 +612,7 @@ pull_cherry_and_merge() {
 
     # Remove unwanted file types that Jackett might have added
     # Explicitly exclude important repository files and schema files
-    unwanted_files=$(git diff --cached --name-only | grep -E "$CONFLICTS_NONYML_EXTENSIONS" | grep -v -E '^(README\.md|CONTRIBUTING\.md|LICENSE\.md)$' | grep -v 'schema\.json$' || true)
+    unwanted_files=$(git diff --cached --name-only | grep -E "$CONFLICTS_NONYML_EXTENSIONS" | grep -v -E '^(README\.md|CONTRIBUTING\.md|LICENSE\.md)$' | grep -v 'schema\.json$' | grep -v -E '^\.github' || true)
     if [ -n "$unwanted_files" ]; then
         log "INFO" "Removing unwanted file types from Jackett"
         echo "$unwanted_files" | while IFS= read -r file; do
@@ -628,6 +628,19 @@ pull_cherry_and_merge() {
             git checkout HEAD -- "$repo_file" 2>/dev/null || true
         fi
     done
+
+    # Always use Prowlarr's version of .github repository files
+    github_files=$(find .github -type f 2>/dev/null)
+    if [ -n "$github_files" ]; then
+        for github_file in $github_files; do
+            if git diff --cached --name-only | grep -q "^${github_file}$"; then
+                log "DEBUG" "Ensuring Prowlarr version of $github_file is used"
+                git checkout HEAD -- "$github_file" 2>/dev/null || true
+            fi
+        done
+    else
+        log "DEBUG" "No .github files found to checkout"
+    fi
 
     # Also remove any src/ directories that might have been added
     src_files=$(git diff --cached --name-only | grep '^src/' || true)
@@ -691,14 +704,25 @@ resolve_conflicts() {
     readme_conflicts=$(echo "$conflicted_files" | grep -E '^README\.md$' || true)
     # Explicitly exclude important repository files and schema files from nonyml conflicts
     nonyml_conflicts=$(echo "$conflicted_files" | grep -E "$CONFLICTS_NONYML_EXTENSIONS" | grep -v -E '^(README\.md|CONTRIBUTING\.md|LICENSE\.md)$' | grep -v 'schema\.json$' || true)
-    yml_conflicts=$(echo "$conflicted_files" | grep -E '\.ya?ml$' || true)
+    yml_conflicts=$(echo "$conflicted_files" | grep -E '\.ya?ml$' | grep -v -E '^\.github' || true)
     schema_conflicts=$(echo "$conflicted_files" | grep -E '\.schema\.json$' || true)
+    github_conflicts=$(echo "$conflicted_files" | grep -E '^\.github' || true)
 
     log "WARN" "conflicts exist"
     if [ -n "$readme_conflicts" ]; then
         log "DEBUG" "README conflict exists; using Prowlarr README"
         git checkout --ours README.md
         git add --force README.md
+    fi
+
+    if [ -n "$github_conflicts" ]; then
+        log "DEBUG" ".github conflict exists; using Prowlarr files"
+        for gh_file in $github_conflicts; do
+            if git ls-files | grep -q "^$gh_file$"; then
+                git checkout --ours "$gh_file" 2>/dev/null || true
+                git add --force "$gh_file" 2>/dev/null || true
+            fi
+        done
     fi
 
     if [ -n "$schema_conflicts" ]; then
