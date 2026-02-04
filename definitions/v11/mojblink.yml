@@ -91,10 +91,6 @@ settings:
   - name: password
     type: password
     label: Password
-  - name: useragent
-    type: text
-    label: User-Agent
-    default: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36"
   - name: freeleech
     type: checkbox
     label: Search freeleech only
@@ -128,8 +124,6 @@ login:
   path: login
   method: form
   form: form
-  headers:
-    User-Agent: ["{{ .Config.useragent }}"]
   inputs:
     username: "{{ .Config.username }}"
     password: "{{ .Config.password }}"
@@ -143,8 +137,6 @@ search:
   paths:
     # https://www.mojblink.si/brskanje?cat=0&search=justice+league&searchin=title&incldead=1&only_free=1&redir=no
     - path: brskanje
-  headers:
-    User-Agent: ["{{ .Config.useragent }}"]
   inputs:
     $raw: "{{ range .Categories }}c{{.}}=1&{{end}}"
     search: "{{ if .Query.IMDBID }}{{ .Query.IMDBID }}{{ else }}{{ .Keywords }}{{ end }}"
@@ -157,7 +149,10 @@ search:
     sort: "{{ .Config.sort }}"
     type: "{{ .Config.type }}"
     redir: no
-
+    
+  headers: 
+   User-Agent: ["Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.203"]
+   
   rows:
     selector: div.bgPreview
 
