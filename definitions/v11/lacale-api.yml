@@ -64,13 +64,13 @@ caps:
     book-search: [q]
 
 settings:
-  - name: passkey
+  - name: apiKey
     type: text
-    label: Passkey
+    label: API Key
   - name: info_key
     type: info
-    label: About your Passkey
-    default: "Find your Passkey on your <a href=\"https://la-cale.space/profile\" target=\"_blank\">La Cale profile page</a>."
+    label: About your API key
+    default: "Find your API key on your <a href=\"https://la-cale.space/settings\" target=\"_blank\">La Cale settings page</a>."
   - name: multilang
     type: checkbox
     label: Replace MULTi by another language in release name
@@ -95,14 +95,14 @@ login:
   path: api/external
   method: get
   inputs:
-    passkey: "{{ .Config.passkey }}"
+    passkey: "{{ .Config.apikey }}"
   error:
-    - selector: ":root:contains(\"Passkey invalide\")"
+    - selector: ":root:contains(\"API key invalide\")"
       message:
-        text: "The Passkey was not accepted by {{ .Config.sitelink }}."
-    - selector: ":root:contains(\"Passkey manquant\")"
+        text: "The API key was not accepted by {{ .Config.sitelink }}."
+    - selector: ":root:contains(\"API key manquant\")"
       message:
-        text: "The Passkey was not accepted by {{ .Config.sitelink }}."
+        text: "The API key was not accepted by {{ .Config.sitelink }}."
 
 search:
   paths:
@@ -112,9 +112,10 @@ search:
         type: json
 
   inputs:
-    passkey: "{{ .Config.passkey }}"
+    passkey: "{{ .Config.apikey }}"
     $raw: "{{ range .Categories }}cat={{.}}&{{end}}"
-    q: "{{ .Keywords }}"
+    # API dont accept empty request
+    q: "{{ if .Keywords }}{{ .Keywords }}{{ else }}FRENCH{{ end }}"
     tmdbId: "{{ .Query.TMDBID }}"
 
   rows:
