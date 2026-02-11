@@ -1,30 +1,29 @@
 ---
-id: cdfile
-name: CD File
-description: "CD File is a CHINESE Private Torrent Tracker for MOVIES / TV / GENERAL"
+id: momentpt
+name: MomentPT
+description: "MomentPT is a CHINESE Private Torrent Tracker for Photography"
 language: zh-CN
 type: private
 encoding: UTF-8
 links:
-  - https://pt.cdfile.org/
+  - https://www.momentpt.top/
 
 caps:
   categorymappings:
-    - {id: 401, cat: Movies, desc: "Movies/电影"}
-    - {id: 406, cat: Audio/Video, desc: "Music Videos/MV"}
-    - {id: 402, cat: TV, desc: "TV Series/电视剧"}
-    - {id: 408, cat: Audio, desc: "Music/音轨"}
-    - {id: 405, cat: TV/Anime, desc: "Animations/动漫"}
-    - {id: 403, cat: TV, desc: "TV Shows/综艺"}
-    - {id: 407, cat: TV/Sport, desc: "Sports/体育"}
-    - {id: 404, cat: TV/Documentary, desc: "Documentaries/纪录片"}
-    - {id: 409, cat: Other, desc: "Others/其他"}
+    - {id: 401, cat: Other, desc: "写真(Portraiture)"}
+    - {id: 402, cat: Other, desc: "人像(Portrait)"}
+    - {id: 403, cat: Other, desc: "风光(Landscape)"}
+    - {id: 404, cat: Other, desc: "纪实(Documentary)"}
+    - {id: 416, cat: Other, desc: "杂志(Magazine)"}
+    - {id: 415, cat: Other, desc: "静物(Still Life)"}
+    - {id: 414, cat: Other, desc: "儿童(Children)"}
+    - {id: 413, cat: Other, desc: "超现实(Surreal)"}
+    - {id: 412, cat: Other, desc: "美食(Cuisine)"}
+    - {id: 411, cat: Other, desc: "动物(Animals)"}
+    - {id: 405, cat: Other, desc: "人文(Humanity)"}
 
   modes:
     search: [q]
-    tv-search: [q, season, ep, imdbid]
-    movie-search: [q, imdbid]
-    music-search: [q]
 
 settings:
   - name: cookie
@@ -32,11 +31,6 @@ settings:
     label: Cookie
   - name: info_cookie
     type: info_cookie
-  - name: useragent
-    type: text
-    label: User-Agent
-  - name: info_useragent
-    type: info_useragent
   - name: freeleech
     type: checkbox
     label: Search freeleech only
@@ -64,7 +58,7 @@ settings:
   - name: info_activity
     type: info
     label: Account Inactivity
-    default: "Account retention rules:<ol><li>Veteran User and above will be retained forever</li><li>Elite User and above will not have their account deleted after parking (in the control panel)</li><li>Users with a parked account will be deleted if they do not log in for 180 consecutive days</li><li>Users with a non-parked account will be deleted if they do not log in for 90 consecutive days</li><li>Users who have no traffic (i.e. upload/download data are both 0) will be deleted if they do not log in for 7 consecutive days.</li></ol>"
+    default: "Account retention rules:<ol><li>Veteran User and above will be retained forever</li><li>Elite User and above will not have their account deleted after parking (in the control panel)</li><li>Users with a parked account will be deleted if they do not log in for 400 consecutive days</li><li>Users with a non-parked account will be deleted if they do not log in for 150 consecutive days</li><li>Users who have no traffic (i.e. upload/download data are both 0) will be deleted if they do not log in for 100 consecutive days.</li></ol>"
 
 login:
   # using cookie method because site does a JS call to API/Challenge via JQuery to load response parm required for takelogin.php
@@ -80,56 +74,45 @@ search:
     - path: torrents.php
   inputs:
     $raw: "{{ range .Categories }}cat{{.}}=1&{{end}}"
-    search: "{{ if .Query.IMDBID }}{{ .Query.IMDBID }}{{ else }}{{ end }}{{ if or .Query.IMDBID .Query.DoubanID }} {{ else }}{{ .Keywords }}{{ end }}{{ if .Query.DoubanID }}{{ .Query.DoubanID }}{{ else }}{{ end }}"
+    search: "{{ .Keywords }}"
     # 0 incldead, 1 active, 2 dead
     incldead: 0
     # 0 all, 1 normal, 2 free, 3 2x, 4 2xfree, 5 50%, 6 2x50%, 7 30%
     spstate: "{{ if .Config.freeleech }}2{{ else }}0{{ end }}"
     # 0 title, 1 descr, 3 uploader, 4 imdburl
-    search_area: "{{ if .Query.IMDBID }}4{{ else }}{{ end }}{{ if .Query.DoubanID }}1{{ else }}{{ end }}{{ if or .Query.IMDBID .Query.DoubanID }}{{ else }}0{{ end }}"
+    search_area: 0
     # 0 AND, 2 exact
     search_mode: 0
     sort: "{{ .Config.sort }}"
     type: "{{ .Config.type }}"
     notnewword: 1
 
-  headers:
-    User-Agent: ["{{ .Config.useragent }}"]
-
   rows:
-    selector: table.torrents > tbody > tr:has(table.torrentname)
+    selector: table.torrents > tbody > tr:has(a[href*="download.php?id="])
 
   fields:
     category:
-      selector: a[href^="?cat="]
+      selector: a[href*="?cat="]
       attribute: href
       filters:
         - name: querystring
           args: cat
     title_default:
-      selector: a[href^="details.php?id="]
+      selector: a[href*="details.php?id="]
     title:
-      selector: a[title][href^="details.php?id="]
+      selector: a[title][href*="details.php?id="]
       attribute: title
       optional: true
       default: "{{ .Result.title_default }}"
     details:
-      selector: a[href^="details.php?id="]
+      selector: a[href*="details.php?id="]
       attribute: href
     download:
-      selector: a[href^="download.php?id="]
+      selector: a[href*="download.php?id="]
       attribute: href
     poster:
       selector: img[data-src]
       attribute: data-src
-    imdbid:
-      # site currently only has a badge and rating, the id is not present. just in case a future update.
-      selector: a[href*="imdb.com/title/tt"]
-      attribute: href
-    doubanid:
-      # site currently only has a badge and rating, the id is not present. just in case a future update.
-      selector: a[href*="movie.douban.com/subject/"]
-      attribute: href
     date_elapsed:
       # time type: time elapsed (default)
       selector: td.rowfollow:nth-child(4) > span[title]
@@ -157,8 +140,10 @@ search:
       selector: td.rowfollow:nth-child(6)
     leechers:
       selector: td.rowfollow:nth-child(7)
+      optional: true
     grabs:
       selector: td.rowfollow:nth-child(8)
+      optional: true
     downloadvolumefactor:
       case:
         img.pro_free: 0
@@ -181,4 +166,4 @@ search:
     description:
       selector: td.rowfollow:nth-child(2)
       remove: a, b, font, img, span
-# NexusPHP v1.9.11 2025-11-02
+# NexusPHP v1.9.7 2025-09-24 (custom)
