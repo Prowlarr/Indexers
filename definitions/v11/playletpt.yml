@@ -1,31 +1,21 @@
 ---
-id: 3changtrai
-name: 3ChangTrai
-description: "3ChangTrai (3CT) is a VIETNAMESE Private Torrent Tracker for HD MOVIES / TV / GENERAL"
-language: vi-VN
+id: playletpt
+name: PlayletPT
+description: "PlayletPT is a CHINESE Private Torrent Tracker for Short Drama"
+language: zh-CN
 type: private
 encoding: UTF-8
 links:
-  - https://3changtrai.com/
+  - https://playletpt.xyz/
 
 caps:
   categorymappings:
-    - {id: 401, cat: Movies, desc: "Movies"}
-    - {id: 402, cat: TV, desc: "TV Series"}
-    - {id: 403, cat: TV, desc: "TV Shows"}
-    - {id: 404, cat: TV/Documentary, desc: "Documentaries"}
-    - {id: 405, cat: TV/Anime, desc: "Animations"}
-    - {id: 406, cat: Audio/Video, desc: "Music Videos"}
-    - {id: 407, cat: TV/Sport, desc: "Sports"}
-    - {id: 408, cat: Audio, desc: "HQ Audio"}
-    - {id: 409, cat: Other, desc: "Misc"}
+    - {id: 408, cat: TV, desc: "短剧/Drama"}
+    - {id: 409, cat: TV, desc: "漫画/Comedy"}
 
   modes:
     search: [q]
     tv-search: [q, season, ep, imdbid]
-    movie-search: [q, imdbid]
-    music-search: [q]
-    book-search: [q]
 
 settings:
   - name: cookie
@@ -53,8 +43,6 @@ settings:
     options:
       desc: desc
       asc: asc
-  - name: info_flaresolverr
-    type: info_flaresolverr
   - name: info_tpp
     type: info
     label: Results Per Page
@@ -62,7 +50,7 @@ settings:
   - name: info_activity
     type: info
     label: Account Inactivity
-    default: "Cherish your account. Inactive accounts will be deleted based on the following provisions:<ol><li>Nexus Master or later will not be deleted account.</li><li>Veteran User or higher will not be deleted if temporarily locked (at User Settings).</li><li>Temporarily locked accounts will be deleted if not logged in within 90 days.</li><li>Accounts that are not temporarily locked will be deleted if they do not log in within 60 days.</li><li>Accounts with no storage for uploads and downloads will be deleted if they do not log in within 30 days or have registered within 14 days.</li></ol>"
+    default: "Account retention rules:<ol><li>Veteran User and above will be retained forever</li><li>Elite User and above will not have their account deleted after parking (in the control panel)</li><li>Users with a parked account will be deleted if they do not log in for 400 consecutive days</li><li>Users with a non-parked account will be deleted if they do not log in for 150 consecutive days</li></ol>"
 
 login:
   # using cookie method because site does a JS call to API/Challenge via JQuery to load response parm required for takelogin.php
@@ -92,7 +80,7 @@ search:
     notnewword: 1
 
   rows:
-    selector: table.torrents > tbody > tr:has(table.torrentname)
+    selector: table.torrents > tbody > tr:has(a[href*="download.php?id="])
 
   fields:
     category:
@@ -118,6 +106,7 @@ search:
       selector: img[data-src]
       attribute: data-src
     imdbid:
+      # site currently only has a badge and rating, the id is not present. just in case a future update.
       selector: a[href*="imdb.com/title/tt"]
       attribute: href
     date_elapsed:
@@ -127,7 +116,7 @@ search:
       optional: true
       filters:
         - name: append
-          args: " +07:00" # ICT
+          args: " +08:00" # CST
         - name: dateparse
           args: "yyyy-MM-dd HH:mm:ss zzz"
     date_added:
@@ -136,7 +125,7 @@ search:
       optional: true
       filters:
         - name: append
-          args: " +07:00" # ICT
+          args: " +08:00" # CST
         - name: dateparse
           args: "yyyy-MM-ddHH:mm:ss zzz"
     date:
@@ -147,8 +136,10 @@ search:
       selector: td.rowfollow:nth-child(6)
     leechers:
       selector: td.rowfollow:nth-child(7)
+      optional: true
     grabs:
       selector: td.rowfollow:nth-child(8)
+      optional: true
     downloadvolumefactor:
       case:
         img.pro_free: 0
@@ -164,9 +155,9 @@ search:
         img.pro_2up: 2
         "*": 1
     minimumseedtime:
-      # 5 days (as seconds = 5 x 24 x 60 x 60)
-      text: 432000
+      # 1 days (as seconds = 1 x 24 x 60 x 60)
+      text: 86400
     description:
-      selector: td:nth-child(2)
+      selector: td.rowfollow:nth-child(2)
       remove: a, b, font, img, span
-# NexusPHP v2.2 2026-02-02
+# NexusPHP v1.9.6 2025-06-25 (custom)
