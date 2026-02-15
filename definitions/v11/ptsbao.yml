@@ -91,23 +91,23 @@ search:
 
   fields:
     category:
-      selector: a[href*="torrents.php?cat="]
+      selector: a[href^="?cat="]
       attribute: href
       filters:
         - name: querystring
           args: cat
     title_default:
-      selector: table.torrentname td a[href*="details.php?id="]
+      selector: table.torrentname td a[href^="details.php?id="]
     title:
-      selector: a[title][href*="details.php?id="]
+      selector: a[title][href^="details.php?id="]
       attribute: title
       optional: true
       default: "{{ .Result.title_default }}"
     details:
-      selector: a[href*="details.php?id="]
+      selector: a[href^="details.php?id="]
       attribute: href
     download:
-      selector: a[href*="download.php?id="]
+      selector: a[href^="download.php?id="]
       attribute: href
     poster:
       selector: img[data-src]
@@ -158,4 +158,4 @@ search:
         img.pro_free2up: 2
         img.pro_2up: 2
         "*": 1
-# NexusPHP v1.9.14 2026-01-23
+# NexusPHP v1.10.0 2026-02-01
