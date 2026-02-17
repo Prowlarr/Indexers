@@ -38,7 +38,7 @@ settings:
   - name: info_2fa
     type: info
     label: "About 2FA code"
-    default: "Only fill in the <b>2FA code</b> box if you have enabled <b>2FA</b> on the SBPT Web Site. Otherwise just leave it empty."
+    default: "Only fill in the <b>2FA code</b> box if you have enabled <b>2FA</b> on the PTLGS Web Site. Otherwise just leave it empty."
   - name: freeleech
     type: checkbox
     label: Search freeleech only
@@ -166,12 +166,20 @@ search:
       text: "{{ if or .Result.date_elapsed .Result.date_added }}{{ or .Result.date_elapsed .Result.date_added }}{{ else }}now{{ end }}"
     size:
       selector: td.rowfollow:nth-child(5)
+      optional: true
+      default: 512MB
     seeders:
       selector: td.rowfollow:nth-child(6)
+      optional: true
+      default: 0
     leechers:
       selector: td.rowfollow:nth-child(7)
+      optional: true
+      default: 0
     grabs:
       selector: td.rowfollow:nth-child(8)
+      optional: true
+      default: 0
     downloadvolumefactor:
       case:
         img.pro_free: 0
