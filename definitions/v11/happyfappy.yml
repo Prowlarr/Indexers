@@ -6,7 +6,7 @@ language: en-US
 type: private
 encoding: UTF-8
 links:
-  - https://www.happyfappy.org/
+  - https://www.happyfappy.net/
 
 caps:
   categorymappings:
