@@ -27,6 +27,9 @@ caps:
     - {id: 35, cat: Movies, desc: "Movies GSM"}
     - {id: 38, cat: TV/Anime, desc: "Cartoons"}
     - {id: 55, cat: Movies/3D, desc: "Movies 3D"}
+    - {id: 58, cat: Movies/HD, desc: "Movies x265"}
+    - {id: 59, cat: Movies/SD, desc: "Movies VHS"}
+    - {id: 60, cat: Movies/UHD, desc: "Movies 4K"}
     # music
     - {id: 2, cat: Audio/MP3, desc: "Music Song"}
     - {id: 3, cat: Audio/Video, desc: "Music DVD"}
@@ -49,8 +52,9 @@ caps:
     - {id: 31, cat: PC/0day, desc: "Appz Ripped"}
     - {id: 49, cat: PC/Mac, desc: "Appz MacOS"}
     # sports
-    - {id: 5, cat: TV/Sport, desc: "Sport F1"}
+    - {id: 5, cat: TV/Sport, desc: "Formula 1"}
     - {id: 51, cat: TV/Sport, desc: "Sport"}
+    - {id: 57, cat: TV/Sport, desc: "Formula 2"}
     # other
     - {id: 4, cat: Other, desc: "Other"}
     - {id: 6, cat: Books, desc: "Books"}
