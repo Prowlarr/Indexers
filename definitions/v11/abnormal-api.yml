@@ -36,7 +36,7 @@ settings:
   - name: info_key
     type: info
     label: About your API key
-    default: "Find or Generate a new API Token by accessing your <a href=\"https://abn.lol/\" target=\"_blank\">Abnormal</a> account <i>My Profile</i> page. The API key provides read-only access and never expires."
+    default: "Find your API key on your <a href=\"https://abn.lol/User/Parameters\" target=\"_blank\">Parameters</a> page. The API key is read-only and never expires."
   - name: freeleech
     type: checkbox
     label: Search freeleech only
