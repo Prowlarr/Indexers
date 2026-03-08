@@ -9,6 +9,7 @@ yggtorrent.yml
 yggcookie.yml
 yggtorrent-turbo.yml
 yggcookie-turbo.yml
+u2p.yml
 
 sharewood.yml
 anirena.yml
