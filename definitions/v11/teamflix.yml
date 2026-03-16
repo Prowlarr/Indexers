@@ -1,24 +1,30 @@
 ---
-id: generationfree-api
-name: Generation-Free (API)
-description: "Generation-Free (GF-Free) is a FRENCH Private Torrent Tracker for MOVIES / TV / GENERAL"
+id: teamflix
+name: TeamFlix
+description: "TeamFlix is a FRENCH Private Torrent Tracker for MOVIES / TV / GENERAL"
 language: fr-FR
 type: private
 encoding: UTF-8
 links:
-  - https://generation-free.org/
-legacylinks:
-  - https://generation-free.biz/
+  - https://tracker.teamflix.cc/
 
 caps:
   categorymappings:
+    - {id: 7, cat: Movies/Other, desc: "Animes"}
+    - {id: 8, cat: TV/Anime, desc: "AnimeSeries"}
+    - {id: 14, cat: TV/Other, desc: "Animation"}
+    - {id: 12, cat: Audio/Video, desc: "Concerts"}
+    - {id: 10, cat: TV/Documentary, desc: "Documentaires"}
+    - {id: 9, cat: TV, desc: "EmissionsTV"}
     - {id: 1, cat: Movies, desc: "Films"}
-    - {id: 2, cat: TV, desc: "Séries"}
-    - {id: 3, cat: Books, desc: "Ebook"}
-    - {id: 4, cat: Console, desc: "Jeux"}
-    - {id: 5, cat: PC, desc: "Logiciel"}
+    - {id: 11, cat: TV, desc: "Spectacles"}
+    - {id: 2, cat: TV, desc: "SeriesTV"}
+    - {id: 13, cat: Books, desc: "Ebook"}
+    - {id: 4, cat: Console, desc: "Jeux Console"}
+    - {id: 3, cat: PC/Games, desc: "JeuxPC"}
+    - {id: 5, cat: PC/0day, desc: "Logiciels"}
     - {id: 6, cat: Audio, desc: "Musique"}
-    - {id: 8, cat: TV/Sport, desc: "Sport"}
+    - {id: 15, cat: Console/Other, desc: "Emulateur"}
 
   modes:
     search: [q]
@@ -34,7 +40,7 @@ settings:
   - name: info_key
     type: info
     label: About your API key
-    default: "Find or Generate a new API Token by accessing your <a href=\"https://generation-free.org/\" target=\"_blank\">Generation-Free</a> account <i>My Settings</i> page and clicking on the <b>API Key</b> tab."
+    default: "Find or Generate a new API Token by accessing your <a href=\"https://tracker.teamflix.cc/\" target=\"_blank\">TeamFlix</a> account <i>My Settings</i> page and clicking on the <b>API Key</b> tab."
   - name: freeleech
     type: checkbox
     label: Search freeleech only
@@ -85,26 +91,11 @@ settings:
   - name: info_activity
     type: info
     label: Account Inactivity
-    default: "Accounts inactive for 45 days are automatically deleted (all ranks included). To remain active, simply log in and participate (downloads, forums, shoutbox, games). Accounts created solely to build up numbers will be deactivated. As a free tracker with a limited number of spots, we regularly delete inactive accounts."
-  - name: page_for_test
-    type: select
-    label: Page for TEST
-    default: 1
-    options:
-      1: "1"
-      2: "2"
-      3: "3"
-      4: "4"
-      5: "5"
-  - name: info_page
-    type: info
-    label: About TEST page
-    default: "Generation-Free's API only delivers torrents that are at least 12 hours old. Therefore, when there are more than 100 torrents loaded to the site in a day, the indexer TEST may fail with 0 results. To allow the TEST to successed you will need to select another page to fetch."
+    default: "Inactivity of an account for a period of 60 consecutive days will automatically deactivate your account."
 
 login:
   path: /api/torrents
   method: get
-  inputs: {} # TODO: remove in v10
   error:
     - selector: a[href*="/login"]
       message:
@@ -135,7 +126,6 @@ search:
     sortField: "{{ .Config.sort }}"
     sortDirection: "{{ .Config.type }}"
     perPage: 100
-    page: "{{ .Config.page_for_test }}"
 
   keywordsfilters:
     - name: re_replace
@@ -246,10 +236,7 @@ search:
         True: 2 # double
     uploadvolumefactor:
       text: "{{ if .Result._featured }}2{{ else }}{{ .Result.uploadvolumefactor_double_upload }}{{ end }}"
-# global MR is 0.5 but torrents must be seeded for 3 days regardless of ratio
-#    minimumratio:
-#      text: 0.5
     minimumseedtime:
-      # 3 days (as seconds = 3 x 24 x 60 x 60)
-      text: 259200
-# json UNIT3D 9.2.0 (custom)
+      # 100 hours (as seconds = 100 x 60 x 60)
+      text: 360000
+# json UNIT3D 9.2.0
