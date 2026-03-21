@@ -637,6 +637,11 @@ pull_cherry_and_merge() {
                 log "DEBUG" "Ensuring Prowlarr version of $github_file is used"
                 git checkout HEAD -- "$github_file" 2>/dev/null || true
             fi
+            # For any files left over from Jackett
+            if git diff --cached --name-only | grep -q "^${github_file}$"; then
+                log "DEBUG" "Removing .github files from Jackett: $github_file"
+                git rm --cached "$github_file" 2>/dev/null || true
+            fi
         done
     else
         log "DEBUG" "No .github files found to checkout"
