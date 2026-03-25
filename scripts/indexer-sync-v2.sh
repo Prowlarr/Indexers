@@ -708,7 +708,7 @@ resolve_conflicts() {
 
     readme_conflicts=$(echo "$conflicted_files" | grep -E '^README\.md$' || true)
     # Explicitly exclude important repository files and schema files from nonyml conflicts
-    nonyml_conflicts=$(echo "$conflicted_files" | grep -E "$CONFLICTS_NONYML_EXTENSIONS" | grep -v -E '^(README\.md|CONTRIBUTING\.md|LICENSE\.md)$' | grep -v 'schema\.json$' || true)
+    nonyml_conflicts=$(echo "$conflicted_files" | grep -E "$CONFLICTS_NONYML_EXTENSIONS" | grep -v -E '^(README\.md|CONTRIBUTING\.md|LICENSE\.md)$' | grep -v 'schema\.json$' | grep -v -E '^\.github' || true)
     yml_conflicts=$(echo "$conflicted_files" | grep -E '\.ya?ml$' | grep -v -E '^\.github' || true)
     schema_conflicts=$(echo "$conflicted_files" | grep -E '\.schema\.json$' || true)
     github_conflicts=$(echo "$conflicted_files" | grep -E '^\.github' || true)
