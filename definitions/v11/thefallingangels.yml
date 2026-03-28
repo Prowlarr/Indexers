@@ -83,6 +83,8 @@ caps:
     music-search: [q]
     book-search: [q]
 
+  allowrawsearch: true
+
 settings:
   - name: username
     type: text
