@@ -10,11 +10,13 @@ type: public
 encoding: UTF-8
 # to fetch current domain use https://www.rantop.org/
 links:
-  - https://ww3-nortorrent.com/
+  - https://www.nortorrent.org/
 legacylinks:
   # latest domains list
-  - https://www.rantop.org/
+  - https://www.rantop.xyz/
   - https://www.site-torrent.cc/
+  - https://www.torrent-site.cc/
+  - https://www.torrent-p2p.cc/
   # domain lists no longer working
   - https://www.protege-torrent.com/
   - https://www.torrent.ws/
@@ -25,8 +27,8 @@ legacylinks:
   - https://www.site-torrent.com/
   - https://www.rantop.my/
   - https://www.torrent-site.com/
+  - https://www.rantop.org/
   # actual legacylinks
-  - https://www.nortorrent3.com/
   - https://www.nortorrent4.com/
   - https://www.nortorrent5.com/
   - https://www.nortorrent6.com/
@@ -41,6 +43,7 @@ legacylinks:
   - https://ww1-nortorrent.com/
   - https://www-nortorrent.com/
   - https://ww2-nortorrent.com/
+  - https://ww3-nortorrent.com/
 
 caps:
   categorymappings:
