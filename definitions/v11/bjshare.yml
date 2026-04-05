@@ -65,7 +65,7 @@ search:
 
   inputs:
     $raw: "{{ range .Categories }}filter_cat[{{.}}]=1&{{end}}"
-    searchstr: "{{ .Keywords }}"
+    searchstr: "{{ .Query.Keywords }}"
     freetorrent: "{{ if .Config.freeleech }}1{{ else }}{{ end }}"
 
   keywordsfilters:
@@ -73,11 +73,11 @@ search:
       args: ["(S[0-9]+E[0-9]+|S[0-9]+)", ""] # remove SXXEXX or SXX from search
 
   rows:
-    # If the category is a TV show/Anime, there's a necessity to filter the results by season/episode to not show all of them
     selector: "table.torrent_table > tbody > tr:not(tr.colhead).group,
-              table.torrent_table tbody tr:not(tr.colhead):contains('{{ .Query.Episode }}')"
-    filters:
-      - name: andmatch
+               table.torrent_table > tbody > tr.group_torrent,
+               table.torrent_table > tbody > tr.torrent"
+#    filters:
+#      - name: andmatch
 
   fields:
     download:
