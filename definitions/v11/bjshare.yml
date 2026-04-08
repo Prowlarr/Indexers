@@ -68,17 +68,10 @@ search:
     searchstr: "{{ .Query.Keywords }}"
     freetorrent: "{{ if .Config.freeleech }}1{{ else }}{{ end }}"
 
-  keywordsfilters:
-    - name: re_replace
-      args: ["(S[0-9]+E[0-9]+|S[0-9]+)", ""] # remove SXXEXX or SXX from search
-
   rows:
     selector: "table.torrent_table > tbody > tr:not(tr.colhead).group,
                table.torrent_table > tbody > tr.group_torrent,
                table.torrent_table > tbody > tr.torrent"
-#    filters:
-#      - name: andmatch
-
   fields:
     download:
       selector: a[title="Baixar"]
