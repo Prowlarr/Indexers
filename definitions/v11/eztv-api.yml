@@ -1,0 +1,106 @@
+---
+id: eztv-api
+name: EZTV (API)
+description: "EZTV is a Public torrent site for TV shows"
+language: en-US
+type: public
+encoding: UTF-8
+requestDelay: 2
+links:
+  - https://eztvx.to/
+  - https://eztv.wf/
+  - https://eztv.tf/
+  - https://eztv.yt/
+  - https://eztv1.xyz/
+legacylinks:
+  - https://eztv.ag/
+  - https://eztv.it/
+  - https://eztv.ch/
+  - https://eztv.io/
+  - https://eztv.re/
+  - https://eztv.li/
+
+caps:
+  categories:
+    1: TV
+  modes:
+    search: [q]
+    tv-search: [q, season, ep, imdbid]
+
+settings:
+  - name: apiurl
+    type: text
+    label: API URL
+    default: "https://eztvx.to/api/get-torrents"
+  - name: info_url
+    type: info
+    label: About the API URL
+    default: "The EZTV API endpoint. Changing this is not recommended unless you know what you are doing."
+
+login:
+  method: get
+  path: "https://eztvx.to/api/get-torrents?limit=1&page=1"
+  test:
+    path: "https://eztvx.to/api/get-torrents?limit=1&page=1"
+
+search:
+  paths:
+    - path: "{{ .Config.apiurl }}"
+      response:
+        type: json
+
+  inputs:
+    limit: 100
+    page: 1
+    q: "{{ .Keywords }}"
+    # imdb_id is the primary search param. EZTV API requires numeric IMDB ID (no tt prefix).
+    # When no IMDB ID is available, this param is omitted and the API returns the recent feed.
+    # The q param is sent for future compatibility but is currently ignored by the API.
+    imdb_id: "{{ .Query.IMDBIDShort }}"
+
+  keywordsfilters:
+    - name: re_replace
+      args: ["\\bS\\d{2,3}\\b", ""]
+    - name: trim
+
+  rows:
+    selector: torrents
+    missingAttributeEqualsNoResults: true
+    count:
+      selector: torrents_count
+
+  fields:
+    title:
+      selector: filename
+      filters:
+        - name: replace
+          args: ["[EZTVx.to]", ""]
+        - name: replace
+          args: ["[EZTV]", ""]
+        - name: trim
+    infohash:
+      selector: hash
+    details:
+      selector: episode_url
+    download:
+      selector: magnet_url
+    size:
+      selector: size_bytes
+    date:
+      selector: date_released_unix
+    seeders:
+      selector: seeds
+    leechers:
+      selector: peers
+    category:
+      text: 1
+    imdbid:
+      selector: imdb_id
+      filters:
+        # EZTV returns "0" when IMDB ID is unknown. Filter it out so we don't set a bogus ImdbId.
+        - name: re_replace
+          args: ["^0$", ""]
+    downloadvolumefactor:
+      text: 0
+    uploadvolumefactor:
+      text: 1
