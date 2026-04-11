@@ -72,6 +72,8 @@ search:
     selector: "table.torrent_table > tbody > tr:not(tr.colhead).group,
                table.torrent_table > tbody > tr.group_torrent,
                table.torrent_table > tbody > tr.torrent"
+
+
   fields:
     download:
       selector: a[title="Baixar"]
@@ -86,6 +88,8 @@ search:
     _info: # example [MKV / x265 / WEB-DL / Legendado / 4K / Free]
       text: "{{ if .Result._singleTorrentInfo }}{{.Result._singleTorrentInfo}}{{ else }}{{.Result._multipleTorrentInfo}}{{ end }}"
       filters:
+        - name: re_replace
+          args: ["^[^\\[].*", ""]  # discard if not starting with [ (e.g. "S04", "S05E02")
         - name: replace
           args: ["Full HD", "1080p"]
         - name: replace
@@ -98,6 +102,10 @@ search:
           args: ["/ HD /", "720p"]
         - name: replace
           args: ["/ Free", ""]
+        - name: re_replace
+          args: ["/ Porn Kings", ""]
+        - name: re_replace
+          args: [" INTERNAL", ""]
         - name: re_replace
           args: ["[\\[\\]]+", ""]
 
@@ -127,11 +135,19 @@ search:
         - name: re_replace
           args: ["\\[[0-9]*\\].*", ""] # Removes the year and everything after
         - name: re_replace
-          args: ["(.*)\\[(!?[^/]*?)\\]", "$2"]   # Parse only en-us title, when available
-        - name: append
-          args: "{{ .Result._year }}"
+          args: ["(.+)\\[([^0-9][^/]*?)\\]", "$2"]   # Parse only en-us title, when available (skip year-only brackets)
+        - name: re_replace
+          args: ["\\s*-?\\s*$", ""]
+        - name: re_replace
+          args: [" - (S\\d+)", " $1"]  # remove dash before season tag
         - name: append
           args: " {{ .Result._info }}"
+        - name: re_replace
+          args: ["\\s+", " "]
+        - name: re_replace
+          args: ["\\s+$", ""]
+        - name: append
+          args: " {{ .Result._year }}"
 
     title_Other:
       # Only remove brackets
@@ -168,6 +184,18 @@ search:
                    (or eq .Result.category_details \"8\")
                    (or (eq .Result.category_details \"13\") (eq .Result.category_details \"6\")))))))
              }}{{.Result.title_MovieTV}}{{ else }}{{.Result.title_Other}}{{ end }}"
+
+    season:
+      text: "{{ .Result._rawTitle }}"
+      filters:
+        - name: regexp
+          args: ".* - S(\\d+)"
+
+    episode:
+      text: "{{ .Result._rawTitle }}"
+      filters:
+        - name: regexp
+          args: ".* - S\\d+E(\\d+)"
 
     size:
       selector: td:nth-last-child(4)
