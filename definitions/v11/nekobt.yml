@@ -20,13 +20,6 @@ caps:
     movie-search: [q]
 
 settings:
-  - name: apikey
-    type: text
-    label: API Key (Optional)
-  - name: info_key
-    type: info
-    label: About your API key
-    default: "API key is optional. You can find or generate a new API Key by accessing your <a href=\"https://nekobt.to/\" target=\"_blank\">nekoBT</a> account settings page if needed."
   - name: incltags
     type: checkbox
     label: Include tags in titles.
@@ -90,9 +83,8 @@ search:
         type: xml
 
   inputs:
-    t: "search"
+    t: search
     q: "{{ .Keywords }}"
-    apikey: "{{ .Config.apikey }}"
     tvdbid: "{{ .Query.TVDBID }}"
     season: "{{ .Query.Season }}"
     ep: "{{ .Query.Ep }}"
@@ -134,18 +126,18 @@ search:
         - name: dateparse
           args: "ddd, dd MMM yyyy HH:mm:ss zzz"
     category:
-      selector: '[name="category"]'
+      selector: "[name=category]"
       attribute: value
     size:
       selector: size
     seeders:
-      selector: '[name="seeders"]'
+      selector: "[name=seeders]"
       attribute: value
     leechers:
-      selector: '[name="leechers"]'
+      selector: "[name=leechers]"
       attribute: value
     grabs:
-      selector: '[name="grabs"]'
+      selector: "[name=grabs]"
       attribute: value
     downloadvolumefactor:
       text: 0
