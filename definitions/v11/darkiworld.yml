@@ -1,0 +1,131 @@
+---
+id: darkiworld
+name: DarkiWorld
+description: "DarkiWorld is a FRENCH Private Torrent Tracker for MOVIES / TV / GENERAL"
+language: fr-FR
+type: private
+encoding: UTF-8
+links:
+  - https://darkiworld.com/
+
+caps:
+  categorymappings:
+    - {id: 1000, cat: Console, desc: "Games"}
+    - {id: 2000, cat: Movies, desc: "Movies"}
+    - {id: 2010, cat: Movies/Foreign, desc: "Movies Foreign"}
+    - {id: 2020, cat: Movies/Other, desc: "Movies Other"}
+    - {id: 2030, cat: Movies/SD, desc: "Movies SD"}
+    - {id: 2040, cat: Movies/HD, desc: "Movies HD"}
+    - {id: 2045, cat: Movies/UHD, desc: "Movies UHD"}
+    - {id: 2050, cat: Movies/BluRay, desc: "Movies BluRay"}
+    - {id: 2060, cat: Movies/3D, desc: "Movies 3D"}
+    - {id: 3000, cat: Audio, desc: "Music"}
+    - {id: 3030, cat: Audio/Audiobook, desc: "Audiobook"}
+    - {id: 3040, cat: Audio/Lossless, desc: "Music Lossless"}
+    - {id: 4000, cat: PC, desc: "Applications"}
+    - {id: 5000, cat: TV, desc: "TV"}
+    - {id: 5020, cat: TV/Foreign, desc: "TV Foreign"}
+    - {id: 5030, cat: TV/SD, desc: "TV SD"}
+    - {id: 5040, cat: TV/HD, desc: "TV HD"}
+    - {id: 5045, cat: TV/UHD, desc: "TV UHD"}
+    - {id: 5050, cat: TV/WEB-DL, desc: "TV WEB-DL"}
+    - {id: 5070, cat: TV/Anime, desc: "Anime"}
+    - {id: 5080, cat: TV/Documentary, desc: "Documentary"}
+    - {id: 7000, cat: Books, desc: "E-Books"}
+    - {id: 8000, cat: Other, desc: "Other"}
+
+  modes:
+    search: [q]
+    tv-search: [q, season, ep, imdbid, tmdbid]
+    movie-search: [q, imdbid, tmdbid]
+    music-search: [q]
+    book-search: [q]
+
+settings:
+  - name: apikey
+    type: text
+    label: APIKey
+  - name: info_apikey
+    type: info
+    label: About your API key
+    default: "Log in to DarkiWorld, open <b>Account settings → Torznab / *arr integration</b>, click <b>Generate my Torznab API key</b> and paste it above."
+  - name: info_category_8000
+    type: info
+    label: About the Other category
+    default: "Category 8000 is used for content that does not fit any standard Newznab category (tools, emulation, GPS maps, etc)."
+
+login:
+  method: get
+  path: api/v1/torznab
+  inputs:
+    t: caps
+    apikey: "{{ .Config.apikey }}"
+  error:
+    - selector: error
+      message:
+        selector: "@description"
+  test:
+    path: "api/v1/torznab?t=caps&apikey={{ .Config.apikey }}"
+    selector: "caps > server"
+
+search:
+  paths:
+    - path: api/v1/torznab
+      method: get
+      response:
+        type: xml
+
+  inputs:
+    t: "{{ if or (eq .Query.Type \"tvsearch\") (eq .Query.Type \"tv-search\") }}tvsearch{{ else if or (eq .Query.Type \"movie\") (eq .Query.Type \"movie-search\") }}movie{{ else if or (eq .Query.Type \"music\") (eq .Query.Type \"music-search\") }}music{{ else if eq .Query.Type \"book-search\" }}book{{ else }}search{{ end }}"
+    apikey: "{{ .Config.apikey }}"
+    q: "{{ .Keywords }}"
+    season: "{{ .Query.Season }}"
+    ep: "{{ .Query.Episode }}"
+    imdbid: "{{ .Query.IMDBIDShort }}"
+    tmdbid: "{{ .Query.TMDBID }}"
+    limit: "{{ .Query.Limit }}"
+    offset: "{{ .Query.Offset }}"
+
+  rows:
+    selector: "item"
+
+  fields:
+    title:
+      selector: "title"
+    details:
+      selector: "comments"
+    download:
+      selector: "link"
+    infohash:
+      selector: "torznab\\:attr[name='infohash']"
+      attribute: value
+      optional: true
+    category:
+      selector: "torznab\\:attr[name='category']"
+      attribute: value
+    size:
+      selector: "size"
+    seeders:
+      selector: "torznab\\:attr[name='seeders']"
+      attribute: value
+    leechers:
+      selector: "torznab\\:attr[name='peers']"
+      attribute: value
+    imdb:
+      selector: "torznab\\:attr[name='imdb']"
+      attribute: value
+      optional: true
+    tmdbid:
+      selector: "torznab\\:attr[name='tmdbid']"
+      attribute: value
+      optional: true
+    date:
+      selector: "pubDate"
+      filters:
+        - name: dateparse
+          args: "ddd, d MMM yyyy HH:mm:ss zzz"
+    downloadvolumefactor:
+      text: "0"
+    uploadvolumefactor:
+      text: "1"
+# engine n/a
