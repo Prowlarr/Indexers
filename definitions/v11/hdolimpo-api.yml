@@ -50,7 +50,7 @@ settings:
       asc: asc
 
 login:
-  path: /api/torrents
+  path: api/torrents
   method: get
   inputs: {} # TODO: remove in v10
   error:
