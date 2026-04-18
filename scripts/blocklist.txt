@@ -16,3 +16,4 @@ anirena.yml
 torrentgalaxy.yml
 scenelinks.yml
 therarbg.yml
+ildragonero.yml
