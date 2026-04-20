@@ -70,14 +70,16 @@ search:
 
   keywordsfilters:
     - name: re_replace
-      args: ["(S[0-9]+E[0-9]+|S[0-9]+)", ""] # remove SXXEXX or SXX from search
+      args: ["(S[0-9]+E[0-9]+|S[0-9]+)", ""]
+    - name: re_replace
+      args: ["\\s*\\(\\d{4}\\)\\s*", " "]
+    - name: re_replace
+      args: ["\\s+", " "]
+    - name: trim
 
   rows:
-    # If the category is a TV show/Anime, there's a necessity to filter the results by season/episode to not show all of them
     selector: "table.torrent_table > tbody > tr:not(tr.colhead).group,
               table.torrent_table tbody tr:not(tr.colhead):contains('{{ .Query.Episode }}')"
-    filters:
-      - name: andmatch
 
   fields:
     download:
