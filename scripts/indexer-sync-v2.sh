@@ -245,7 +245,9 @@ initialize_script() {
     # Check for Python and virtual environment
     # Check for Python and determine command to use
     PYTHON_CMD=""
-    if command -v python3 &> /dev/null; then
+    if [ -f ".venv/Scripts/python.exe" ]; then
+        PYTHON_CMD=".venv/Scripts/python.exe"
+    elif command -v python3 &> /dev/null; then
         PYTHON_CMD="python3"
     elif command -v python &> /dev/null; then
         PYTHON_CMD="python"
