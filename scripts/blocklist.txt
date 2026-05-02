@@ -17,3 +17,4 @@ torrentgalaxy.yml
 scenelinks.yml
 therarbg.yml
 ildragonero.yml
+rutracker-ru.yml
