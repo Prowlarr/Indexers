@@ -152,42 +152,71 @@ search:
     limit: 100
 
   rows:
-    selector: div.sr-card
+    selector: div.sr-card, div.sr-dup-item
 
   fields:
     categorydesc:
-      selector: div.sr-badge-cat
-      remove: span.sr-badge-lang
+      selector: div.sr-badge-cat, div.sr-dup-meta span:nth-child(5)
+      remove: span.sr-badge-lang, i
+      filters:
+        - name: re_replace
+          args: ["(?i)^(Filme|Serien|Musik|Audio|Spiele|Games|Apps|Software|Sonstiges)\\s+", ""]
+        - name: re_replace
+          args: ["\\s*\\[[^\\]]+\\]\\s*$", ""]
+        - name: trim
     title:
-      selector: div.sr-title-row a[href^="torrent.php"]
+      selector: div.sr-title-row a[href^="torrent.php"], a.sr-dup-title
     details:
-      selector: div.sr-title-row a[href^="torrent.php"]
+      selector: div.sr-title-row a[href^="torrent.php"], a.sr-dup-title, div.sr-dup-actions a[href^="torrent.php"]
       attribute: href
     download:
-      selector: a[href^="download.php?torrent="]
+      selector: a.sr-dl-btn-primary[href^="download.php?torrent="], div.sr-dup-actions a[href^="download.php?torrent="], a[href^="download.php?torrent="]
       attribute: href
     poster:
       selector: div.sr-cover img
       attribute: src
+      optional: true
     imdbid:
-      selector: a.sr-link-badge[href*="imdb.com"]
+      selector: a.sr-link-badge[href*="imdb.com"], a.sr-link-badge[href*="imdb.com/title/"], a[href*="imdb.com/title/"]
       attribute: href
+      optional: true
     size:
-      selector: span.sr-detail-size
+      selector: span.sr-detail-size, div.sr-dup-meta span:nth-child(1)
+      remove: i
     grabs:
       selector: span.sr-detail-dl
+      remove: i
+      optional: true
     seeders:
-      selector: span.sr-detail-seed
+      selector: span.sr-detail-seed, div.sr-dup-meta span:nth-child(2)
+      remove: i
     leechers:
-      selector: span.sr-detail-leech
+      selector: span.sr-detail-leech, div.sr-dup-meta span:nth-child(3)
+      remove: i
     date:
-      selector: span.sr-detail-time i
-      attribute: title
+      selector: span.sr-detail-time, div.sr-dup-meta span:nth-child(4)
+      remove: i
       filters:
-        - name: append
-          args: " +01:00"
-        - name: dateparse
-          args: "yyyy-MM-dd HH:mm:ss zzz"
+        - name: re_replace
+          args: ["(?i)^\\s*vor\\s+(.+)$", "$1 ago"]
+        - name: re_replace
+          args: ["(?i)\\bund\\b", ""]
+        - name: re_replace
+          args: ["(?i)\\bSekunde(n)?\\b", "seconds"]
+        - name: re_replace
+          args: ["(?i)\\bMinute(n)?\\b", "minutes"]
+        - name: re_replace
+          args: ["(?i)\\bStunde(n)?\\b", "hours"]
+        - name: re_replace
+          args: ["(?i)\\bTag(e|en)?\\b", "days"]
+        - name: re_replace
+          args: ["(?i)\\bWoche(n)?\\b", "weeks"]
+        - name: re_replace
+          args: ["(?i)\\bMonat(e|en)?\\b", "months"]
+        - name: re_replace
+          args: ["(?i)\\bJahr(e|en)?\\b", "years"]
+        - name: trim
+        - name: timeago
     downloadvolumefactor:
       case:
         span.sr-status-onlyupload: 0 # only upload is counted
