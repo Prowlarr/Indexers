@@ -175,7 +175,6 @@ search:
     poster:
       selector: div.sr-cover img
       attribute: src
-      optional: true
     imdbid:
       selector: a.sr-link-badge[href*="imdb.com"], a.sr-link-badge[href*="imdb.com/title/"], a[href*="imdb.com/title/"]
       attribute: href
