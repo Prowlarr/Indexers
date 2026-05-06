@@ -170,7 +170,7 @@ search:
       selector: a[href^="torrent.php"]:has(span)
       attribute: href
     download:
-      selector: a.sr-dl-btn-primary[href^="download.php?torrent="], div.sr-dup-actions a[href^="download.php?torrent="], a[href^="download.php?torrent="]
+      selector: a[href^="download.php?torrent="]
       attribute: href
     poster:
       selector: div.sr-cover img
