@@ -185,7 +185,6 @@ search:
       remove: i
     grabs:
       selector: span.sr-detail-dl
-      remove: i
       optional: true
     seeders:
       selector: span.sr-detail-seed, div.sr-dup-meta span:nth-child(2)
