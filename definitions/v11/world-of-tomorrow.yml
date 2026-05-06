@@ -182,7 +182,6 @@ search:
       optional: true
     size:
       selector: span.sr-detail-size, div.sr-dup-meta span:nth-child(1)
-      remove: i
     grabs:
       selector: span.sr-detail-dl
       optional: true
