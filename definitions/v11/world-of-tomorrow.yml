@@ -157,7 +157,7 @@ search:
   fields:
     categorydesc:
       selector: div.sr-badge-cat, div.sr-dup-meta span:nth-child(5)
-      remove: span.sr-badge-lang, i
+      remove: span.sr-badge-lang
       filters:
         - name: re_replace
           args: ["(?i)^(Filme|Serien|Musik|Audio|Spiele|Games|Apps|Software|Sonstiges)\\s+", ""]
