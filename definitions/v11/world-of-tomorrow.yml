@@ -195,7 +195,6 @@ search:
       remove: i
     date:
       selector: span.sr-detail-time, div.sr-dup-meta span:nth-child(4)
-      remove: i
       filters:
         - name: re_replace
           args: ["(?i)^\\s*vor\\s+(.+)$", "$1 ago"]
