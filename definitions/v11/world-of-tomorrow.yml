@@ -165,7 +165,7 @@ search:
           args: ["\\s*\\[[^\\]]+\\]\\s*$", ""]
         - name: trim
     title:
-      selector: div.sr-title-row a[href^="torrent.php"], a.sr-dup-title
+      selector: a[href^="torrent.php"]:has(span)
     details:
       selector: div.sr-title-row a[href^="torrent.php"], a.sr-dup-title, div.sr-dup-actions a[href^="torrent.php"]
       attribute: href
