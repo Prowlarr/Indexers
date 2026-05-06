@@ -189,7 +189,6 @@ search:
       optional: true
     seeders:
       selector: span.sr-detail-seed, div.sr-dup-meta span:nth-child(2)
-      remove: i
     leechers:
       selector: span.sr-detail-leech, div.sr-dup-meta span:nth-child(3)
       remove: i
