@@ -6,6 +6,8 @@ language: en-US
 type: private
 encoding: UTF-8
 links:
+  - https://f1gp.xyz/
+legacylinks:
   - https://f1gp.site/
 
 caps:
@@ -81,7 +83,7 @@ login:
 
 search:
   paths:
-    # https://f1gp.site/index.php?page=torrents&search=&category=0&active=0
+    # https://f1gp.xyz/index.php?page=torrents&search=&category=0&active=0
     - path: index.php
   inputs:
     page: torrents
