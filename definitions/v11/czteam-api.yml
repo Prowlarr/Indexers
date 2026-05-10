@@ -44,9 +44,6 @@ caps:
     book-search: [q]
 
 settings:
-  - name: username
-    type: text
-    label: Username
   - name: passkey
     type: text
     label: Passkey
@@ -67,7 +64,6 @@ login:
   method: get
   inputs:
     action: latest-torrents
-    username: "{{ .Config.username }}"
     passkey: "{{ .Config.passkey }}"
     limit: 1
   error:
@@ -82,11 +78,12 @@ search:
 
   inputs:
     action: search-torrents
-    username: "{{ .Config.username }}"
     passkey: "{{ .Config.passkey }}"
-    type: "{{ if .Query.IMDBIDShort }}imdb{{ else }}name{{ end }}"
-    query: "{{ if .Query.IMDBIDShort }}tt{{ .Query.IMDBIDShort }}{{ else }}{{ .Keywords }}{{ end }}"
-    name: "{{ if .Query.IMDBIDShort }}{{ .Keywords }}{{ else }}{{ end }}"
+    type: "{{ if .Query.IMDBID }}imdb{{ else }}name{{ end }}"
+    query: "{{ if .Query.IMDBID }}{{ .Query.IMDBID }}{{ else }}{{ .Keywords }}{{ end }}"
+    name: "{{ if .Query.IMDBID }}{{ .Keywords }}{{ else }}{{ end }}"
+    season: "{{ .Query.Season }}"
+    episode: "{{ .Query.Ep }}"
     category: "{{ range .Categories }}{{.}},{{end}}"
     freeleech: "{{ if .Config.freeleech }}1{{ else }}{{ end }}"
 
@@ -121,11 +118,11 @@ search:
     size:
       selector: size
     date:
-      # api.php returns "2026-05-09 18:57:50" (server time, Europe/Bucharest = +0300/+0200)
+      # api.php returns "2026-05-09 18:57:50" (server time, Europe/Bucharest)
       selector: upload_date
       filters:
         - name: append
-          args: " +0300"
+          args: " +03:00" # EEST (Bucharest, summer)
         - name: dateparse
           args: "yyyy-MM-dd HH:mm:ss zzz"
     downloadvolumefactor:
@@ -135,15 +132,21 @@ search:
         0: 1 # not free
         1: 0 # freeleech
     uploadvolumefactor:
-      text: 1
-    _internal_flag:
+      # api returns 0=false, 1=true
+      selector: doubleup
+      case:
+        0: 1 # not double
+        1: 2 # double upload
+    genre:
+      selector: tags
+    _internal:
       selector: internal
       case:
-        0: ""
-        1: "Internal"
+        0: "{{ .False }}"
+        1: "{{ .True }}"
     description:
-      text: "{{ .Result._internal_flag }}{{ if and .Result._internal_flag .Result.tags }} | {{ end }}{{ .Result.tags }}"
+      text: "{{ if .Result._internal }}Internal{{ else }}{{ end }}{{ if and .Result._internal .Result.genre }} | {{ else }}{{ end }}{{ .Result.genre }}"
     minimumseedtime:
-      # 72 hours per CZTeam upload rules (3 days)
+      # 3 days (as seconds = 3 x 24 x 60 x 60)
       text: 259200
 # json czteam-api 2026-05-09
