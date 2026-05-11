@@ -50,7 +50,7 @@ settings:
   - name: info_passkey
     type: info
     label: About your Passkey
-    default: "Find your passkey at <a href=\"https://czteam.me/my.php\" target=\"_blank\">https://czteam.me/my.php</a>. It is a 16-character hex string and is used both for tracker announces and the API."
+    default: "Find your passkey by accessing your <a href=\"https://czteam.me/my.php\" target=\"_blank\">CZTeam profile</a> and scrolling down to the Passkey section."
   - name: freeleech
     type: checkbox
     label: Search freeleech only
