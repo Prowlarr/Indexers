@@ -166,7 +166,7 @@ def validate_file_against_schema(yaml_path, schema, all_errors=False):
     except Exception as e:
         return False, f"Error validating {yaml_path}: {str(e)}"
 
-def validate_files_in_directory(directory, schema_path, all_errors=False):
+def validate_files_in_directory(directory, schema_path, all_errors=False, verbose=False):
     """Validate all YAML files in a directory against a single schema."""
     success = True
     error_count = 0
@@ -199,7 +199,8 @@ def validate_files_in_directory(directory, schema_path, all_errors=False):
             success = False
             error_count += 1
         else:
-            print(f"PASS: {os.path.basename(yaml_file)}")
+            if verbose:
+                print(f"PASS: {os.path.basename(yaml_file)}")
     
     print(f"\nValidation Summary:")
     print(f"Total files: {total_files}")
@@ -208,7 +209,7 @@ def validate_files_in_directory(directory, schema_path, all_errors=False):
     
     return success
 
-def validate_directory(definitions_dir, all_errors=False):
+def validate_directory(definitions_dir, all_errors=False, verbose=False):
     """Validate all YAML files in a definitions directory."""
     success = True
     error_count = 0
@@ -218,7 +219,7 @@ def validate_directory(definitions_dir, all_errors=False):
     root_schema_path = os.path.join(definitions_dir, SCHEMA_FILENAME)
     if os.path.exists(root_schema_path):
         print(f"Found root schema, validating files in {definitions_dir}")
-        return validate_files_in_directory(definitions_dir, root_schema_path, all_errors)
+        return validate_files_in_directory(definitions_dir, root_schema_path, all_errors, verbose)
     
     # Find all version directories (Prowlarr-style)
     version_dirs = glob.glob(os.path.join(definitions_dir, "v*"))
@@ -285,7 +286,8 @@ def validate_directory(definitions_dir, all_errors=False):
                 success = False
                 error_count += 1
             else:
-                print(f"PASS: {os.path.basename(yaml_file)}")
+                if verbose:
+                    print(f"PASS: {os.path.basename(yaml_file)}")
     
     print(f"\nValidation Summary:")
     print(f"Total files: {total_files}")
@@ -387,7 +389,7 @@ def main():
             if not os.path.exists(definitions_dir):
                 print(f"Error: Definitions directory '{definitions_dir}' not found", file=sys.stderr)
                 sys.exit(1)
-            success = validate_directory(definitions_dir, all_errors)
+            success = validate_directory(definitions_dir, all_errors, args.verbose)
             
         if args.single or not hasattr(args, 'find_best_version'):
             if success:
