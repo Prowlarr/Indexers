@@ -25,7 +25,7 @@ caps:
     - {id: 5, cat: Audio, desc: "Sound"}
     - {id: 6, cat: Books, desc: "Books"}
     - {id: 7, cat: Audio/Audiobook, desc: "AudioBooks"}
-    - {id: 8, cat: Audio, desc: "Podcasts"}
+    - {id: 8, cat: Audio/Other, desc: "Podcasts"}
     - {id: 9, cat: XXX, desc: "XXX"}
 
   modes:

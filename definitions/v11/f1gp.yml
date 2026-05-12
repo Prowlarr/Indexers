@@ -32,6 +32,7 @@ caps:
     - {id: 22, cat: TV/Sport, desc: "MotoGP"}
     - {id: 23, cat: TV/Sport, desc: "Boxing"}
     - {id: 24, cat: Other, desc: "Magazines - Books"}
+    - {id: 25, cat: TV/Sport, desc: "NASCAR Cup"}
 
   modes:
     search: [q]
