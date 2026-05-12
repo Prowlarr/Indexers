@@ -1,0 +1,129 @@
+---
+id: retrotoon
+name: RetroToon
+description: "RetroToon is a Private Torrent Tracker for ANIMATED MOVIES / TV"
+language: en-US
+type: private
+encoding: UTF-8
+links:
+  - https://www.retrotoon.world/
+
+caps:
+  categorymappings:
+    - {id: 15, cat: TV/Other, desc: "Ads"}
+    - {id: 8, cat: XXX, desc: "Adult"}
+    - {id: 4, cat: TV/Anime, desc: "Anime"}
+    - {id: 13, cat: Other, desc: "Art"}
+    - {id: 9, cat: Other, desc: "CGI"}
+    - {id: 10, cat: Other, desc: "Clay"}
+    - {id: 11, cat: Books/Comics, desc: "Comics"}
+    - {id: 3, cat: Movies, desc: "Feature"}
+    - {id: 7, cat: Movies, desc: "Indie"}
+    - {id: 2, cat: TV, desc: "Modern"}
+    - {id: 14, cat: Audio, desc: "OST"}
+    - {id: 5, cat: TV/Anime, desc: "OVA"}
+    - {id: 1, cat: TV, desc: "Retro"}
+    - {id: 6, cat: TV, desc: "Shorts"}
+
+  modes:
+    search: [q]
+    tv-search: [q, season, ep]
+    movie-search: [q]
+    book-search: [q]
+
+settings:
+  - name: cookie
+    type: text
+    label: Cookie
+  - name: info_cookie
+    type: info_cookie
+  - name: freeleech
+    type: checkbox
+    label: Filter freeleech only
+    default: false
+  - name: sort
+    type: select
+    label: Sort requested from site
+    default: 4
+    options:
+      4: created
+      7: seeders
+      5: size
+      1: title
+  - name: type
+    type: select
+    label: Order requested from site
+    default: desc
+    options:
+      desc: desc
+      asc: asc
+  - name: info_tpp
+    type: info
+    label: Results Per Page
+    default: For best results, change the <b>Torrents per page:</b> setting to <b>100</b> on your account profile.
+
+login:
+  # using cookie method because login page has embedded Cloudflare turnstile
+  method: cookie
+  inputs:
+    cookie: "{{ .Config.cookie }}"
+  test:
+    path: my.php
+    selector: a[href*="/logout.php"]
+
+search:
+  paths:
+    - path: ajax_tsearch.php
+  inputs:
+    $raw: "{{ range .Categories }}c{{.}}=1&{{end}}"
+    q: "{{ .Keywords }}"
+    sort: "{{ .Config.sort }}"
+    type: "{{ .Config.type }}"
+
+  rows:
+    selector: "table[cellpadding=\"5\"] > tbody > tr:has(a[href^=\"download.php?id=\"]){{ if .Config.freeleech }}:has(span:contains(\"FREE\")){{ else }}{{ end }}"
+
+  fields:
+    category:
+      selector: a[href^="browse.php?cat="]
+      attribute: href
+      filters:
+        - name: querystring
+          args: cat
+    title:
+      selector: a[href^="details.php?id="]
+    details:
+      selector: a[href^="details.php?id="]
+      attribute: href
+    download:
+      selector: a[href^="download.php?id="]
+      attribute: href
+    poster:
+      selector: img.hover-poster
+      attribute: src
+    date:
+      # 2026-05-11<br />17:36:23
+      selector: td:nth-child(6)
+      filters:
+        - name: append
+          args: " +12:00" # NZD
+        - name: dateparse
+          args: "yyyy-MM-ddHH:mm:ss zzz"
+    size:
+      selector: td:nth-child(7)
+    grabs:
+      selector: td:nth-child(8)
+    seeders:
+      selector: td:nth-child(9)
+    leechers:
+      selector: td:nth-child(10)
+    downloadvolumefactor:
+      case:
+        span:contains("FREE"): 0
+        "*": 1
+    uploadvolumefactor:
+      text: 1
+    minimumseedtime:
+      # 3 days (as seconds = 3 x 24 x 60 x 60)
+      text: 259200
+# Engine n/a

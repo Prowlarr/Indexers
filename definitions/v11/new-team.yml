@@ -214,7 +214,7 @@ caps:
     - {id: 628, cat: Audio/MP3, desc: "|- House (Singles, EPs) (lossy)"}
     - {id: 629, cat: Audio/Lossless, desc: "|- Techno (lossless)"}
     - {id: 630, cat: Audio/MP3, desc: "|- Techno (lossy)"}
-    - {id: 631, cat: Audio, desc: "|- Techno (Radioshows, Podcasts, Livesets, Mixes)"}
+    - {id: 631, cat: Audio/Other, desc: "|- Techno (Radioshows, Podcasts, Livesets, Mixes)"}
     - {id: 632, cat: Audio/MP3, desc: "|- Techno (Singles, EPs) (lossy)"}
     - {id: 643, cat: Audio/Lossless, desc: "|- Dubstep, Future Garage, Bass Music, UK Garage (lossless)"}
     - {id: 644, cat: Audio/MP3, desc: "|- Dubstep, Future Garage, Bass Music, UK Garage (lossy)"}
