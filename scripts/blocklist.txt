@@ -18,3 +18,4 @@ scenelinks.yml
 therarbg.yml
 ildragonero.yml
 rutracker-ru.yml
+magnetz.yml
