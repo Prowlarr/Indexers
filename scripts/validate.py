@@ -209,92 +209,99 @@ def validate_files_in_directory(directory, schema_path, all_errors=False, verbos
     
     return success
 
-def validate_directory(definitions_dir, all_errors=False, verbose=False):
-    """Validate all YAML files in a definitions directory."""
+def _find_yaml_files_without_schema(definitions_dir):
+    """Handle the case where no version dirs or root schema exist."""
+    print(f"No version directories or root schema found in {definitions_dir}")
+    print(f"Searching for YAML files without schema validation...")
+    yaml_files = []
+    for extension in YAML_EXTENSIONS:
+        yaml_files.extend(glob.glob(os.path.join(definitions_dir, extension)))
+    if yaml_files:
+        print(f"Found {len(yaml_files)} YAML files but no schema for validation")
+        for yaml_file in sorted(yaml_files):
+            print(f"SKIP: {os.path.basename(yaml_file)} (no schema)")
+    else:
+        print(f"No YAML files found in {definitions_dir}")
+    return False
+
+
+def _validate_version_dir(version_dir, all_errors=False, verbose=False):
+    """Validate all YAML files in a single version directory. Returns (success, error_count, total_files)."""
+    version_str = os.path.basename(version_dir)[1:]  # Remove 'v' prefix
+    try:
+        version_num = int(version_str)
+    except ValueError:
+        version_num = 0
+
+    print(f"Validating {version_dir}")
+
+    schema_path = os.path.join(version_dir, SCHEMA_FILENAME)
+    if not os.path.exists(schema_path):
+        if version_num >= MIN_SCHEMA_VERSION:
+            print(f"Warning: No schema.json found in {version_dir}")
+        return True, 0, 0
+
+    schema = load_json_schema(schema_path)
+    if schema is None:
+        print(f"Error: Failed to load schema from {schema_path}")
+        return False, 1, 0
+
+    yaml_files = []
+    for extension in YAML_EXTENSIONS:
+        yaml_files.extend(glob.glob(os.path.join(version_dir, extension)))
+
+    if not yaml_files:
+        if version_num >= MIN_SCHEMA_VERSION:
+            print(f"No YAML files found in {version_dir}")
+        return True, 0, 0
+
     success = True
     error_count = 0
-    total_files = 0
-    
+    for yaml_file in sorted(yaml_files):
+        is_valid, error_msg = validate_file_against_schema(yaml_file, schema, all_errors)
+        if not is_valid:
+            print(f"FAIL: {error_msg}")
+            success = False
+            error_count += 1
+        elif verbose:
+            print(f"PASS: {os.path.basename(yaml_file)}")
+
+    return success, error_count, len(yaml_files)
+
+
+def validate_directory(definitions_dir, all_errors=False, verbose=False):
+    """Validate all YAML files in a definitions directory."""
     # Check for schema.json in root directory first (Jackett-style)
     root_schema_path = os.path.join(definitions_dir, SCHEMA_FILENAME)
     if os.path.exists(root_schema_path):
         print(f"Found root schema, validating files in {definitions_dir}")
         return validate_files_in_directory(definitions_dir, root_schema_path, all_errors, verbose)
-    
+
     # Find all version directories (Prowlarr-style)
-    version_dirs = glob.glob(os.path.join(definitions_dir, "v*"))
-    version_dirs.sort()
-    
+    version_dirs = sorted(glob.glob(os.path.join(definitions_dir, "v*")))
     if not version_dirs:
-        print(f"No version directories or root schema found in {definitions_dir}")
-        print(f"Searching for YAML files without schema validation...")
-        yaml_files = []
-        for extension in YAML_EXTENSIONS:
-            yaml_files.extend(glob.glob(os.path.join(definitions_dir, extension)))
-        
-        if yaml_files:
-            print(f"Found {len(yaml_files)} YAML files but no schema for validation")
-            for yaml_file in sorted(yaml_files):
-                print(f"SKIP: {os.path.basename(yaml_file)} (no schema)")
-            return False
-        else:
-            print(f"No YAML files found in {definitions_dir}")
-            return False
-    
+        return _find_yaml_files_without_schema(definitions_dir)
+
+    success = True
+    error_count = 0
+    total_files = 0
+
     for version_dir in version_dirs:
         if not os.path.isdir(version_dir):
             continue
-        
-        # Extract version number to check against minimum
-        version_str = os.path.basename(version_dir)[1:]  # Remove 'v' prefix
-        try:
-            version_num = int(version_str)
-        except ValueError:
-            version_num = 0
-            
-        print(f"Validating {version_dir}")
-        
-        schema_path = os.path.join(version_dir, SCHEMA_FILENAME)
-        if not os.path.exists(schema_path):
-            if version_num >= MIN_SCHEMA_VERSION:
-                print(f"Warning: No schema.json found in {version_dir}")
-            continue
-            
-        schema = load_json_schema(schema_path)
-        if schema is None:
-            print(f"Error: Failed to load schema from {schema_path}")
+        dir_success, dir_errors, dir_files = _validate_version_dir(version_dir, all_errors, verbose)
+        if not dir_success:
             success = False
-            continue
-            
-        # Find all YAML files in this version directory
-        yaml_files = []
-        for extension in YAML_EXTENSIONS:
-            yaml_files.extend(glob.glob(os.path.join(version_dir, extension)))
-        
-        if not yaml_files:
-            # Only log "no files" for versions at or above minimum
-            if version_num >= MIN_SCHEMA_VERSION:
-                print(f"No YAML files found in {version_dir}")
-            continue
-            
-        for yaml_file in sorted(yaml_files):
-            total_files += 1
-            is_valid, error_msg = validate_file_against_schema(yaml_file, schema, all_errors)
-            
-            if not is_valid:
-                print(f"FAIL: {error_msg}")
-                success = False
-                error_count += 1
-            else:
-                if verbose:
-                    print(f"PASS: {os.path.basename(yaml_file)}")
-    
+        error_count += dir_errors
+        total_files += dir_files
+
     print(f"\nValidation Summary:")
     print(f"Total files: {total_files}")
     print(f"Errors: {error_count}")
     print(f"Success: {total_files - error_count}")
-    
+
     return success
+
 
 def find_best_schema_version(yaml_file, definitions_dir=DEFAULT_DEFINITIONS_DIR):
     """Find the best schema version for a YAML file."""
