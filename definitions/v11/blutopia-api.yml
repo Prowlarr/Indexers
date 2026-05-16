@@ -15,6 +15,7 @@ caps:
     - {id: 1, cat: Movies, desc: "Movie"}
     - {id: 8, cat: Other, desc: "Other"}
     - {id: 2, cat: TV, desc: "TV Show"}
+    - {id: 2, cat: TV/Anime, desc: "TV Show (Anime)"}
     - {id: 3, cat: Movies/Other, desc: "FANRES"}
     - {id: 5, cat: Movies/Other, desc: "Trailer"}
     - {id: 9, cat: Audio/Video, desc: "Live Concert"}
