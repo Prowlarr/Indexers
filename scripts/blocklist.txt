@@ -19,3 +19,4 @@ therarbg.yml
 ildragonero.yml
 rutracker-ru.yml
 magnetz.yml
+tvchaosuk.yml
