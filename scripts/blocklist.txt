@@ -1,23 +1,10 @@
 # Blocklist for problematic indexers
 # Format: filename.yml (without path)
 
-# Union/YGG related
-uniongang.yml
-uniongangcookie.yml
-ygg-api.yml
-yggtorrent.yml
-yggcookie.yml
-yggtorrent-turbo.yml
-yggcookie-turbo.yml
 u2p.yml
-
-sharewood.yml
 anirena.yml
-torrentgalaxy.yml
-scenelinks.yml
 therarbg.yml
 ildragonero.yml
 rutracker-ru.yml
 magnetz.yml
-tvchaosuk.yml
 fearnopeer.yml
