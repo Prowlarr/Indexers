@@ -132,13 +132,13 @@ search:
         - name: dateparse
           args: "MMM d yyyy, HH:mm zzz"
     size:
-      selector: td:nth-child(5)
-    grabs:
       selector: td:nth-child(6)
-    seeders:
+    grabs:
       selector: td:nth-child(7)
-    leechers:
+    seeders:
       selector: td:nth-child(8)
+    leechers:
+      selector: td:nth-child(9)
     downloadvolumefactor:
       case:
         strong.tl_free: 0
