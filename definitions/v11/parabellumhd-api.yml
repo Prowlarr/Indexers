@@ -1,30 +1,30 @@
 ---
-id: fearnopeer
-name: FearNoPeer
-description: "FearNoPear is a Private Torrent Tracker for MOVIES / TV / GENERAL"
-language: en-US
+id: parabellumhd-api
+name: ParabellumHD (API)
+description: "ParabellumHD is a SPANISH Private Torrent Tracker for HEVC & AV1-encoded MOVIES / TV"
+language: es-ES
 type: private
 encoding: UTF-8
 links:
-  - https://fearnopeer.com/
+  - https://parabellumhd.cx/
 
 caps:
   categorymappings:
-    - {id: 1, cat: Movies, desc: "Movies"}
-    - {id: 2, cat: TV, desc: "TV"}
-    - {id: 3, cat: Audio, desc: "Music"}
-    - {id: 4, cat: PC/Games, desc: "Games"}
-    - {id: 5, cat: PC/0day, desc: "Apps"}
-    - {id: 6, cat: TV/Anime, desc: "Anime"}
-    - {id: 9, cat: TV/Sport, desc: "Sport"}
-    - {id: 14, cat: Other, desc: "Tutorials"}
-    - {id: 11, cat: Other, desc: "Assorted"}
+    - {id: 1, cat: Movies, desc: "Películas"}
+    - {id: 2, cat: TV, desc: "Series"}
+    - {id: 7, cat: Movies/Other, desc: "Películas Animación"}
+    - {id: 8, cat: TV/Other, desc: "Series Animación"}
+    - {id: 9, cat: Movies/Other, desc: "Películas Anime"}
+    - {id: 10, cat: TV/Anime, desc: "Series Anime"}
+    - {id: 6, cat: Other, desc: "Varios"}
+    - {id: 11, cat: Movies/UHD, desc: "Películas 4K"}
+    # undocumented
+    - {id: 4, cat: Console, desc: "Juegos"}
 
   modes:
     search: [q]
     tv-search: [q, season, ep, imdbid, tvdbid, tmdbid]
     movie-search: [q, imdbid, tmdbid]
-    music-search: [q]
 
 settings:
   - name: apikey
@@ -33,7 +33,7 @@ settings:
   - name: info_key
     type: info
     label: About your API key
-    default: "Find or Generate a new API Token by accessing your <a href=\"https://fearnopeer.com/\" target=\"_blank\">FearNoPeer</a> account <i>My Settings</i> page and clicking on the <b>API Key</b> tab."
+    default: "Find or Generate a new API Token by accessing your <a href=\"https://parabellumhd.cx/\" target=\"_blank\">ParabellumHD</a> account <i>My Settings</i> page and clicking on the <b>API Key</b> tab."
   - name: freeleech
     type: checkbox
     label: Search freeleech only
@@ -58,10 +58,6 @@ settings:
     options:
       desc: desc
       asc: asc
-  - name: info_activity
-    type: info
-    label: Account Inactivity
-    default: "Accounts that have not logged in for 150 days will be disabled, and may be deleted shortly afterwards."
 
 login:
   path: api/torrents
@@ -108,8 +104,20 @@ search:
   fields:
     category:
       selector: category_id
+    _resolution:
+      selector: resolution
+    _type:
+      selector: type
+      filters:
+        - name: replace
+          args: ["Encode", "BluRay"]
+        - name: replace
+          args: ["Full Disc", "BR-DISK"]
     title_optional:
       selector: name
+      filters:
+        - name: append
+          args: " {{ .Result._resolution }} {{ .Result._type }}"
     title_filename:
       selector: "files[0].name"
       optional: true
@@ -117,6 +125,13 @@ search:
       selector: num_file
     title:
       text: "{{ if and (.Config.single_file_release_use_filename) (eq .Result.files \"1\") (.Result.title_filename) }}{{ .Result.title_filename }}{{ else }}{{ .Result.title_optional }}{{ end }}"
+      filters:
+        - name: re_replace
+          args: ["(?i)\\bTemporada (\\d+)\\b", "S$1"]
+        - name: re_replace
+          args: ["(?i)\\bEpisodio (\\d+)\\b", "E$1"]
+        - name: re_replace
+          args: ["(?i)(\\d+)x(\\d+)", "S$1E$2"]
     details:
       selector: details_link
     download:
@@ -189,6 +204,10 @@ search:
         True: 2 # double
     uploadvolumefactor:
       text: "{{ if .Result._featured }}2{{ else }}{{ .Result.uploadvolumefactor_double_upload }}{{ end }}"
-    minimumratio:
-      text: 0.81
-# json UNIT3D 9.2.0
+# global MR is 1.0 but torrents must be seeded for 7 days regardless of ratio
+#    minimumratio:
+#      text: 1.0
+    minimumseedtime:
+      # 7 days (as seconds = 7 x 24 x 60 x 60)
+      text: 604800
+# json UNIT3D 9.2.0 (custom)
