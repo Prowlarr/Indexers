@@ -91,19 +91,39 @@ download:
 
 search:
   paths:
-    # https://www.torrentheaven.org/browse.php?search=&cat=0&incldead=1
-    - path: browse.php
+    # browse.php returns HTTP 500; individual category pages work fine
+    - path: browse-id129.php
+    - path: browse-id123.php
+    - path: browse-id130.php
+    - path: browse-id10.php
+    - path: browse-id111.php
+    - path: browse-id125.php
+    - path: browse-id143.php
+    - path: browse-id132.php
+    - path: browse-id139.php
+    - path: browse-id140.php
+    - path: browse-id114.php
+    - path: browse-id105.php
+    - path: browse-id142.php
+    - path: browse-id115.php
+    - path: browse-id120.php
+    - path: browse-id106.php
+    - path: browse-id131.php
+    - path: browse-id108.php
+    - path: browse-id116.php
+    - path: browse-id155.php
+    - path: browse-id128.php
+    - path: browse-id156.php
+    - path: browse-id118.php
   keywordsfilters:
     # if searching for season packs switch S01 to seizoen 1
     - name: re_replace
-      args: ["(?i)(S0)(\\d{1,2})$", "seizoen $2"]
+      args: ["(?i)(S0)(\d{1,2})$", "seizoen $2"]
     - name: re_replace
-      args: ["(?i)(S)(\\d{1,3})$", "seizoen $2"]
+      args: ["(?i)(S)(\d{1,3})$", "seizoen $2"]
   inputs:
-    $raw: "{{ range .Categories }}c{{.}}=1&{{end}}"
     search: "{{ .Keywords }}"
     incldead: 1
-
   rows:
     selector: table.mainouter
     filters:
