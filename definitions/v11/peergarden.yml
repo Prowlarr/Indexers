@@ -1,20 +1,12 @@
 ---
-id: nordicbytes
-replaces:
-  - danishbytes-api
-name: NordicBytes
-description: "NordicBytes is a Mixed NORDIC Private Torrent Tracker for MOVIES / TV / GENERAL"
+id: peergarden
+name: PeerGarden
+description: "PeerGarden (PG) is a Private Torrent Tracker for MOVIES / TV / GENERAL"
 language: en-US
 type: private
 encoding: UTF-8
 links:
-  - https://nordicbytes.org/
-legacylinks:
-  - https://danishbytes.org/
-  - https://danishbytes.art/
-  - https://danishbytes.club/
-  - https://danishbytes2.org/
-  - https://dbytes.org/
+  - https://peergarden.org/
 
 caps:
   categorymappings:
@@ -22,11 +14,12 @@ caps:
     - {id: 2, cat: TV, desc: "TV"}
     - {id: 3, cat: PC/0day, desc: "Apps"}
     - {id: 4, cat: PC/Games, desc: "Games"}
-    - {id: 5, cat: Audio, desc: "Sound"}
+    - {id: 5, cat: Audio, desc: "Music"}
     - {id: 6, cat: Books, desc: "Books"}
     - {id: 7, cat: Audio/Audiobook, desc: "AudioBooks"}
     - {id: 8, cat: Audio/Other, desc: "Podcasts"}
-    - {id: 9, cat: XXX, desc: "XXX"}
+    - {id: 10, cat: TV/Sport, desc: "Sports"}
+    - {id: 11, cat: TV/Anime, desc: "Anime"}
 
   modes:
     search: [q]
@@ -42,7 +35,7 @@ settings:
   - name: info_apikey
     type: info
     label: About your API key
-    default: "Find or Generate a new API Key by accessing the <a href=\"https://nordicbytes.org/account/apikey/\" target=\"_blank\">NordicBytes Account API Key</a> page."
+    default: "Find or Generate a new API Key by accessing the <a href=\"https://peergarden.org/account/apikey/\" target=\"_blank\">PeerGarden Account API Key</a> page."
   - name: freeleech
     type: checkbox
     label: Search freeleech only
