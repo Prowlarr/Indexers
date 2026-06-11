@@ -6,6 +6,8 @@ language: ru-RU
 type: public
 encoding: UTF-8
 links:
+  - https://xrutor.org/
+  - https://new-rutor.org/
   - https://rutor.info/
   - https://rutor.is/
   - http://6tor.org/ # IPv6-only
@@ -20,7 +22,7 @@ legacylinks:
   - https://rutor.unblocked.monster/
   - https://rutor.mrunblock.bond/ # for magnet only
   - https://rutor.nocensor.cloud/
-  - http://new-rutor.org/ # Oops. Something went wrong, try reloading the page
+  - http://new-rutor.org/
   - http://rutor.info/
   - http://rutor.is/
 
@@ -63,6 +65,13 @@ settings:
       9: "title asc"
   - name: info_category_8000
     type: info_category_8000
+
+download:
+  selectors:
+    - selector: a[href^="/inc/download/file/"]
+      attribute: href
+    - selector: a[href^="magnet:?xt="]
+      attribute: href
 
 search:
   paths:
