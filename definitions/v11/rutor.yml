@@ -8,10 +8,10 @@ encoding: UTF-8
 links:
   - https://xrutor.org/
   - https://new-rutor.org/
-  - https://rutor.info/
-  - https://rutor.is/
   - http://6tor.org/ # IPv6-only
 legacylinks:
+  - https://rutor.info/
+  - https://rutor.is/
   - https://rutor.uk-unblock.xyz/
   - https://rutor.ind-unblock.xyz/
   - https://rutor.unblocked.bar/
@@ -65,13 +65,6 @@ settings:
       9: "title asc"
   - name: info_category_8000
     type: info_category_8000
-
-download:
-  selectors:
-    - selector: a[href^="/inc/download/file/"]
-      attribute: href
-    - selector: a[href^="magnet:?xt="]
-      attribute: href
 
 search:
   paths:
