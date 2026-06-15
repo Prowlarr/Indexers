@@ -21,3 +21,4 @@ rutracker-ru.yml
 magnetz.yml
 tvchaosuk.yml
 torrent-heaven.yml
+torrentgalaxyclone.yml
