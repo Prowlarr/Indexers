@@ -1,54 +1,60 @@
 ---
-id: newretro
-name: The New Retro
-description: "The New Retro is a GERMAN Private Torrent Tracker for MOVIES / TV / GENERAL"
+id: unbreakable
+name: Unbreakable
+description: "Unbreakable is a GERMAN Private Torrent Tracker for MOVIES / TV / GENERAL"
 language: de-DE
 type: private
 encoding: UTF-8
 links:
-  - https://new-retro.eu/
+  - https://unbreakable5.eu/
 
 caps:
   categorymappings:
-    - {id: 119, cat: Other, desc: "Bilder"}
-    - {id: 139, cat: TV/Documentary, desc: "Doku - HD"}
-    - {id: 141, cat: TV/Documentary, desc: "Doku - Pack"}
-    - {id: 140, cat: TV/Documentary, desc: "Doku - SD"}
-    - {id: 142, cat: TV, desc: "Doku - Sonstige"}
-    - {id: 120, cat: Books, desc: "Ebook"}
-    - {id: 131, cat: TV/Anime, desc: "Filme - Anime"}
-    - {id: 101, cat: Movies/BluRay, desc: "Filme - Blue Ray"}
-    - {id: 102, cat: Movies/Other, desc: "Filme - Bollywood"}
-    - {id: 103, cat: Movies/DVD, desc: "Filme - DVD"}
-    - {id: 104, cat: Movies/DVD, desc: "Filme - DVD-R"}
-    - {id: 135, cat: Movies/HD, desc: "Filme - HD"}
-    - {id: 130, cat: Movies, desc: "Filme - Klassiker"}
-    - {id: 134, cat: Movies/SD, desc: "Filme - SD"}
-    - {id: 136, cat: Movies/UHD, desc: "Filme - UHD"}
-    - {id: 105, cat: Movies, desc: "Filme - x264/x265"}
-    - {id: 106, cat: Movies/SD, desc: "Filme - XviD / DivX"}
-    - {id: 127, cat: Other, desc: "Für Unsere kleinsten"}
-    - {id: 121, cat: Other, desc: "Handy Stuff"}
-    - {id: 124, cat: Audio, desc: "Musik - Alben"}
-    - {id: 123, cat: Audio, desc: "Musik - Discography"}
-    - {id: 122, cat: Audio/Audiobook, desc: "Musik - Hörbuch"}
-    - {id: 133, cat: Audio/MP3, desc: "Musik - MP3/Mp4"}
-    - {id: 125, cat: Audio/Video, desc: "Musik - Video"}
-    - {id: 113, cat: PC, desc: "Programme - Linux"}
-    - {id: 114, cat: PC/Mac, desc: "Programme - Mac"}
-    - {id: 115, cat: PC/0day, desc: "Programme - Windows"}
-    - {id: 137, cat: TV/HD, desc: "Serien - HD"}
-    - {id: 116, cat: TV, desc: "Serien - Pack"}
-    - {id: 138, cat: TV/SD, desc: "Serien - SD"}
-    - {id: 143, cat: TV/Other, desc: "Serien - Sonstige"}
-    - {id: 144, cat: TV/UHD, desc: "Serien - UHD"}
-    - {id: 129, cat: Other, desc: "Sonstiges"}
-    - {id: 109, cat: PC/Mobile-Other, desc: "Spiele - Handy"}
-    - {id: 112, cat: Console, desc: "Spiele - Konsolen"}
-    - {id: 111, cat: PC/Games, desc: "Spiele - Mac / Linux"}
-    - {id: 110, cat: PC/Games, desc: "Spiele - PC"}
-    - {id: 118, cat: TV/Sport, desc: "WWE - Sport"}
+    - {id: 157, cat: TV/Documentary, desc: "Doku 1080p"}
+    - {id: 167, cat: TV/Documentary, desc: "Doku 2160p"}
+    - {id: 156, cat: TV/Documentary, desc: "Doku 720p"}
+    - {id: 165, cat: TV/Documentary, desc: "Doku Pack 1080p"}
+    - {id: 164, cat: TV/Documentary, desc: "Doku Pack 720p"}
+    - {id: 163, cat: TV/Documentary, desc: "Doku Pack SD"}
+    - {id: 135, cat: TV/Documentary, desc: "Doku Packs 2160p"}
+    - {id: 155, cat: TV/Documentary, desc: "Doku SD x264/x265"}
+    - {id: 152, cat: Books/EBook, desc: "E-Books"}
+    - {id: 168, cat: Movies/Other, desc: "Filme Anime"}
+    - {id: 103, cat: Movies/BluRay, desc: "Filme Blu-Ray"}
+    - {id: 104, cat: Movies/DVD, desc: "Filme DVD-R"}
+    - {id: 141, cat: Movies/HD, desc: "Filme HD 1080p"}
+    - {id: 154, cat: Movies/HD, desc: "Filme HD 720p"}
+    - {id: 166, cat: Movies/Foreign, desc: "Filme International"}
+    - {id: 139, cat: Movies/HD, desc: "Filme Packs HD 1080p"}
+    - {id: 106, cat: Movies/HD, desc: "Filme Packs HD 720p"}
+    - {id: 105, cat: Movies/SD, desc: "Filme Packs SD x264/x265"}
+    - {id: 119, cat: Movies/UHD, desc: "Filme Packs UHD 2160p"}
+    - {id: 153, cat: Movies/SD, desc: "Filme SD x264/x265"}
+    - {id: 140, cat: Movies/UHD, desc: "Filme UHD 2160p"}
+    - {id: 102, cat: Movies/Other, desc: "Filmklassiker"}
+    - {id: 127, cat: Movies/Other, desc: "Filmklassiker Packs"}
+    - {id: 118, cat: Audio/Audiobook, desc: "Hörbücher"}
+    - {id: 109, cat: Audio/Lossless, desc: "Musik Flac"}
+    - {id: 129, cat: Audio/MP3, desc: "Musik MP3"}
+    - {id: 111, cat: Audio/Lossless, desc: "Musik Packs Flac"}
+    - {id: 112, cat: Audio/MP3, desc: "Musik Packs MP3"}
+    - {id: 161, cat: Console/NDS, desc: "Nintendo Switch"}
+    - {id: 162, cat: Console/PS3, desc: "Playstation"}
+    - {id: 115, cat: TV/Anime, desc: "Series Anime"}
+    - {id: 113, cat: TV/HD, desc: "Serie HD 1080p"}
+    - {id: 125, cat: TV/HD, desc: "Serie HD 720p"}
+    - {id: 144, cat: TV/Anime, desc: "Serie Packs Anime"}
+    - {id: 138, cat: TV/HD, desc: "Serie Packs HD 1080p"}
+    - {id: 116, cat: TV/HD, desc: "Serie Packs HD 720p"}
+    - {id: 137, cat: TV/SD, desc: "Serie Packs SD x264/x265"}
+    - {id: 143, cat: TV/UHD, desc: "Serie Packs UHD 2160p"}
+    - {id: 133, cat: TV/SD, desc: "Serie SD x264/x265"}
+    - {id: 114, cat: TV/UHD, desc: "Serie UHD 2160p"}
+    - {id: 169, cat: TV/Sport, desc: "Sport"}
+    - {id: 150, cat: PC/0day, desc: "Windows Apps"}
+    - {id: 149, cat: PC/Games, desc: "Windows Spiele"}
     - {id: 69, cat: XXX, desc: "XXX"}
+    - {id: 151, cat: Books/Mags, desc: "Zeitschriften"}
 
   modes:
     search: [q]
@@ -73,8 +79,8 @@ settings:
     default: false
   - name: info_free
     type: info
-    label: About OnlyUpload at The New Retro
-    default: "<ul><li>OnlyUpload are torrents where download is not counted but upload is. Good for building your Ratio up. (On the Prowlarr search results page these are tagged as Freeleech).</li></ul>"
+    label: About OnlyUpload at Unbreakable
+    default: "<ul><li>OnlyUpload are torrents where download is not counted but upload is. Good for building your Ratio up. (On the Jackett dashboard search results these are tagged as Freeleech).</li></ul>"
   - name: sort
     type: select
     label: Sort requested from site
@@ -134,23 +140,18 @@ search:
 
   rows:
     selector: "table.tableinborder[border=\"0\"][cellspacing=\"1\"][cellpadding=\"0\"][style=\"width:100%\"] > tbody > tr:has(a[href^=\"download.php?torrent=\"]){{ if .Config.onlyupload }}:has(img[src=\"pic/oupic.gif\"]){{ else }}{{ end }}"
-    filters:
-      - name: andmatch
 
   fields:
-    category_optional:
+    category:
       selector: a[href^="browse.php?cat="]
       attribute: href
-      optional: true
       filters:
         - name: querystring
           args: cat
-    category:
-      text: "{{ if .Result.category_optional }}{{ .Result.category_optional }}{{ else }}129{{ end }}"
     title:
       selector: a[href^="details.php?id="]:has(b)
     details:
-      selector: a[href^="details.php?id="]:has(b)
+      selector: a[href*="details.php?id="]
       attribute: href
     download:
       selector: a[href^="download.php?torrent="]
