@@ -1,32 +1,30 @@
 ---
-id: cangbaoge
-name: cangbaoge (CBG)
-description: "cangbaoge (CBG) is a CHINESE Private Torrent Tracker for MOVIES / TV / GENERAL"
+id: depthstudio
+name: Depth Studio
+description: "Depth Studio is a CHINESE Private Torrent Tracker for MOVIES / TV / GENERAL"
 language: zh-CN
 type: private
 encoding: UTF-8
 links:
-  - https://cangbao.ge/
+  - https://dstudio.me/
 
 caps:
   categorymappings:
-    - {id: 401, cat: Movies, desc: "Movies/电影"}
-    - {id: 402, cat: TV, desc: "TV Series/剧集"}
-    - {id: 403, cat: TV, desc: "Playlet/短剧"}
-    - {id: 404, cat: TV/Anime, desc: "Animations/动画"}
-    - {id: 405, cat: TV/Anime, desc: "Anime/动漫"}
-    - {id: 406, cat: TV/Other, desc: "Children/儿童"}
-    - {id: 407, cat: TV, desc: "TV Shows/综艺"}
-    - {id: 408, cat: TV/Documentary, desc: "Documentary/纪录"}
-    - {id: 409, cat: Audio, desc: "Music/音乐"}
-    - {id: 410, cat: Books, desc: "Books/书籍"}
+    - {id: 401, cat: Movies, desc: "电影-Movies"}
+    - {id: 402, cat: TV, desc: "电视剧-TV Series"}
+    - {id: 403, cat: TV, desc: "综艺-TV Shows"}
+    - {id: 404, cat: TV/Documentary, desc: "纪录片-Documentaries"}
+    - {id: 405, cat: TV/Anime, desc: "动漫-Animes"}
+    - {id: 406, cat: Audio/Video, desc: "演唱会-Music Videos"}
+    - {id: 407, cat: TV/Sport, desc: "体育节目-Sports"}
+    - {id: 408, cat: Audio, desc: "音乐-Music"}
+    - {id: 409, cat: Other, desc: "其他-Other"}
 
   modes:
     search: [q]
     tv-search: [q, season, ep, imdbid, doubanid]
     movie-search: [q, imdbid, doubanid]
     music-search: [q]
-    book-search: [q]
 
 settings:
   - name: cookie
@@ -61,7 +59,7 @@ settings:
   - name: info_activity
     type: info
     label: Account Inactivity
-    default: "Account retention rules:<ol><li>Veteran User and above will be retained forever</li><li>Elite User and above will not have their account deleted after parking (in the control panel)</li><li>Users with a parked account will be deleted if they do not log in for 400 consecutive days</li><li>Users with a non-parked account will be deleted if they do not log in for 150 consecutive days</li><li>Users who have no traffic (i.e. upload/download data are both 0) will be deleted if they do not log in for 100 consecutive days.</li></ol>"
+    default: "Account retention rules:<ol><li>Veteran User and above will be retained forever</li><li>Elite User and above will not have their account deleted after parking (in the control panel)</li><li>Users with a parked account will be deleted if they do not log in for 100 consecutive days</li><li>Users with a non-parked account will be deleted if they do not log in for 60 consecutive days</li><li>Users who have no traffic (i.e. upload/download data are both 0) will be deleted if they do not log in for 60 consecutive days.</li></ol>"
 
 login:
   # using cookie method because site does a JS call to API/Challenge via JQuery to load response parm required for takelogin.php
@@ -126,7 +124,7 @@ search:
       attribute: href
     date_elapsed:
       # time type: time elapsed (default)
-      selector: td.rowfollow:nth-child(4) > span[title]
+      selector: td:nth-child(4) > span[title]
       attribute: title
       optional: true
       filters:
@@ -136,7 +134,7 @@ search:
           args: "yyyy-MM-dd HH:mm:ss zzz"
     date_added:
       # time added
-      selector: td.rowfollow:nth-child(4):not(:has(span))
+      selector: td:nth-child(4):not(:has(span))
       optional: true
       filters:
         - name: append
@@ -146,21 +144,13 @@ search:
     date:
       text: "{{ if or .Result.date_elapsed .Result.date_added }}{{ or .Result.date_elapsed .Result.date_added }}{{ else }}now{{ end }}"
     size:
-      selector: td.rowfollow:nth-child(5)
-      optional: true
-      default: 512MB
+      selector: td:nth-child(5)
     seeders:
-      selector: td.rowfollow:nth-child(6)
-      optional: true
-      default: 0
+      selector: td:nth-child(6)
     leechers:
-      selector: td.rowfollow:nth-child(7)
-      optional: true
-      default: 0
+      selector: td:nth-child(7)
     grabs:
-      selector: td.rowfollow:nth-child(8)
-      optional: true
-      default: 0
+      selector: td:nth-child(8)
     downloadvolumefactor:
       case:
         img.pro_free: 0
@@ -175,12 +165,10 @@ search:
         img.pro_free2up: 2
         img.pro_2up: 2
         "*": 1
-    minimumratio:
-      text: 2.0
     minimumseedtime:
       # 2 days (as seconds = 2 x 24 x 60 x 60)
       text: 172800
     description:
-      selector: td.rowfollow:nth-child(2)
+      selector: td:nth-child(2)
       remove: a, b, font, img, span
-# NexusPHP v1.9.6 2025-06-25
+# NexusPHP v1.10.2 2026-04-11
