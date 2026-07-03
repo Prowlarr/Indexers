@@ -5,7 +5,7 @@ This guide covers how to contribute to the Prowlarr Indexers repository, includi
 ## Prerequisites
 
 > [!IMPORTANT]
-> **Python 3.11 or higher** is required - must be installed and accessible via `python3` command
+> **Python 3.11 or higher** is required - must be installed and accessible via `python3` command (alternatively `python` command if it points to Python 3)
 
 - Git
 - Basic understanding of YAML and JSON Schema
@@ -13,20 +13,29 @@ This guide covers how to contribute to the Prowlarr Indexers repository, includi
 ## Setup
 
 1. Fork and clone the repository:
-```bash
-git clone https://github.com/YOUR_USERNAME/Indexers.git
-cd Indexers
-```
+    ```bash
+    git clone https://github.com/YOUR_USERNAME/Indexers.git
+    cd Indexers
+    ```
 
 2. Set up Python environment:
-```bash
-# Create virtual environment (recommended)
-python3 -m venv .venv
-source .venv/bin/activate
+   (on Linux/Mac)
+    ```bash
+    # Create virtual environment (recommended)
+    python3 -m venv .venv
+    source .venv/bin/activate
+    ```
+    (or on Windows)
+    ```bash
+    # Create virtual environment (recommended)
+    python -m venv .venv
+    source .venv/Scripts/activate
+    ```
 
-# Install dependencies
-pip install -r requirements.txt
-```
+3. Install dependencies:
+    ```bash
+    pip install -r requirements.txt
+    ```
 
 ## Script Commands
 
@@ -208,7 +217,7 @@ The repository uses several automated workflows to ensure code quality:
 - **Tools**: `yamllint` with GitHub annotations
 - **Runs**: On every change to definition files
 
-#### 2. Python Validation (`python-validation.yml`) 
+#### 2. Python Validation (`python-validation.yml`)
 - **Triggers**: Push/PR to `master` on Python files in `scripts/` or `requirements.txt`
 - **Purpose**: Validates Python script syntax and functionality
 - **Tools**: `py_compile` syntax checking
@@ -222,7 +231,7 @@ The repository uses several automated workflows to ensure code quality:
 #### 4. Indexer Sync Automation (`indexer-sync.yml`)
 - **Schedule**: 3 times daily (2 AM, 10 AM, 6 PM UTC)
 - **Purpose**: Automatically syncs indexers from Jackett repository
-- **Features**: 
+- **Features**:
   - Automated PR creation for updates
   - Manual trigger with debug options
   - Caching for performance (Python deps + Jackett data)
@@ -285,13 +294,13 @@ We sync indexer definitions from [Jackett](https://github.com/Jackett/Jackett). 
     ```bash
     # Create virtual environment (recommended)
     python -m venv .venv
-    
+
     # Activate virtual environment
     # On Linux/Mac:
     source .venv/bin/activate
     # On Windows:
     source .venv/Scripts/activate
-    
+
     # Install Python dependencies
     pip install -r requirements.txt
     ```
