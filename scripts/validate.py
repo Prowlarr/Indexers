@@ -364,6 +364,14 @@ def main():
     try:
         # Determine the definitions directory to use
         definitions_dir = args.definitions_dir_override or args.definitions_dir
+
+        # Confine the CLI-provided path to the working tree before any filesystem
+        # access, so a crafted argument cannot escape into arbitrary directories.
+        _base_dir = os.path.realpath(os.getcwd())
+        definitions_dir = os.path.realpath(definitions_dir)
+        if definitions_dir != _base_dir and not definitions_dir.startswith(_base_dir + os.sep):
+            print(f"Error: definitions directory must be within {_base_dir}", file=sys.stderr)
+            sys.exit(1)
         
         # Handle caching override
         if args.no_cache:
