@@ -580,6 +580,10 @@ pull_cherry_and_merge() {
     fi
     log "INFO" "Commit Range is: [$commit_range]"
     log "INFO" "-- Beginning Cherrypicking ---"
+    # If diff.renames is true then removals and additions can be rendered as renames instead
+    # Docs say merge.renames defaults to diff.renames, but false causes directoryRenames to be ignored
+    git config diff.renames false
+    git config merge.renames true
     git config merge.directoryRenames true
     git config merge.verbosity 0
     sleep 2
