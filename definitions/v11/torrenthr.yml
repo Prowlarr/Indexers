@@ -13,6 +13,7 @@ caps:
     - {id: 31, cat: TV/Anime, desc: "Anime"}
     - {id: 4, cat: Movies/SD, desc: "Filmovi/SD"}
     - {id: 18, cat: Movies/Foreign, desc: "Crtani Filmovi"}
+    - {id: 18, cat: TV/Foreign, desc: "Crtani Filmovi"}
     - {id: 5, cat: PC/Games, desc: "Igre/PC"}
     - {id: 7, cat: TV/SD, desc: "Serije/SD"}
     - {id: 1, cat: PC/0day, desc: "Aplikacije"}
