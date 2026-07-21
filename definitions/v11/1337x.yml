@@ -9,10 +9,12 @@ requestDelay: 3
 # get status and news on domains at the official site https://1337x-status.org/
 links:
   - https://1337x.to/
-  - https://1337x.st/
-  - https://x1337x.ws/
-  - https://x1337x.eu/
-  - https://x1337x.cc/
+  - https://1337x.tw/
+  - https://1337xto.to/
+  - https://1337xx.to/
+  - https://1337xxx.to/
+  - https://1337x.is/
+  - https://13377x.tw/
 legacylinks:
   - https://1337x.is/
   - https://1337x.gd/
