@@ -1,9 +1,9 @@
 ---
 id: tr4ker
 name: TR4KER
-description: "TR4KER is a FRENCH Private Torrent Tracker for MOVIES / TV / GENERAL"
+description: "TR4KER is a FRENCH Semi-Private Torrent Tracker for MOVIES / TV / GENERAL"
 language: fr-FR
-type: private
+type: semi-private
 encoding: UTF-8
 requestDelay: 1 # 60 request per minute
 links:
@@ -137,9 +137,6 @@ search:
     download:
       selector: enclosure
       attribute: url
-    infohash:
-      selector: "[name=infohash]"
-      attribute: value
     imdbid:
       selector: "[name=imdbid]"
       attribute: value
