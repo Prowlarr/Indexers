@@ -81,6 +81,11 @@ search:
     freetorrent: "{{ if .Config.freeleech }}1{{ else }}{{ end }}"
     searchsubmit: 1
 
+  keywordsfilters:
+    # strip season and/or ep
+    - name: re_replace
+      args: ["(?i)\\b(?:[SE]\\d{1,4}){1,2}\\b\\s?", ""]
+
   rows:
     selector: table#torrent_table > tbody > tr.torrent
 
