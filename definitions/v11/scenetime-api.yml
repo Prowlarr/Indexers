@@ -5,6 +5,7 @@ description: "SceneTime is a Private Torrent Tracker for MOVIES / TV / GENERAL"
 language: en-US
 type: private
 encoding: UTF-8
+requestDelay: 3
 links:
   - https://www.scenetime.com/
 
@@ -64,10 +65,6 @@ settings:
     type: checkbox
     label: Search freeleech only
     default: false
-  - name: info_vip
-    type: info
-    label: VIP
-    default: "Torznab API requires VIP/Donor status. Use the 'SceneTime' indexer if your account does not meet this requirement."
   - name: info_activity
     type: info
     label: Account Inactivity
