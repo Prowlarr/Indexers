@@ -196,8 +196,8 @@ search:
 
   fields:
     category:
-      selector: a[onclick]
-      attribute: onclick
+      selector: a[href*="tracker.php?f="]
+      attribute: href
       filters:
         - name: regexp
           args: f=(\d+)
