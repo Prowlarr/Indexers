@@ -1,72 +1,48 @@
 ---
-id: lastdigitalunderground
-name: Last Digital Underground
-description: "Last Digital Underground (LDU) is a Private Torrent Tracker for MOVIES / TV / GENERAL"
+id: 0dayfiles-api
+name: 0DayFiles (API)
+description: "0DayFiles is a Private Torrent Tracker for 0DAY / GENERAL"
 language: en-US
 type: private
 encoding: UTF-8
 links:
-  - https://theldu.to/
-legacylinks:
-  - https://theldu.net/
+  - https://0dayfiles.net/
 
 caps:
   categorymappings:
-    - {id: 1, cat: Movies, desc: "Films: General"}
-    - {id: 33, cat: Movies/Other, desc: "Films: [TMDB UnListed]"}
-    - {id: 21, cat: Movies/3D, desc: "Films: 3D"}
-    - {id: 25, cat: Movies/Other, desc: "Films: Musical"}
-    - {id: 18, cat: Movies/Other, desc: "Films: Silent"}
-    - {id: 24, cat: Movies/Other, desc: "Films: Holiday"}
-    - {id: 19, cat: Movies/Other, desc: "Films: Shorts"}
-    - {id: 42, cat: Movies/Other, desc: "Films: Shorts [TMDB UnListed]"}
-    - {id: 17, cat: TV/Documentary, desc: "Films: Documentary"}
-    - {id: 12, cat: Movies/Other, desc: "Films: FanEdits/Restorations"}
-    - {id: 58, cat: Movies/Foreign, desc: "Films: GER [No ENG subs]"}
-    - {id: 63, cat: Movies/Foreign, desc: "Films: POL [No ENG subs]"}
-    - {id: 57, cat: Movies/Foreign, desc: "Films: Desi [No ENG subs]"}
-    - {id: 59, cat: Movies/Foreign, desc: "Films: FRE [No ENG subs]"}
-    - {id: 27, cat: Movies/Foreign, desc: "Films SP1: Dubs/Cams/Vid Issues"}
-    - {id: 22, cat: Movies/Foreign, desc: "Films SP2: No English"}
-    - {id: 28, cat: Movies/Other, desc: "Films SP3: Other"}
-    - {id: 8, cat: Movies/Other, desc: "Anime: Films"}
-    - {id: 9, cat: TV/Anime, desc: "Anime: Series/OVAs"}
-    - {id: 2, cat: TV, desc: "Series/TV: Complete Seasons"}
-    - {id: 41, cat: TV, desc: "Series/TV: Single Episodes"}
-    - {id: 31, cat: TV/Foreign, desc: "Series/TV SP1: video issues or Dub"}
-    - {id: 29, cat: TV/Foreign, desc: "Series/TV SP2: No English"}
-    - {id: 32, cat: TV/Other, desc: "Series/TV SP3: Other"}
-    - {id: 38, cat: TV/Other, desc: "Series/TV [TMDB unlisted]"}
-    - {id: 40, cat: TV/Documentary, desc: "Series: Documentary"}
-    - {id: 46, cat: Other, desc: "Collections [Various Media]"}
-    - {id: 20, cat: TV/Other, desc: "Culture: Stand-up"}
-    - {id: 7, cat: Books/EBook, desc: "Culture: Ebooks"}
-    - {id: 3, cat: Audio, desc: "Culture: Music"}
-    - {id: 16, cat: Audio/Video, desc: "Culture: Music Videos"}
-    - {id: 34, cat: Audio/Audiobook, desc: "Culture: Audio Books"}
-    - {id: 35, cat: TV/Sport, desc: "Culture: Sports"}
-    - {id: 37, cat: TV/Other, desc: "Culture: Firearms and Freedom"}
-    - {id: 47, cat: PC/0day, desc: "Software: PC"}
-    - {id: 48, cat: PC/Mac, desc: "Software: Mac"}
-    - {id: 36, cat: Console, desc: "Software: Console/ROMS"}
-    - {id: 49, cat: PC, desc: "Software: Linux/Unix"}
-    - {id: 23, cat: Other, desc: "Other_Or_Not_Sure"}
-    - {id: 43, cat: Other, desc: "Internal Testing"}
-    - {id: 6, cat: XXX, desc: "Mature: NSFW [TMDB Listed]"}
-    - {id: 45, cat: XXX, desc: "Mature: NSFW [No ENG Subs]"}
-    - {id: 30, cat: XXX, desc: "Mature: NSFW [UnListed]"}
-    - {id: 52, cat: XXX, desc: "Mature: NSFW LGBTQ [UnListed]"}
-    - {id: 15, cat: XXX/Pack, desc: "Mature: NSFW (MegaPacks)"}
-    - {id: 10, cat: XXX, desc: "Mature: Hentai"}
-    - {id: 62, cat: XXX, desc: "Mature: NSFW Fansite"}
-    - {id: 61, cat: XXX, desc: "Mature: NSFW Parody"}
-    - {id: 60, cat: XXX, desc: "Mature: NSFW PMV"}
-    - {id: 14, cat: XXX/Other, desc: "Mature: Creators Corner"}
-    - {id: 39, cat: XXX/Other, desc: "Mature: NSFL [Listed]"}
-    - {id: 11, cat: XXX/Other, desc: "Mature: NSFL [Unlisted]"}
-    - {id: 44, cat: XXX/Other, desc: "Mature: Audio"}
-    - {id: 53, cat: XXX/Other, desc: "Mature: Ebooks"}
-    - {id: 51, cat: XXX/Other, desc: "Mature: Software & Games"}
+    - {id: 9, cat: Movies/SD, desc: "Movies/480p"}
+    - {id: 10, cat: Movies/UHD, desc: "Movies/4K"}
+    - {id: 11, cat: Movies/BluRay, desc: "Movies/Bluray"}
+    - {id: 12, cat: Movies/BluRay, desc: "Movies/Bluray-Full"}
+    - {id: 13, cat: Movies/SD, desc: "Movies/Cam"}
+    - {id: 14, cat: Movies/DVD, desc: "Movies/DVD-R"}
+    - {id: 17, cat: Movies, desc: "Movies/Packs"}
+    - {id: 18, cat: Movies/HD, desc: "Movies/x264"}
+    - {id: 19, cat: Movies/HD, desc: "Movies/x265"}
+    - {id: 20, cat: Movies/SD, desc: "Movies/XviD"}
+    - {id: 21, cat: TV/SD, desc: "TV/480p"}
+    - {id: 22, cat: TV/UHD, desc: "TV/4K"}
+    - {id: 23, cat: TV/HD, desc: "TV/Bluray"}
+    - {id: 25, cat: TV/SD, desc: "TV/DVD-Rip"}
+    - {id: 26, cat: TV/Other, desc: "TV/Mobile"}
+    - {id: 28, cat: TV, desc: "TV/Packs"}
+    - {id: 29, cat: TV/SD, desc: "TV/SD/x264"}
+    - {id: 30, cat: TV/HD, desc: "TV/x264"}
+    - {id: 31, cat: TV/HD, desc: "TV/x265"}
+    - {id: 32, cat: TV/SD, desc: "TV/XviD"}
+    - {id: 33, cat: Console, desc: "Nintendo"}
+    - {id: 34, cat: PC/Games, desc: "PC/Games"}
+    - {id: 38, cat: Audio, desc: "Music/Audio"}
+    - {id: 39, cat: Audio/Lossless, desc: "Music/Flac"}
+    - {id: 41, cat: Audio, desc: "Music/Packs"}
+    - {id: 42, cat: Audio/Video, desc: "Music/Video"}
+    - {id: 43, cat: TV/Anime, desc: "Anime"}
+    - {id: 44, cat: Audio/Audiobook, desc: "Audio Books"}
+    - {id: 46, cat: Books, desc: "Books"}
+    - {id: 48, cat: TV/Documentary, desc: "Documentary"}
+    - {id: 49, cat: Other, desc: "Educational"}
+    - {id: 51, cat: PC/Mac, desc: "Mac"}
+    - {id: 1, cat: PC/0day, desc: "Software"}
 
   modes:
     search: [q]
@@ -82,7 +58,7 @@ settings:
   - name: info_key
     type: info
     label: About your API key
-    default: "Find or Generate a new API Token by accessing your <a href=\"https://theldu.to/\" target=\"_blank\">Last Digital Underground</a> account <i>My Settings</i> page and clicking on the <b>API Key</b> tab."
+    default: "Find or Generate a new API Token by accessing your <a href=\"https://0dayfiles.net/\" target=\"_blank\">0DayFiles</a> account <i>My Settings</i> page and clicking on the <b>API Key</b> tab."
   - name: freeleech
     type: checkbox
     label: Search freeleech only
@@ -107,15 +83,10 @@ settings:
     options:
       desc: desc
       asc: asc
-  - name: info_activity
-    type: info
-    label: Account Inactivity
-    default: "You must log in once every 60 days. You must download at least 1 item within your first month."
 
 login:
   path: api/torrents
   method: get
-  inputs: {} # TODO: remove in v10
   error:
     - selector: a[href*="/login"]
       message:
@@ -188,8 +159,6 @@ search:
         - name: re_replace
           args: ["(?i)(Science Fiction)", "Science_Fiction"]
         - name: re_replace
-          args: ["(?i)(TV Movie)", "TV_Movie"]
-        - name: replace
           args: [" & ", "_&_"]
     _internal:
       selector: internal
@@ -220,28 +189,13 @@ search:
         False: "{{ .False }}"
         True: "{{ .True }}"
     downloadvolumefactor_freeleech:
+      # api returns 0%, 25%, 50%, 75%, 100%
       selector: freeleech
       case:
         0%: 1 # not free
-        5%: 0.95
-        10%: 0.9
-        15%: 0.85
-        20%: 0.8
         25%: 0.75
-        30%: 0.7
-        35%: 0.65
-        40%: 0.6
-        45%: 0.55
         50%: 0.5
-        55%: 0.45
-        60%: 0.4
-        65%: 0.35
-        70%: 0.3
         75%: 0.25
-        80%: 0.2
-        85%: 0.15
-        90%: 0.1
-        95%: 0.05
         100%: 0 # freeleech
         "*": 0 # catch errors
     downloadvolumefactor:
@@ -254,10 +208,9 @@ search:
         True: 2 # double
     uploadvolumefactor:
       text: "{{ if .Result._featured }}2{{ else }}{{ .Result.uploadvolumefactor_double_upload }}{{ end }}"
-# global MR is 0.4 but torrents must be seeded for 7 days regardless of ratio
-#    minimumratio:
-#      text: 0.4
+    minimumratio:
+      text: 1.0
     minimumseedtime:
       # 7 days (as seconds = 7 x 24 x 60 x 60)
       text: 604800
-# json UNIT3D 9.2.0 (custom)
+# json UNIT3D 9.2.0
