@@ -9,11 +9,10 @@
 ### - Automated conflict resolution for indexer syncing
 ##
 ## Requirements
-### Prowlarr/Indexers local git repo exists
+### Prowlarr/Indexers local git repo or fork exists
 ### Set variables as needed
-### Typically only prowlarr_git_path would be needed to be set
 ## Using the Script
-### Suggested to run from the current directory being Prowlarr/Indexers local Repo using Git Bash `./scripts/indexer-sync-v2.sh`
+### Suggested to run from the current directory being Prowlarr/Indexers local Repo or fork using Bash / Git Bash `./scripts/indexer-sync-v2.sh`
 ### Use -d for DEBUG logging, -v for VERBOSE logging
 # Default values
 DEBUG=${DEBUG:-false}
@@ -29,6 +28,7 @@ PROWLARR_COMMIT_TEMPLATE_APPEND=""
 PROWLARR_REPO_URL="https://github.com/Prowlarr/Indexers.git"
 JACKETT_REPO_URL="https://github.com/Jackett/Jackett.git"
 PROWLARR_RELEASE_BRANCH="master"
+PROWLARR_REPO_REMOTE_NAME="z_Prowlarr"
 JACKETT_BRANCH="master"
 JACKETT_REMOTE_NAME="z_Jackett"
 SKIP_BACKPORT=false
@@ -380,9 +380,20 @@ configure_git() {
     prowlarr_remote_exists=$(echo "$git_remotes" | grep "$prowlarr_remote_name")
     prowlarr_push_remote_exists=$(echo "$git_remotes" | grep "$prowlarr_push_remote")
     jackett_remote_exists=$(echo "$git_remotes" | grep "$JACKETT_REMOTE_NAME")
+    prowlarr_upstream_exists=$(echo "$git_remotes" | grep "$PROWLARR_REPO_REMOTE_NAME")
 
     if [ -z "$prowlarr_remote_exists" ]; then
         git remote add "$prowlarr_remote_name" "$PROWLARR_REPO_URL"
+    else
+        # validate the remote to reset from is $PROWLARR_REPO_URL unless is_dev_exec
+        prowlarr_remote_url_check=$(git remote get-url origin)
+        if [ "$prowlarr_remote_url_check" != "$PROWLARR_REPO_URL" ] && [ "$is_dev_exec" != true ]; then
+            if [ -z "$prowlarr_upstream_exists" ]; then
+                git remote add "$PROWLARR_REPO_REMOTE_NAME" "$PROWLARR_REPO_URL"
+            fi
+            log "DEBUG" "Forked Repo - Setting prowlarr_remote_name to $PROWLARR_REPO_REMOTE_NAME"
+            prowlarr_remote_name=$PROWLARR_REPO_REMOTE_NAME
+        fi
     fi
 
     if [ -z "$jackett_remote_exists" ]; then
@@ -501,6 +512,9 @@ pull_cherry_and_merge() {
     existing_message=$(git log --format=%B -n1)
     existing_message_ln1=$(echo "$existing_message" | awk 'NR==1')
 
+    log "DEBUG" "Existing Commit Message: $existing_message"
+    log "DEBUG" "Existing Commit Message Line 1: $existing_message_ln1"
+
     log "DEBUG" "Searching for commits with template: '$PROWLARR_COMMIT_TEMPLATE'"
     log "DEBUG" "Searching in last $MAX_COMMITS_TO_SEARCH commits"
 
@@ -566,6 +580,10 @@ pull_cherry_and_merge() {
     fi
     log "INFO" "Commit Range is: [$commit_range]"
     log "INFO" "-- Beginning Cherrypicking ---"
+    # If diff.renames is true then removals and additions can be rendered as renames instead
+    # Docs say merge.renames defaults to diff.renames, but false causes directoryRenames to be ignored
+    git config diff.renames false
+    git config merge.renames true
     git config merge.directoryRenames true
     git config merge.verbosity 0
     sleep 2
@@ -1132,7 +1150,7 @@ cleanup_and_commit() {
 push_changes() {
     push_branch="$prowlarr_target_branch"
     log "INFO" "Evaluating for Push to Remote"
-    log "DEBUG" " Push Modes for Branch: $push_branch"
+    log "DEBUG" "Push Modes for Branch: $push_branch"
     log "DEBUG" "Push To Remote: $push_mode with Force Push With Lease: $push_mode_force"
 
     # Safety check: NEVER force push to master or main branches
