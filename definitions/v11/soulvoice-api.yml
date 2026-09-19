@@ -1,0 +1,151 @@
+---
+id: soulvoice-api
+name: SoulVoice (聆音Club) (API)
+description: "SoulVoice (聆音Club) is a CHINESE Private Torrent Tracker for MOVIES / TV / GENERAL"
+language: zh-CN
+type: private
+encoding: UTF-8
+links:
+  - https://pt.soulvoice.club/
+
+caps:
+  categorymappings:
+    - {id: 401, cat: Movies, desc: "Movies/电影"}
+    - {id: 402, cat: TV, desc: "TV Series/电视剧"}
+    - {id: 403, cat: TV, desc: "TV Show/综艺"}
+    - {id: 404, cat: TV/Documentary, desc: "Documentaries/纪录片"}
+    - {id: 405, cat: TV/Anime, desc: "Animations/动漫"}
+    - {id: 406, cat: Audio/Video, desc: "MusicVideo/音乐视频"}
+    - {id: 407, cat: Other, desc: "Study/教学"}
+    - {id: 408, cat: Audio, desc: "HQ Audio/音乐"}
+    - {id: 409, cat: Other, desc: "其它 (Other)"}
+
+  modes:
+    search: [q]
+    tv-search: [q, season, ep]
+    movie-search: [q]
+    music-search: [q]
+
+settings:
+  - name: apikey
+    type: text
+    label: API Token
+  - name: info_apikey
+    type: info
+    label: About your API Token
+    default: "Generate an API token from your <a href=\"https://pt.soulvoice.club/\" target=\"_blank\">SoulVoice</a> account control panel. The token is sent as <b>Authorization: Bearer</b> and is used for searching only."
+  - name: passkey
+    type: text
+    label: Passkey
+  - name: info_passkey
+    type: info
+    label: About your Passkey
+    default: "The API token does <b>not</b> authorise downloads; <b>download.php</b> requires your passkey. Find it on your profile page, or copy it out of the announce URL of any torrent you already have."
+  - name: sort
+    type: select
+    label: Sort requested from site
+    default: "-id"
+    options:
+      "-id": created
+      "-seeders": seeders
+      "-size": size
+      "-times_completed": grabs
+  - name: info_freeleech
+    type: info
+    label: About freeleech
+    default: "There is deliberately no <i>freeleech only</i> option. The site's <b>sp_state</b> column records only per-torrent promotions, so filtering on it silently hides everything made free by a site-wide event. This definition reads the effective promotion from <b>promotion_info</b> on every result instead, which is correct in both cases."
+  - name: info_activity
+    type: info
+    label: Account Inactivity
+    default: "Account retention rules:<ol><li>Veteran Users users and above will be retained forever</li><li>Elite Users and above will not have their account deleted after parking (in the Control Panel)</li><li>Users with a parked account will be deleted if they do not log in for 180 consecutive days</li><li>Users with a non-parked account will be banned if they do not log in for 60 consecutive days</li><li>Users with no traffic (ie, upload/download data are both 0) will be banned if they do not log in for 7 consecutive days.</li></ol>"
+
+login:
+  path: api/v1/torrents
+  method: get
+  inputs: {}
+  headers:
+    Authorization: ["Bearer {{ .Config.apikey }}"]
+  error:
+    - selector: :root:contains("Unauthenticated")
+      message:
+        text: "The API token was not accepted by {{ .Config.sitelink }}."
+    - selector: :root:contains("could not be found")
+      message:
+        text: "{{ .Config.sitelink }} does not expose the NexusPHP v1 API."
+
+search:
+  paths:
+    # NexusPHP Laravel API, auth:sanctum. Routes: routes/api.php
+    # Filters are whitelisted in TorrentRepository::$allowFilters; 'title' is a
+    # custom filter registered in TorrentRepository::getList.
+    - path: api/v1/torrents
+      response:
+        type: json
+
+  headers:
+    Authorization: ["Bearer {{ .Config.apikey }}"]
+
+  inputs:
+    "filter[title]": "{{ .Keywords }}"
+    sort: "{{ .Config.sort }}"
+
+  keywordsfilters:
+    # the site stores dotted release names but the title filter matches on words
+    - name: re_replace
+      args: ["\\.", " "]
+
+  rows:
+    selector: data.data
+
+  fields:
+    _id:
+      selector: id
+    title:
+      selector: name
+    details:
+      # absolute: relative paths resolve against the SEARCH path (api/v1/), not the site root
+      text: "{{ .Config.sitelink }}details.php?id={{ .Result._id }}&hit=1"
+    download:
+      # the bearer token does not authorise download.php - it answers 302 with or
+      # without the header - so the passkey is what actually fetches the torrent.
+      text: "{{ .Config.sitelink }}download.php?id={{ .Result._id }}&passkey={{ .Config.passkey }}"
+    infohash:
+      selector: hash
+    poster:
+      selector: cover
+      optional: true
+    description:
+      selector: small_descr
+      optional: true
+    category:
+      selector: category
+    size:
+      selector: size
+    files:
+      selector: numfiles
+    seeders:
+      selector: seeders
+    leechers:
+      selector: leechers
+    grabs:
+      selector: times_completed
+    date:
+      # "2026-09-19 16:50" in the site's own timezone (CST, UTC+8)
+      selector: added
+      filters:
+        - name: append
+          args: " +08:00"
+        - name: dateparse
+          args: "yyyy-MM-dd HH:mm zzz"
+    downloadvolumefactor:
+      # promotion_info is the EFFECTIVE promotion and already accounts for
+      # site-wide freeleech events; sp_state is only the stored per-torrent one.
+      selector: promotion_info.down_multiplier
+    uploadvolumefactor:
+      selector: promotion_info.up_multiplier
+    minimumratio:
+      text: 2.0
+    minimumseedtime:
+      # 3 days (as seconds = 3 x 24 x 60 x 60)
+      text: 259200
+# NexusPHP v1.10.2 json api 2026-09-19
