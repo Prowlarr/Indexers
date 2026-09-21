@@ -50,10 +50,6 @@ settings:
       "-seeders": seeders
       "-size": size
       "-times_completed": grabs
-  - name: info_freeleech
-    type: info
-    label: About freeleech
-    default: "There is deliberately no <i>freeleech only</i> option. The site's <b>sp_state</b> column records only per-torrent promotions, so filtering on it silently hides everything made free by a site-wide event. This definition reads the effective promotion from <b>promotion_info</b> on every result instead, which is correct in both cases."
   - name: info_activity
     type: info
     label: Account Inactivity
@@ -74,9 +70,8 @@ login:
 
 search:
   paths:
-    # NexusPHP Laravel API, auth:sanctum. Routes: routes/api.php
-    # Filters are whitelisted in TorrentRepository::$allowFilters; 'title' is a
-    # custom filter registered in TorrentRepository::getList.
+    # NexusPHP Laravel API (auth:sanctum). Filters are whitelisted in
+    # TorrentRepository::$allowFilters; `title` is a custom filter there.
     - path: api/v1/torrents
       response:
         type: json
@@ -85,8 +80,11 @@ search:
     Authorization: ["Bearer {{ .Config.apikey }}"]
 
   inputs:
+    # ApiQueryBuilder `in` operator takes an array, so repeat the param
+    $raw: "{{ range .Categories }}&filter[category][in][]={{.}}{{end}}"
     "filter[title]": "{{ .Keywords }}"
-    sort: "{{ .Config.sort }}"
+    # `sorts`, plural - ApiQueryBuilder::PARAM_NAME_SORTS. `sort` is ignored.
+    sorts: "{{ .Config.sort }}"
 
   keywordsfilters:
     # the site stores dotted release names but the title filter matches on words
@@ -102,11 +100,11 @@ search:
     title:
       selector: name
     details:
-      # absolute: relative paths resolve against the SEARCH path (api/v1/), not the site root
+      # absolute: relative paths resolve against the search path, not the site root
       text: "{{ .Config.sitelink }}details.php?id={{ .Result._id }}&hit=1"
     download:
-      # the bearer token does not authorise download.php - it answers 302 with or
-      # without the header - so the passkey is what actually fetches the torrent.
+      # the bearer token does not authorise download.php (302 either way);
+      # the passkey is what fetches the torrent
       text: "{{ .Config.sitelink }}download.php?id={{ .Result._id }}&passkey={{ .Config.passkey }}"
     infohash:
       selector: hash
@@ -135,8 +133,9 @@ search:
         - name: dateparse
           args: "yyyy-MM-dd HH:mm zzz"
     downloadvolumefactor:
-      # promotion_info is the EFFECTIVE promotion and already accounts for
-      # site-wide freeleech events; sp_state is only the stored per-torrent one.
+      # promotion_info is the EFFECTIVE promotion and accounts for site-wide
+      # freeleech events. sp_state is only the stored per-torrent promotion, so
+      # it reads 1 on a torrent the site has made free - do not use it here.
       selector: promotion_info.down_multiplier
     uploadvolumefactor:
       selector: promotion_info.up_multiplier
