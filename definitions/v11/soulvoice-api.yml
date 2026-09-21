@@ -62,7 +62,8 @@ settings:
 login:
   path: api/v1/torrents
   method: get
-  inputs: {}
+  inputs:
+    per_page: 1
   headers:
     Authorization: ["Bearer {{ .Config.apikey }}"]
   error:
