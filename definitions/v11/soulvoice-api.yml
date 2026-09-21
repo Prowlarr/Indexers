@@ -112,10 +112,8 @@ search:
       selector: hash
     poster:
       selector: cover
-      optional: true
     description:
       selector: small_descr
-      optional: true
     category:
       selector: category
     size:
