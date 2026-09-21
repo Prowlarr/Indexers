@@ -145,4 +145,4 @@ search:
     minimumseedtime:
       # 3 days (as seconds = 3 x 24 x 60 x 60)
       text: 259200
-# NexusPHP v1.10.2 json api 2026-09-19
+# JSON api NexusPHP v1.10.2 2026-09-19
