@@ -1,86 +1,132 @@
 {
     "$schema": "https://json-schema.org/draft/2019-09/schema",
     "$ref": "#/definitions/SchemaRoot",
+    "title": "Prowlarr Cardigann indexer definition (v11)",
+    "description": "Schema for Prowlarr Cardigann YAML indexer definitions, schema version 11. See the Cardigann YAML Definition page on the Servarr wiki for examples.",
     "definitions": {
         "SchemaRoot": {
+            "description": "Root of an indexer definition: header, caps, settings, login, search and download blocks.",
             "type": "object",
             "additionalProperties": false,
             "properties": {
                 "id": {
+                    "title": "ID",
+                    "description": "Internal name of the indexer. Must be unique. Usually the site name in lower case without special characters or spaces.",
                     "type": "string"
                 },
                 "replaces": {
+                    "title": "Replaces",
+                    "description": "Old indexer IDs this definition replaces after a rename. Jackett field; Prowlarr does not read it.",
                     "type": "array",
                     "uniqueItems": true,
                     "items": {
+                        "title": "Replaced ID",
                         "type": "string"
                     }
                 },
                 "name": {
+                    "title": "Name",
+                    "description": "Display name of the indexer.",
                     "type": "string"
                 },
                 "description": {
+                    "title": "Description",
+                    "description": "Short description of the site shown for the indexer.",
                     "type": "string"
                 },
                 "language": {
+                    "title": "Language",
+                    "description": "Language code of the main language used on the site, usually from the site's <html lang> attribute.",
                     "type": "string",
                     "enum": ["af", "af-ZA", "ar", "ar-AE", "ar-BH", "ar-DZ", "ar-EG", "ar-IQ", "ar-JO", "ar-KW", "ar-LB", "ar-LY", "ar-MA", "ar-OM", "ar-QA", "ar-SA", "ar-SY", "ar-TN", "ar-YE", "az", "az-AZ", "be", "be-BY", "bg", "bg-BG", "bs-BA", "ca", "ca-ES", "cs", "cs-CZ", "cy", "cy-GB", "da", "da-DK", "de", "de-AT", "de-CH", "de-DE", "de-LI", "de-LU", "dv", "dv-MV", "el", "el-GR", "en", "en-AU", "en-BZ", "en-CA", "en-CB", "en-GB", "en-IE", "en-JM", "en-NZ", "en-PH", "en-TT", "en-US", "en-ZA", "en-ZW", "eo", "es", "es-AR", "es-BO", "es-CL", "es-CO", "es-CR", "es-DO", "es-EC", "es-ES", "es-GT", "es-HN", "es-MX", "es-NI", "es-PA", "es-PE", "es-PR", "es-PY", "es-SV", "es-UY", "es-VE", "et", "et-EE", "eu", "eu-ES", "fa", "fa-IR", "fi", "fi-FI", "fo", "fo-FO", "fr", "fr-BE", "fr-CA", "fr-CH", "fr-FR", "fr-LU", "fr-MC", "gl", "gl-ES", "gu", "gu-IN", "he", "he-IL", "hi", "hi-IN", "hr", "hr-BA", "hr-HR", "hu", "hu-HU", "hy", "hy-AM", "id", "id-ID", "is", "is-IS", "it", "it-CH", "it-IT", "ja", "ja-JP", "ka", "ka-GE", "kk", "kk-KZ", "kn", "kn-IN", "ko", "ko-KR", "kok", "kok-IN", "ky", "ky-KG", "lt", "lt-LT", "lv", "lv-LV", "mi", "mi-NZ", "mk", "mk-MK", "mn", "mn-MN", "mr", "mr-IN", "ms", "ms-BN", "ms-MY", "mt", "mt-MT", "nb", "nb-NO", "nl", "nl-BE", "nl-NL", "nn-NO", "ns", "ns-ZA", "pa", "pa-IN", "pl", "pl-PL", "ps", "ps-AR", "pt", "pt-BR", "pt-PT", "qu", "qu-BO", "qu-EC", "qu-PE", "ro", "ro-RO", "ru", "ru-RU", "sa", "sa-IN", "se", "se-FI", "se-NO", "se-SE", "sk", "sk-SK", "sl", "sl-SI", "sq", "sq-AL", "sr-BA", "sr-SP", "sv", "sv-FI", "sv-SE", "sw", "sw-KE", "syr", "syr-SY", "ta", "ta-IN", "te", "te-IN", "th", "th-TH", "tl", "tl-PH", "tn", "tn-ZA", "tr", "tr-TR", "tt", "tt-RU", "ts", "uk", "uk-UA", "ur", "ur-PK", "uz", "uz-UZ", "vi", "vi-VN", "xh", "xh-ZA", "zh", "zh-CN", "zh-HK", "zh-MO", "zh-SG", "zh-TW", "zu", "zu-ZA"]
                 },
                 "type": {
+                    "title": "Type",
+                    "description": "Indexer privacy. public: no registration required. semi-private: registration required but always open. private: invite or application needed. Magnet links are not generated from an infohash for private indexers.",
                     "type": "string",
                     "enum": ["public", "semi-private", "private"]
                 },
                 "encoding": {
+                    "title": "Encoding",
+                    "description": "Character encoding of the site, usually from its <meta charset> tag. Used for requests and URL encoding. Default: UTF-8.",
                     "type": "string"
                 },
                 "followredirect": {
+                    "title": "Follow redirect",
+                    "description": "Follow HTTP redirects when loading the login form page (login method form). Default: false.",
                     "type": "boolean"
                 },
                 "testlinktorrent": {
+                    "title": "Test link torrent",
+                    "description": "When download selectors find a non-magnet link, fetch it first and skip to the next selector if the response is not a torrent file. Default: true.",
                     "type": "boolean"
                 },
                 "requestDelay": {
+                    "title": "Request delay",
+                    "description": "Minimum seconds between requests to the site. Only applies when greater than the default 2 second rate limit.",
                     "type": "number"
                 },
                 "links": {
+                    "title": "Links",
+                    "description": "Known site URLs. The first is the default and the user can pick any of them. Each must end with /.",
                     "type": "array",
                     "uniqueItems": true,
                     "items": {
+                        "title": "Link",
+                        "description": "Site URL ending with /.",
                         "type": "string",
                         "format": "uri"
                     }
                 },
                 "legacylinks": {
+                    "title": "Legacy links",
+                    "description": "Old site URLs that no longer work. A configured legacy URL is replaced with the first entry in links.",
                     "type": "array",
                     "uniqueItems": true,
                     "items": {
+                        "title": "Legacy link",
                         "type": "string",
                         "format": "uri"
                     }
                 },
                 "certificates": {
+                    "title": "Certificates",
+                    "description": "SHA-1 fingerprints of untrusted HTTPS certificates to accept. Loaded by Prowlarr but not used.",
                     "type": "array",
                     "uniqueItems": true,
                     "items": {
+                        "title": "Certificate fingerprint",
+                        "description": "SHA-1 hash.",
                         "type": "string"
                     }
                 },
                 "caps": {
+                    "title": "Capabilities",
+                    "description": "Category mappings and supported search modes.",
                     "$ref": "#/definitions/Caps"
                 },
                 "settings": {
+                    "title": "Settings",
+                    "description": "Config fields shown for the indexer. If omitted, username and password are used. Set to [] when no settings are needed.",
                     "type": "array",
                     "items": {
+                        "title": "Setting",
                         "$ref": "#/definitions/SettingsField"
                     }
                 },
                 "login": {
+                    "title": "Login",
+                    "description": "Login configuration. Only needed if the site requires a login.",
                     "$ref": "#/definitions/Login"
                 },
                 "search": {
+                    "title": "Search",
+                    "description": "Search requests and result parsing.",
                     "$ref": "#/definitions/Search"
                 },
                 "download": {
+                    "title": "Download",
+                    "description": "Download handling. Only needed if the download link from the search results cannot be used directly.",
                     "$ref": "#/definitions/DownloadBlock"
                 }
             },
@@ -98,32 +144,46 @@
             "title": "SchemaRoot"
         },
         "Caps": {
+            "description": "Capabilities of the indexer: category mappings and supported search modes. Set either categories or categorymappings.",
             "type": "object",
             "additionalProperties": false,
             "properties": {
                 "categories": {
+                    "title": "Categories",
+                    "description": "Simple map of tracker category ID to Newznab category name. Use either this or categorymappings.",
                     "type": "object",
                     "additionalProperties": false,
                     "patternProperties": {
                         "^.*$": {
+                            "title": "Newznab category",
+                            "description": "Newznab category name for this tracker category ID. Unknown names are logged and skipped.",
                             "$ref": "#/definitions/IndexerCategories"
                         }
                     }
                 },
                 "categorymappings": {
+                    "title": "Category mappings",
+                    "description": "List of tracker categories with their Newznab category. Use either this or categories.",
                     "type": "array",
                     "uniqueItems": true,
                     "items": {
+                        "title": "Category mapping",
                         "$ref": "#/definitions/CategoryMapping"
                     }
                 },
                 "modes": {
+                    "title": "Search modes",
+                    "description": "Supported search modes and the parameters each one accepts.",
                     "$ref": "#/definitions/Modes"
                 },
                 "allowrawsearch": {
+                    "title": "Allow raw search",
+                    "description": "Advertise raw search support (searchEngine=\"raw\") in the capabilities. Default: false.",
                     "type": "boolean"
                 },
                 "allowtvsearchimdb": {
+                    "title": "Allow TV search by IMDb",
+                    "description": "Jackett field. Prowlarr does not read it; add imdbid to tv-search instead.",
                     "type":"boolean"
                 }
             },
@@ -132,11 +192,15 @@
             ],
             "oneOf": [
                 {
+                    "title": "Using categories",
+                    "description": "caps with a categories map.",
                     "required": [
                         "categories"
                     ]
                 },
                 {
+                    "title": "Using categorymappings",
+                    "description": "caps with a categorymappings list.",
                     "required": [
                         "categorymappings"
                     ]
@@ -145,22 +209,31 @@
             "title": "Caps"
         },
         "CategoryMapping": {
+            "description": "Maps one tracker category to a Newznab category.",
             "type": "object",
             "additionalProperties": false,
             "properties": {
                 "id": {
+                    "title": "ID",
+                    "description": "Tracker category ID, as used in search inputs (.Categories) and in the category result field.",
                     "oneOf": [
-                        {"type": "integer"},
-                        {"type": "string"}
+                        {"title": "Integer ID", "type": "integer"},
+                        {"title": "String ID", "type": "string"}
                     ]
                 },
                 "cat": {
+                    "title": "Newznab category",
+                    "description": "Newznab category name this tracker category maps to. Unknown names are logged and the mapping is skipped.",
                     "$ref": "#/definitions/IndexerCategories"
                 },
                 "desc": {
+                    "title": "Description",
+                    "description": "Tracker category name. Creates a matching custom category and is the value matched by the categorydesc result field (case-insensitive).",
                     "type": "string"
                 },
                 "default": {
+                    "title": "Default",
+                    "description": "Use this category when a search has no mapped categories. Default: false.",
                     "type": "boolean"
                 }
             },
@@ -171,45 +244,61 @@
             "title": "CategoryMapping"
         },
         "Modes": {
+            "description": "Supported search modes. search is required. Duplicate parameters or unknown modes are rejected by Prowlarr.",
             "type": "object",
             "additionalProperties": false,
             "properties": {
                 "search": {
+                    "title": "Search",
+                    "description": "Basic search. Must be exactly [q].",
                     "type": "array",
                     "uniqueItems": true,
                     "items": {
+                        "title": "Search parameter",
                         "type": "string",
                         "enum": ["q"]
                     }
                 },
                 "tv-search": {
+                    "title": "TV search",
+                    "description": "Parameters supported for TV searches.",
                     "type": "array",
                     "uniqueItems": true,
                     "items": {
+                        "title": "TV search parameter",
                         "type": "string",
                         "enum": ["q", "season", "ep", "imdbid", "tvdbid", "tmdbid", "tvmazeid", "traktid", "doubanid", "year", "genre"]
                     }
                 },
                 "movie-search": {
+                    "title": "Movie search",
+                    "description": "Parameters supported for movie searches.",
                     "type": "array",
                     "uniqueItems": true,
                     "items": {
+                        "title": "Movie search parameter",
                         "type": "string",
                         "enum": ["q", "imdbid", "tmdbid", "traktid", "doubanid", "year", "genre"]
                     }
                 },
                 "music-search": {
+                    "title": "Music search",
+                    "description": "Parameters supported for music searches.",
                     "type": "array",
                     "uniqueItems": true,
                     "items": {
+                        "title": "Music search parameter",
                         "type": "string",
                         "enum": ["q", "album", "artist", "label", "track", "year", "genre"]
                     }
                 },
                 "book-search": {
+                    "title": "Book search",
+                    "description": "Parameters supported for book searches.",
                     "type": "array",
                     "uniqueItems": true,
                     "items": {
+                        "title": "Book search parameter",
                         "type": "string",
                         "enum": ["q", "title", "author", "publisher", "year", "genre"]
                     }
@@ -221,44 +310,62 @@
             "title": "Modes"
         },
         "SettingsField": {
+            "description": "One config field shown for the indexer. Its value is available as .Config.<name>.",
             "type": "object",
             "additionalProperties": false,
             "properties": {
                 "name": {
+                    "title": "Name",
+                    "description": "Variable name. Referenced as .Config.<name>. The cookie login method reads the setting named cookie.",
                     "type": "string"
                 },
                 "label": {
+                    "title": "Label",
+                    "description": "Display label.",
                     "type": "string"
                 },
                 "type":{
+                    "title": "Type",
+                    "description": "text: text box. password: masked text box. checkbox: .Config.<name> is .True when ticked, else empty. select: drop-down of options; .Config.<name> is the selected key. info: info box showing label and default. info_category_8000, info_cookie, info_flaresolverr, info_useragent: predefined info boxes.",
                     "type": "string",
                     "enum": ["info", "text", "password", "checkbox", "select", "info_category_8000", "info_cookie", "info_flaresolverr", "info_useragent"]
                 },
                 "default": {
+                    "title": "Default",
+                    "description": "Default value. text/password: initial value. checkbox: true or false (default false). select: key of the default option. info: text shown in the box.",
                     "oneOf": [
                         {
+                            "title": "String default",
                             "type": "string"
                         },
                         {
+                            "title": "Integer default",
                             "type": "integer"
                         },
                         {
+                            "title": "Boolean default",
                             "type": "boolean"
                         }
                     ]
                 },
                 "options": {
+                    "title": "Options",
+                    "description": "select only. Map of option key to display name. Options are listed sorted by key.",
                     "type": "object",
                     "additionalProperties": false,
                     "patternProperties": {
                         "^.*$": {
+                            "title": "Option display name",
                             "type": "string"
                         }
                     }
                 },
                 "defaults": {
+                    "title": "Defaults",
+                    "description": "Default keys for a multi-select field. Prowlarr does not support multi-select and does not read this.",
                     "type": "array",
                     "items": {
+                        "title": "Option key",
                         "type": "string"
                     }
                 }
@@ -270,81 +377,120 @@
             "title": "SettingsField"
         },
         "Login": {
+            "description": "How to log in to the site and how to detect a failed or expired login.",
             "type": "object",
             "additionalProperties": false,
             "properties": {
                 "method": {
+                    "title": "Method",
+                    "description": "form: load path, fill the HTML form and POST it. post: POST inputs to path. get: send inputs as a query string to path. cookie: use the cookie setting. oneurl: GET path with inputs.oneurl appended. Default: form.",
                     "type": "string",
                     "enum": ["form", "post", "cookie", "get", "oneurl"]
                 },
                 "cookies": {
+                    "title": "Cookies",
+                    "description": "Extra cookies (name=value) sent with the post login request and the form page request.",
                     "type": "array",
                     "items": {
+                        "title": "Cookie",
+                        "description": "Cookie as name=value.",
                         "type": "string"
                     }
                 },
                 "path": {
+                    "title": "Path",
+                    "description": "Login URL, relative to the site link. form: page containing the form. post: POST target. get and oneurl: request URL. Supports templates.",
                     "type": "string"
                 },
                 "submitpath": {
+                    "title": "Submit path",
+                    "description": "form only. POST target to use instead of the form's action attribute.",
                     "type": "string"
                 },
                 "form": {
+                    "title": "Form selector",
+                    "description": "form only. CSS selector of the login form. Default: form.",
                     "type": "string"
                 },
                 "captcha": {
+                    "title": "Captcha",
+                    "description": "form only. Captcha shown to the user when adding the indexer. Adds a CAPTCHA field to the indexer settings.",
                     "$ref": "#/definitions/CaptchaBlock"
                 },
                 "inputs": {
+                    "title": "Inputs",
+                    "description": "Login parameters (name to template value). post/form: POST body. get: query string. oneurl: the oneurl key is appended to path. Not used by the cookie method.",
                     "type": "object",
                     "additionalProperties": false,
                     "patternProperties": {
                         "^.*$": {
+                            "title": "Input value",
+                            "description": "Value or template.",
                             "oneOf": [
-                                {"type": "number"},
-                                {"type": "string"},
-                                {"type": "boolean"}
+                                {"title": "Number value", "type": "number"},
+                                {"title": "String value", "type": "string"},
+                                {"title": "Boolean value", "type": "boolean"}
                             ]
                         }
                     }
                 },
                 "selectors": {
+                    "title": "Selectors",
+                    "description": "form only. Treat input names and captcha input as CSS selectors and use the matched element's name attribute. For forms with dynamic input names. Default: false.",
                     "type": "boolean"
                 },
                 "selectorinputs": {
+                    "title": "Selector inputs",
+                    "description": "form only. POST parameters whose values are extracted from the login page with selectors, for example CSRF tokens.",
                     "type": "object",
                     "additionalProperties": false,
                     "patternProperties": {
                         "^[A-Za-z0-9_]*$": {
+                            "title": "Selector input",
+                            "description": "Selector for the parameter value.",
                             "$ref": "#/definitions/SelectorBlock"
                         }
                     }
                 },
                 "getselectorinputs": {
+                    "title": "GET selector inputs",
+                    "description": "form only. Parameters extracted from the login page with selectors and added to the submit URL query string instead of the POST body.",
                     "type": "object",
                     "additionalProperties": false,
                     "patternProperties": {
                         "^[A-Za-z0-9_]*$": {
+                            "title": "GET selector input",
+                            "description": "Selector for the parameter value.",
                             "$ref": "#/definitions/SelectorBlock"
                         }
                     }
                 },
                 "error": {
+                    "title": "Error",
+                    "description": "Checks on the login response. If a selector matches, login fails with the matched text as the error.",
                     "type": "array",
                     "items": {
+                        "title": "Login error check",
                         "$ref": "#/definitions/ErrorBlock"
                     }
                 },
                 "test": {
+                    "title": "Test",
+                    "description": "Login check. Prowlarr applies test.selector to HTML search responses; no match triggers a new login.",
                     "$ref": "#/definitions/PageTestBlock"
                 },
                 "headers": {
+                    "title": "Headers",
+                    "description": "Extra HTTP headers for login requests. If omitted, search.headers is used.",
                     "type": "object",
                     "additionalProperties": false,
                     "patternProperties": {
                         "^[A-Za-z0-9-]*$": {
+                            "title": "Header values",
+                            "description": "Header values. Prowlarr sends only the first value. Supports templates.",
                             "type": "array",
                             "items": {
+                                "title": "Header value",
                                 "type": "string"
                             }
                         }
@@ -354,13 +500,18 @@
             "title": "Login"
         },
         "PageTestBlock": {
+            "description": "Check that the session is still logged in.",
             "type": "object",
             "additionalProperties": false,
             "properties": {
                 "path": {
+                    "title": "Path",
+                    "description": "Page to test the login on. Prowlarr does not read this.",
                     "type": "string"
                 },
                 "selector": {
+                    "title": "Selector",
+                    "description": "CSS selector that must match on HTML search responses. No match means the login expired and Prowlarr logs in again.",
                     "type": "string"
                 }
             },
@@ -370,17 +521,24 @@
             "title": "PageTestBlock"
         },
         "CaptchaBlock": {
+            "description": "Captcha on the login form. Requires login method form.",
             "type": "object",
             "additionalProperties": false,
             "properties": {
                 "type": {
+                    "title": "Type",
+                    "description": "Captcha type. Only image is implemented in Prowlarr; text fails with a not implemented error.",
                     "type": "string",
                     "enum": ["image", "text"]
                 },
                 "selector": {
+                    "title": "Selector",
+                    "description": "CSS selector of the captcha <img> element on the login page. Its src is downloaded and shown to the user.",
                     "type": "string"
                 },
                 "input": {
+                    "title": "Input",
+                    "description": "Name of the form field that receives the captcha text. A CSS selector if login.selectors is true.",
                     "type": "string"
                 }
             },
@@ -392,16 +550,23 @@
             "title": "CaptchaBlock"
         },
         "ErrorBlock": {
+            "description": "Error check on the login response. A matching selector marks the login as failed.",
             "type": "object",
             "additionalProperties": false,
             "properties": {
                 "path": {
+                    "title": "Path",
+                    "description": "Page to check. Prowlarr does not read this.",
                     "type": "string"
                 },
                 "selector": {
+                    "title": "Selector",
+                    "description": "CSS selector. If it matches, the login failed and the matched element's text is the error message.",
                     "type": "string"
                 },
                 "message": {
+                    "title": "Message",
+                    "description": "Selector used to extract a better error message when the error selector matches.",
                     "$ref": "#/definitions/SelectorBlock"
                 }
             },
@@ -411,52 +576,74 @@
             "title": "ErrorBlock"
         },
         "SelectorBlock": {
+            "description": "Extracts one value from a result row or page. text overrides selector. Filters run on the result.",
             "type": "object",
             "additionalProperties": false,
             "properties": {
                 "selector": {
+                    "title": "Selector",
+                    "description": "HTML/XML: CSS selector, :root supported. JSON: path in the row object; a leading .. reads from the row instead of rows.attribute. Supports templates.",
                     "type": "string"
                 },
                 "attribute": {
+                    "title": "Attribute",
+                    "description": "HTML/XML only. Read this attribute instead of the element text.",
                     "type": "string"
                 },
                 "optional": {
+                    "title": "Optional",
+                    "description": "Do not fail when the selector does not match. The field is left empty or set to default. Default: false.",
                     "type": "boolean"
                 },
                 "default": {
+                    "title": "Default",
+                    "description": "Value used when an optional selector returns nothing. Requires optional: true. Supports templates.",
                     "oneOf": [
                         {
+                            "title": "String default",
                             "type": "string"
                         },
                         {
+                            "title": "Number default",
                             "type": "number"
                         }
                     ]
                 },
                 "case": {
+                    "title": "Case",
+                    "description": "Map of condition to value; the first match wins. HTML/XML: the key is a CSS selector matched against the element or its children. JSON: the key is compared to the value, * matches anything.",
                     "type": "object",
                     "additionalProperties": false,
                     "patternProperties": {
                         "^.*$": {
+                            "title": "Case value",
+                            "description": "Value or template.",
                             "oneOf": [
-                                {"type": "string"},
-                                {"type": "number"}
+                                {"title": "String value", "type": "string"},
+                                {"title": "Number value", "type": "number"}
                             ]
                         }
                     }
                 },
                 "remove": {
+                    "title": "Remove",
+                    "description": "HTML/XML only. CSS selector of child elements to remove before reading the value.",
                     "type": "string"
                 },
                 "text": {
+                    "title": "Text",
+                    "description": "Fixed value or template. Used instead of the selector.",
                     "oneOf": [
-                        {"type": "string"},
-                        {"type": "number"}
+                        {"title": "String text", "type": "string"},
+                        {"title": "Number text", "type": "number"}
                     ]
                 },
                 "filters": {
+                    "title": "Filters",
+                    "description": "Filters applied to the value, in order.",
                     "type": "array",
                     "items": {
+                        "title": "Filter",
                         "$ref": "#/definitions/FilterBlock"
                     }
                 }
@@ -468,18 +655,25 @@
             },
             "allOf": [
                 {
+                    "title": "Default requires optional",
+                    "description": "If default is set, optional must be true.",
                     "if": {
+                        "title": "Default is set",
                         "properties": {
                             "default": {
+                                "title": "Default present",
                                 "not": {
+                                    "title": "Null",
                                     "const": null
                                 }
                             }
                         }
                     },
                     "then": {
+                        "title": "Optional is true",
                         "properties": {
                             "optional": {
+                                "title": "Optional true",
                                 "const": true
                             }
                         }
@@ -489,68 +683,98 @@
             "title": "SelectorBlock"
         },
         "Search": {
+            "description": "Search requests and parsing of the results. Set either path or paths.",
             "type": "object",
             "additionalProperties": false,
             "properties": {
                 "path": {
+                    "title": "Path",
+                    "description": "Single search path. Converted to one paths entry with inheritinputs true.",
                     "type": "string"
                 },
                 "paths": {
+                    "title": "Paths",
+                    "description": "Search paths. Each matching path is requested for every search; duplicate GET URLs are skipped.",
                     "type": "array",
                     "items": {
+                        "title": "Search path",
                         "$ref": "#/definitions/SearchPathBlock"
                     }
                 },
                 "allowEmptyInputs": {
+                    "title": "Allow empty inputs",
+                    "description": "Send inputs whose value is empty. By default an input that resolves to an empty value is left out. Default: false.",
                     "type": "boolean"
                 },
                 "inputs": {
+                    "title": "Inputs",
+                    "description": "Request parameters shared by all paths (name to template value). GET: query string. POST: form data. The $raw key is split on & and = and added without further escaping (only variables are escaped).",
                     "type": "object",
                     "additionalProperties": false,
                     "patternProperties": {
                         "^((\\$raw)|[A-Za-z0-9.\\-_[\\]]*)$": {
+                            "title": "Input value",
+                            "description": "Value or template.",
                             "oneOf": [
-                                {"type": "number"},
-                                {"type": "string"},
-                                {"type": "boolean"}
+                                {"title": "Number value", "type": "number"},
+                                {"title": "String value", "type": "string"},
+                                {"title": "Boolean value", "type": "boolean"}
                             ]
                         }
                     }
                 },
                 "headers": {
+                    "title": "Headers",
+                    "description": "Extra HTTP headers for search requests. Also used for login and download requests that set no headers of their own.",
                     "type": "object",
                     "additionalProperties": false,
                     "patternProperties": {
                         "^[A-Za-z0-9-]*$": {
+                            "title": "Header values",
+                            "description": "Header values. Prowlarr sends only the first value. Supports templates.",
                             "type": "array",
                             "items": {
+                                "title": "Header value",
                                 "type": "string"
                             }
                         }
                     }
                 },
                 "keywordsfilters": {
+                    "title": "Keywords filters",
+                    "description": "Filters applied to the search keywords. The result is available as .Keywords.",
                     "type": "array",
                     "items": {
+                        "title": "Keywords filter",
                         "$ref": "#/definitions/FilterBlock"
                     }
                 },
                 "error": {
+                    "title": "Error",
+                    "description": "Error checks on the search result page. Prowlarr does not read this.",
                     "type": "array",
                     "items": {
+                        "title": "Search error check",
                         "$ref": "#/definitions/ErrorBlock"
                     }
                 },
                 "preprocessingfilters": {
+                    "title": "Preprocessing filters",
+                    "description": "Filters applied to the whole HTML or XML response before parsing. Not applied to JSON responses.",
                     "type": "array",
                     "items": {
+                        "title": "Preprocessing filter",
                         "$ref": "#/definitions/FilterBlock"
                     }
                 },
                 "rows": {
+                    "title": "Rows",
+                    "description": "How to find the result rows.",
                     "$ref": "#/definitions/RowsBlock"
                 },
                 "fields": {
+                    "title": "Fields",
+                    "description": "Fields extracted from each row.",
                     "$ref": "#/definitions/FieldsBlock"
                 }
             },
@@ -560,11 +784,15 @@
             ],
             "oneOf": [
                 {
+                    "title": "Using paths",
+                    "description": "search with a paths list.",
                     "required": [
                         "paths"
                     ]
                 },
                 {
+                    "title": "Using path",
+                    "description": "search with a single path.",
                     "required": [
                         "path"
                     ]
@@ -573,46 +801,67 @@
             "title": "Search"
         },
         "SearchPathBlock": {
+            "description": "One search request.",
             "type": "object",
             "additionalProperties": false,
             "properties": {
                 "path": {
+                    "title": "Path",
+                    "description": "Search URL, relative to the site link. Supports templates; variables are URL encoded.",
                     "type": "string"
                 },
                 "method": {
+                    "title": "Method",
+                    "description": "HTTP method. post (case-insensitive) sends inputs as form data. Anything else uses GET. Default: get.",
                     "type": "string"
                 },
                 "followredirect": {
+                    "title": "Follow redirect",
+                    "description": "Follow HTTP redirects for this search request. Default: false.",
                     "type": "boolean"
                 },
                 "categories": {
+                    "title": "Categories",
+                    "description": "Only use this path if the search includes one of these tracker category IDs. A ! as the first entry inverts the match. Without !, .Categories is limited to the matching IDs.",
                     "type": "array",
                     "items": {
+                        "title": "Tracker category",
+                        "description": "Tracker category ID, or ! as the first entry.",
                         "oneOf": [
-                            {"type": "integer"},
-                            {"type": "string"}
+                            {"title": "Integer category", "type": "integer"},
+                            {"title": "String category", "type": "string"}
                         ]
                     }
                 },
                 "inputs": {
+                    "title": "Inputs",
+                    "description": "Extra request parameters for this path. Added after search.inputs when inheritinputs is true.",
                     "type": "object",
                     "additionalProperties": false,
                     "patternProperties": {
                         "^((\\$raw)|[A-Za-z0-9.\\-_[\\]]*)$": {
+                            "title": "Input value",
+                            "description": "Value or template.",
                             "oneOf": [
-                                {"type": "integer"},
-                                {"type": "string"}
+                                {"title": "Integer value", "type": "integer"},
+                                {"title": "String value", "type": "string"}
                             ]
                         }
                     }
                 },
                 "inheritinputs": {
+                    "title": "Inherit inputs",
+                    "description": "Include search.inputs in this path's request. Default: true.",
                     "type": "boolean"
                 },
                 "queryseparator": {
+                    "title": "Query separator",
+                    "description": "Separator between query parameters. Prowlarr ignores it for search paths and always uses &.",
                     "type": "string"
                 },
                 "response": {
+                    "title": "Response",
+                    "description": "Response format. If omitted the response is parsed as HTML.",
                     "$ref": "#/definitions/ResponseBlock"
                 }
             },
@@ -622,14 +871,19 @@
             "title": "SearchPathBlock"
         },
         "ResponseBlock": {
+            "description": "Format of the search response.",
             "type": "object",
             "additionalProperties": false,
             "properties": {
                 "type": {
+                    "title": "Type",
+                    "description": "json or xml. Omit the response block for HTML.",
                     "type": "string",
                     "enum": ["json", "xml"]
                 },
                 "noResultsMessage": {
+                    "title": "No results message",
+                    "description": "JSON only. If the response contains this text, return no results instead of an error. An empty string matches an empty response.",
                     "type": "string"
                 }
             },
@@ -639,78 +893,116 @@
             "title": "ResponseBlock"
         },
         "RowsBlock": {
+            "description": "Selects the result rows. Each row is parsed with fields.",
             "type": "object",
             "additionalProperties": false,
             "properties": {
                 "after": {
+                    "title": "After",
+                    "description": "HTML/XML only. Merge this many following rows into each row, for sites that split one result over several rows. Default: 0.",
                     "type": "integer"
                 },
                 "dateheaders": {
+                    "title": "Date headers",
+                    "description": "HTML/XML only. For results without a date, search previous sibling rows for a date with this selector.",
                     "$ref": "#/definitions/SelectorBlock"
                 },
                 "selector": {
+                    "title": "Selector",
+                    "description": "HTML/XML: CSS selector for the rows. JSON: path to the rows array; :has(), :not() and :contains() filters are supported. Supports templates.",
                     "type": "string"
                 },
                 "attribute": {
+                    "title": "Attribute",
+                    "description": "JSON only. Sub-object of each row that holds the fields. Fields with a .. prefix still read from the row.",
                     "type": "string"
                 },
                 "optional": {
+                    "title": "Optional",
+                    "description": "Not used for rows by Prowlarr.",
                     "type": "boolean"
                 },
                 "multiple": {
+                    "title": "Multiple",
+                    "description": "JSON only. The attribute holds several results per row; each one becomes a release. Default: false.",
                     "type": "boolean"
                 },
                 "missingAttributeEqualsNoResults": {
+                    "title": "Missing attribute equals no results",
+                    "description": "JSON only. Treat a missing rows selector or attribute as no results instead of an error. Default: false.",
                     "type": "boolean"
                 },
                 "case": {
+                    "title": "Case",
+                    "description": "Not used for rows by Prowlarr.",
                     "type": "object",
                     "additionalProperties": false,
                     "patternProperties": {
                         "^[A-Za-z0-9]*$": {
+                            "title": "Case value",
                             "type": "string"
                         }
                     }
                 },
                 "remove": {
+                    "title": "Remove",
+                    "description": "Not used for rows by Prowlarr.",
                     "type": "string"
                 },
                 "text": {
+                    "title": "Text",
+                    "description": "Not used for rows by Prowlarr.",
                     "oneOf": [
                         {
+                            "title": "String text",
                             "type": "string"
                         },
                         {
+                            "title": "Number text",
                             "type": "number"
                         }
                     ]
                 },
                 "filters": {
+                    "title": "Row filters",
+                    "description": "Filters applied to each row after its fields are parsed.",
                     "type": "array",
                     "items": {
+                        "title": "Row filter",
                         "$ref": "#/definitions/RowFilterBlock"
                     }
                 },
                 "count": {
+                    "title": "Count",
+                    "description": "JSON only. Selector for a result count. A count below 1 returns no results.",
                     "$ref": "#/definitions/SelectorBlock"
                 }
             },
             "title": "RowsBlock"
         },
         "FieldsBlock": {
+            "description": "Fields extracted from each row, parsed in order. Each value is available as .Result.<name> to later fields. Required: title, size, seeders, one of category or categorydesc, and at least one of download, magnet or infohash.",
             "type": "object",
             "additionalProperties": false,
             "patternProperties": {
                 "^_[A-Za-z0-9-_]*$": {
+                    "title": "Working field",
+                    "description": "Name starting with _. Not mapped to the release; use it through .Result.<name> in later fields.",
                     "$ref": "#/definitions/SelectorBlock"
                 },
                 "^((title|description)\\|(append))?$": {
+                    "title": "Title or description with append",
+                    "description": "title|append or description|append adds the value to the end of the value set by an earlier field.",
                     "$ref": "#/definitions/SelectorBlock"
                 },
                 "^((category|categorydesc)\\|(noappend|append))?$": {
+                    "title": "Category with modifier",
+                    "description": "category or categorydesc with a modifier. Categories from repeated fields are merged by default. noappend replaces instead and is deprecated.",
                     "$ref": "#/definitions/SelectorBlock"
                 },
                 "^(download|magnet|infohash|details|comments|title|description|category|categorydesc|size|leechers|seeders|date|files|grabs|downloadvolumefactor|uploadvolumefactor|minimumratio|minimumseedtime|imdb|imdbid|tmdbid|rageid|tvdbid|tvmazeid|traktid|doubanid|poster|genre|year|author|booktitle|publisher|album|artist|label|track)(_([A-Za-z0-9_])*)?$": {
+                    "title": "Release field",
+                    "description": "Known release field. download: .torrent or magnet link. magnet: magnet link. infohash: generates a magnet link for non-private indexers. details/comments: page links. category: tracker category ID. categorydesc: tracker category name. size: size with units. date: publish date. seeders/leechers/files/grabs: counts. downloadvolumefactor: share of download counted, 0 is freeleech. uploadvolumefactor: share of upload counted, 2 is double upload. minimumratio, minimumseedtime (seconds). imdb/imdbid/tmdbid/rageid/tvdbid/tvmazeid/traktid/doubanid: first number is used. poster: image URL. genre: list split on punctuation and spaces. year, author, booktitle, publisher, album, artist, label, track. IDs, poster, description and genre are optional by default. A name with a _suffix is a working field.",
                     "$ref": "#/definitions/SelectorBlock"
                 }
             },
@@ -721,11 +1013,15 @@
             ],
             "oneOf": [
                 {
+                    "title": "Using category",
+                    "description": "Set category or categorydesc, not both.",
                     "required": [
                         "category"
                     ]
                 },
                 {
+                    "title": "Using categorydesc",
+                    "description": "Set category or categorydesc, not both.",
                     "required": [
                         "categorydesc"
                     ]
@@ -733,16 +1029,22 @@
             ],
             "anyOf": [
                 {
+                    "title": "Has download",
+                    "description": "At least one of download, infohash or magnet is required.",
                     "required": [
                         "download"
                     ]
                 },
                 {
+                    "title": "Has infohash",
+                    "description": "At least one of download, infohash or magnet is required.",
                     "required": [
                         "infohash"
                     ]
                 },
                 {
+                    "title": "Has magnet",
+                    "description": "At least one of download, infohash or magnet is required.",
                     "required": [
                         "magnet"
                     ]
@@ -751,28 +1053,42 @@
             "title": "FieldsBlock"
         },
         "DownloadBlock": {
+            "description": "Download handling when the result link is not the file itself. infohash takes precedence over selectors.",
             "type": "object",
             "additionalProperties": false,
             "properties": {
                 "method": {
+                    "title": "Method",
+                    "description": "HTTP method for the final download request. post uses POST, anything else GET. Default: get.",
                     "type": "string"
                 },
                 "before": {
+                    "title": "Before",
+                    "description": "Request sent before the download, for example to press a thanks button.",
                     "$ref": "#/definitions/BeforeBlock"
                 },
                 "selectors": {
+                    "title": "Selectors",
+                    "description": "Selector fields (selector, attribute, usebeforeresponse, filters) tried in order on the page behind the result link. The first that returns a usable link is downloaded; the rest are fallbacks.",
                     "type": "array"
                 },
                 "infohash": {
+                    "title": "Infohash",
+                    "description": "Build a magnet link from a hash and title found on the page behind the result link.",
                     "$ref": "#/definitions/InfoHashBlock"
                 },
                 "headers": {
+                    "title": "Headers",
+                    "description": "Extra HTTP headers for download and before requests. If omitted, search.headers is used.",
                     "type": "object",
                     "additionalProperties": false,
                     "patternProperties": {
                         "^[A-Za-z0-9-]*$": {
+                            "title": "Header values",
+                            "description": "Header values. Prowlarr sends only the first value. Supports templates.",
                             "type": "array",
                             "items": {
+                                "title": "Header value",
                                 "type": "string"
                             }
                         }
@@ -782,41 +1098,58 @@
             "title": "DownloadBlock"
         },
         "BeforeBlock": {
+            "description": "Request sent before the download. Set either path or pathselector.",
             "type": "object",
             "additionalProperties": false,
             "properties": {
                 "path": {
+                    "title": "Path",
+                    "description": "URL of the request, relative to the site link. Supports templates, including .DownloadUri variables.",
                     "type": "string"
                 },
                 "pathselector": {
+                    "title": "Path selector",
+                    "description": "Selector that reads the request URL from the page behind the result link.",
                     "$ref": "#/definitions/SelectorField"
                 },
                 "method": {
+                    "title": "Method",
+                    "description": "HTTP method. post (case-insensitive) sends inputs as form data. Anything else uses GET. Default: get.",
                     "type": "string"
                 },
                 "inputs": {
+                    "title": "Inputs",
+                    "description": "Request parameters (name to template value). GET: query string. POST: form data.",
                     "type": "object",
                     "additionalProperties": false,
                     "patternProperties": {
                         "^[A-Za-z0-9_]*$": {
+                            "title": "Input value",
+                            "description": "Value or template.",
                             "oneOf": [
-                                {"type": "integer"},
-                                {"type": "string"}
+                                {"title": "Integer value", "type": "integer"},
+                                {"title": "String value", "type": "string"}
                             ]
                         }
                     }
                 },
                 "queryseparator": {
+                    "title": "Query separator",
+                    "description": "Separator between GET query parameters. Default: &.",
                     "type": "string"
                 }
             },
             "oneOf": [
                 {
+                    "title": "Using path",
+                    "description": "before with a fixed path.",
                     "required": [
                         "path"
                     ]
                 },
                 {
+                    "title": "Using pathselector",
+                    "description": "before with a path read from the page.",
                     "required": [
                         "pathselector"
                     ]
@@ -825,37 +1158,54 @@
             "title": "BeforeBlock"
         },
         "InfoHashBlock": {
+            "description": "Builds a magnet link from a hash and a title. Meant for public and semi-private indexers.",
             "type": "object",
             "additionalProperties": false,
             "properties": {
                 "hash": {
+                    "title": "Hash",
+                    "description": "Selector for the info hash (the magnet xt parameter).",
                     "$ref": "#/definitions/SelectorField"
                 },
                 "title": {
+                    "title": "Title",
+                    "description": "Selector for the release name (the magnet dn parameter).",
                     "$ref": "#/definitions/SelectorField"
                 },
                 "usebeforeresponse": {
+                    "title": "Use before response",
+                    "description": "Read hash and title from the before response instead of the page behind the result link. Default: false.",
                     "type": "boolean"
                 }
             },
             "title": "InfoHashBlock"
         },
         "SelectorField": {
+            "description": "Selector used by the download block.",
             "type": "object",
             "additionalProperties": false,
             "properties": {
                 "selector": {
+                    "title": "Selector",
+                    "description": "CSS selector. Supports templates.",
                     "type": "string"
                 },
                 "attribute": {
+                    "title": "Attribute",
+                    "description": "Read this attribute instead of the element text, for example href.",
                     "type": "string"
                 },
                 "usebeforeresponse": {
+                    "title": "Use before response",
+                    "description": "Apply the selector to the before response instead of the page behind the result link. Default: false.",
                     "type": "boolean"
                 },
                 "filters": {
+                    "title": "Filters",
+                    "description": "Filters applied to the value, in order.",
                     "type": "array",
                     "items": {
+                        "title": "Filter",
                         "$ref": "#/definitions/FilterBlock"
                     }
                 }
@@ -863,27 +1213,34 @@
             "title": "SelectorField"
         },
         "RowFilterBlock": {
+            "description": "Filter applied to each result row.",
             "type": "object",
             "additionalProperties": false,
             "properties": {
                 "name": {
+                    "title": "Name",
+                    "description": "andmatch: drop releases whose title or description match fewer than two search terms (one for single-term queries). Not applied to RSS or ID searches. strdump: log each row for debugging.",
                     "type": "string",
                     "enum": ["andmatch", "strdump"]
                 },
                 "args": {
+                    "title": "Arguments",
+                    "description": "Prowlarr does not read arguments for row filters.",
                     "oneOf": [
                         {
+                            "title": "Argument list",
                             "type": "array",
                             "items": {
+                                "title": "Argument",
                                 "oneOf": [
-                                    {"type": "string"},
-                                    {"type": "number"},
-                                    {"type": "boolean"}
+                                    {"title": "String argument", "type": "string"},
+                                    {"title": "Number argument", "type": "number"},
+                                    {"title": "Boolean argument", "type": "boolean"}
                                 ]
                             }
                         },
-                        {"type": "string"},
-                        {"type": "integer"}
+                        {"title": "String argument", "type": "string"},
+                        {"title": "Integer argument", "type": "integer"}
                     ]
                 }
             },
@@ -893,27 +1250,34 @@
             "title": "RowFilterBlock"
         },
         "FilterBlock": {
+            "description": "Filter that transforms a value.",
             "type": "object",
             "additionalProperties": false,
             "properties": {
                 "name": {
+                    "title": "Name",
+                    "description": "querystring: value of a query parameter (args: name). timeparse/dateparse: parse a date (args: layout). regexp: first capture group (args: pattern). re_replace: args [pattern, replacement]. split: args [separator, index], negative index counts from the end. replace: args [from, to]. trim: trim whitespace or the args character. prepend/append: add args text. tolower/toupper. urldecode/urlencode. htmldecode/htmlencode. timeago/reltime: relative time. fuzzytime: date in any common format. validfilename. diacritics: args replace strips accents. jsonjoinarray: args [JSONPath, separator]. hexdump/strdump: log the value. validate: keep only the words listed in args.",
                     "type": "string",
                     "enum": ["querystring", "timeparse", "dateparse", "regexp", "re_replace", "split", "replace", "trim", "prepend", "append", "tolower", "toupper", "urldecode", "urlencode", "htmldecode", "htmlencode", "timeago", "reltime", "fuzzytime", "validfilename", "diacritics", "jsonjoinarray", "hexdump", "strdump", "validate"]
                 },
                 "args": {
+                    "title": "Arguments",
+                    "description": "Filter argument: a string, an integer, or a list, depending on the filter.",
                     "oneOf": [
                         {
+                            "title": "Argument list",
                             "type": "array",
                             "items": {
+                                "title": "Argument",
                                 "oneOf": [
-                                    {"type": "string"},
-                                    {"type": "number"},
-                                    {"type": "boolean"}
+                                    {"title": "String argument", "type": "string"},
+                                    {"title": "Number argument", "type": "number"},
+                                    {"title": "Boolean argument", "type": "boolean"}
                                 ]
                             }
                         },
-                        {"type": "string"},
-                        {"type": "integer"}
+                        {"title": "String argument", "type": "string"},
+                        {"title": "Integer argument", "type": "integer"}
                     ]
                 }
             },
@@ -922,18 +1286,25 @@
             ],
             "allOf": [
                 {
+                    "title": "dateparse layout check",
+                    "description": "dateparse args must be a .NET style layout without digits, for example yyyy-MM-dd HH:mm.",
                     "if": {
+                        "title": "Filter is dateparse",
                         "properties": {
                             "name": {
+                                "title": "dateparse name",
                                 "const": "dateparse"
                             }
                         }
                     },
                     "then": {
+                        "title": "Layout without digits",
                         "properties": {
                             "args": {
+                                "title": "dateparse layout",
                                 "type": "string",
                                 "not": {
+                                    "title": "Contains a digit",
                                     "pattern": "\\d"
                                 }
                             }
@@ -944,6 +1315,7 @@
             "title": "FilterBlock"
         },
         "IndexerCategories": {
+            "description": "Newznab category name. Must match a Prowlarr standard category name exactly.",
             "type": "string",
             "enum": [
                 "Console",
