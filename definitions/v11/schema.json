@@ -383,7 +383,7 @@
             "properties": {
                 "method": {
                     "title": "Method",
-                    "description": "form: load path, fill the HTML form and POST it. post: POST inputs to path. get: send inputs as a query string to path. cookie: use the cookie setting. oneurl: GET path with inputs.oneurl appended. Default: form.",
+                    "description": "form: load path, fill the HTML form and POST it. post: POST inputs to path. get: send inputs as a query string to path. cookie: use the cookie setting. oneurl: legacy from Jackett's removed beyond-hd-oneurl indexer; no definition uses it. Default: form.",
                     "type": "string",
                     "enum": ["form", "post", "cookie", "get", "oneurl"]
                 },
@@ -399,7 +399,7 @@
                 },
                 "path": {
                     "title": "Path",
-                    "description": "Login URL, relative to the site link. form: page containing the form. post: POST target. get and oneurl: request URL. Supports templates.",
+                    "description": "Login URL, relative to the site link. form: page containing the form. post: POST target. get: request URL. Supports templates.",
                     "type": "string"
                 },
                 "submitpath": {
@@ -419,7 +419,7 @@
                 },
                 "inputs": {
                     "title": "Inputs",
-                    "description": "Login parameters (name to template value). post/form: POST body. get: query string. oneurl: the oneurl key is appended to path. Not used by the cookie method.",
+                    "description": "Login parameters (name to template value). post/form: POST body. get: query string. Not used by the cookie method.",
                     "type": "object",
                     "additionalProperties": false,
                     "patternProperties": {
