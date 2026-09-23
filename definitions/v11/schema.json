@@ -267,7 +267,7 @@
                     "items": {
                         "title": "TV search parameter",
                         "type": "string",
-                        "enum": ["q", "season", "ep", "imdbid", "tvdbid", "tmdbid", "tvmazeid", "traktid", "doubanid", "year", "genre"]
+                        "enum": ["q", "season", "ep", "imdbid", "tvdbid", "rid", "tmdbid", "tvmazeid", "traktid", "doubanid", "year", "genre"]
                     }
                 },
                 "movie-search": {
@@ -278,7 +278,7 @@
                     "items": {
                         "title": "Movie search parameter",
                         "type": "string",
-                        "enum": ["q", "imdbid", "tmdbid", "traktid", "doubanid", "year", "genre"]
+                        "enum": ["q", "imdbid", "tmdbid", "imdbtitle", "imdbyear", "traktid", "doubanid", "year", "genre"]
                     }
                 },
                 "music-search": {
