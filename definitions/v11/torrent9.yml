@@ -10,6 +10,7 @@ testlinktorrent: false
 links:
   - https://www6.torrent9.to/
 legacylinks:
+  - https://torrent9.la/ # www6.torrent9.to now redirects here, site migrated domains
   - https://www.torrent9.pl/ # this is a proxy for torrent9clone
   - https://torrent9.black-mirror.xyz/ # this is a proxy for torrent9clone
   - https://torrent9.unblocked.casa/ # this is a proxy for torrent9clone
