@@ -51,6 +51,17 @@ jobs:
           chmod +x ./scripts/sync-upstream.sh
           ./scripts/sync-upstream.sh
 
+      - name: Publish v11 branch
+        env:
+          SOURCE_BRANCH: master
+          TARGET_BRANCH: v11
+          ORIGIN_REMOTE: origin
+          BASE_DEFINITIONS_DIR: definitions/v11
+          CUSTOM_DEFINITIONS_DIR: custom-definitions/v11
+        run: |
+          chmod +x ./scripts/publish-v11-branch.sh
+          ./scripts/publish-v11-branch.sh
+
       - name: Summary
         if: always()
         run: |
