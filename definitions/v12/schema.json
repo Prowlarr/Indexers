@@ -761,7 +761,10 @@
                     "$ref": "#/definitions/BeforeBlock"
                 },
                 "selectors": {
-                    "type": "array"
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/SelectorBlock"
+                    }
                 },
                 "infohash": {
                     "$ref": "#/definitions/InfoHashBlock"
