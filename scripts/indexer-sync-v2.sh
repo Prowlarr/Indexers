@@ -90,10 +90,11 @@ GIT_DIFF_CMD="git diff --cached --name-only"
 ## v7 purged and frozen 2024-04-27
 ## v8 purged and frozen 2024-04-27
 ## v9 purged and frozen 2024-10-13
+## v10 purged and frozen 2025-08-24
 # Load schema versions from VERSIONS file
 load_versions() {
-    MIN_SCHEMA=10
-    MAX_SCHEMA=11
+    MIN_SCHEMA=11
+    MAX_SCHEMA=12
     CURRENT_SCHEMA=11
 
     if [ -f "VERSIONS" ]; then
