@@ -22,12 +22,12 @@ schema_cache = {}  # Cache for loaded schemas
 def load_version_config():
     """Load version configuration from VERSIONS file."""
     versions = {
-        'MIN_VERSION': 10,
-        'MAX_VERSION': 11, 
+        'MIN_VERSION': 11,
+        'MAX_VERSION': 12,
         'CURRENT_VERSION': 11,
-        'NEXT_VERSION': 12
+        'NEXT_VERSION': 13
     }
-    
+
     try:
         with open(VERSIONS_FILE, 'r') as f:
             for line in f:
@@ -41,7 +41,7 @@ def load_version_config():
                             pass
     except FileNotFoundError:
         print(f"Warning: {VERSIONS_FILE} not found, using defaults", file=sys.stderr)
-    
+
     return versions
 
 # Load version configuration
@@ -62,11 +62,11 @@ def load_json_schema(schema_path, use_cache=None):
     # Default to True unless explicitly disabled or cache is empty (indicating no-cache mode)
     if use_cache is None:
         use_cache = len(schema_cache) != 0 or not hasattr(load_json_schema, '_cache_disabled')
-    
+
     # Check cache first if enabled
     if use_cache and schema_path in schema_cache:
         return schema_cache[schema_path]
-    
+
     try:
         with open(schema_path, 'r', encoding='utf-8') as f:
             schema = json.load(f)
@@ -87,7 +87,7 @@ def convert_keys_and_values_to_strings(obj, path=''):
                 new_key = str(key).lower() if isinstance(key, bool) else str(key)
             else:
                 new_key = key
-            
+
             # Special handling for options and case dictionaries - convert boolean values to strings
             if new_key in ('options', 'case') and isinstance(value, dict):
                 new_value = {}
@@ -100,7 +100,7 @@ def convert_keys_and_values_to_strings(obj, path=''):
                 new_dict[new_key] = new_value
             else:
                 new_dict[new_key] = convert_keys_and_values_to_strings(value, f"{path}.{new_key}")
-                
+
         return new_dict
     elif isinstance(obj, list):
         return [convert_keys_and_values_to_strings(item, f"{path}[{i}]") for i, item in enumerate(obj)]
@@ -123,13 +123,13 @@ def validate_file_against_schema(yaml_path, schema, all_errors=False):
     data = load_yaml_file(yaml_path)
     if data is None:
         return False, f"Failed to load YAML file: {yaml_path}"
-    
+
     try:
         # Use Draft 2019-09 validator to match the original implementation
         validator_class = validator_for(schema)
         validator_class.check_schema(schema)
         validator = validator_class(schema)
-        
+
         if all_errors:
             # Collect all validation errors
             errors = sorted(validator.iter_errors(data), key=str)
@@ -139,7 +139,7 @@ def validate_file_against_schema(yaml_path, schema, all_errors=False):
                     # Create concise error message
                     path = "['" + "']['".join(str(p) for p in error.absolute_path) + "']" if error.absolute_path else "root"
                     schema_path = ".".join(str(p) for p in error.schema_path) if error.schema_path else ""
-                    
+
                     error_msg = f"\nFailed validating '{error.validator}' in schema"
                     if schema_path:
                         schema_parts = schema_path.replace('.', "']['")
@@ -156,7 +156,7 @@ def validate_file_against_schema(yaml_path, schema, all_errors=False):
         # Create concise error message for single error mode
         path = "['" + "']['".join(str(p) for p in e.absolute_path) + "']" if e.absolute_path else "root"
         schema_path = ".".join(str(p) for p in e.schema_path) if e.schema_path else ""
-        
+
         error_msg = f"\nFailed validating '{e.validator}' in schema"
         if schema_path:
             schema_parts = schema_path.replace('.', "']['")
@@ -171,29 +171,29 @@ def validate_files_in_directory(directory, schema_path, all_errors=False, verbos
     success = True
     error_count = 0
     total_files = 0
-    
+
     schema = load_json_schema(schema_path)
     if schema is None:
         print(f"Error: Failed to load schema from {schema_path}")
         return False
-    
+
     # Find all YAML files in directory
     yaml_files = []
     for extension in YAML_EXTENSIONS:
         yaml_files.extend(glob.glob(os.path.join(directory, extension)))
-    
+
     if not yaml_files:
         print(f"No YAML files found in {directory}")
         return True  # Not an error if no files to validate
-    
+
     for yaml_file in sorted(yaml_files):
         # Skip schema.json files
         if os.path.basename(yaml_file) == SCHEMA_FILENAME:
             continue
-            
+
         total_files += 1
         is_valid, error_msg = validate_file_against_schema(yaml_file, schema, all_errors)
-        
+
         if not is_valid:
             print(f"FAIL: {error_msg}")
             success = False
@@ -201,12 +201,12 @@ def validate_files_in_directory(directory, schema_path, all_errors=False, verbos
         else:
             if verbose:
                 print(f"PASS: {os.path.basename(yaml_file)}")
-    
+
     print(f"\nValidation Summary:")
     print(f"Total files: {total_files}")
     print(f"Errors: {error_count}")
     print(f"Success: {total_files - error_count}")
-    
+
     return success
 
 def _find_yaml_files_without_schema(definitions_dir):
@@ -306,16 +306,16 @@ def validate_directory(definitions_dir, all_errors=False, verbose=False):
 def find_best_schema_version(yaml_file, definitions_dir=DEFAULT_DEFINITIONS_DIR):
     """Find the best schema version for a YAML file."""
     matched_version = 0
-    
+
     for version in range(MIN_SCHEMA_VERSION, MAX_SCHEMA_VERSION + 1):
         schema_path = os.path.join(definitions_dir, f"v{version}", SCHEMA_FILENAME)
         if not os.path.exists(schema_path):
             continue
-            
+
         schema = load_json_schema(schema_path)
         if schema is None:
             continue
-            
+
         is_valid, _ = validate_file_against_schema(yaml_file, schema, False)
         if is_valid:
             matched_version = version
@@ -323,7 +323,7 @@ def find_best_schema_version(yaml_file, definitions_dir=DEFAULT_DEFINITIONS_DIR)
             if version == MAX_SCHEMA_VERSION:
                 print(f"Warning: {yaml_file} does not match max schema v{MAX_SCHEMA_VERSION}", file=sys.stderr)
                 print(f"Cardigann update likely needed. Version v{VERSION_CONFIG['NEXT_VERSION']} may be required.", file=sys.stderr)
-    
+
     return matched_version
 
 def validate_single_file(yaml_file, schema_file, all_errors=False):
@@ -331,19 +331,19 @@ def validate_single_file(yaml_file, schema_file, all_errors=False):
     schema = load_json_schema(schema_file)
     if schema is None:
         return False
-    
+
     is_valid, error_msg = validate_file_against_schema(yaml_file, schema, all_errors)
     if not is_valid:
         print(error_msg, file=sys.stderr)
         return False
-    
+
     return True
 
 def main():
     parser = argparse.ArgumentParser(description="Validate Prowlarr indexer definitions against JSON schemas")
     parser.add_argument("definitions_dir", nargs="?", default=DEFAULT_DEFINITIONS_DIR,
                        help=f"Path to definitions directory (default: {DEFAULT_DEFINITIONS_DIR})")
-    parser.add_argument("--definitions-dir", "-d", dest="definitions_dir_override", 
+    parser.add_argument("--definitions-dir", "-d", dest="definitions_dir_override",
                        help="Path to definitions directory (overrides positional argument)")
     parser.add_argument("--single", "-s", nargs=2, metavar=("YAML_FILE", "SCHEMA_FILE"),
                        help="Validate a single YAML file against a schema")
@@ -358,9 +358,9 @@ def main():
     parser.add_argument("--verbose", "-v", action="store_true",
                        help="Enable verbose output")
     parser.add_argument("--version", "-V", action="version", version="%(prog)s 1.0")
-    
+
     args = parser.parse_args()
-    
+
     try:
         # Determine the definitions directory to use
         definitions_dir = args.definitions_dir_override or args.definitions_dir
@@ -372,16 +372,16 @@ def main():
         if definitions_dir != _base_dir and not definitions_dir.startswith(_base_dir + os.sep):
             print(f"Error: definitions directory must be within {_base_dir}", file=sys.stderr)
             sys.exit(1)
-        
+
         # Handle caching override
         if args.no_cache:
             global schema_cache
             schema_cache = {}  # Clear cache
             load_json_schema._cache_disabled = True  # Disable caching
-            
+
         # Determine error reporting mode
         all_errors = args.all_errors and not args.first_error_only
-            
+
         if args.single:
             # Single file validation mode
             yaml_file, schema_file = args.single
@@ -405,7 +405,7 @@ def main():
                 print(f"Error: Definitions directory '{definitions_dir}' not found", file=sys.stderr)
                 sys.exit(1)
             success = validate_directory(definitions_dir, all_errors, args.verbose)
-            
+
         if args.single or not hasattr(args, 'find_best_version'):
             if success:
                 if not args.single:

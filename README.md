@@ -70,7 +70,7 @@ python scripts/validate.py --find-best-version "file.yml"
 ```
 
 The validation script supports:
-- **Flexible directory structures**: Works with Prowlarr's versioned directories (`v11/`) and Jackett's flat structure with root `schema.json`
+- **Flexible directory structures**: Works with Prowlarr's versioned directories (`v11/` and `v12`) and Jackett's flat structure with root `schema.json`
 - **All errors by default**: Shows all validation issues at once instead of stopping at the first error
 - **Concise error messages**: Clean output showing only validation type, schema path, and invalid values
 - **Auto-detection**: Automatically detects directory structure and uses appropriate validation method
@@ -78,7 +78,11 @@ The validation script supports:
 ## Active Versions
 
 > [!NOTE]
-> The repository currently supports indexer definition schemas from v1 through v11. The active version is:
+> The repository currently supports indexer definition schemas from v1 through v12. The latest available versions are:
+
+- **v12 Indexers**
+  - Prowlarr Cardigann v11 includes changes such as:
+    - Adds `base64decode` and `base64encode` to FilterBlock
 
 - **V11 Indexers** - [Dev 1.20.0.4590](https://github.com/Prowlarr/Prowlarr/releases/tag/v1.20.0.4590) - **ACTIVE**
   - Contains all active indexer definitions (522+ indexers)
@@ -119,7 +123,7 @@ The validation script supports:
   - Testlink Torrents
   - InfoHash links
   - AllowRawSearch property in caps
-  
+
 > [!WARNING]
 > No new indexers are to be added to v2 as of 2022-04-18
 > No new updates backported to v2 as of 2022-04-18
