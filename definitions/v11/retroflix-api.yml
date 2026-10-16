@@ -80,11 +80,16 @@ search:
     Authorization: ["Bearer {{ .Config.apikey }}"]
 
   inputs:
+    # note: the API documents these as string enums, but they are really
+    # integers. Wrong types make the API ignore "search" entirely.
+    # searchIn: 0=title 1=description 2=uploader 3=imdb
+    # termMatchKind: 0=and 1=or 2=exact
+    # includingDead: 0=excluded 1=included 2=only_dead
     $raw: "{{ range .Categories }}&categories[]={{.}}{{end}}"
     search: "{{ .Keywords }}"
-    searchIn: title
-    termMatchKind: and
-    includingDead: included
+    searchIn: 0
+    termMatchKind: 0
+    includingDead: 1
     imdbId: "{{ if .Query.IMDBID }}{{ .Query.IMDBID }}{{ else }}{{ end }}"
     page: 1
     itemsPerPage: 100
