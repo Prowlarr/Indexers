@@ -135,8 +135,8 @@ search:
     uploadvolumefactor:
       selector: upload_volume_factor
     minimumratio:
-      text: 1.0
+      text: 0.95
     minimumseedtime:
-      # 120 hours (as seconds = 120 x 60 x 60)
+      # 5 days (as seconds = 5 x 24 x 60 x 60)
       text: 432000
 # JSON API
