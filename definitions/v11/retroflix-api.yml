@@ -1,0 +1,142 @@
+---
+id: retroflix-api
+replaces:
+  - retroflix
+name: RetroFlix (API)
+description: "Private Torrent Tracker for Classic Movies / TV / General Releases."
+language: en-US
+type: private
+encoding: UTF-8
+links:
+  - https://retroflix.club/
+legacylinks:
+  - https://retroflix.net/
+
+caps:
+  categorymappings:
+    - {id: 401, cat: Movies, desc: "Movies"}
+    - {id: 402, cat: TV, desc: "TV Series"}
+    - {id: 406, cat: Audio/Video, desc: "Music Videos"}
+    - {id: 407, cat: TV/Sport, desc: "Sports"}
+    - {id: 408, cat: Audio, desc: "Audio"}
+    - {id: 409, cat: Books, desc: "Books"}
+
+  modes:
+    search: [q]
+    tv-search: [q, season, ep, imdbid]
+    movie-search: [q, imdbid]
+  allowtvsearchimdb: true
+
+settings:
+  - name: apikey
+    type: password
+    label: APIKey
+  - name: info_key
+    type: info
+    label: About your API key
+    default: "Find or Generate a new API Token by accessing your <a href=\"https://retroflix.club/\" target=\"_blank\">RetroFlix</a> account settings page."
+  - name: sort
+    type: select
+    label: Sort requested from site
+    default: torrent.createdAt
+    options:
+      torrent.createdAt: created
+      torrent.size: size
+      torrent.seeders: seeders
+      torrent.leechers: leechers
+      torrent.timesCompleted: completed
+  - name: type
+    type: select
+    label: Order requested from site
+    default: desc
+    options:
+      desc: desc
+      asc: asc
+
+login:
+  path: api/test
+  method: get
+  headers:
+    Authorization: ["Bearer {{ .Config.apikey }}"]
+  error:
+    - selector: ":root:contains(\"Unauthorized\")"
+      message:
+        text: "The API key was not accepted by {{ .Config.sitelink }}."
+
+search:
+  paths:
+    - path: api/torrent
+      response:
+        type: json
+
+  headers:
+    Authorization: ["Bearer {{ .Config.apikey }}"]
+
+  inputs:
+    # note: the API documents these as string enums, but they are really
+    # integers. Wrong types make the API ignore "search" entirely.
+    # searchIn: 0=title 1=description 2=uploader 3=imdb
+    # termMatchKind: 0=and 1=or 2=exact
+    # includingDead: 0=excluded 1=included 2=only_dead
+    $raw: "{{ range .Categories }}&categories[]={{.}}{{end}}"
+    search: "{{ .Keywords }}"
+    searchIn: 0
+    termMatchKind: 0
+    includingDead: 1
+    imdbId: "{{ if .Query.IMDBID }}{{ .Query.IMDBID }}{{ else }}{{ end }}"
+    page: 1
+    itemsPerPage: 100
+    direction: "{{ .Config.type }}"
+    sort: "{{ .Config.sort }}"
+
+  keywordsfilters:
+    - name: re_replace
+      args: ["\\.", " "]
+
+  rows:
+    selector: $
+
+  fields:
+    _id:
+      selector: id
+    category:
+      selector: category.id
+    title:
+      selector: name
+    details:
+      selector: url
+      optional: true
+    download:
+      text: "{{ .Config.sitelink }}api/torrent/{{ .Result._id }}/download"
+    description:
+      selector: description
+    poster:
+      selector: poster
+    imdbid:
+      selector: imdb_id
+    date:
+      # "created_at": "2021-10-18T00:34:50.000000Z" is returned by Newtonsoft.Json.Linq as 18/10/2021 00:34:50
+      selector: created_at
+      filters:
+        - name: append
+          args: " +00:00"
+        - name: dateparse
+          args: "MM/dd/yyyy HH:mm:ss zzz"
+    size:
+      selector: size
+    grabs:
+      selector: times_completed
+    seeders:
+      selector: seeders
+    leechers:
+      selector: leechers
+    downloadvolumefactor:
+      selector: download_volume_factor
+    uploadvolumefactor:
+      selector: upload_volume_factor
+    minimumratio:
+      text: 0.95
+    minimumseedtime:
+      # 5 days (as seconds = 5 x 24 x 60 x 60)
+      text: 432000
+# JSON API
