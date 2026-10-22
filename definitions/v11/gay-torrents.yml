@@ -135,6 +135,10 @@ search:
     - name: re_replace
       args: ["\\+with\\b\\s?", " "] # 'with' is treated as a stop word and breaks the search when AND searched
 
+  headers:
+    User-Agent: ["Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.203"] # Prowlarr-specific, do not remove.
+    Referer: ["{{ .Config.sitelink }}"]
+
   rows:
     selector: torrent
 
