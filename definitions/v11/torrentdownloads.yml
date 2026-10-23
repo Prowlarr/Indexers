@@ -71,7 +71,6 @@ search:
     - path: search/
       followredirect: true
   inputs:
-    $raw: "{{ range .Categories }}s_cat={{.}}&{{end}}"
     search: "{{ if .Keywords }}{{ .Keywords }}{{ else }}{{ .Today.Year }}{{ end }}"
 
   keywordsfilters:
