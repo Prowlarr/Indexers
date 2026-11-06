@@ -1,6 +1,6 @@
 ---
-id: deildu-custom
-name: Deildu (custom)
+id: deildu
+name: Deildu
 description: "Deildu is an ICELANDIC Semi-Private Torrent Tracker for MOVIES / TV / GENERAL"
 language: is-IS
 type: semi-private
