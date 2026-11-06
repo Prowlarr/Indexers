@@ -1,6 +1,6 @@
 ---
-id: deildu
-name: Deildu
+id: deildu-custom
+name: Deildu (custom)
 description: "Deildu is an ICELANDIC Semi-Private Torrent Tracker for MOVIES / TV / GENERAL"
 language: is-IS
 type: semi-private
@@ -58,17 +58,20 @@ settings:
       asc: asc
 
 login:
-  path: takelogin.php
-  method: post
+  # Load login.php and submit the real form so the hidden
+  # form_token (CSRF) and returnto fields are sent along.
+  path: login.php
+  method: form
+  form: form[action$="takelogin.php"]
   inputs:
     username: "{{ .Config.username }}"
     password: "{{ .Config.password }}"
-    keeplogged: 1
   error:
-    - selector: table.main:contains("Login failed")
+    - selector: p.error
   test:
     path: index.php
-    selector: a[href^="logout.php"]
+    # Links are now absolute (https://deildu.net/logout.php?token=...)
+    selector: a[href*="logout.php"]
 
 search:
   paths:
@@ -85,43 +88,49 @@ search:
     # does not return imdb links
 
   rows:
-    selector: table[class="torrentlist"] > tbody > tr:has(a[href*="details.php?id="])
+    selector: table.torrentlist > tbody > tr.br-item
     filters:
       - name: andmatch
         args: 55
 
   fields:
     category:
-      selector: a[href^="browse.php?cat="]
+      selector: a.br-catart
       attribute: href
       filters:
         - name: querystring
           args: cat
     title:
-      selector: td:nth-child(2)
+      selector: a.br-title
+      attribute: title
     details:
-      selector: a[href^="details.php?id="]
+      selector: a.br-title
       attribute: href
     download:
-      selector: a[href^="download.php"]
+      selector: a.br-download
       attribute: href
     size:
-      selector: td:nth-child(7)
+      selector: td.br-size
     files:
-      selector: td:nth-child(4)
+      selector: a[href*="filelist=1"]
+      optional: true
     grabs:
-      selector: td:nth-child(8)
+      selector: td.br-done
+      remove: span.br-mobile-label
     seeders:
-      selector: td:nth-child(9)
+      selector: td.br-seed
+      remove: span.br-mobile-label
     leechers:
-      selector: td:nth-child(10)
+      selector: td.br-leech
+      remove: span.br-mobile-label
     date:
-      selector: td:nth-child(6)
+      selector: td.br-added time
+      attribute: datetime
       filters:
         - name: append
           args: " +00:00" # GMT
         - name: dateparse
-          args: "yyyy-MM-ddHH:mm:ss zzz"
+          args: "yyyy-MM-dd'T'HH:mm:ss zzz"
     downloadvolumefactor:
       text: 0
     uploadvolumefactor:
