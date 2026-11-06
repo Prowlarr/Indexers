@@ -1,0 +1,255 @@
+---
+id: erairaws
+name: Erai-raws
+description: "A mysterious organization that releases anime content with multi-subs and more. (Placeholder text)"
+language: en-US
+type: semi-private
+encoding: UTF-8
+requestDelay: 2
+links:
+  - https://www.erai-raws.info/
+
+caps:
+  categorymappings:
+    - {id: 100, cat: TV/Anime, desc: "[Airing]"}
+    - {id: 110, cat: TV/Anime, desc: "[Finale]"}
+    - {id: 200, cat: TV/Anime, desc: "[Batch]"}
+    - {id: 210, cat: TV/Anime, desc: "[Batch][Encoded]"}
+    - {id: 220, cat: TV/Anime, desc: "[Batch][Raw]"}
+    - {id: 300, cat: Movies/Other, desc: "[Movie or Special Episode]"}
+    - {id: 400, cat: TV/Anime, desc: "[Encoded]"}
+    - {id: 500, cat: TV/Anime, desc: "[Raw]"}
+  modes:
+    search: [q]
+    tv-search: [q, season, ep]
+    movie-search: [q]
+  allowrawsearch: true
+
+settings:
+  - name: rss_token
+    label: "RSS Token"
+    type: password
+  - name: cookie
+    label: "Cookie"
+    type: text
+    default: ""
+  - name: info
+    label: "How to get Cookie"
+    type: info
+    default: "<p>The cookie is only required if you want to use the Search function</p><ol><li>Login to this tracker with your browser</li><li>Open the <b>DevTools</b> panel by pressing <b>F12</b></li><li>Select the <b>Network</b> tab</li><li>Click on the <b>Doc</b> button (Chrome Browser) or <b>HTML</b> button (FireFox)</li><li>Refresh the page by pressing <b>F5</b></li><li>Click on the first row entry</li><li>Select the <b>Headers</b> tab on the Right panel</li><li>Find <b>'cookie:'</b> in the <b>Request Headers</b> section</li><li><b>Select</b> and <b>Copy</b> the whole cookie string <i>(everything after 'cookie: ')</i> and <b>Paste</b> here.</li></ol>"
+  - name: categories
+    label: "Categories"
+    type: select
+    default: all
+    options:
+      all: "All categories"
+      episodes: "Airing"
+      batches: "Batches"
+      specials: "Movies or Special Episodes"
+      encodes: "Encodings"
+      raws: "Raws"
+  - name: include_categories
+    label: "Include categories in title"
+    type: checkbox
+    default: true
+  - name: include_movie
+    label: "Include movie label in title"
+    type: checkbox
+    default: true
+  - name: resolution
+    label: "Resolution"
+    type: select
+    default: ""
+    options:
+      "": "Any"
+      1080p: "1080p"
+      720p: "720p"
+      SD: "SD (480p)"
+  - name: include_resolution
+    label: "Include resolution in title"
+    type: checkbox
+    default: true
+  - name: fix_resolution
+    label: "Attempt to fix resolution (SD -> 480p)"
+    type: checkbox
+    default: false
+  - name: link_type
+    label: "Link Type"
+    type: select
+    default: magnet
+    options:
+      torrent: "Torrent"
+      magnet: "Magnet"
+  - name: subtitles
+    label: "Subtitles"
+    type: select
+    default: ""
+    options:
+      "": "Any"
+      us: "English"
+      br: "Portuguese(Brazil)"
+      mx: "Spanish(Latin_America)"
+      es: "Spanish"
+      sa: "Arabic"
+      fr: "French"
+      de: "German"
+      it: "Italian"
+      ru: "Russian"
+      jp: "Japanese"
+      pt: "Portuguese"
+      pl: "Polish"
+      nl: "Dutch"
+      no: "Norwegian"
+      fi: "Finnish"
+      tr: "Turkish"
+      se: "Swedish"
+      gr: "Greek"
+      il: "Hebrew"
+      ro: "Romanian"
+      id: "Indonesian"
+      th: "Thai"
+      kr: "Korean"
+      dk: "Danish"
+      cn: "Chinese(Simplified&Traditional)"
+      bg: "Bulgarian"
+      vn: "Vietnamese"
+      in: "Hindi"
+      lk: "Tamil"
+      ua: "Ukrainian"
+      hu: "Hungarian"
+      cz: "Czech"
+      hr: "Croatian"
+      my: "Malaysian"
+      sk: "Slovakian"
+      ph: "Filipino"
+  - name: include_subtitles
+    label: "Include subtitles in title"
+    type: checkbox
+    default: true
+  - name: want_v0
+    label: "Include v0 releases"
+    type: checkbox
+    default: true
+  - name: prefix
+    label: "Prefix (leave blank to disable)"
+    type: text
+    default: "[Erai-raws]"
+
+login:
+  method: cookie
+  inputs:
+    cookie: "{{ .Config.cookie }}"
+  test:
+    path: "/wp-admin/profile.php"
+    selector: li#wp-admin-bar-logout > a.ab-item[href]
+
+search:
+  paths:
+    - path: '{{ if ne .Config.categories "all" }}/{{ .Config.categories }}{{ else }}{{ end }}/feed/'
+      response:
+        type: xml
+  inputs:
+    $raw: "token={{ .Config.rss_token }}&"
+    res: "{{ .Config.resolution }}"
+    type: "{{ .Config.link_type }}"
+    subs: "{{ .Config.subtitles }}"
+    v0: "{{ if .Config.want_v0 }}{{ else }}no{{ end }}"
+    s: "{{ .Keywords }}"
+  rows:
+    selector: rss > channel > item
+    filters:
+      - name: andmatch
+  fields:
+    categorydesc:
+      selector: category
+    title_episode:
+      selector: title
+      filters:
+        - name: regexp
+          args: "^(?:.*) - (\\d+ ~ \\d+|\\d+)"
+    title_movie:
+      selector: title
+      filters:
+        - name: regexp
+          args: "^(?:.*) \\(?(Movie(?:\\s\\d+)?)\\)?"
+      optional: true
+    title_is_movie:
+      text: "{{ if .Config.include_movie }} - {{ .Result.title_movie }}{{ else }}{{ end }}"
+      optional: true
+    title_has_hevc:
+      selector: title
+      filters:
+        - name: regexp
+          args: "(?:\\d+ ~ \\d+|\\d+|Movie) (\\(HEVC\\))"
+    title_resolution:
+      selector: resolution
+      filters:
+        - name: regexp
+          args: "(1080p|720p|SD)"
+        - name: replace
+          args:
+            ["SD", "{{ if .Config.fix_resolution }}480p{{ else }}SD{{ end }}"]
+      optional: true
+    title_subtitles:
+      selector: subtitles
+      filters:
+        - name: regexp
+          args: "((?:\\[\\w{2}\\])+)"
+      optional: true
+    title_categories:
+      selector: title
+      filters:
+        - name: regexp
+          args: "((?:\\[\\w{3,}\\]|\\[Movie or Special Episode\\])+)$"
+      optional: true
+    title:
+      selector: title
+      filters:
+        - name: regexp
+          args: "^\\[(?:Magnet|Torrent)\\] (.*) -"
+        - name: append
+          args: "{{ if .Result.title_episode }} - {{ .Result.title_episode }}{{ else }}{{ .Result.title_is_movie }}{{ end }}"
+        - name: append
+          args: "{{ if .Result.title_has_hevc }} {{ .Result.title_has_hevc }}{{ else }}{{ end }}"
+        - name: append
+          args: "{{ if .Config.include_resolution }} ({{ .Result.title_resolution }}){{ else }}{{ end }}"
+        - name: append
+          args: "{{ if .Config.include_subtitles }} {{ .Result.title_subtitles }}{{ else }}{{ end }}"
+        - name: append
+          args: "{{ if .Config.include_categories }}{{ .Result.title_categories }}{{ else }}{{ end }}"
+        - name: prepend
+          args: "{{ if .Config.prefix }}{{ .Config.prefix }} {{ else }}{{ end }}"
+    details_link:
+      selector: description
+      filters:
+        - name: regexp
+          args: 'href="(.*)"'
+      optional: true
+    details:
+      text: '{{ or (.Result.details_link) "https://www.erai-raws.info/" }}'
+    download_link:
+      selector: link
+    download:
+      text: '{{ if ne .Config.link_type "magnet" }}{{ .Result.download_link }}{{ else }}{{ end }}'
+      optional: true
+    magnet:
+      text: '{{ if eq .Config.link_type "magnet" }}{{ .Result.download_link }}{{ else }}{{ end }}'
+    infohash:
+      selector: infohash
+    date:
+      selector: pubDate
+      filters:
+        - name: replace
+          args: ["+0000", "-00"]
+        - name: dateparse
+          args: "ddd, dd MMM yyyy HH:mm:ss zz"
+    size:
+      selector: size
+    seeders:
+      text: 1
+    leechers:
+      text: 1
+    description:
+      selector: description
+      remove: a
+# engine n/a
