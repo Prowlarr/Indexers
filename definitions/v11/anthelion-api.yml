@@ -73,7 +73,8 @@ search:
     q: "{{ .Keywords }}"
     tmdb: "{{ .Query.TMDBID }}"
     imdb: "{{ .Query.IMDBIDShort }}"
-    cat: "{{ join .Categories \",\" }}"
+    # category filtering is disabled since it seems to rely on the AND operator that prevents some releases to show on search.
+    # cat: "{{ join .Categories \",\" }}"
     limit: 100
     offset: 0
     # freetorrent: 0 normal, 1 freeleech, 2 neutral leech
@@ -87,6 +88,11 @@ search:
   fields:
     category:
       selector: category
+      filters:
+        - name: split
+          args: [",", -1]
+        - name: re_replace
+          args: ["1\\d{5}", "2000"]
     title:
       selector: releaseName
     details:
