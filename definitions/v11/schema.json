@@ -780,6 +780,24 @@
                             }
                         }
                     }
+                },
+                "wait": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                        "title",
+                        "delayVariable"
+                    ],
+                    "properties": {
+                        "title": {
+                            "type": "string",
+                            "minLength": 1
+                        },
+                        "delayVariable": {
+                            "type": "string",
+                            "pattern": "^[A-Za-z_$][A-Za-z0-9_$]*$"
+                        }
+                    }
                 }
             },
             "title": "DownloadBlock"
