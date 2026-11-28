@@ -84,6 +84,50 @@ search:
     - path: search
       inputs:
         page: 3
+    # A search without keywords uses the year as the keyword, which Korean TV releases do not have in their title (they carry a date like 261127), so TV categories came back empty. Browse the category pages instead.
+    # With keywords these paths build the same request as the first path, and Prowlarr skips repeated requests.
+    - path: "{{ if .Keywords }}search{{ else }}c/2/12{{ end }}"
+      categories: ["해외드라마"]
+      inheritinputs: false
+      inputs:
+        q: "{{ if .Keywords }}{{ .Keywords }}{{ else }}{{ end }}"
+        sort: "{{ if .Keywords }}time{{ else }}{{ end }}"
+        page: 1
+    - path: "{{ if .Keywords }}search{{ else }}c/2/13{{ end }}"
+      categories: ["한국드라마"]
+      inheritinputs: false
+      inputs:
+        q: "{{ if .Keywords }}{{ .Keywords }}{{ else }}{{ end }}"
+        sort: "{{ if .Keywords }}time{{ else }}{{ end }}"
+        page: 1
+    - path: "{{ if .Keywords }}search{{ else }}c/3/15{{ end }}"
+      categories: ["넷플릭스 시리즈"]
+      inheritinputs: false
+      inputs:
+        q: "{{ if .Keywords }}{{ .Keywords }}{{ else }}{{ end }}"
+        sort: "{{ if .Keywords }}time{{ else }}{{ end }}"
+        page: 1
+    - path: "{{ if .Keywords }}search{{ else }}c/4/20{{ end }}"
+      categories: ["유아·어린이"]
+      inheritinputs: false
+      inputs:
+        q: "{{ if .Keywords }}{{ .Keywords }}{{ else }}{{ end }}"
+        sort: "{{ if .Keywords }}time{{ else }}{{ end }}"
+        page: 1
+    - path: "{{ if .Keywords }}search{{ else }}c/4/17{{ end }}"
+      categories: ["다큐·교양"]
+      inheritinputs: false
+      inputs:
+        q: "{{ if .Keywords }}{{ .Keywords }}{{ else }}{{ end }}"
+        sort: "{{ if .Keywords }}time{{ else }}{{ end }}"
+        page: 1
+    - path: "{{ if .Keywords }}search{{ else }}c/5/22{{ end }}"
+      categories: ["애니메이션"]
+      inheritinputs: false
+      inputs:
+        q: "{{ if .Keywords }}{{ .Keywords }}{{ else }}{{ end }}"
+        sort: "{{ if .Keywords }}time{{ else }}{{ end }}"
+        page: 1
   inputs:
     q: "{{ if .Keywords }}{{ .Keywords }}{{ else }}{{ .Today.Year }}{{ end }}"
     sort: time
@@ -95,11 +139,18 @@ search:
       - name: andmatch
 
   fields:
-    category:
+    # search pages print the category as [ name ] in the row, category listing pages as a badge
+    _category_search:
       selector: div:nth-child(2)
+      optional: true
       filters:
         - name: regexp
           args: "\\[ (.+?) \\]"
+    _category_listing:
+      selector: span.badge
+      optional: true
+    category:
+      text: "{{ if .Result._category_search }}{{ .Result._category_search }}{{ else }}{{ .Result._category_listing }}{{ end }}"
     title:
       selector: a[href$=".html"][title]
       attribute: title
@@ -112,8 +163,13 @@ search:
     date:
       selector: div:nth-child(3)
       filters:
+        # search pages show 26/11/27, category listing pages show 11/27
+        - name: re_replace
+          args: ["^(\\d{2}/\\d{2}/\\d{2})$", "20$1"]
+        - name: re_replace
+          args: ["^(\\d{2}/\\d{2})$", "{{ .Today.Year }}/$1"]
         - name: dateparse
-          args: "yy/MM/dd"
+          args: "yyyy/MM/dd"
     size:
       text: 512MB
     seeders:
