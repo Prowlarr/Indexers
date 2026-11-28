@@ -79,6 +79,56 @@ search:
     - path: search/index
       inputs:
         page: 3
+    # A search without keywords uses the year as the keyword, which Korean TV releases do not have in their title (they carry a date like 261127), so TV categories came back empty. Browse the category pages instead.
+    # With keywords these paths build the same request as the first path, and Prowlarr skips repeated requests.
+    - path: "{{ if .Keywords }}search/index{{ else }}v-2-12{{ end }}"
+      categories: ["해외드라마"]
+      inheritinputs: false
+      inputs:
+        keywords: "{{ .Keywords }}"
+        search_type: "{{ if .Keywords }}0{{ else }}{{ end }}"
+        order: "{{ if .Keywords }}time{{ else }}{{ end }}"
+        page: 1
+    - path: "{{ if .Keywords }}search/index{{ else }}v-2-13{{ end }}"
+      categories: ["한국드라마"]
+      inheritinputs: false
+      inputs:
+        keywords: "{{ .Keywords }}"
+        search_type: "{{ if .Keywords }}0{{ else }}{{ end }}"
+        order: "{{ if .Keywords }}time{{ else }}{{ end }}"
+        page: 1
+    - path: "{{ if .Keywords }}search/index{{ else }}v-3-15{{ end }}"
+      categories: ["넷플릭스 시리즈"]
+      inheritinputs: false
+      inputs:
+        keywords: "{{ .Keywords }}"
+        search_type: "{{ if .Keywords }}0{{ else }}{{ end }}"
+        order: "{{ if .Keywords }}time{{ else }}{{ end }}"
+        page: 1
+    - path: "{{ if .Keywords }}search/index{{ else }}v-4-20{{ end }}"
+      categories: ["유아·어린이"]
+      inheritinputs: false
+      inputs:
+        keywords: "{{ .Keywords }}"
+        search_type: "{{ if .Keywords }}0{{ else }}{{ end }}"
+        order: "{{ if .Keywords }}time{{ else }}{{ end }}"
+        page: 1
+    - path: "{{ if .Keywords }}search/index{{ else }}v-4-17{{ end }}"
+      categories: ["다큐·교양"]
+      inheritinputs: false
+      inputs:
+        keywords: "{{ .Keywords }}"
+        search_type: "{{ if .Keywords }}0{{ else }}{{ end }}"
+        order: "{{ if .Keywords }}time{{ else }}{{ end }}"
+        page: 1
+    - path: "{{ if .Keywords }}search/index{{ else }}v-5-22{{ end }}"
+      categories: ["애니메이션"]
+      inheritinputs: false
+      inputs:
+        keywords: "{{ .Keywords }}"
+        search_type: "{{ if .Keywords }}0{{ else }}{{ end }}"
+        order: "{{ if .Keywords }}time{{ else }}{{ end }}"
+        page: 1
   inputs:
     keywords: "{{ if .Keywords }}{{ .Keywords }}{{ else }}{{ .Today.Year }}{{ end }}"
     search_type: 0
