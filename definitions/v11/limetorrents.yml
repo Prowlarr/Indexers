@@ -86,6 +86,9 @@ download:
 
 search:
   paths:
+    # season tag kept, finds season packs of older seasons
+    - path: "{{ if .Query.Keywords }}search/all/{{ .Query.Keywords }}/{{ .Config.sort }}/1/{{ else }}/latest100{{ end }}"
+    # season tag removed, finds the episodes of a season that has no pack yet (Prowlarr skips this request when the keywords did not change)
     - path: "{{ if .Keywords }}search/all/{{ .Keywords }}/{{ .Config.sort }}/1/{{ else }}/latest100{{ end }}"
   keywordsfilters:
     - name: re_replace
